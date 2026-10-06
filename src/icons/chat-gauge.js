@@ -1,0 +1,9 @@
+import { bubble, center } from '../chat'
+import { rounded } from '../geometry'
+import { gauge } from '../symbols'
+
+// 对话 + 计速器
+export default ({ radius }) => [
+  rounded(bubble(radius), radius, false),
+  ...gauge(center, 1, radius),
+]
