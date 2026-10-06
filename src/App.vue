@@ -3,7 +3,7 @@ import { computed, nextTick, onMounted, onUnmounted, ref, shallowRef, watch, wat
 import { categorize } from './categories'
 import IconSvg from './IconSvg.vue'
 import LazyIcon from './LazyIcon.vue'
-import { pathAttrs, pathsOf } from './render'
+import { pathAttrs, pathsOf, svgAttrs } from './render'
 import searchIcon from './icons/search'
 import { finalize } from './svg'
 
@@ -84,14 +84,9 @@ const selectedCategory = computed(() => selected.value && sections.value.find(c 
 
 // 导出的 SVG：按当前圆角、字重生成；点、细线、细节的线宽写在各自的路径上
 function toSvg(icon, px = 24) {
-  const sharp = !!corner.value.sharp
-  const cap = sharp ? 'butt' : 'round'
-  const join = sharp ? 'miter' : 'round'
-  const paths = icon.paths.map((p) => {
-    const attrs = Object.entries(pathAttrs(p, sharp)).filter(([, v]) => v !== undefined).map(([k, v]) => `${k}="${v}"`)
-    return `  <path ${attrs.join(' ')}/>`
-  })
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${px}" height="${px}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${weight.value.stroke}" stroke-linecap="${cap}" stroke-linejoin="${join}">\n${paths.join('\n')}\n</svg>\n`
+  const attrs = obj => Object.entries(obj).filter(([, v]) => v !== undefined).map(([k, v]) => `${k}="${v}"`).join(' ')
+  const paths = icon.paths.map(p => `  <path ${attrs(pathAttrs(p))}/>`)
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${px}" height="${px}" viewBox="0 0 24 24" ${attrs(svgAttrs(weight.value.stroke, !!corner.value.sharp))}>\n${paths.join('\n')}\n</svg>\n`
 }
 
 const toast = ref('')

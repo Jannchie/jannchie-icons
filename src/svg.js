@@ -162,7 +162,11 @@ function snapEnds(items, stroke) {
             best = { d2: r.d2, q: r.q, w: sh.w }
         }))
         const d = Math.sqrt(best.d2)
-        return d > 0.01 && d < (shapes[i].w + best.w) / 2 - 0.02 ? best.q : null
+        if (!(d > 0.01 && d < (shapes[i].w + best.w) / 2 - 0.02))
+          return null
+        // 目标点就在这条线自己身上：两条线已经在那里接上了（T 的横杠、I 的衬线），这个端点只是出头，不是没接到。
+        // 吸过去会把短横整段缩没
+        return nearestOn(best.q, shapes[i].subs[k].pts).d2 < 0.0025 ? null : best.q
       }
       const q0 = snap(start)
       if (q0) {

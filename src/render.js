@@ -43,11 +43,22 @@ export function forget(el) {
   callbacks.delete(el)
 }
 
-// 单条路径的 SVG 属性：预览（IconSvg）和导出（App 的 toSvg）共用，保证两边一致
-// 点、细线、细节的线宽写在各自的路径上；尖角时零长度的点在平头下不可见，单独用方头
-export const pathAttrs = (p, sharp) => ({
+// 整个 SVG 的描边属性：预览（IconSvg）和导出（App 的 toSvg）共用
+// 尖角用方头（square）而不是平头（butt）：方头和圆头一样把线端往外延伸半个线宽，所以两种样式的几何完全一致——
+// 图标都是按圆头的范围设计的，平头会让每个开放线端缩短半个线宽：加号、短横缩成点，两段线拼成的直角外侧缺一块，
+// 接到别的线上的线头也会露出缝。斜接上限 2：夹角小于 60° 的锐角（A、V、M 的尖）自动切平，不会拉出长尖刺戳出外框
+export const svgAttrs = (stroke, sharp) => ({
+  'fill': 'none',
+  'stroke': 'currentColor',
+  'stroke-width': stroke,
+  'stroke-linecap': sharp ? 'square' : 'round',
+  'stroke-linejoin': sharp ? 'miter' : 'round',
+  'stroke-miterlimit': sharp ? 2 : undefined,
+})
+
+// 单条路径的 SVG 属性：点、细线、细节的线宽写在各自的路径上
+export const pathAttrs = p => ({
   'd': p.d,
   'stroke-width': p.width ? +p.width.toFixed(3) : undefined,
   'fill': p.fill ? 'currentColor' : undefined,
-  'stroke-linecap': sharp && p.dot ? 'square' : undefined,
 })

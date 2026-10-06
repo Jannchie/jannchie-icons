@@ -10,7 +10,7 @@ const GLYPHS = {
   D: 'M0 0H1A2.5 3 0 0 1 1 6H0Z',
   E: 'M3.5 0H0V6H3.5M0 3H2.75',
   F: 'M3.5 0H0V6M0 3H2.75',
-  G: 'M3.5 1.75A1.75 1.75 0 0 0 0 1.75V4.25A1.75 1.75 0 0 0 3.5 4.25V3H2',
+  G: 'M3.27 .875A1.75 1.75 0 0 0 0 1.75V4.25A1.75 1.75 0 0 0 3.5 4.25V3H2', // 上端收在右上 30°，和横杠之间留出缺口，缩小后不会合成 Θ
   H: 'M0 0V6M3.5 0V6M0 3H3.5',
   I: 'M0 0H3.5M1.75 0V6M0 6H3.5',
   J: 'M3.5 0V4.25A1.75 1.75 0 0 1 0 4.25',
@@ -50,12 +50,20 @@ const place = (d, dx, dy, sx = 1, sy = 1) => affine(d, sx, sy, dx, dy)
 // 单个字形：左上角放在 (x, y)，按 scale 等比缩放（原始 3.5 × 6）；给了 sy 时横竖分开缩放
 export const glyph = (c, x, y, scale = 1, sy = scale) => place(GLYPHS[c], x, y, scale, sy)
 
-// 一行字以 (cx, cy) 为中心排开：字宽 W·sx、字高 6·sy，字间距 gap
+// 窄字：字宽不足 3.5 的字形按实际宽度排（advance），并左移 shift 让字形落在自己的字宽中间
+// 否则「12」「18」里的 1 两边空出一大块，看起来像隔了个空格
+const NARROW = { '1': { advance: 2, shift: 0.375 }, '-': { advance: 2.5, shift: 0.5 } }
+export const advance = c => NARROW[c]?.advance ?? W
+export const textWidth = (str, sx = 1, gap = 1.5) => [...str].reduce((w, c, i) => w + advance(c) * sx + (i ? gap : 0), 0)
+
+// 一行字以 (cx, cy) 为中心排开：字宽 advance·sx、字高 6·sy，字间距 gap
 export function line(str, [cx, cy], sx = 1, gap = 1.5, sy = sx) {
-  const chars = [...str]
-  const w = W * sx
-  const x0 = cx - (w * chars.length + gap * (chars.length - 1)) / 2
-  return chars.map((c, i) => glyph(c, x0 + i * (w + gap), cy - 3 * sy, sx, sy))
+  let x = cx - textWidth(str, sx, gap) / 2
+  return [...str].map((c) => {
+    const d = glyph(c, x - (NARROW[c]?.shift ?? 0) * sx, cy - 3 * sy, sx, sy)
+    x += advance(c) * sx + gap
+    return d
+  })
 }
 
 // 把一串字母排进 box（上下固定 6 高）：

@@ -152,7 +152,15 @@ export const CATEGORIES = [
   { id: 'science', title: '化学', match: oneOf('test-tube', 'beaker', 'atom', 'molecule', 'dna', 'microscope', 'element', 'radioactive') },
   { id: 'circuit', title: '电路', match: oneOf('resistor', 'capacitor', 'inductor', 'diode', 'led', 'ground', 'circuit-switch', 'cell', 'ac-source', 'lamp', 'transistor') },
   { id: 'math', title: '数学', match: oneOf('plus-minus', 'not-equal', 'approx', 'divide', 'percent', 'sqrt', 'infinity', 'equal', 'sigma', 'less-than', 'greater-than', 'less-equal', 'greater-equal', 'identical', 'proportional', 'integral', 'partial', 'nabla', 'product', 'function', 'angle', 'perpendicular', 'parallel', 'element-of', 'subset', 'union', 'intersection', 'for-all', 'exists', 'therefore', 'because', 'empty-set', 'celsius', 'fahrenheit') },
-  { id: 'symbol', title: '符号', match: oneOf('pentagram', 'hexagram', 'asterisk', 'copyright', 'registered', 'trademark', 'yin-yang', 'peace') },
+  {
+    id: 'license',
+    title: '版权与协议',
+    match: any(prefixed('cc-', 'license'), oneOf('cc', 'copyright', 'copyleft', 'registered', 'trademark', 'public-domain')),
+    section: name => name.startsWith('cc') || name === 'public-domain'
+      ? { order: 0, title: '知识共享 CC' }
+      : name.startsWith('license') ? { order: 1, title: '开源协议' } : { order: 2, title: '版权符号' },
+  },
+  { id: 'symbol', title: '符号', match: oneOf('pentagram', 'hexagram', 'asterisk', 'yin-yang', 'peace') },
   {
     id: 'mark',
     title: '倍率与尺码',
