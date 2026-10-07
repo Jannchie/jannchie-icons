@@ -135,7 +135,8 @@ const dotSize = item => item.dot ?? (/^(?:M[^MLHVCSQTAZ]+h0)+$/i.test(item.d.rep
 // 点的直径是按线宽 DOT_STROKE 设计的，实际按字重等比缩放：点和线的粗细比例在任何字重下都一样
 // （默认 DOT 2 : 线宽 1.5，略大于线宽，补偿圆点看起来比同宽的线小）
 export const DOT_STROKE = 1.5
-const dotWidth = (item, stroke) => dotSize(item) * stroke / DOT_STROKE
+// 眼睛（scene.js 的 eye）例外：粗字重下不再放大，直径停在常规线宽那一档
+const dotWidth = (item, stroke) => dotSize(item) * (item.eye ? Math.min(stroke, DOT_STROKE) : stroke) / DOT_STROKE
 
 // 端点吸附：开放线条的端点如果碰到了另一条线（两者中心线距离小于半线宽之和），说明它本来就是要接到那条线上的，
 // 把端点精确投影到那条线上最近的点。这样端点落在被圆角切掉的角部、或者稍微画过头时，线头都不会从另一条线外侧冒出来。
@@ -415,7 +416,276 @@ function relieve(items, stroke) {
 // 由图标显式标注语义角色（src/tone.js：danger、success、warning、info、accent），不标就是 primary
 const toneOf = item => item.tone ?? 'primary'
 
-// 路径：字符串或 { d, detail, fill, thin, dot, cut, gap, occlude, hidden, tone }
+// 尖角（方头线帽 + 斜接转角）的线头：几何和圆头共用，圆头的线头落在另一条线的中心线上时被那条线盖住，
+// 方头却多出一个边长等于线宽的方块——斜着接、接在弧线或折角上时，方块的角会从对面那条线外侧冒出来。
+// 对「接在别的线上」的线头（端点落在别的线的描边范围里），沿线往回缩 d（0 < d ≤ 半线宽），
+// 缩到方头整块都被别的线（描边带、斜接尖、实心形状、点）盖住为止；缩不到就缩满半线宽（方头的前沿正好回到原端点，和圆头一样）。
+// 只在尖角模式下做：圆头的几何一点不动。审计（scripts/audit-caps.mjs）用同一套覆盖判断找出还冒头的线头
+const MITER_LIMIT = 2 // 和 render.js 的 stroke-miterlimit 一致：超过就退成斜切
+// 形状：{ d, w（线宽）, dot（方点边长，0 表示不是点）, fill, round（尖角模式下也是圆头，线帽按半圆算、线头不缩）}
+function capRegions(shapes) {
+  return shapes.flatMap((s, owner) => {
+    // 点：finalize 会把同样大小的点合并成一条路径（每个点一个子路径），逐个取起点
+    if (s.dot)
+      return segments(s.d).map((sub, k) => ({ owner, sub: k, kind: 'dot', x: sub.start[0], y: sub.start[1], r: s.dot / 2 }))
+    return segments(s.d).map((sub, k) => {
+      const pts = sub.segs.flatMap((g, i) => samples(g, 24).slice(i ? 1 : 0))
+      if (sub.closed && pts.length > 1 && Math.hypot(pts[0][0] - pts.at(-1)[0], pts[0][1] - pts.at(-1)[1]) > 1e-6)
+        pts.push(pts[0])
+      // 开放线条两端自己的方头（端对端接成直角时，拐角正是由两边的方头补满的）
+      const caps = sub.closed || pts.length < 2
+        ? []
+        : [[pts[0], pts[1]], [pts.at(-1), pts.at(-2)]].map(([p, q]) => {
+            const l = Math.hypot(p[0] - q[0], p[1] - q[1]) || 1
+            return { p, f: [(p[0] - q[0]) / l, (p[1] - q[1]) / l] }
+          })
+      return { owner, sub: k, kind: 'stroke', pts, closed: sub.closed, h: s.w / 2, fill: s.fill, round: s.round, caps }
+    })
+  })
+}
+// 斜接尖：折点 p 处外侧的四边形（超过斜接上限时退成三角形斜切）
+function miterHit(q, a, p, b, h) {
+  const u = [p[0] - a[0], p[1] - a[1]]
+  const v = [b[0] - p[0], b[1] - p[1]]
+  const [lu, lv] = [Math.hypot(...u), Math.hypot(...v)]
+  if (lu < 1e-9 || lv < 1e-9)
+    return false
+  const [du, dv] = [[u[0] / lu, u[1] / lu], [v[0] / lv, v[1] / lv]]
+  const turn = du[0] * dv[1] - du[1] * dv[0]
+  if (Math.abs(turn) < 1e-6)
+    return false
+  // 外侧：转向的反方向
+  const side = turn > 0 ? -1 : 1
+  const na = [-du[1] * side, du[0] * side]
+  const nb = [-dv[1] * side, dv[0] * side]
+  const pa = [p[0] + na[0] * h, p[1] + na[1] * h]
+  const pb = [p[0] + nb[0] * h, p[1] + nb[1] * h]
+  const cos = Math.max(-1, Math.min(1, du[0] * dv[0] + du[1] * dv[1]))
+  const half = (Math.PI - Math.acos(cos)) / 2 // 两条边之间夹角的一半
+  let poly = [p, pa, pb]
+  if (1 / Math.sin(half) <= MITER_LIMIT) {
+    const bis = [na[0] + nb[0], na[1] + nb[1]]
+    const bl = Math.hypot(...bis)
+    const m = h / Math.sin(half)
+    poly = [p, pa, [p[0] + bis[0] / bl * m, p[1] + bis[1] / bl * m], pb]
+  }
+  return inPoly(q, poly)
+}
+function inPoly([x, y], poly) {
+  let inside = false
+  for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+    const [xi, yi] = poly[i]
+    const [xj, yj] = poly[j]
+    if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi)
+      inside = !inside
+  }
+  return inside
+}
+// 点 q 是否被（除 skip 以外的）形状盖住
+function covered(q, regions, skip, eps = 0.02) {
+  return regions.some((r) => {
+    if (r === skip)
+      return false
+    if (r.kind === 'dot')
+      return Math.abs(q[0] - r.x) <= r.r + eps && Math.abs(q[1] - r.y) <= r.r + eps
+    const { pts, h } = r
+    if (r.fill && inPoly(q, pts))
+      return true
+    for (const { p, f } of r.caps) {
+      const [dx, dy] = [q[0] - p[0], q[1] - p[1]]
+      if (r.round ? Math.hypot(dx, dy) <= h + eps : Math.abs(dx * f[1] - dy * f[0]) <= h + eps && dx * f[0] + dy * f[1] >= -eps && dx * f[0] + dy * f[1] <= h + eps)
+        return true
+    }
+    for (let i = 1; i < pts.length; i++) {
+      if (segDist2(q, pts[i - 1], pts[i]) <= (h + eps) ** 2)
+        return true
+    }
+    // 斜接尖最远到折点外 h × MITER_LIMIT（超过上限就退成斜切，更近）：离折点更远的点不用算
+    const n = pts.length
+    const reach2 = (h * MITER_LIMIT + eps) ** 2
+    for (let i = r.closed ? 0 : 1; i < n - 1; i++) {
+      const c = pts[i]
+      if ((q[0] - c[0]) ** 2 + (q[1] - c[1]) ** 2 <= reach2 && miterHit(q, pts[i ? i - 1 : n - 2], c, pts[i + 1], h))
+        return true
+    }
+    return false
+  })
+}
+// 线头 p（朝外方向 f）接在哪条线上，返回判断「点在那条线中心线另一侧」的函数；接在点或实心形状上时，没盖住的都算
+function farSide(p, f, regions, skip) {
+  let best = { d2: Infinity }
+  for (const r of regions) {
+    if (r === skip || r.kind !== 'stroke' || r.fill)
+      continue
+    for (let i = 1; i < r.pts.length; i++) {
+      const d2 = segDist2(p, r.pts[i - 1], r.pts[i])
+      if (d2 < best.d2 && d2 <= (r.h + 0.02) ** 2)
+        best = { d2, a: r.pts[i - 1], b: r.pts[i] }
+    }
+  }
+  if (!best.a)
+    return () => true
+  const [tx, ty] = [best.b[0] - best.a[0], best.b[1] - best.a[1]]
+  let m = [-ty, tx]
+  if (m[0] * f[0] + m[1] * f[1] < 0)
+    m = [-m[0], -m[1]]
+  return q => (q[0] - best.a[0]) * m[0] + (q[1] - best.a[1]) * m[1] > 1e-6
+}
+// 点 q 到最近的（除 skip 以外的）形状边缘还差多远（已被盖住为 0；不算斜接尖，偏保守）
+function gapTo(q, regions, skip) {
+  if (covered(q, regions, skip))
+    return 0
+  let best = Infinity
+  for (const r of regions) {
+    if (r === skip)
+      continue
+    if (r.kind === 'dot') {
+      best = Math.min(best, Math.hypot(Math.max(0, Math.abs(q[0] - r.x) - r.r), Math.max(0, Math.abs(q[1] - r.y) - r.r)))
+      continue
+    }
+    for (let i = 1; i < r.pts.length; i++)
+      best = Math.min(best, Math.sqrt(segDist2(q, r.pts[i - 1], r.pts[i])) - r.h)
+  }
+  return Math.max(0, best)
+}
+// 方头线帽的采样点：端点 p、朝外方向 f、半线宽 h，往回缩 d 之后
+function capPoints(p, f, h, d) {
+  const n = [-f[1], f[0]]
+  const out = []
+  for (const s of [0.25, 0.5, 0.75, 1]) {
+    for (const l of [-1, -0.5, 0, 0.5, 1])
+      out.push([p[0] + f[0] * (h * s - d) + n[0] * h * l, p[1] + f[1] * (h * s - d) + n[1] * h * l])
+  }
+  return out
+}
+// 每个接在别的线上的开放线头：{ owner, sub, end（0 起点 / 1 终点）, need（需要往回缩多少；Infinity 表示缩满半线宽也盖不住）, h }
+function capJoins(shapes) {
+  const regions = capRegions(shapes)
+  const out = []
+  for (const r of regions) {
+    if (r.kind !== 'stroke' || r.closed || r.fill || r.round || r.pts.length < 2)
+      continue
+    for (const end of [0, 1]) {
+      const pts = end ? r.pts : [...r.pts].reverse()
+      const p = pts.at(-1)
+      // 朝外方向：取离端点至少 0.1 的那个采样点
+      let k = pts.length - 2
+      while (k > 0 && Math.hypot(pts[k][0] - p[0], pts[k][1] - p[1]) < 0.1) k--
+      const fl = Math.hypot(p[0] - pts[k][0], p[1] - pts[k][1])
+      if (fl < 1e-6 || !covered(p, regions, r))
+        continue
+      const f = [(p[0] - pts[k][0]) / fl, (p[1] - pts[k][1]) / fl]
+      // 只有穿过目标线、在它中心线另一侧又没被盖住的部分才算冒头；还没碰到目标线的那一侧只是这条线自己伸过去的部分
+      const far = farSide(p, f, regions, r)
+      const ok = d => capPoints(p, f, r.h, d).every(q => !far(q) || covered(q, regions, r))
+      if (ok(0))
+        continue
+      // 冒出多少：不缩时方头没盖住的部分离别的形状最远多远。曲线起笔的切线和采样方向差一点点，会算出零点零几的「冒头」，看不出来
+      const poke = Math.max(...capPoints(p, f, r.h, 0).map(q => (far(q) ? gapTo(q, regions, r) : 0)))
+      if (poke < 0.05)
+        continue
+      let need = Infinity
+      let excess = 0
+      if (!ok(r.h)) {
+        // 缩满也盖不住：记下方头最远冒出多少（到别的形状边缘的距离），审计按它判断明不明显
+        excess = Math.max(...capPoints(p, f, r.h, r.h).map(q => (far(q) ? gapTo(q, regions, r) : 0)))
+      }
+      else {
+        // 7 步：精度约 h / 128，足够判断 0.05 的阈值（输出也只保留三位小数）
+        let [lo, hi] = [0, r.h]
+        for (let i = 0; i < 7; i++) {
+          const m = (lo + hi) / 2
+          if (ok(m)) hi = m
+          else lo = m
+        }
+        need = hi
+      }
+      out.push({ owner: r.owner, sub: r.sub, end, need, excess, h: r.h, at: p.map(v => +v.toFixed(2)) })
+    }
+  }
+  return out
+}
+// 审计用：finalize 的输出里互不相连、但空隙太小的子路径对（可见空隙 = 中心线距离 − 两者半线宽之和）
+// 点按直径当线宽；描边已经叠在一起的（可见空隙 < 0：相交、相接、线头藏进对方里）看起来是连着的，不算——
+// 真正会糊的是两条线之间只剩一道窄缝
+export function crowdedPairs(paths, stroke, minGap = 0.5) {
+  const parts = paths.flatMap((p) => {
+    const w = p.dot ? p.width : p.width ?? stroke
+    return segments(p.d).map((sub) => {
+      const pts = sub.segs.flatMap(g => samples(g, 16))
+      if (!pts.length)
+        pts.push(sub.start)
+      const box = pts.reduce((b, [x, y]) => [Math.min(b[0], x), Math.min(b[1], y), Math.max(b[2], x), Math.max(b[3], y)], [Infinity, Infinity, -Infinity, -Infinity])
+      return { w, pts, box }
+    })
+  })
+  const out = []
+  for (let i = 0; i < parts.length; i++) {
+    for (let j = i + 1; j < parts.length; j++) {
+      const [a, b] = [parts[i], parts[j]]
+      const reach = (a.w + b.w) / 2 + minGap
+      if (a.box[0] - reach > b.box[2] || b.box[0] - reach > a.box[2] || a.box[1] - reach > b.box[3] || b.box[1] - reach > a.box[3])
+        continue
+      const d = polyDist(a.pts, b.pts)
+      const gap = d - (a.w + b.w) / 2
+      if (gap >= 0 && gap < minGap)
+        out.push({ gap, at: [(a.box[0] + a.box[2]) / 2, (a.box[1] + a.box[3]) / 2].map(v => +v.toFixed(1)) })
+    }
+  }
+  return out.sort((x, y) => x.gap - y.gap)
+}
+
+// 审计用：finalize 的输出（尖角）里还冒头的线头个数
+export function squareCapPokes(paths, stroke) {
+  const shapes = paths.map(p => ({ d: p.d, w: p.width ?? stroke, dot: p.dot ? p.width : 0, fill: p.fill, round: p.round }))
+  // 缩满半线宽也盖不住、冒出不到 MIN_POKE 的，在 24px 下看不出来，不报
+  return capJoins(shapes).filter(j => j.need > 0.05 && (j.need !== Infinity || j.excess > MIN_POKE))
+}
+const MIN_POKE = 0.15
+function fitSquareCaps(items, stroke) {
+  const shapes = items.map(it => ({ d: it.d, w: widthOf(it, stroke), dot: dotSize(it) ? dotWidth(it, stroke) : 0, fill: it.fill, round: it.round }))
+  // 小于 0.05 的缩进是采样误差，不动
+  const joins = capJoins(shapes).filter(j => j.need > 0.05)
+  if (!joins.length)
+    return items
+  return items.map((it, i) => {
+    const mine = joins.filter(j => j.owner === i)
+    if (!mine.length)
+      return it
+    const subs = segments(it.d).map((sub, k) => {
+      let start = sub.start
+      const out = sub.segs.map(s => s.sub(0, 1))
+      for (const j of mine.filter(j => j.sub === k)) {
+        const d = Math.min(j.need, j.h)
+        const seg = j.end ? sub.segs.at(-1) : sub.segs[0]
+        const p = seg.at(j.end)
+        const dist = t => Math.hypot(seg.at(t)[0] - p[0], seg.at(t)[1] - p[1])
+        // 这一段不够长就不缩，免得整段被吃掉
+        if (dist(j.end ? 0 : 1) < d + 0.25)
+          continue
+        let [lo, hi] = [0, 1]
+        for (let n = 0; n < 30; n++) {
+          const m = (lo + hi) / 2
+          if (j.end ? dist(m) > d : dist(m) < d) lo = m
+          else hi = m
+        }
+        if (j.end) {
+          out[out.length - 1] = seg.sub(0, lo)
+        }
+        else {
+          start = seg.at(hi)
+          out[0] = seg.sub(hi, 1)
+        }
+      }
+      return { start, segs: out, closed: sub.closed }
+    })
+    const fmt = n => Math.round(n * 1000) / 1000
+    return { ...it, d: subs.map(s => `M${fmt(s.start[0])} ${fmt(s.start[1])}${s.segs.join('')}${s.closed ? 'Z' : ''}`).join('') }
+  })
+}
+
+// 路径：字符串或 { d, detail, fill, thin, dot, cut, gap, occlude, hidden, tone, round }
+// - round：尖角模式下也用圆头线帽和圆角转角（军衔里的小星这类，尖角斜接会被斜接上限切成圆点，干脆画成圆角）
 // - cut 是「刀」：其余路径在离它 gap（默认 GAP）+ 线宽以内的部分被真正裁掉；
 //   occlude 的刀还会把落在它闭合区域内部的线整段删掉（前后叠放、镜片内部之类）；hidden 的刀只裁不画
 // - detail 是缩小的符号（线宽封顶 DETAIL_STROKE），thin 是内部细线（线宽取外框的 THIN 倍），dot 是点在线宽 DOT_STROKE 下的直径（随字重等比缩放）
@@ -423,7 +693,7 @@ const toneOf = item => item.tone ?? 'primary'
 // 动画帧（animated）：不做拥挤检测（逐帧判断会让各帧的路径结构不一致），也不压缩——
 // 输出统一的绝对坐标写法，同一图标各帧的命令序列一致，SMIL 才能逐个数字插值
 const absolute = d => parse(d).map(([t, a]) => t + join(a)).join('')
-export function finalize(paths, stroke, { animated = false } = {}) {
+export function finalize(paths, stroke, { animated = false, sharp = false } = {}) {
   const items = paths.map(p => (typeof p === 'string' ? { d: p } : p))
   // 刀按间隙分组，每组各裁一次
   const cuts = new Map()
@@ -441,17 +711,19 @@ export function finalize(paths, stroke, { animated = false } = {}) {
     .filter(p => p.d && !p.hidden)
   const groups = new Map()
   const snapped = tuckTips(snapEnds(clipped, stroke), stroke)
-  for (const item of animated ? snapped : relieve(snapped, stroke)) {
+  const relieved = animated ? snapped : relieve(snapped, stroke)
+  for (const item of sharp && !animated ? fitSquareCaps(relieved, stroke) : relieved) {
     const dot = dotSize(item)
     const tone = toneOf(item)
-    const key = [Boolean(item.detail), Boolean(item.fill), dot, Boolean(item.thin), item.relief ?? 0, tone].join()
+    // 点按实际直径分组（眼睛点在粗字重下和同尺寸的普通点不一样大）
+    const key = [Boolean(item.detail), Boolean(item.fill), dot && dotWidth(item, stroke), Boolean(item.thin), item.relief ?? 0, tone, Boolean(item.round)].join()
     const g = groups.get(key)
     if (g) {
       g.d += item.d
     }
     else {
       const w = widthOf(item, stroke)
-      groups.set(key, { d: item.d, detail: !!item.detail, fill: !!item.fill, dot, thin: !!item.thin, tone, width: dot ? dotWidth(item, stroke) : w !== stroke ? w : undefined })
+      groups.set(key, { d: item.d, detail: !!item.detail, fill: !!item.fill, dot, thin: !!item.thin, tone, round: !!item.round, width: dot ? dotWidth(item, stroke) : w !== stroke ? w : undefined })
     }
   }
   return [...groups.values()].map(g => ({ ...g, d: animated ? absolute(g.d) : minify(g.d) }))

@@ -77,16 +77,17 @@ export const animateAttrs = p => p.frames
 export const devicePx = css => css * (globalThis.devicePixelRatio || 1)
 
 // px：显示大小（设备像素），用于像素对齐；0 表示不对齐（导出、大图）
-// 两级缓存：finalize 的结果只和「图标 + 圆角 + 线宽」有关，像素对齐再按 px 缓存——拖大小滑块时只重算对齐，不重跑 finalize
+// 两级缓存：finalize 的结果只和「图标 + 圆角（尖角单独一份：方头线帽要缩线头，见 fitSquareCaps）+ 线宽」有关，像素对齐再按 px 缓存——拖大小滑块时只重算对齐，不重跑 finalize
 const finalized = new Map()
 const hinted = new Map()
 export function pathsOf(icon, corner, weight, px = 0) {
-  const base = `${icon.name}|${corner.radius}|${weight.stroke}`
+  // 尖角单独一份（finalize 要缩方头线帽）；动画图标不走 fitSquareCaps，和 0 圆角共用
+  const base = `${icon.name}|${corner.sharp && !icon.animation ? 'sharp' : corner.radius}|${weight.stroke}`
   let paths = finalized.get(base)
   if (!paths) {
     const stroke = weight.stroke
     const opts = { radius: corner.radius, stroke, weight: weight.id }
-    paths = icon.animation ? animatedPaths(icon, opts, stroke) : finalize(icon.draw(opts), stroke)
+    paths = icon.animation ? animatedPaths(icon, opts, stroke) : finalize(icon.draw(opts), stroke, { sharp: !!corner.sharp })
     finalized.set(base, paths)
   }
   // 大尺寸、动画图标不对齐（见 hint），直接用 finalize 的结果
@@ -144,6 +145,9 @@ export const pathAttrs = (p, colors) => {
     'stroke-width': p.width ? +p.width.toFixed(3) : undefined,
     'stroke': color,
     'fill': p.fill ? color ?? colors?.primary ?? 'currentColor' : undefined,
+    // 尖角模式下也要圆角的路径（见 svg.js 的 round）；圆角模式下和根元素一样，写上也无妨
+    'stroke-linecap': p.round ? 'round' : undefined,
+    'stroke-linejoin': p.round ? 'round' : undefined,
   }
 }
 // 预览：各角色用页面上的 CSS 变量（--icon-danger 等），单色模式下都是 currentColor

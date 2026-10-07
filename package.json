@@ -7,6 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "audit:grid": "node scripts/audit-grid.mjs",
+    "audit:caps": "node scripts/audit-caps.mjs",
+    "audit:crowd": "node scripts/audit-crowd.mjs",
     "brand": "node scripts/brand.mjs",
     "build:packages": "node scripts/build-packages.mjs"
   },
