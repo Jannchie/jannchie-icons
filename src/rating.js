@@ -51,6 +51,8 @@ export const ratingName = (system, text) => `rating-${system}-${text.replace('/'
 
 // 文字用细线（外框的 0.7 倍），和外框拉开层次；字间、行间留 2，粗字重下也不粘连
 const GAP = 2
+// 两行字之间多留一点：每行单独吸附网格，行底、行顶各可能被推出去小半格，行间只留 2 时 MA 和 15+ 会贴上
+const ROW_GAP = 3
 // 结尾的 + 不占一个字位，缩成右上角的角标：臂长 PLUS，和前面的字隔 PLUS_GAP（和字间距一样）
 const PLUS = 3
 const PLUS_GAP = 2
@@ -61,15 +63,15 @@ const ASPECT = 0.95
 // 文字排版：rows 是若干行 { chars, plus }，在 box 里求出能放下的最大字号，整体居中
 function layout(rows, [x0, y0, x1, y1]) {
   const extra = r => (r.plus ? PLUS_GAP + PLUS : 0)
-  const sy = Math.min(MAX_SY, (y1 - y0 - GAP * (rows.length - 1)) / (6 * rows.length))
+  const sy = Math.min(MAX_SY, (y1 - y0 - ROW_GAP * (rows.length - 1)) / (6 * rows.length))
   // 每行宽度和 sx 成正比（字间距固定），所以按「去掉间距后剩下的宽度 / 单位字宽」求 sx
   const sx = Math.min(sy * ASPECT, ...rows.map(r => (x1 - x0 - extra(r) - GAP * (r.chars.length - 1)) / (textWidth(r.chars, 1, 0, LABEL))))
   const h = 6 * sy
-  const top = (y0 + y1) / 2 - (h * rows.length + GAP * (rows.length - 1)) / 2
+  const top = (y0 + y1) / 2 - (h * rows.length + ROW_GAP * (rows.length - 1)) / 2
   return rows.flatMap((r, i) => {
     const width = textWidth(r.chars, sx, GAP, LABEL)
     const left = (x0 + x1) / 2 - (width + extra(r)) / 2
-    const y = top + i * (h + GAP)
+    const y = top + i * (h + ROW_GAP)
     const out = line(r.chars, [left + width / 2, y + h / 2], sx, GAP, sy, LABEL)
     // 每一行单独吸附网格：两行一起吸的话，第二行的竖笔会把第一行的字母挤宽（MA15+ 的 M 和 A 贴在一起）
     const row = snap(out)
