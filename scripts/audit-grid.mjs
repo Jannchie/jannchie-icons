@@ -1,4 +1,4 @@
-// 像素网格审计：常规字重（线宽 1）下，横竖线的中心应落在 .5 坐标上——1 倍屏 24px、48px 和所有 2 倍屏下才天生清晰
+// 像素网格审计：细字重（线宽 1）下，横竖线的中心应落在 .5 坐标上——1 倍屏 24px、48px 和所有 2 倍屏下才天生清晰
 // 列出不在 .5 上的横竖线（缩小的符号 detail、内部细线 thin、点、实心形状不算），按发虚长度占比从高到低排
 // 用法：pnpm audit:grid [名字前缀...] [--json]
 import { readdirSync } from 'node:fs'
@@ -18,7 +18,7 @@ const names = readdirSync('src/icons').filter(f => f.endsWith('.js')).map(f => f
 const report = []
 for (const name of names) {
   const draw = (await server.ssrLoadModule(`/src/icons/${name}.js`)).default
-  const paths = finalize(draw({ radius: 2, stroke: STROKE, weight: 'regular' }), STROKE)
+  const paths = finalize(draw({ radius: 2, stroke: STROKE, weight: 'light' }), STROKE)
     .filter(p => !p.detail && !p.fill && !p.dot && !p.thin)
   let total = 0
   const off = new Map() // 'x 12' → 总长度

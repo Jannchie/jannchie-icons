@@ -7,12 +7,11 @@ export const CORNERS = [
   { label: '2', radius: 2 },
   { label: '3', radius: 3 },
 ]
-// 字重：四档，默认「常规」线宽 1；1、1.5、2 配合像素对齐在高清屏上横竖线清晰，0.75 只适合大尺寸
+// 字重：三档，默认「常规」线宽 1.5；1、1.5、2 配合像素对齐在高清屏上横竖线清晰
 export const WEIGHTS = [
-  { id: 'light', stroke: 0.75 },
-  { id: 'regular', stroke: 1 },
-  { id: 'bold', stroke: 1.5 },
-  { id: 'heavy', stroke: 2 },
+  { id: 'light', stroke: 1 },
+  { id: 'regular', stroke: 1.5 },
+  { id: 'bold', stroke: 2 },
 ]
 
 // 把用户写的参数换成档位：radius 是 'sharp' 或 0–3 的数字，weight 是档位名

@@ -15,7 +15,7 @@ Jannchie Icons 是一套基于 24 单位网格的线条图标库，收录 1800 �
 访问 [icons.jannchie.com](https://icons.jannchie.com)，选择圆角与字重后点击图标，即可复制或下载 SVG。以下为 `heart` 图标在圆角 2、常规字重下的导出结果：
 
 ```svg
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
   <path d="M12 20C9 18 3 14.5 3 9.25 3 6.5 5 4.5 7.5 4.5c2 0 3.5 1 4.5 2.5 1-1.5 2.5-2.5 4.5-2.5 2.5 0 4.5 2 4.5 4.75C21 14.5 15 18 12 20z"/>
 </svg>
 ```
@@ -25,7 +25,7 @@ Jannchie Icons 是一套基于 24 单位网格的线条图标库，收录 1800 �
 | 选项 | 取值 | 作用 |
 |---|---|---|
 | 圆角 | 尖角、0、1、2、3 | 外框转角半径；尖角同时改用方头线帽与斜接转角 |
-| 字重 | 细 0.75、常规 1、粗 1.5、特粗 2 | 线条宽度；点与缩小的细节单独封顶 |
+| 字重 | 细 1、常规 1.5、粗 2 | 线条宽度；点与缩小的细节单独封顶 |
 
 ## 在项目中使用
 

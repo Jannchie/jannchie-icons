@@ -10,7 +10,7 @@ pnpm add @jannchie/icons
 import { IconFolderPlus, toSvg } from '@jannchie/icons'
 
 toSvg(IconFolderPlus)
-// <svg ... stroke-width="1" ...><path d="M6.25 4.5H7.76a3 3 0 012.12.88..."/></svg>
+// <svg ... stroke-width="1.5" ...><path d="M6.25 4.5H7.76a3 3 0 012.12.88..."/></svg>
 
 toSvg(IconFolderPlus, { radius: 'sharp', weight: 'bold', size: 32, duo: true, theme: 'dark' })
 ```
@@ -20,7 +20,7 @@ Each icon is a separate module, so bundlers keep only the icons you import (one 
 | Option | Values | Default |
 |---|---|---|
 | `radius` | `'sharp'`, `0`, `1`, `2`, `3` | `2` |
-| `weight` | `'light'` (0.75), `'regular'` (1), `'bold'` (1.5), `'heavy'` (2) | `'regular'` |
+| `weight` | `'light'` (1), `'regular'` (1.5), `'bold'` (2) | `'regular'` |
 | `size` | width and height of the SVG in px | `24` |
 | `duo` | color badges and strike-throughs by meaning | `false` |
 | `theme` | `'light'` or `'dark'` recommended colors for `duo` | `'light'` |
@@ -30,4 +30,4 @@ Each icon is a separate module, so bundlers keep only the icons you import (one 
 
 ## License
 
-MIT. Some icons depict third-party characters or marks; see LICENSE.
+MIT. Some icons depict third-party characters or marks; see NOTICE.

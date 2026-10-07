@@ -15,7 +15,7 @@ Besides the usual interface icons, the set covers symbol systems that general-pu
 Open [icons.jannchie.com](https://icons.jannchie.com), choose a corner radius and a stroke weight, select an icon, and copy or download the SVG. The `heart` icon at radius 2, weight Regular:
 
 ```svg
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
   <path d="M12 20C9 18 3 14.5 3 9.25 3 6.5 5 4.5 7.5 4.5c2 0 3.5 1 4.5 2.5 1-1.5 2.5-2.5 4.5-2.5 2.5 0 4.5 2 4.5 4.75C21 14.5 15 18 12 20z"/>
 </svg>
 ```
@@ -25,7 +25,7 @@ Exported SVGs use `currentColor`, so they inherit the surrounding text color. Th
 | Option | Values | Effect |
 |---|---|---|
 | Radius | Sharp, 0, 1, 2, 3 | Corner radius of outlines; Sharp also switches to square caps and miter joins |
-| Weight | Light 0.75, Regular 1, Bold 1.5, Heavy 2 | Stroke width; dots and reduced-size details are capped separately |
+| Weight | Light 1, Regular 1.5, Bold 2 | Stroke width; dots and reduced-size details are capped separately |
 
 ## Use in a project
 

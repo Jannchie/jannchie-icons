@@ -1,7 +1,7 @@
 {
   "name": "@jannchie/iconify-json",
   "version": "0.2.0",
-  "description": "Jannchie Icons in Iconify JSON format: one collection per corner radius (sharp, 0–3) and stroke weight (light, regular, bold, heavy)",
+  "description": "Jannchie Icons in Iconify JSON format: one collection per corner radius (sharp, 0–3) and stroke weight (light, regular, bold)",
   "license": "MIT",
   "author": "Jianqi Pan",
   "homepage": "https://icons.jannchie.com",
@@ -20,6 +20,7 @@
     "./*.json": "./*.json"
   },
   "files": [
-    "*.json"
+    "*.json",
+    "NOTICE"
   ]
 }

@@ -41,7 +41,7 @@ export function svgString(paths, { stroke, sharp, colors, size = 24 }) {
 export const iconifyBody = (paths, { stroke, sharp, colors }) =>
   `<g ${attrs(svgAttrs(stroke, sharp, colors))}>${svgBody(paths, colors).join('')}</g>`
 
-// 核心包的入口：icon 是 { name, draw, animation }；radius: 'sharp' | 0–3，weight: 'light' | 'regular' | 'bold' | 'heavy'
+// 核心包的入口：icon 是 { name, draw, animation }；radius: 'sharp' | 0–3，weight: 'light' | 'regular' | 'bold'
 export function toSvg(icon, { radius, weight, size = 24, duo, theme, colors } = {}) {
   const o = resolveOptions({ radius, weight })
   return svgString(pathsOf(icon, o.corner, o.weight), { stroke: o.weight.stroke, sharp: !!o.corner.sharp, colors: resolveColors({ duo, theme, colors }), size })

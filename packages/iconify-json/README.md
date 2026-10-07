@@ -1,14 +1,14 @@
 # @jannchie/iconify-json
 
-[Jannchie Icons](https://icons.jannchie.com) in [Iconify JSON](https://iconify.design/docs/types/iconify-json.html) format, with one collection for each corner radius and stroke weight (20 in total). The prefix is `jannchie`, followed by the radius and the weight; radius 2 and weight regular are the defaults and are omitted.
+[Jannchie Icons](https://icons.jannchie.com) in [Iconify JSON](https://iconify.design/docs/types/iconify-json.html) format, with one collection for each corner radius and stroke weight (15 in total). The prefix is `jannchie`, followed by the radius and the weight; radius 2 and weight regular are the defaults and are omitted.
 
-| Radius \ Weight | regular (1) | light (0.75) | bold (1.5) | heavy (2) |
-|---|---|---|---|---|
-| 2 | `jannchie` | `jannchie-light` | `jannchie-bold` | `jannchie-heavy` |
-| sharp | `jannchie-sharp` | `jannchie-sharp-light` | `jannchie-sharp-bold` | `jannchie-sharp-heavy` |
-| 0 | `jannchie-r0` | `jannchie-r0-light` | `jannchie-r0-bold` | `jannchie-r0-heavy` |
-| 1 | `jannchie-r1` | `jannchie-r1-light` | `jannchie-r1-bold` | `jannchie-r1-heavy` |
-| 3 | `jannchie-r3` | `jannchie-r3-light` | `jannchie-r3-bold` | `jannchie-r3-heavy` |
+| Radius \ Weight | regular (1.5) | light (1) | bold (2) |
+|---|---|---|---|
+| 2 | `jannchie` | `jannchie-light` | `jannchie-bold` |
+| sharp | `jannchie-sharp` | `jannchie-sharp-light` | `jannchie-sharp-bold` |
+| 0 | `jannchie-r0` | `jannchie-r0-light` | `jannchie-r0-bold` |
+| 1 | `jannchie-r1` | `jannchie-r1-light` | `jannchie-r1-bold` |
+| 3 | `jannchie-r3` | `jannchie-r3-light` | `jannchie-r3-bold` |
 
 Each collection is a file named after its prefix without `jannchie-` (`jannchie` itself is `icons.json`), for example `sharp-bold.json`. `collections.json` lists every prefix with its file, radius and weight.
 
@@ -43,4 +43,4 @@ For other corner radii, sharp corners, duo-tone colors or pixel hinting, use [`@
 
 ## License
 
-MIT. Some icons depict third-party characters or marks; see LICENSE.
+MIT. Some icons depict third-party characters or marks; see NOTICE.
