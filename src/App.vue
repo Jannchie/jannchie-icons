@@ -285,9 +285,20 @@ onMounted(() => {
   window.addEventListener('scroll', onScroll, { passive: true })
   collectSections()
   gridObserver = new ResizeObserver(measureCols)
-  gridObserver.observe(mainEl.value)
-  measureCols()
+  observeGrid(mainEl.value)
 })
+// 网格只在「图标」视图里存在：切到示例时 mainEl 变成 null，切回来是一个新元素——跟着它重新观察，
+// 而不是只在挂载时观察一次（以示例视图打开页面时 mainEl 为 null，observe 会直接抛错）
+function observeGrid(el) {
+  if (!gridObserver)
+    return
+  gridObserver.disconnect()
+  if (el) {
+    gridObserver.observe(el)
+    measureCols()
+  }
+}
+watch(mainEl, observeGrid)
 onUnmounted(() => {
   window.removeEventListener('keydown', onKey)
   window.removeEventListener('pointerdown', closePalette)
@@ -310,7 +321,8 @@ onUnmounted(() => {
         <button :aria-pressed="view === 'icons'" @click="view = 'icons'">{{ t('ui.viewIcons') }}</button>
         <button :aria-pressed="view === 'examples'" @click="view = 'examples'">{{ t('ui.viewExamples') }}</button>
       </nav>
-      <label v-show="view === 'icons'" class="search">
+      <!-- 示例视图里搜索框只是藏起来（占位还在）：第一行底下的分隔线挂在它身上，整个隐藏会让那段线消失 -->
+      <label class="search" :class="{ concealed: view !== 'icons' }" :aria-hidden="view !== 'icons'">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
             <path v-for="p in searchPaths" :key="p.d" :d="p.d" />
           </svg>
@@ -498,6 +510,8 @@ onUnmounted(() => {
 }
 * { box-sizing: border-box; }
 /* 锚点跳转的顶部留白只在这里留一次（页头高度）；.category 的 scroll-margin 只补窄屏标签栏，别再叠加页头高度 */
+/* 页面滚动条：两侧都预留滚动条宽度，滚动条出现、消失时内容不左右跳，居中的版面也保持左右对称 */
+html { scrollbar-gutter: stable both-edges; }
 body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
 button { font: inherit; color: inherit; }
 small { color: var(--muted); }
@@ -542,6 +556,8 @@ small { color: var(--muted); }
 .views button[aria-pressed='true'] { color: var(--text); background: var(--sunken); box-shadow: inset 0 0 0 1px var(--line-strong); }
 .examples-main { padding-bottom: 0; }
 .search { grid-area: search; display: flex; align-items: center; gap: 10px; min-width: 0; padding: 0 20px; border-bottom: 1px solid var(--line); cursor: text; }
+.search.concealed > * { visibility: hidden; }
+.search.concealed { pointer-events: none; }
 .search svg { width: 16px; height: 16px; flex: none; color: var(--muted); }
 .search input { flex: 1; min-width: 0; border: 0; outline: 0; background: none; color: inherit; font: inherit; }
 .search input::placeholder { color: var(--muted); }
@@ -645,7 +661,8 @@ main { min-width: 0; padding-bottom: 80px; }
 .cell:hover { background: var(--sunken); }
 .cell.filler { cursor: default; }
 .cell.filler:hover { background: none; }
-.cell.selected { background: var(--accent-soft); color: var(--accent); }
+/* 选中：强调色淡底 + 一圈 2px 强调色内描边（只有淡底时和悬停的灰底差不多，不够醒目） */
+.cell.selected { background: var(--accent-soft); color: var(--accent); box-shadow: inset 0 0 0 2px var(--accent); }
 .cell .name {
   position: absolute; left: 0; right: 0; bottom: 8px; padding: 0 6px; text-align: center;
   font: 11.5px var(--mono); color: var(--text-2); opacity: 0;
