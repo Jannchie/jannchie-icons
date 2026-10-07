@@ -47,7 +47,7 @@ const EXTRA = {
   weather: ['moon-star'],
   meeting: ['webcam', 'webcam-off', 'cctv', 'chats', 'collaborate', 'mic-handheld', 'mic-vintage', 'mic-studio'],
   search: ['map-search', 'globe-search'],
-  object: ['stopwatch', 'toolbox', 'tools', 'graduation-cap', 'glasses', 'glasses-square', 'sunglasses', 'vr-headset', 'goggles', 'ghost', 'gift', 'package', 'receipt', 'map', 'rocket', 'ruler', 'books', 'diamond', 'notebook-pen', 'scale-balance', 'language-hiragana', 'calculator', 'backpack', 'library', 'map-pin-plus', 'region', 'hologram'],
+  object: ['stopwatch', 'toolbox', 'tools', 'graduation-cap', 'glasses', 'glasses-square', 'sunglasses', 'vr-headset', 'goggles', 'ghost', 'gift', 'package', 'receipt', 'map', 'rocket', 'ruler', 'books', 'diamond', 'notebook-pen', 'scale-balance', 'language-hiragana', 'calculator', 'backpack', 'library', 'region', 'hologram'],
   // 制图：地形编辑（抬升、压低、抹平）、沙盘、陆块，和山、波浪放在一起
   nature: ['terrain-raise', 'terrain-lower', 'terrain-smooth', 'diorama', 'continent'],
 }
@@ -231,7 +231,8 @@ export const CATEGORIES = [
     section: name => LANGUAGES.includes(name) ? { order: 1, key: 'language' } : { order: 0, key: '' },
     rank: name => LANGUAGES.indexOf(name),
   },
-  { id: 'navigation', match: oneOf('navigation', 'route', 'locate', 'signpost', 'milestone') },
+  // 导航：定位针一族（map-pin 和带角标的 map-pin-*）也放这里
+  { id: 'navigation', match: any(oneOf('navigation', 'route', 'locate', 'signpost', 'milestone'), family('map-pin')) },
   { id: 'network', match: oneOf('router', 'network', 'antenna', 'satellite', 'radio-tower', 'rss', 'nfc') },
   {
     id: 'rating',
@@ -365,7 +366,7 @@ export const CATEGORIES = [
   { id: 'tool', match: oneOf(...TOOLS), rank: name => TOOLS.indexOf(name) },
   {
     id: 'object',
-    match: oneOf('key', 'palette', 'pin', 'pin-diagonal', 'hourglass', 'alarm-clock', 'timer', 'flag', 'flag-plain', 'flag-pennant', 'flag-wave', 'flag-checkered', 'flag-banner', 'target', 'compass', 'map-pin', 'keyboard', 'globe', 'languages', 'lightbulb', 'tada', 'zap', 'rabbit', 'snail', 'magnet'),
+    match: oneOf('key', 'palette', 'pin', 'pin-diagonal', 'hourglass', 'alarm-clock', 'timer', 'flag', 'flag-plain', 'flag-pennant', 'flag-wave', 'flag-checkered', 'flag-banner', 'target', 'compass', 'keyboard', 'globe', 'languages', 'lightbulb', 'tada', 'zap', 'rabbit', 'snail', 'magnet'),
   },
   // 电源与开关：oneOf 会先去掉名字末尾的 -off，所以 power-off、toggle-off、label-off 分别按 power、toggle、label 匹配
   { id: 'ui', match: any(prefixed('cursor', 'battery'), oneOf('settings', 'theme', 'wifi', 'signal', 'bluetooth', 'power', 'power-on', 'power-toggle', 'toggle', 'toggle-on', 'label', 'label-on')) },
