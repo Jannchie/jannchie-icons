@@ -4,7 +4,7 @@ import { triangle } from '../media'
 // 下一首：三角 + 竖线
 const h = 12
 const bar = 18.5
-const base = 5.75
+const base = 5.5 // 竖直底边落在 .5 上
 
 export default ({ radius }) => [
   rounded(triangle(base, h), radius),

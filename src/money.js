@@ -1,10 +1,12 @@
 // 货币符号：全尺寸（约 16 高）画在 24 网格中间；硬币版缩小后放进圆里
-import { glyph } from './letters'
+// 横竖笔画都对齐像素网格（snap 整组一起吸附，居中的竖线吸到 11.5，符号跟着整体平移半格）
+import { glyph, snap } from './letters'
+import { scale } from './transform'
 
 const G = 2.5 // 线条字母放大倍数：3.5 × 6 → 8.75 × 15
 const big = (c, x = 12 - 1.75 * G) => glyph(c, x, 4.5, G)
 
-export const CURRENCIES = {
+const RAW = {
   // $：S + 贯穿的竖线
   dollar: { zh: '美元', paths: () => [big('S'), 'M12 2.5V21.5'] },
   // €：C 往右挪 + 两道横线
@@ -25,3 +27,7 @@ export const CURRENCIES = {
     paths: () => [big('B'), 'M10 2.5V4.5', 'M12.5 2.5V4.5', 'M10 19.5V21.5', 'M12.5 19.5V21.5'],
   },
 }
+
+export const CURRENCIES = Object.fromEntries(Object.entries(RAW).map(([k, v]) => [k, { ...v, paths: () => snap(v.paths()) }]))
+// 硬币版：缩小到 0.6 倍后重新对齐网格
+export const coin = key => snap(RAW[key].paths().map(d => scale(d, 0.6)))

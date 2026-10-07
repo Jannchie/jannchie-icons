@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "audit:grid": "node scripts/audit-grid.mjs",
+    "brand": "node scripts/brand.mjs"
   },
   "dependencies": {
     "vue": "^3.5.43"

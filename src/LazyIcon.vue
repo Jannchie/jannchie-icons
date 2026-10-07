@@ -9,7 +9,8 @@ const props = defineProps({
   icon: { type: Object, required: true },
   corner: { type: Object, required: true },
   weight: { type: Object, required: true },
-  align: { type: Boolean, default: true },
+  // 显示大小（设备像素），用于像素对齐；0 表示不对齐
+  px: { type: Number, default: 0 },
 })
 
 const el = ref(null)
@@ -19,13 +20,13 @@ onMounted(() => observeVisibility(el.value, v => (visible.value = v)))
 onUnmounted(() => el.value && forget(el.value))
 watchEffect(() => {
   if (visible.value)
-    paths.value = pathsOf(props.icon, props.corner, props.weight, props.align)
+    paths.value = pathsOf(props.icon, props.corner, props.weight, props.px)
 })
 </script>
 
 <template>
   <span ref="el" class="lazy-icon">
-    <IconSvg v-if="paths" :paths="paths" :stroke="weight.stroke" :sharp="!!corner.sharp" />
+    <IconSvg v-if="paths" :paths="paths" :stroke="weight.stroke" :sharp="!!corner.sharp" snap />
   </span>
 </template>
 

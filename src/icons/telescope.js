@@ -3,7 +3,8 @@ import { rotate } from '../transform'
 
 // 天文望远镜：前粗后细的锥形镜筒 + 前端镜头盖 + 尾端小目镜（先水平画，再绕支点逆时针转 30° 指向右上）
 // + 三条向外张开的三脚架腿
-const pivot = [12, 12.5]
+// 支点 x 取 11.5：三脚架中间那条竖腿落在 .5 上
+const pivot = [11.5, 12.5]
 const tilt = path => rotate(path, -30, pivot)
 
 export default ({ radius }) => {

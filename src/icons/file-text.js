@@ -5,7 +5,7 @@ import { rounded } from '../geometry'
 export default ({ radius, stroke }) => [
   rounded(page(radius), radius),
   flap,
-  'M8.5 11H15.5',
+  'M8.5 10.5H15.5',
   'M8.5 14.5H15.5',
-  'M8.5 18H12.5',
+  'M8.5 18.5H12.5',
 ]

@@ -2,8 +2,59 @@
 // 中心线距离 = GAP + 线宽，这样不论线宽多少，看到的空隙都一样
 export const GAP = 1
 
-// shape：{ box: [x0, y0, x1, y1] } 或 { circle: r }，相对符号中心、未缩放
-export function place(shape, [cx, cy], k) {
+// 符号缩小放进文件夹、列表等系列图标时算作细节（缩放 < DETAIL_SCALE）
+export const DETAIL_SCALE = 2
+
+// 符号对齐像素网格（线宽 1 时横竖线的中心落在 .5 上）。grid 描述符号里的横竖线（未缩放、相对中心）：
+// - unit：成对横竖边的间距，把 k 微调到让它缩放后是整数（两条边才能同时落在 .5 上）
+// - x / y：一条关键竖线 / 横线的位置，需要时把中心挪到让它缩放后落在 .5 上
+// 优先保持居中：在原缩放附近的几个整数间距里挑，能不挪中心就不挪（中心在 12 时取奇数间距，两条边落在 12 ± n.5 上），
+// 其次缩放变化小（放大比缩小多算一点，免得符号变重）；只有正中有单线、怎么都躲不开时才挪半格，统一往左、往上
+// 已经对齐的符号（间距是整数、关键线在 .5 上）原样返回
+// 放进外框里的符号（缩放 < DETAIL_SCALE：系列的居中符号、角标）不为正中单线挪半格：和外框一比，偏半格一眼就看得出来；
+// 那条单线落在整数上只在 1 倍屏 24 / 48px 下略虚（2 倍屏照样清晰）。差不到半格的照常对齐（挪 0.25 看不出来）；
+// 只挑缩放时，中心在整数上优先奇数间距，成对的边仍落在 .5 上
+const SHIFT_COST = 4 // 挪 1 格中心相当于间距变化 4 格
+const GROW_COST = 1.25
+export function snap(grid, c, k) {
+  if (!grid)
+    return { c, k }
+  const nested = k < DETAIL_SCALE
+  const fix = (v, at, s) => {
+    if (at === undefined)
+      return v
+    const p = v + at * s
+    const d = 0.5 - (p - Math.floor(p)) // (−0.5, 0.5]
+    if (Math.abs(d) < 1e-6 || (nested && d > 0.5 - 1e-6))
+      return v
+    return v + (d > 0.5 - 1e-6 ? -0.5 : d)
+  }
+  const at = s => ({ c: [fix(c[0], grid.x, s), fix(c[1], grid.y, s)], k: s })
+  if (!grid.unit)
+    return at(k)
+  const span = grid.unit * k
+  // 不挪中心时，成对的边能否落在 .5 上取决于间距的奇偶：落不上的多算一点
+  const offGrid = (x, n) => (Math.abs(((x + n / 2) % 1 + 1) % 1 - 0.5) > 1e-6 ? 2 : 0)
+  const cost = ({ c: [x, y], k: s }) => {
+    const n = s * grid.unit
+    const d = n - span
+    return (d > 0 ? d * GROW_COST : -d) + (Math.abs(x - c[0]) + Math.abs(y - c[1])) * SHIFT_COST + (nested ? offGrid(x, n) : 0)
+  }
+  const base = Math.round(span)
+  const options = [base - 1, base, base + 1].filter(n => n >= 1).map(n => at(n / grid.unit))
+  return options.reduce((a, b) => (cost(b) < cost(a) - 1e-6 ? b : a))
+}
+
+// 符号内部其他横竖线对齐：v 是未缩放坐标，ref 是一条已经对齐（缩放后落在 .5 上）的线，
+// 让 v 与 ref 缩放后的距离取整（至少 min）
+export const align = (v, ref, k, min = 0) => {
+  const n = Math.round((v - ref) * k)
+  return ref + Math.sign(v - ref) * Math.max(Math.abs(n), min) / k
+}
+
+// shape：{ box: [x0, y0, x1, y1] } 或 { circle: r }，相对符号中心、未缩放；带 grid 时按 snap 对齐后的中心和缩放算
+export function place(shape, center, scale) {
+  const { c: [cx, cy], k } = snap(shape.grid, center, scale)
   if (shape.circle)
     return { circle: shape.circle * k, c: [cx, cy] }
   const [x0, y0, x1, y1] = shape.box

@@ -13,10 +13,10 @@ const seal = () => {
     `M${x - 1.25} ${y + r - 0.25}L${x - 1.75} 22M${x + 1.25} ${y + r - 0.25}L${x + 1.75} 22`,
   ]
 }
-const paper = radius => rounded([[2.5, 3], [21.5, 3], [21.5, 16.5], [2.5, 16.5]], Math.min(radius, 2))
+const paper = radius => rounded([[2.5, 2.5], [21.5, 2.5], [21.5, 16.5], [2.5, 16.5]], Math.min(radius, 2))
 
 // 协议名用细线（外框的 0.7 倍），和外框拉开层次；一行写在印章上方的空白里（x 5.5–18.5，y 5.5–10.5，字高 5），
-// 离外框留 2.5、离印章留 3；字多时横向压窄
+// 离外框留 3、离印章留 3；字多时横向压窄
 const GAP = 2
 export function license(text, radius) {
   const sx = Math.min(0.8, (13 - GAP * (text.length - 1)) / textWidth(text))

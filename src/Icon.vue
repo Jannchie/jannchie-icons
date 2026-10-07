@@ -1,0 +1,28 @@
+<script setup>
+// 按名字取图标，用页面当前的圆角、字重（App 通过 provide('iconStyle') 提供），按显示大小做像素对齐
+import { computed, inject } from 'vue'
+import IconSvg from './IconSvg.vue'
+import { byName } from './iconset'
+import { devicePx, pathsOf } from './render'
+
+const props = defineProps({
+  name: { type: String, required: true },
+  size: { type: Number, default: 20 },
+})
+const style = inject('iconStyle')
+const paths = computed(() => {
+  const icon = byName.get(props.name)
+  return icon && pathsOf(icon, style.value.corner, style.value.weight, devicePx(props.size))
+})
+</script>
+
+<template>
+  <IconSvg
+    v-if="paths" class="icon" :style="{ width: `${size}px`, height: `${size}px` }"
+    :paths="paths" :stroke="style.weight.stroke" :sharp="!!style.corner.sharp" snap
+  />
+</template>
+
+<style>
+.icon { flex: none; display: block; }
+</style>

@@ -6,5 +6,5 @@ export default ({ radius, stroke }) => [
   ring(),
   dot(9, 9.75),
   dot(15, 9.75),
-  'M8.5 15H15.5',
+  'M8.5 15.5H15.5',
 ]

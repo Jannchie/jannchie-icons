@@ -1,12 +1,14 @@
-// 显示器类图标共用：屏幕 3–21 × 4–16.5 + 立杆 + 底座
+// 显示器类图标共用：屏幕 3.5–20.5 × 3.5–16.5 + 立杆 + 底座
+// 立杆只有一条居中的竖线，为了清晰偏左半格到 x = 11.5（与库里其他图标同向），底座 7.5–15.5 以立杆为中心
 import { blocked } from './clearance'
 import { inset } from './folder'
 
-const [l, t, r, b] = [3, 4, 21, 16.5]
-const base = [8.5, 15.5, 20] // 底座左端、右端、高度
+const [l, t, r, b] = [3.5, 3.5, 20.5, 16.5]
+const pole = 11.5 // 立杆
+const base = [7.5, 15.5, 20.5] // 底座左端、右端、高度
 
 export const screen = [[l, t], [r, t], [r, b], [l, b]]
-export const stand = [`M12 ${b}V${base[2]}`, `M${base[0]} ${base[2]}H${base[1]}`]
+export const stand = [`M${pole} ${b}V${base[2]}`, `M${base[0]} ${base[2]}H${base[1]}`]
 
 // 屏幕中心，放符号用
 export const center = [12, (t + b) / 2]
@@ -25,6 +27,6 @@ export function screenAround(shape, stroke) {
       [r, t],
       [r, right ? right[0] : b],
     ],
-    stand: [`M12 ${b}V${base[2]}`, `M${base[0]} ${base[2]}H${foot ? Math.min(foot[0], base[1]) : base[1]}`],
+    stand: [`M${pole} ${b}V${base[2]}`, `M${base[0]} ${base[2]}H${foot ? Math.min(foot[0], base[1]) : base[1]}`],
   }
 }

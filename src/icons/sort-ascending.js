@@ -5,7 +5,7 @@ import { arrow } from '../media'
 export default ({ radius }) => [
   'M6.5 20V4',
   rounded(arrow(6.5, 4, "up", 3), crisp(radius), false),
-  'M12 6H15',
-  'M12 12H18',
-  'M12 18H21',
+  'M12 5.5H15',
+  'M12 11.5H18',
+  'M12 17.5H21',
 ]

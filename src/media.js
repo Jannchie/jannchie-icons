@@ -17,5 +17,5 @@ export function arrow(x, y, dir, s = 2.5) {
   return [[x + dx - side[0], y + dy - side[1]], [x, y], [x + dx + side[0], y + dy + side[1]]]
 }
 
-// 喇叭：45° 锥面
-export const speaker = [[4, 9.5], [7.5, 9.5], [12, 5], [12, 19], [7.5, 14.5], [4, 14.5]]
+// 喇叭：45° 锥面；两道竖边落在 .5 上
+export const speaker = [[3.5, 9.5], [7, 9.5], [11.5, 5], [11.5, 19], [7, 14.5], [3.5, 14.5]]

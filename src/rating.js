@@ -8,17 +8,17 @@ import { line, textWidth } from './letters'
 const sq = (x0, y0, x1, y1) => [[x0, y0], [x1, y0], [x1, y1], [x0, y1]]
 const FRAMES = {
   square: { shape: r => rounded(sq(2.5, 2.5, 21.5, 21.5), Math.min(r, 2.5)), box: [5.5, 5.5, 18.5, 18.5] },
-  tall: { shape: r => rounded(sq(4, 2, 20, 22), Math.min(r, 2.5)), box: [7, 5, 17, 19] },
+  tall: { shape: r => rounded(sq(3.5, 2.5, 20.5, 21.5), Math.min(r, 2.5)), box: [7, 5, 17, 19] },
   // PEGI 式：方框底部隔出一条横栏，数字在上面
-  divided: { shape: r => [rounded(sq(2.5, 2.5, 21.5, 21.5), Math.min(r, 2.5)), 'M2.5 17H21.5'], box: [5.5, 5.5, 18.5, 14] },
-  wide: { shape: r => rounded(sq(2, 5, 22, 19), Math.min(r, 2.5)), box: [5, 8, 19, 16] },
-  // 八边形：斜边切掉 6，文字区的四个角离斜边也有 2 以上
+  divided: { shape: r => [rounded(sq(2.5, 2.5, 21.5, 21.5), Math.min(r, 2.5)), 'M2.5 17.5H21.5'], box: [5.5, 5.5, 18.5, 14] },
+  wide: { shape: r => rounded(sq(2.5, 4.5, 21.5, 19.5), Math.min(r, 2.5)), box: [5, 8, 19, 16] },
+  // 八边形：斜边切掉 5，文字区的四个角离斜边也有 2 以上
   octagon: {
-    shape: r => rounded([[8, 2], [16, 2], [22, 8], [22, 16], [16, 22], [8, 22], [2, 16], [2, 8]], Math.min(r, 1)),
+    shape: r => rounded([[7.5, 2.5], [16.5, 2.5], [21.5, 7.5], [21.5, 16.5], [16.5, 21.5], [7.5, 21.5], [2.5, 16.5], [2.5, 7.5]], Math.min(r, 1)),
     box: [5.5, 5.5, 18.5, 18.5],
   },
   // 平顶六边形
-  hexagon: { shape: r => rounded([[7, 3], [17, 3], [22, 12], [17, 21], [7, 21], [2, 12]], Math.min(r, 1.5)), box: [7, 6.5, 17, 17.5] },
+  hexagon: { shape: r => rounded([[7, 3.5], [17, 3.5], [22, 12], [17, 20.5], [7, 20.5], [2, 12]], Math.min(r, 1.5)), box: [7, 6.5, 17, 17.5] },
   diamond: { shape: r => rounded([[12, 1.5], [22.5, 12], [12, 22.5], [1.5, 12]], Math.min(r, 1.5)), box: [9.5, 8.5, 14.5, 15.5] },
   // 圆：只放单行，文字区取半径 7 的圆里高 7 的那条横带
   circle: { shape: () => circle(12, 12, 10), box: [6, 8.5, 18, 15.5] },

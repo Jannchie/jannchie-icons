@@ -1,7 +1,8 @@
 // 文件夹类图标共用：45° 斜边的标签页 + 本体
+// 横竖边都落在 .5 上（线宽 1 时天生清晰）：左右 3.5 / 20.5，上下 4.5 / 19.5，本体顶边 6.5
 import { blocked } from './clearance'
 
-const [l, t, tabEnd, tabSlope, body, r, b] = [3, 5, 9, 11, 7, 21, 19]
+const [l, t, tabEnd, tabSlope, body, r, b] = [3.5, 4.5, 9, 11, 6.5, 20.5, 19.5]
 export const folder = [[l, t], [tabEnd, t], [tabSlope, body], [r, body], [r, b], [l, b]]
 
 // 本体中心，放符号用

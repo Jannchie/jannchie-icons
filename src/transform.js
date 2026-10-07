@@ -4,7 +4,7 @@ import { parse } from './svg'
 const fmt = p => `${p[0]} ${p[1]}`
 
 // 共用骨架：pt 变换每个点；arc 修正圆弧的 [rx, ry, 倾角, 大弧, 方向] 五个参数（终点照常走 pt）
-function mapPath(d, pt, arc = v => v) {
+export function mapPath(d, pt, arc = v => v) {
   return parse(d, true).map(([type, v]) => {
     if (type === 'Z')
       return 'Z'

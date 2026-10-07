@@ -1,4 +1,4 @@
 import { level, shell } from '../battery'
 
-// 电池低电量：进度线占三分之一
-export default ({ radius }) => [...shell(radius), level(1 / 3)]
+// 电池低电量：刻度竖线在约 30% 处
+export default ({ radius }) => [...shell(radius), level(0.3)]

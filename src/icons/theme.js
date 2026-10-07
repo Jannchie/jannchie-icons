@@ -4,10 +4,13 @@ import { circle } from '../geometry'
 const pt = p => `${p[0]} ${p[1]}`
 
 // 太阳：圆 + 7 道光线（朝斜杠那道去掉，免得顶到斜杠）
-const sun = [7.5, 7.5]
-const rays = [0, 90, 135, 180, 225, 270, 315].map((deg) => {
+// 光线起点随线宽外移，和日轮之间始终留 0.5 的可见间隙，光线长度固定 1.25
+const sun = [7.5, 7.5] // 横竖光线落在 .5 上
+const R = 2
+const rays = stroke => [0, 90, 135, 180, 225, 270, 315].map((deg) => {
   const [c, s] = [Math.cos(deg * Math.PI / 180), Math.sin(deg * Math.PI / 180)]
-  return `M${sun[0] + 3.75 * c} ${sun[1] + 3.75 * s}L${sun[0] + 5 * c} ${sun[1] + 5 * s}`
+  const inner = R + stroke + 0.5
+  return `M${sun[0] + inner * c} ${sun[1] + inner * s}L${sun[0] + (inner + 1.25) * c} ${sun[1] + (inner + 1.25) * s}`
 })
 
 // 月牙：大圆减去往右上 45° 偏移的小圆
@@ -21,9 +24,9 @@ const m = [c1[0] + ux * a, c1[1] + uy * a]
 const p1 = [m[0] - uy * h, m[1] + ux * h]
 const p2 = [m[0] + uy * h, m[1] - ux * h]
 
-export default () => [
-  circle(sun[0], sun[1], 2.25),
-  ...rays,
+export default ({ stroke = 1.5 }) => [
+  circle(sun[0], sun[1], R),
+  ...rays(stroke),
   'M19 5L5 19',
   `M${pt(p1)}A${r1} ${r1} 0 1 1 ${pt(p2)}A${r2} ${r2} 0 0 0 ${pt(p1)}Z`,
 ]

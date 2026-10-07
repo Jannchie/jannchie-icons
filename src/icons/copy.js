@@ -6,7 +6,7 @@ export default ({ radius, stroke }) => {
   const g = GAP + stroke
   const r = Math.min(radius, 2)
   return [
-    rounded([[8, 8], [20, 8], [20, 20], [8, 20]], r),
-    rounded([[8 - g, 16], [4, 16], [4, 4], [16, 4], [16, 8 - g]], r, false),
+    rounded([[8.5, 8.5], [20.5, 8.5], [20.5, 20.5], [8.5, 20.5]], r),
+    rounded([[8.5 - g, 15.5], [3.5, 15.5], [3.5, 3.5], [15.5, 3.5], [15.5, 8.5 - g]], r, false),
   ]
 }

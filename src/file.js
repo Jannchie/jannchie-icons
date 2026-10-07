@@ -1,9 +1,9 @@
-// 文件类图标共用：纸张 5–19 × 2.5–20.5，右上 45° 折角；折角两处转角固定小圆角
+// 文件类图标共用：纸张 4.5–19.5 × 2.5–20.5，右上 45° 折角；折角两处转角固定小圆角
 import { blocked } from './clearance'
 import { inset } from './folder'
 import { crisp } from './geometry'
 
-const [l, t, r, b] = [5, 2.5, 19, 20.5]
+const [l, t, r, b] = [4.5, 2.5, 19.5, 20.5]
 const fold = 5
 const corner = radius => [[r - fold, t, crisp(radius)], [r, t + fold, crisp(radius)]]
 
@@ -30,4 +30,5 @@ export function pageAround(shape, stroke, radius) {
 
 // 格式标签：只画纸张上半部分（侧边在 y = 12 收住），下方 15–21 写三个字母
 export const pageTop = radius => [[l, 12], [l, t], ...corner(radius), [r, 12]]
-export const labelBox = { left: l, right: r, top: 15, bottom: 21 }
+// 字母排版区沿用原来的 5–19，不随纸张边线挪动
+export const labelBox = { left: 5, right: 19, top: 15, bottom: 21 }

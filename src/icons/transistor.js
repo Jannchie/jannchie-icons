@@ -1,10 +1,10 @@
 import { ring } from '../marks'
 import { crisp, rounded } from '../geometry'
 
-// 晶体管（NPN）：圆 + 竖直的基极板 + 左侧基极引线 + 斜出的集电极和带箭头的发射极
+// 晶体管（NPN）：圆 + 竖直的基极板 + 左侧基极引线（落在 .5 上，比圆心高半格） + 斜出的集电极和带箭头的发射极
 export default ({ radius }) => [
   ring(),
-  'M3 12H9.5',
+  'M3.01 11.5H9.5',
   'M9.5 7.5V16.5',
   'M9.5 10L14.5 6.5V3',
   'M9.5 14L14.5 17.5V21',

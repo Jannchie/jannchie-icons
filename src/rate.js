@@ -1,6 +1,6 @@
 // 倍率文字（×0.5、×2 …）：乘号 + 数字 + 小数点，按总宽自动缩放，整体居中
 // 字形只有字母和数字，乘号是一个小叉、小数点是一个点，单独画
-import { glyph } from './letters'
+import { glyph, snap } from './letters'
 import { dot } from './scene'
 
 const CROSS = 0.65 // 乘号宽度（相对字高）
@@ -32,5 +32,6 @@ export function rate(text) {
     }
     x += GAP * h
   }
-  return out
+  // 数字的横竖笔画整组对齐像素网格（乘号、小数点跟着一起挪）
+  return snap(out)
 }

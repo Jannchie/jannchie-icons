@@ -1,4 +1,5 @@
 // 文件夹、列表等系列共用的符号；c 为中心，k 为缩放（1 = 文件夹里的尺寸）
+import { align, DETAIL_SCALE, snap } from './clearance'
 import { inset } from './folder'
 import { dot } from './scene'
 import { circle, crisp, rounded } from './geometry'
@@ -71,11 +72,42 @@ export const outlines = {
   search: { box: [-3.5, -3.5, 3.5, 3.5] },
 }
 
+// 各符号里的横竖线（未缩放、相对中心），缩小放进系列图标时据此对齐像素网格，见 clearance.js 的 snap
+// 斜线、曲线为主的符号（叉、勾、圆、星、星芒、禁止、计速器、代码、搜索）不需要
+const grids = {
+  plus: { x: 0, y: 0 },
+  minus: { y: 0 },
+  image: { unit: 7, x: 3.5, y: 3.5 },
+  music: { x: 0.25 }, // 符干
+  video: { x: -triangleWidth(6) / 3 }, // 三角左边
+  // 方框和中间的十字要同时清晰，方框边长得是偶数：半宽 3.5 缩放后取整
+  assets: { unit: 3.5, x: 0, y: 0 },
+  cloud: { y: 2.65 }, // 平底
+  shield: { unit: 7 * 0.86, x: 3.5 * 0.86 }, // 两侧竖边
+  arrowUp: { x: 0 },
+  arrowDown: { x: 0 },
+  arrowLeft: { y: 0 },
+  arrowRight: { y: 0 },
+  bookmark: { unit: 5, x: 2.5, y: -3.5 },
+  puzzle: { unit: 5.15, x: 3.5, y: 3.5 }, // 方块的边（另一侧竖边、横边相距 5.15）
+  plug: { x: 0, y: -1.75 }, // 电线和主体顶边
+  clock: { x: 0 }, // 分针
+  // 锁孔是正中单线，锁身边长取偶数（半宽 3 缩放后取整），整体往左挪半格让锁孔和两边都清晰
+  lock: { unit: 3, x: 0, y: -0.5 },
+}
+
+for (const [name, grid] of Object.entries(grids)) {
+  if (outlines[name])
+    outlines[name].grid = grid
+}
+
 // 符号缩小放进文件夹、列表时算作细节，预览里线宽封顶，粗线宽下也不糊；单独使用（k ≥ 2）时跟随全局
-export const DETAIL_SCALE = 2
-const symbol = draw => (c, k = 1, radius = 0) => {
+// 不论大小都先按 grid 对齐像素网格
+export { DETAIL_SCALE }
+const symbol = (draw, grid) => (center, scale = 1, radius = 0) => {
+  const { c, k } = snap(grid, center, scale)
   const paths = draw(c, k, radius)
-  return k < DETAIL_SCALE ? paths.map(p => (typeof p === 'string' ? { d: p, detail: true } : { ...p, detail: true })) : paths
+  return scale < DETAIL_SCALE ? paths.map(p => (typeof p === 'string' ? { d: p, detail: true } : { ...p, detail: true })) : paths
 }
 
 const at = ([cx, cy], k) => ([x, y]) => [cx + x * k, cy + y * k]
@@ -205,7 +237,9 @@ const drawCloud = (c, k = 1) => {
 }
 
 // 底边在 x 中心两侧各断开 gap（Infinity 表示不要底边），断口是正常的线端
-export function cloudOpen(c, k, gap) {
+// 平底按 grid 对齐像素网格（只上下挪，不改缩放）
+export function cloudOpen(center, k, gap) {
+  const { c } = snap(grids.cloud, center, k)
   const { arcs, start, end } = cloudTop(c, k)
   if (gap === Infinity)
     return [`M${start[0]} ${start[1]}${arcs}`]
@@ -259,6 +293,10 @@ function head([x, y], [dx, dy], k) {
   const [sx, sy] = dx ? [0, s] : [s, 0]
   return [[x - dx * s - sx, y - dy * s - sy], [x, y], [x - dx * s + sx, y - dy * s + sy]]
 }
+
+// 斜向箭头、箭头的两翼一条水平一条竖直，都过尖端：按尖端对齐像素网格
+const diagonalArrow = dir => ({ x: DIRS[dir][0] * 3, y: DIRS[dir][1] * 3 })
+const diagonalChevron = dir => ({ x: DIRS[dir][0] * DIAGONAL_WING / 2, y: DIRS[dir][1] * DIAGONAL_WING / 2 })
 
 // 带杆的箭头：正向外框 6×7，斜向外框约 6×6
 const pointer = dir => ([x, y], k = 1, radius = 0) => {
@@ -370,12 +408,15 @@ const drawPuzzle = (c, k = 1, radius = 0) => {
 const drawPlug = (c, k = 1, radius = 0) => {
   const p = at(c, k)
   const pt = q => p(q).join(' ')
-  const [w, top, shoulder, neck, neckW, bottom] = [2.4, -1.75, -0.25, 2.25, 0.8, 3.5]
+  const top = -1.75
+  // 电线 x = 0、顶边 y = top 已由 grid 对齐，插脚、两侧竖边、颈口横线按缩放后的距离取整，也落在 .5 上
+  const [w, neck, pin] = [align(2.4, 0, k, 1), align(2.25, top, k, 1), align(1, 0, k, 1)]
+  const [shoulder, neckW, bottom] = [-0.25, 0.8, 3.5]
   const rc = Math.min(radius, 1) // 顶角圆角（未缩放单位）
   const prong = x => `M${pt([x, -3.5])}L${pt([x, top])}`
   return [
-    prong(-1),
-    prong(1),
+    prong(-pin),
+    prong(pin),
     `M${pt([0, bottom])}L${pt([0, neck])}L${pt([-neckW, neck])}`
     + `C${pt([-w * 0.65, neck])} ${pt([-w, 1.25])} ${pt([-w, shoulder])}`
     + `L${pt([-w, top + rc])}`
@@ -411,10 +452,13 @@ const drawGauge = ([x, y], k = 1) => {
 const drawLock = (c, k = 1, radius = 0) => {
   const p = at(c, k)
   const pt = q => p(q).join(' ')
-  const r = 1.75 * k // 锁梁半径
+  // 锁身左右边、顶边已由 grid 对齐；底边、锁梁两腿按缩放后与它们的距离取整，也落在 .5 上
+  const b = align(3.5, -0.5, k, 1)
+  const s = align(1.75, 3, k, 1) // 锁梁半宽
+  const r = s * k // 锁梁半径
   return [
-    rounded([[-3, -0.5], [3, -0.5], [3, 3.5], [-3, 3.5]].map(p), Math.min(radius, k)),
-    `M${pt([-1.75, -0.5])}L${pt([-1.75, -1.75])}A${r} ${r} 0 0 1 ${pt([1.75, -1.75])}L${pt([1.75, -0.5])}`,
+    rounded([[-3, -0.5], [3, -0.5], [3, b], [-3, b]].map(p), Math.min(radius, k)),
+    `M${pt([-s, -0.5])}L${pt([-s, -1.75])}A${r} ${r} 0 0 1 ${pt([s, -1.75])}L${pt([s, -0.5])}`,
     `M${pt([0, 1])}L${pt([0, 2])}`,
   ]
 }
@@ -438,50 +482,50 @@ const drawSearch = ([x, y], k = 1) => {
   return [circle(cx, cy, r), `M${cx + d} ${cy + d}L${x + 3.5 * k} ${y + 3.5 * k}`]
 }
 
-export const plus = symbol(drawPlus)
-export const minus = symbol(drawMinus)
+export const plus = symbol(drawPlus, grids.plus)
+export const minus = symbol(drawMinus, grids.minus)
 export const cross = symbol(drawCross)
 export const check = symbol(drawCheck)
-export const image = symbol(drawImage)
-export const music = symbol(drawMusic)
-export const video = symbol(drawVideo)
-export const assets = symbol(drawAssets)
+export const image = symbol(drawImage, grids.image)
+export const music = symbol(drawMusic, grids.music)
+export const video = symbol(drawVideo, grids.video)
+export const assets = symbol(drawAssets, grids.assets)
 export const ring = symbol(drawRing)
 export const star = symbol(drawStar)
-export const cloud = symbol(drawCloud)
-export const shield = symbol(drawShield)
+export const cloud = symbol(drawCloud, grids.cloud)
+export const shield = symbol(drawShield, grids.shield)
 export const ban = symbol(drawBan)
-export const arrowUp = symbol(drawArrowUp)
-export const arrowDown = symbol(drawArrowDown)
-export const arrowLeft = symbol(drawArrowLeft)
-export const arrowRight = symbol(drawArrowRight)
-export const bookmark = symbol(drawBookmark)
+export const arrowUp = symbol(drawArrowUp, grids.arrowUp)
+export const arrowDown = symbol(drawArrowDown, grids.arrowDown)
+export const arrowLeft = symbol(drawArrowLeft, grids.arrowLeft)
+export const arrowRight = symbol(drawArrowRight, grids.arrowRight)
+export const bookmark = symbol(drawBookmark, grids.bookmark)
 export const sparkle = symbol(drawSparkle)
-export const puzzle = symbol(drawPuzzle)
-export const plug = symbol(drawPlug)
-export const clock = symbol(drawClock)
+export const puzzle = symbol(drawPuzzle, grids.puzzle)
+export const plug = symbol(drawPlug, grids.plug)
+export const clock = symbol(drawClock, grids.clock)
 export const gauge = symbol(drawGauge)
-export const lock = symbol(drawLock)
-export const arrowUpRight = symbol(pointer('upRight'))
-export const arrowUpLeft = symbol(pointer('upLeft'))
-export const arrowDownRight = symbol(pointer('downRight'))
-export const arrowDownLeft = symbol(pointer('downLeft'))
+export const lock = symbol(drawLock, grids.lock)
+export const arrowUpRight = symbol(pointer('upRight'), diagonalArrow('upRight'))
+export const arrowUpLeft = symbol(pointer('upLeft'), diagonalArrow('upLeft'))
+export const arrowDownRight = symbol(pointer('downRight'), diagonalArrow('downRight'))
+export const arrowDownLeft = symbol(pointer('downLeft'), diagonalArrow('downLeft'))
 export const chevronUp = symbol(chevron('up'))
 export const chevronDown = symbol(chevron('down'))
 export const chevronLeft = symbol(chevron('left'))
 export const chevronRight = symbol(chevron('right'))
-export const chevronUpRight = symbol(chevron('upRight'))
-export const chevronUpLeft = symbol(chevron('upLeft'))
-export const chevronDownRight = symbol(chevron('downRight'))
-export const chevronDownLeft = symbol(chevron('downLeft'))
-export const arrowUpHalf = symbol(halfPointer('up'))
-export const arrowDownHalf = symbol(halfPointer('down'))
-export const arrowLeftHalf = symbol(halfPointer('left'))
-export const arrowRightHalf = symbol(halfPointer('right'))
-export const arrowUpRightHalf = symbol(halfPointer('upRight'))
-export const arrowUpLeftHalf = symbol(halfPointer('upLeft'))
-export const arrowDownRightHalf = symbol(halfPointer('downRight'))
-export const arrowDownLeftHalf = symbol(halfPointer('downLeft'))
+export const chevronUpRight = symbol(chevron('upRight'), diagonalChevron('upRight'))
+export const chevronUpLeft = symbol(chevron('upLeft'), diagonalChevron('upLeft'))
+export const chevronDownRight = symbol(chevron('downRight'), diagonalChevron('downRight'))
+export const chevronDownLeft = symbol(chevron('downLeft'), diagonalChevron('downLeft'))
+export const arrowUpHalf = symbol(halfPointer('up'), grids.arrowUp)
+export const arrowDownHalf = symbol(halfPointer('down'), grids.arrowDown)
+export const arrowLeftHalf = symbol(halfPointer('left'), grids.arrowLeft)
+export const arrowRightHalf = symbol(halfPointer('right'), grids.arrowRight)
+export const arrowUpRightHalf = symbol(halfPointer('upRight'), diagonalArrow('upRight'))
+export const arrowUpLeftHalf = symbol(halfPointer('upLeft'), diagonalArrow('upLeft'))
+export const arrowDownRightHalf = symbol(halfPointer('downRight'), diagonalArrow('downRight'))
+export const arrowDownLeftHalf = symbol(halfPointer('downLeft'), diagonalArrow('downLeft'))
 export const code = symbol(drawCode)
 export const search = symbol(drawSearch)
 

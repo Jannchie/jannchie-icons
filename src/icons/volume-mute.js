@@ -2,7 +2,7 @@ import { rounded } from '../geometry'
 import { speaker } from '../media'
 
 // 静音：喇叭 + 45° 叉
-const c = [18, 12]
+const c = [17.5, 12]
 const s = 2.5
 
 export default ({ radius }) => [

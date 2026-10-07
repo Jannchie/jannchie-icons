@@ -1,36 +1,39 @@
 <script setup>
-import { computed, nextTick, onMounted, onUnmounted, ref, shallowRef, watch, watchEffect } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, provide, ref, shallowRef, watch, watchEffect } from 'vue'
 import { categorize } from './categories'
+import { LOCALES, locale, searchTitle, t } from './i18n'
+import Examples from './Examples.vue'
+import Icon from './Icon.vue'
 import IconSvg from './IconSvg.vue'
+import { byName, icons } from './iconset'
 import LazyIcon from './LazyIcon.vue'
-import { pathAttrs, pathsOf, svgAttrs } from './render'
+import { animateAttrs, devicePx, pathAttrs, pathsOf, svgAttrs } from './render'
+import { resnapAll } from './snap'
 import searchIcon from './icons/search'
-import { finalize } from './svg'
+import { finalize, minify } from './svg'
 
-// 每个图标是 ({ radius, stroke, weight }) => 路径数组
-const modules = import.meta.glob('./icons/*.js', { import: 'default', eager: true })
-const icons = Object.entries(modules)
-  .map(([path, draw]) => ({ name: path.split('/').pop().slice(0, -3), draw }))
-  .sort((a, b) => a.name.localeCompare(b.name))
 
+// 文案（尖角、字重名、主题名）按 key 走多语言；圆角档位的数字不用翻译
 const corners = [
-  { label: '尖角', radius: 0, sharp: true },
+  { label: 'sharp', radius: 0, sharp: true },
   { label: '0', radius: 0 },
   { label: '1', radius: 1 },
   { label: '2', radius: 2 },
   { label: '3', radius: 3 },
 ]
-// 字重：只提供三档整数 / 半整数线宽，配合像素对齐在高清屏上横竖线清晰
+// 字重：四档，默认「常规」线宽 1；1、1.5、2 配合像素对齐在高清屏上横竖线清晰，0.75 只适合大尺寸
 const weights = [
-  { id: 'light', label: '细', stroke: 1 },
-  { id: 'regular', label: '常规', stroke: 1.5 },
-  { id: 'bold', label: '粗', stroke: 2 },
+  { id: 'light', stroke: 0.75 },
+  { id: 'regular', stroke: 1 },
+  { id: 'bold', stroke: 1.5 },
+  { id: 'heavy', stroke: 2 },
 ]
-const sizes = [16, 20, 24, 32, 48, 64, 96, 128]
+// 预览大小：滑块 16–128，步长 4
+const SIZE = { min: 16, max: 128, step: 4 }
 const themes = [
-  { id: 'auto', label: '自动' },
-  { id: 'light', label: '亮' },
-  { id: 'dark', label: '暗' },
+  { id: 'auto', label: 'auto' },
+  { id: 'light', label: 'lightTheme' },
+  { id: 'dark', label: 'darkTheme' },
 ]
 
 // 选项存在本地，热更新整页刷新后不丢
@@ -46,16 +49,22 @@ const saved = load()
 
 const corner = shallowRef(corners.find(c => c.label === saved.corner) ?? corners[3])
 const weight = shallowRef(weights.find(w => w.id === saved.weight) ?? weights[1])
-const size = ref(sizes.includes(saved.size) ? saved.size : 32)
+const size = ref(Number.isFinite(saved.size) ? Math.min(SIZE.max, Math.max(SIZE.min, Math.round(saved.size / SIZE.step) * SIZE.step)) : 32)
 const theme = ref(themes.some(t => t.id === saved.theme) ? saved.theme : 'auto')
-// 像素对齐（见 render.js 的 pixelOffset），默认打开
-const align = ref(saved.align ?? true)
+// 界面语言：默认英语
+locale.value = LOCALES.some(l => l.id === saved.lang) ? saved.lang : 'en'
+// 模板里直接给导入的 ref 赋值不可靠，包一层本地的 computed
+const lang = computed({ get: () => locale.value, set: v => (locale.value = v) })
+const cornerLabel = c => c.sharp ? t('ui.sharp') : c.label
 
 watchEffect(() => {
   try {
-    localStorage.setItem('preview', JSON.stringify({ corner: corner.value.label, weight: weight.value.id, size: size.value, theme: theme.value, align: align.value }))
+    localStorage.setItem('preview', JSON.stringify({ corner: corner.value.label, weight: weight.value.id, size: size.value, theme: theme.value, lang: locale.value }))
   }
   catch {}
+})
+watchEffect(() => {
+  document.documentElement.lang = LOCALES.find(l => l.id === locale.value).html
 })
 watchEffect(() => {
   if (theme.value === 'auto')
@@ -67,27 +76,58 @@ watchEffect(() => {
 // 搜索：按名字或分类名过滤；按 / 聚焦，Esc 清空
 const query = ref('')
 const searchInput = ref(null)
-const sections = computed(() => categorize(icons, query.value))
+const sections = computed(() => categorize(icons, query.value, searchTitle))
 const matched = computed(() => sections.value.reduce((n, c) => n + c.count, 0))
 const searchPaths = finalize(searchIcon(), 1.5)
-// 页头的标志就是库里的 layout-grid-plus，跟着当前的圆角、字重、像素对齐一起变
-const markIcon = icons.find(i => i.name === 'layout-grid-plus')
-const markPaths = computed(() => pathsOf(markIcon, corner.value, weight.value, align.value))
+// 按名字取图标的 Icon 组件（页头标志、详情的多尺寸预览、示例页）用同一套设置
+provide('iconStyle', computed(() => ({ corner: corner.value, weight: weight.value })))
+
+// 视图：图标网格 / 示例组件；记在网址的 ?view=examples 上，方便直接分享示例页
+const view = ref(new URLSearchParams(location.search).get('view') === 'examples' ? 'examples' : 'icons')
+watch(view, (v) => {
+  const url = new URL(location.href)
+  if (v === 'examples')
+    url.searchParams.set('view', 'examples')
+  else
+    url.searchParams.delete('view')
+  url.hash = ''
+  history.replaceState(null, '', url)
+  window.scrollTo(0, 0)
+  if (v === 'icons')
+    nextTick(collectSections)
+})
 
 // 选中的图标：右侧详情面板
 const selected = ref(null)
 const selectedIcon = computed(() => {
-  const icon = selected.value && icons.find(i => i.name === selected.value)
-  return icon && { name: icon.name, paths: pathsOf(icon, corner.value, weight.value, align.value) }
+  const icon = selected.value && byName.get(selected.value)
+  if (!icon)
+    return null
+  // 不做像素对齐的路径：详情大图和导出用
+  return { name: icon.name, paths: pathsOf(icon, corner.value, weight.value) }
 })
-const selectedCategory = computed(() => selected.value && sections.value.find(c => c.groups.some(g => g.icons.some(i => i.name === selected.value)))?.title)
+const selectedCategory = computed(() => selected.value && sections.value.find(c => c.groups.some(g => g.icons.some(i => i.name === selected.value)))?.id)
 
 // 导出的 SVG：按当前圆角、字重生成；点、细线、细节的线宽写在各自的路径上
+// 为了体积：属性相同的静态路径合并成一条，圆弧标志位紧排（只在导出时做，见 minify 的 packArcs）；动画图标的路径带 <animate> 子元素
 function toSvg(icon, px = 24) {
   const attrs = obj => Object.entries(obj).filter(([, v]) => v !== undefined).map(([k, v]) => `${k}="${v}"`).join(' ')
-  const paths = icon.paths.map(p => `  <path ${attrs(pathAttrs(p))}/>`)
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${px}" height="${px}" viewBox="0 0 24 24" ${attrs(svgAttrs(weight.value.stroke, !!corner.value.sharp))}>\n${paths.join('\n')}\n</svg>\n`
+  const merged = new Map()
+  const animated = []
+  for (const p of icon.paths) {
+    if (p.frames) {
+      animated.push(`  <path ${attrs(pathAttrs(p))}>\n    <animate ${attrs(animateAttrs(p))}/>\n  </path>`)
+      continue
+    }
+    const { d, ...rest } = pathAttrs(p)
+    const key = attrs(rest)
+    merged.set(key, (merged.get(key) ?? '') + d)
+  }
+  const lines = [...[...merged].map(([key, d]) => `  <path ${attrs({ d: minify(d, { packArcs: true }) })}${key ? ` ${key}` : ''}/>`), ...animated]
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${px}" height="${px}" viewBox="0 0 24 24" ${attrs(svgAttrs(weight.value.stroke, !!corner.value.sharp))}>\n${lines.join('\n')}\n</svg>\n`
 }
+// 当前选中图标的导出文本：代码面板、复制、下载共用，不在每次重渲染时重新拼
+const svgText = computed(() => selectedIcon.value && toSvg(selectedIcon.value))
 
 const toast = ref('')
 let toastTimer
@@ -96,17 +136,18 @@ function notify(text) {
   clearTimeout(toastTimer)
   toastTimer = setTimeout(() => (toast.value = ''), 1600)
 }
+// label：复制成功后提示文案的 key
 async function copy(text, label) {
   try {
     await navigator.clipboard.writeText(text)
-    notify(`已复制${label}`)
+    notify(t(label))
   }
   catch {
-    notify('复制失败，浏览器不允许访问剪贴板')
+    notify(t('ui.copyFailed'))
   }
 }
 function download(icon) {
-  const url = URL.createObjectURL(new Blob([toSvg(icon)], { type: 'image/svg+xml' }))
+  const url = URL.createObjectURL(new Blob([svgText.value], { type: 'image/svg+xml' }))
   const a = Object.assign(document.createElement('a'), { href: url, download: `${icon.name}.svg` })
   a.click()
   URL.revokeObjectURL(url)
@@ -127,7 +168,7 @@ function onKey(e) {
 // 上一个区块的尾巴常常还留在视口顶部，会让高亮慢一拍
 const active = ref('')
 let ticking = false
-let headerHeight = 56
+let headerHeight = 57
 let sectionEls = []
 function updateActive() {
   ticking = false
@@ -152,6 +193,20 @@ function collectSections() {
   updateActive()
 }
 watch(() => sections.value.map(c => c.id).join(), () => nextTick(collectSections))
+
+// 网格列数：auto-fill 排出来的实际列数，用来在每组最后一行补空格子，让没填满的行也画出完整的格线
+// 所有网格同宽、同一个格子尺寸，读第一个就够；内容区宽度、图标大小、分类变化时重新读
+const cols = ref(1)
+const mainEl = ref(null)
+let gridObserver
+function measureCols() {
+  resnapAll()
+  const grid = mainEl.value?.querySelector('.grid')
+  if (grid)
+    cols.value = getComputedStyle(grid).gridTemplateColumns.split(' ').length || 1
+}
+const fillers = n => (cols.value - n % cols.value) % cols.value
+watch([size, () => sections.value.map(c => c.id).join()], () => nextTick(measureCols))
 
 // 侧栏里高亮的分类始终滚到可见范围：只改侧栏自己的 scrollTop，不用 scrollIntoView（它会连带滚动整页）
 const sidebar = ref(null)
@@ -181,11 +236,15 @@ onMounted(() => {
   window.addEventListener('keydown', onKey)
   window.addEventListener('scroll', onScroll, { passive: true })
   collectSections()
+  gridObserver = new ResizeObserver(measureCols)
+  gridObserver.observe(mainEl.value)
+  measureCols()
 })
 onUnmounted(() => {
   window.removeEventListener('keydown', onKey)
   window.removeEventListener('scroll', onScroll)
   headerObserver?.disconnect()
+  gridObserver?.disconnect()
 })
 </script>
 
@@ -194,58 +253,70 @@ onUnmounted(() => {
     <!-- 页头：左栏和侧栏同宽（放名字），右栏是工具条；中间那条竖线和下方侧栏的竖线连成一条 -->
     <header ref="header" class="top">
       <div class="brand">
-        <IconSvg class="mark" :paths="markPaths" :stroke="weight.stroke" :sharp="!!corner.sharp" />
+        <!-- 标志就是库里的十面骰，跟着当前的圆角、字重一起变 -->
+        <Icon class="mark" name="dice-d10" :size="20" />
         <span>Jannchie Icons</span>
       </div>
-      <label class="search">
+      <nav class="views">
+        <button :aria-pressed="view === 'icons'" @click="view = 'icons'">{{ t('ui.viewIcons') }}</button>
+        <button :aria-pressed="view === 'examples'" @click="view = 'examples'">{{ t('ui.viewExamples') }}</button>
+      </nav>
+      <label v-show="view === 'icons'" class="search">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
             <path v-for="p in searchPaths" :key="p.d" :d="p.d" />
           </svg>
-          <input ref="searchInput" v-model="query" type="search" placeholder="搜索图标或分类" @keydown.esc="query = ''">
+          <input ref="searchInput" v-model="query" type="search" :placeholder="t('ui.search')" @keydown.esc="query = ''">
           <kbd v-if="!query">/</kbd>
           <small v-else class="mono">{{ matched }}</small>
       </label>
       <div class="opts">
         <div class="opt">
-          <span class="label">圆角</span>
-          <button v-for="c in corners" :key="c.label" :aria-pressed="corner === c" @click="corner = c">{{ c.label }}</button>
+          <span class="label">{{ t('ui.corner') }}</span>
+          <button v-for="c in corners" :key="c.label" :aria-pressed="corner === c" @click="corner = c">{{ cornerLabel(c) }}</button>
         </div>
         <div class="opt">
-          <span class="label">字重</span>
-          <button v-for="w in weights" :key="w.id" :aria-pressed="weight === w" @click="weight = w">{{ w.label }}</button>
+          <span class="label">{{ t('ui.weight') }}</span>
+          <button v-for="w in weights" :key="w.id" :aria-pressed="weight === w" @click="weight = w">{{ t(`ui.${w.id}`) }}</button>
         </div>
         <div class="opt">
-          <span class="label">大小</span>
-          <button v-for="s in sizes" :key="s" :aria-pressed="size === s" @click="size = s">{{ s }}</button>
+          <span class="label">{{ t('ui.size') }}</span>
+          <input
+            v-model.number="size" class="slider" type="range" :min="SIZE.min" :max="SIZE.max" :step="SIZE.step" :aria-label="t('ui.size')"
+            :style="{ '--p': `${(size - SIZE.min) / (SIZE.max - SIZE.min) * 100}%` }"
+          >
+          <output class="size-value mono">{{ size }}</output>
         </div>
         <div class="opt">
-          <span class="label">对齐</span>
-          <button :aria-pressed="align" title="像素对齐：线宽 1.5 时整体平移 0.25，让高清屏上的横竖线清晰" @click="align = !align">{{ align ? '开' : '关' }}</button>
+          <button v-for="th in themes" :key="th.id" :aria-pressed="theme === th.id" @click="theme = th.id">{{ t(`ui.${th.label}`) }}</button>
         </div>
         <div class="opt">
-          <button v-for="t in themes" :key="t.id" :aria-pressed="theme === t.id" @click="theme = t.id">{{ t.label }}</button>
+          <span class="label">{{ t('ui.language') }}</span>
+          <button v-for="l in LOCALES" :key="l.id" :aria-pressed="lang === l.id" @click="lang = l.id">{{ l.label }}</button>
         </div>
       </div>
     </header>
 
-    <div class="layout">
+    <main v-if="view === 'examples'" class="examples-main">
+      <Examples />
+    </main>
+    <div v-else class="layout">
       <aside ref="sidebar" class="sidebar">
-        <p class="label">分类 · {{ sections.length }}</p>
+        <p class="label">{{ t('ui.categories') }} · {{ sections.length }}</p>
         <a v-for="c in sections" :key="c.id" :href="`#${c.id}`" :class="{ active: active === c.id }">
-          <span>{{ c.title }}</span><small class="mono">{{ c.count }}</small>
+          <span>{{ t(`cat.${c.id}`) }}</span><small class="mono">{{ c.count }}</small>
         </a>
       </aside>
 
-      <main :style="{ '--size': `${size}px` }">
+      <main ref="mainEl" :style="{ '--size': `${size}px` }">
         <!-- 窄屏没有侧栏：分类改成可横向滚动的标签 -->
         <nav class="pills">
-          <a v-for="c in sections" :key="c.id" :href="`#${c.id}`" :class="{ active: active === c.id }">{{ c.title }}<small class="mono">{{ c.count }}</small></a>
+          <a v-for="c in sections" :key="c.id" :href="`#${c.id}`" :class="{ active: active === c.id }">{{ t(`cat.${c.id}`) }}<small class="mono">{{ c.count }}</small></a>
         </nav>
 
         <section v-for="c in sections" :id="c.id" :key="c.id" class="category">
-          <h2 class="category-head">{{ c.title }}<small class="mono">{{ c.count }}</small></h2>
-          <template v-for="g in c.groups" :key="g.title">
-            <p v-if="g.title" class="group label">{{ g.title }} · {{ g.icons.length }}</p>
+          <h2 class="category-head">{{ t(`cat.${c.id}`) }}<small class="mono">{{ c.count }}</small></h2>
+          <template v-for="g in c.groups" :key="g.key">
+            <p v-if="g.key" class="group label">{{ t(`group.${g.key}`) }} · {{ g.icons.length }}</p>
             <div class="grid">
               <button
                 v-for="icon in g.icons"
@@ -255,23 +326,24 @@ onUnmounted(() => {
                 :title="icon.name"
                 @click="selected = selected === icon.name ? null : icon.name"
               >
-                <LazyIcon :icon="icon" :corner="corner" :weight="weight" :align="align" />
+                <LazyIcon :icon="icon" :corner="corner" :weight="weight" :px="devicePx(size)" />
                 <span class="name">{{ icon.name }}</span>
               </button>
+              <div v-for="i in fillers(g.icons.length)" :key="`fill-${i}`" class="cell filler" aria-hidden="true" />
             </div>
           </template>
         </section>
-        <p v-if="!sections.length" class="empty">没有匹配「{{ query }}」的图标</p>
+        <p v-if="!sections.length" class="empty">{{ t('ui.empty', { q: query }) }}</p>
       </main>
 
       <!-- 详情：常驻的第三列。打开、切换只换列里的内容，网格既不重排也不会被挡住；没选中时显示空状态 -->
       <aside v-if="selectedIcon" class="detail">
         <div class="detail-head">
           <div>
-            <p class="label">{{ selectedCategory }}</p>
+            <p class="label">{{ t(`cat.${selectedCategory}`) }}</p>
             <h3 class="mono">{{ selectedIcon.name }}</h3>
           </div>
-          <button class="close" aria-label="关闭" @click="selected = null">
+          <button class="close" :aria-label="t('ui.close')" @click="selected = null">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 7L17 17M17 7L7 17" /></svg>
           </button>
         </div>
@@ -280,35 +352,33 @@ onUnmounted(() => {
         </div>
         <div class="scales">
           <div v-for="px in [16, 20, 24, 32, 48]" :key="px">
-            <IconSvg :style="{ width: `${px}px`, height: `${px}px` }" :paths="selectedIcon.paths" :stroke="weight.stroke" :sharp="!!corner.sharp" />
+            <Icon :name="selectedIcon.name" :size="px" />
             <small class="mono">{{ px }}</small>
           </div>
         </div>
         <div class="actions">
-          <button @click="copy(selectedIcon.name, '名称')">复制名称</button>
-          <button @click="copy(toSvg(selectedIcon), ' SVG')">复制 SVG</button>
-          <button @click="download(selectedIcon)">下载</button>
+          <button @click="copy(selectedIcon.name, 'ui.copiedName')">{{ t('ui.copyName') }}</button>
+          <button @click="copy(svgText, 'ui.copiedSvg')">{{ t('ui.copySvg') }}</button>
+          <button @click="download(selectedIcon)">{{ t('ui.download') }}</button>
         </div>
         <div class="code-wrap">
-          <p class="label">SVG · {{ corner.sharp ? '尖角' : `圆角 ${corner.label}` }} · {{ weight.label }}</p>
-          <pre class="code">{{ toSvg(selectedIcon) }}</pre>
+          <p class="label">SVG · {{ corner.sharp ? t('ui.sharp') : t('ui.cornerRadius', { r: corner.label }) }} · {{ t(`ui.${weight.id}`) }}</p>
+          <pre class="code">{{ svgText }}</pre>
         </div>
       </aside>
       <aside v-else class="detail empty-detail">
         <div class="hero placeholder">
-          <p>点击任意图标<br>查看详情、复制 SVG</p>
+          <p v-html="t('ui.placeholder')" />
         </div>
         <dl class="keys">
-          <div><dt><kbd>/</kbd></dt><dd>搜索</dd></div>
-          <div><dt><kbd>Esc</kbd></dt><dd>清空搜索 / 关闭详情</dd></div>
+          <div><dt><kbd>/</kbd></dt><dd>{{ t('ui.keySearch') }}</dd></div>
+          <div><dt><kbd>Esc</kbd></dt><dd>{{ t('ui.keyEsc') }}</dd></div>
         </dl>
       </aside>
     </div>
   </div>
 
-  <Transition name="fade">
     <div v-if="toast" class="toast">{{ toast }}</div>
-  </Transition>
 </template>
 
 <style>
@@ -328,7 +398,7 @@ onUnmounted(() => {
   /* 不用彩色强调：强调色就是正文色，选中态用一层很淡的正文色 */
   --accent: var(--text);
   --accent-soft: color-mix(in srgb, var(--text) 9%, transparent);
-  --header-h: 56px;
+  --header-h: 57px;
   --side: 220px;
   --detail: 340px;
   --sans: 'Inter', system-ui, -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
@@ -368,14 +438,24 @@ small { color: var(--muted); }
 .shell { max-width: 1680px; min-height: 100vh; margin: 0 auto; border-inline: 1px solid var(--line); background: var(--surface); }
 
 /* 页头：名字 | 搜索 | 设置；名字一栏和侧栏同宽，中间那条竖线和侧栏的竖线连成一条 */
+/* 高 57：减去 1px 底边，内容区是偶数 56，20px 的标志居中后正好落在整数像素上（奇数高度只能偏半像素或发虚） */
 .top {
-  position: sticky; top: 0; z-index: 3; display: grid; grid-template-columns: var(--side) minmax(0, 1fr) auto;
-  grid-template-areas: 'brand search opts'; min-height: 56px; border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; z-index: 3; display: grid; grid-template-columns: var(--side) auto minmax(0, 1fr) auto;
+  grid-template-areas: 'brand views search opts'; min-height: 57px; border-bottom: 1px solid var(--line);
   background: color-mix(in srgb, var(--surface) 85%, transparent); backdrop-filter: blur(14px) saturate(1.4);
 }
 .brand { grid-area: brand; display: flex; align-items: center; gap: 10px; padding: 0 20px; border-right: 1px solid var(--line); font-weight: 600; letter-spacing: -.01em; white-space: nowrap; }
 .mark { width: 20px; height: 20px; flex: none; color: var(--accent); }
 .opts { grid-area: opts; display: flex; align-items: stretch; min-width: 0; }
+/* 视图切换：图标 / 示例，和设置按钮同一套选中样式 */
+.views { grid-area: views; display: flex; align-items: center; gap: 2px; padding: 0 12px; border-right: 1px solid var(--line); }
+.views button {
+  height: 28px; padding: 0 10px; border: 0; border-radius: 6px; background: none; cursor: pointer;
+  font-size: 13px; color: var(--text-2);
+}
+.views button:hover { color: var(--text); }
+.views button[aria-pressed='true'] { color: var(--text); background: var(--sunken); box-shadow: inset 0 0 0 1px var(--line-strong); }
+.examples-main { padding-bottom: 0; }
 .search { grid-area: search; display: flex; align-items: center; gap: 10px; min-width: 120px; padding: 0 20px; cursor: text; }
 .search svg { width: 16px; height: 16px; flex: none; color: var(--muted); }
 .search input { flex: 1; min-width: 0; border: 0; outline: 0; background: none; color: inherit; font: inherit; }
@@ -386,9 +466,21 @@ kbd { font: 12px var(--mono); color: var(--muted); padding: 1px 6px; border: 1px
 .opt .label { margin-right: 6px; }
 .opt button {
   height: 26px; min-width: 26px; padding: 0 7px; border: 0; border-radius: 6px; background: none; cursor: pointer;
-  font: 12.5px var(--mono); color: var(--text-2); transition: color .12s, background .12s;
+  font: 12.5px var(--mono); color: var(--text-2);
 }
 .opt button:hover { color: var(--text); }
+/* 大小滑块：一条细轨道，已选部分用正文色；把手是一个实心小圆点，不描边、不放大 */
+.slider { width: 112px; height: 26px; margin: 0 4px; padding: 0; background: none; cursor: pointer; -webkit-appearance: none; appearance: none; }
+.slider:focus-visible { outline: none; }
+.slider::-webkit-slider-runnable-track { height: 2px; border-radius: 1px; background: linear-gradient(var(--text), var(--text)) 0 / var(--p) 100% no-repeat, var(--line-strong); }
+.slider::-moz-range-track { height: 2px; border-radius: 1px; background: var(--line-strong); }
+.slider::-moz-range-progress { height: 2px; border-radius: 1px; background: var(--text); }
+.slider::-webkit-slider-thumb { width: 10px; height: 10px; margin-top: -4px; border: 0; border-radius: 50%; background: var(--text); -webkit-appearance: none; appearance: none; }
+.slider::-moz-range-thumb { width: 10px; height: 10px; border: 0; border-radius: 50%; background: var(--text); }
+.slider:focus-visible::-webkit-slider-thumb { outline: 2px solid var(--accent-soft); outline-offset: 2px; }
+.slider:focus-visible::-moz-range-thumb { outline: 2px solid var(--accent-soft); outline-offset: 2px; }
+/* 数值定宽，拖动时后面的控件不跟着跳 */
+.size-value { width: 3ch; font-size: 12.5px; color: var(--text-2); text-align: right; }
 .opt button[aria-pressed='true'] { color: var(--text); background: var(--sunken); box-shadow: inset 0 0 0 1px var(--line-strong); }
 
 /* 主体：侧栏 | 内容 | 详情（常驻） */
@@ -400,7 +492,7 @@ kbd { font: 12px var(--mono); color: var(--muted); padding: 1px 6px; border: 1px
 .sidebar .label { padding: 0 10px 10px; }
 .sidebar a {
   display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 5px 10px; border-radius: 6px;
-  color: var(--text-2); text-decoration: none; font-size: 13.5px; white-space: nowrap; transition: color .12s, background .12s;
+  color: var(--text-2); text-decoration: none; font-size: 13.5px; white-space: nowrap;
 }
 .sidebar a span { overflow: hidden; text-overflow: ellipsis; }
 .sidebar a small { font-size: 12px; }
@@ -416,7 +508,8 @@ main { min-width: 0; padding-bottom: 80px; }
 .category { border-bottom: 1px solid var(--line); }
 .category-head { display: flex; align-items: baseline; gap: 10px; margin: 0; padding: 28px 32px 14px; font-size: 18px; line-height: 1.3; letter-spacing: -.01em; font-weight: 600; }
 .category-head small { font-size: 13px; font-weight: 400; }
-.group { padding: 18px 32px 10px; }
+/* 小标题上方画一条整行的分割线；上移 1px 盖住上一组网格最后一行格子的下边线，避免叠成双线 */
+.group { position: relative; margin-top: -1px; padding: 18px 32px 10px; border-top: 1px solid var(--line); }
 .empty { color: var(--muted); text-align: center; padding: 96px 0; }
 
 /* 网格：格子只画右边和下边，网格只画顶边；最右一列的右边线收进容器竖线 */
@@ -428,16 +521,18 @@ main { min-width: 0; padding-bottom: 80px; }
 .cell {
   position: relative; aspect-ratio: 1; display: grid; place-items: center; padding: 0; border: 0;
   border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
-  background: none; color: var(--text); cursor: pointer; transition: background .12s, color .12s;
+  background: none; color: var(--text); cursor: pointer;
 }
 .cell:hover { background: var(--sunken); }
+.cell.filler { cursor: default; }
+.cell.filler:hover { background: none; }
 .cell.selected { background: var(--accent-soft); color: var(--accent); }
 .cell .name {
   position: absolute; left: 0; right: 0; bottom: 8px; padding: 0 6px; text-align: center;
-  font: 11.5px var(--mono); color: var(--text-2); opacity: 0; transform: translateY(2px); transition: opacity .15s, transform .15s;
+  font: 11.5px var(--mono); color: var(--text-2); opacity: 0;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
-.cell:hover .name, .cell.selected .name { opacity: 1; transform: none; }
+.cell:hover .name, .cell.selected .name { opacity: 1; }
 .cell.selected .name { color: var(--accent); }
 
 /* 详情栏：常驻右列，随页面滚动保持在视口里 */
@@ -470,7 +565,7 @@ main { min-width: 0; padding-bottom: 80px; }
 .actions { display: grid; grid-template-columns: repeat(3, 1fr); }
 .actions button {
   height: 44px; border: 0; border-right: 1px solid var(--line); background: none; cursor: pointer;
-  font-size: 13px; color: var(--text-2); transition: color .12s, background .12s;
+  font-size: 13px; color: var(--text-2);
 }
 .actions button:last-child { border-right: 0; }
 .actions button:hover { color: var(--text); background: var(--sunken); }
@@ -482,12 +577,10 @@ main { min-width: 0; padding-bottom: 80px; }
   padding: 8px 14px; border-radius: 8px; background: var(--text); color: var(--bg); font-size: 13px;
   box-shadow: 0 8px 24px rgb(0 0 0 / .2);
 }
-.fade-enter-active, .fade-leave-active { transition: opacity .15s, transform .15s; }
-.fade-enter-from, .fade-leave-to { opacity: 0; transform: translate(-50%, 4px); }
 
 /* 中屏：设置挪到第二行，可以横向滑动；详情栏放不下第三列，改成从右下浮起 */
 @media (max-width: 1180px) {
-  .top { grid-template-columns: var(--side) minmax(0, 1fr); grid-template-areas: 'brand search' 'opts opts'; }
+  .top { grid-template-columns: var(--side) auto minmax(0, 1fr); grid-template-areas: 'brand views search' 'opts opts opts'; }
   .search { height: 52px; }
   .opts { overflow-x: auto; border-top: 1px solid var(--line); scrollbar-width: none; }
   .opts::-webkit-scrollbar { display: none; }
@@ -503,7 +596,9 @@ main { min-width: 0; padding-bottom: 80px; }
 }
 /* 手机：名字只留图标、和搜索挤一行；去掉侧栏，分类改成固定在页头下方、可横向滑动的标签；详情从底部弹出成半屏面板 */
 @media (max-width: 760px) {
-  .top { grid-template-columns: auto minmax(0, 1fr); }
+  .top { grid-template-columns: auto auto minmax(0, 1fr); }
+  .views { padding: 0 6px; }
+  .views button { padding: 0 8px; }
   .brand { padding: 0 14px; }
   .brand span { display: none; }
   .search { height: 48px; padding: 0 14px; }

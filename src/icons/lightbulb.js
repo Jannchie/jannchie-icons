@@ -5,6 +5,6 @@ const at = deg => [cx + r * Math.cos(rad(deg)), cy + r * Math.sin(rad(deg))]
 const [left, right] = [at(125), at(55)]
 
 export default () => [
-  `M${left.join(' ')}A${r} ${r} 0 1 1 ${right.join(' ')}L15 17H9Z`,
-  'M9.75 20H14.25',
+  `M${left.join(' ')}A${r} ${r} 0 1 1 ${right.join(' ')}L15 17.5H9Z`,
+  'M9.75 20.5H14.25',
 ]

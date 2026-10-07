@@ -2,9 +2,9 @@ import { circle, crisp, rounded } from '../geometry'
 
 // 适应屏幕：四角取景框 + 中间一个方块
 export default ({ radius, stroke }) => [
-  rounded([[3, 6.5], [3, 3], [6.5, 3]], Math.min(radius, 1.5), false),
-  rounded([[21, 6.5], [21, 3], [17.5, 3]], Math.min(radius, 1.5), false),
-  rounded([[21, 17.5], [21, 21], [17.5, 21]], Math.min(radius, 1.5), false),
-  rounded([[3, 17.5], [3, 21], [6.5, 21]], Math.min(radius, 1.5), false),
-  rounded([[8, 8], [16, 8], [16, 16], [8, 16]], Math.min(radius, 1.5)),
+  rounded([[3.5, 7], [3.5, 3.5], [7, 3.5]], Math.min(radius, 1.5), false),
+  rounded([[20.5, 7], [20.5, 3.5], [17, 3.5]], Math.min(radius, 1.5), false),
+  rounded([[20.5, 17], [20.5, 20.5], [17, 20.5]], Math.min(radius, 1.5), false),
+  rounded([[3.5, 17], [3.5, 20.5], [7, 20.5]], Math.min(radius, 1.5), false),
+  rounded([[8.5, 8.5], [15.5, 8.5], [15.5, 15.5], [8.5, 15.5]], Math.min(radius, 1.5)),
 ]

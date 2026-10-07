@@ -6,6 +6,6 @@ import { screen, stand } from '../monitor'
 export default ({ radius }) => [
   rounded(screen, Math.min(radius, 2.5)),
   ...stand,
-  'M12 13V7.5',
-  rounded(arrow(12, 7.5, 'up', 2.5), crisp(radius), false),
+  'M11.5 13V7.5',
+  rounded(arrow(11.5, 7.5, 'up', 2.5), crisp(radius), false),
 ]

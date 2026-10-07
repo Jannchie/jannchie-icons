@@ -1,11 +1,17 @@
-import { sparkle } from '../symbols'
-import { rotate } from '../transform'
+// 魔法棒：左下到右上的一根棒子，棒头外侧一圈放射状的短光线 + 中心一点
+// 光芒中心在 (14.5, 9.5)：横竖光线都落在 .5 上；左下方向留给棒子，不画光线
+const [cx, cy] = [14.5, 9.5]
+const ray = (dx, dy, from = 3.5, to = 5.5) => `M${cx + dx * from} ${cy + dy * from}L${cx + dx * to} ${cy + dy * to}`
+const s = Math.SQRT1_2
 
-// 魔法棒：棒身先竖直画再顺时针转 30°；棒头和握柄之间断开一小段（像一道白环）；
-// 棒头左侧一颗星芒、右侧一颗更小的星芒。星芒不跟着转（避免变形），只把位置放在旋转后的棒头两侧
-export default ({ radius }) => [
-  rotate('M12 21.5V11.5', 30),
-  rotate('M12 9.25V5', 30),
-  ...sparkle([10.75, 4.75], 0.8, radius).map(p => p.d ?? p),
-  ...sparkle([19.25, 10.25], 0.55, radius).map(p => p.d ?? p),
+export default () => [
+  'M3 21L11.5 12.5',
+  ray(0, -1),
+  ray(0, 1),
+  ray(-1, 0),
+  ray(1, 0),
+  ray(s, -s, 3.25, 5.25),
+  ray(s, s, 3.25, 5.25),
+  ray(-s, -s, 3.25, 5.25),
+  `M${cx} ${cy}h0`,
 ]

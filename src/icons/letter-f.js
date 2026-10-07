@@ -1,7 +1,7 @@
-import { glyph } from '../letters'
+import { crispGlyph } from '../letters'
 
-// F：线条字形放大 2.5 倍居中
+// F：线条字形放大 2.5 倍居中，横竖笔画对齐像素网格
 const scale = 2.5
 export default ({ radius }) => [
-  glyph('F', 12 - 1.75 * scale, 12 - 3 * scale, scale),
+  crispGlyph('F', 12 - 1.75 * scale, 12 - 3 * scale, scale),
 ]

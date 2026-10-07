@@ -5,7 +5,8 @@ import { rounded } from '../geometry'
 // 外接框中心比格子中心下移 0.25，让重心更稳
 const side = 19
 const h = side * Math.sqrt(3) / 2
-const [top, bottom] = [12.25 - h / 2, 12.25 + h / 2]
+// 底边落在 20.5（.5 上），外接框中心约 12.27
+const [top, bottom] = [20.5 - h, 20.5]
 
 export default ({ radius }) => [
   rounded([[12, top], [12 + side / 2, bottom], [12 - side / 2, bottom]], Math.min(radius, 2)),

@@ -3,6 +3,7 @@ import { rounded } from './geometry'
 import { rotate } from './transform'
 
 export const card = radius => [
-  rounded([[5, 2.5], [19, 2.5], [19, 21.5], [5, 21.5]], Math.min(radius, 2)),
+  // 左右两边落在 4.5 / 19.5 上
+  rounded([[4.5, 2.5], [19.5, 2.5], [19.5, 21.5], [4.5, 21.5]], Math.min(radius, 2)),
   rotate('M12 5.5C16.5 5.5 18 9 18 12C18 15 16.5 18.5 12 18.5C7.5 18.5 6 15 6 12C6 9 7.5 5.5 12 5.5Z', 30),
 ]

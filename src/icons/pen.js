@@ -1,17 +1,14 @@
-import { crisp, rounded } from '../geometry'
-import { dot } from '../scene'
+import { rounded } from '../geometry'
 import { rotate } from '../transform'
 
-// 钢笔：笔杆 + 笔尖（中间一道笔缝和一个通气孔），先竖直画，再顺时针转 30°
-const [hx, hy] = (() => {
-  const a = 30 * Math.PI / 180
-  const [x, y] = [12 - 12, 14.5 - 12]
-  return [12 + x * Math.cos(a) - y * Math.sin(a), 12 + x * Math.sin(a) + y * Math.cos(a)]
-})()
+// 笔（圆珠笔）：笔身 + 笔帽分界线 + 侧面的笔夹 + 锥形笔尖。笔夹是和铅笔（edit）区分开的关键特征。
+// 先竖直画（笔尖朝下），再顺时针转 30°（与水平成 60°），和 edit、斜放的曲别针、纸飞机同一个角度
+const r30 = d => rotate(d, 30)
 
 export default ({ radius }) => [
-  rotate(rounded([[9.5, 3], [14.5, 3], [14.5, 11.5], [9.5, 11.5]], Math.min(radius, 1)), 30),
-  rotate(rounded([[9.5, 11.5], [14.5, 11.5], [12, 21, crisp(radius)]], Math.min(radius, 1)), 30),
-  rotate('M12 16.25L12 20', 30),
-  dot(hx, hy, 1.5),
+  // 笔尖分界线的两端接在 y = 16 的两个拐角上：这两个角不做圆角（半径 0），线头正好落在顶点，不会悬在被圆角切进去的轮廓外面
+  r30(rounded([[9.5, 2.5], [14.5, 2.5], [14.5, 16, 0], [12, 21], [9.5, 16, 0]], Math.min(radius, 2))),
+  r30('M9.5 16H14.5'),
+  r30('M9.5 7.5H14.5'),
+  r30('M14.5 3.5H16.5V10'),
 ]

@@ -4,6 +4,6 @@ import { rounded } from '../geometry'
 export default ({ radius }) => [
   rounded([[3.5, 3.5], [3.5, 20.5], [20.5, 20.5]], Math.min(radius, 1), false),
   'M8.5 16.5V12',
-  'M12.75 16.5V7.5',
-  'M17 16.5V10.5',
+  'M12.5 16.5V7.5',
+  'M16.5 16.5V10.5',
 ]

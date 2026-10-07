@@ -1,4 +1,5 @@
 // 线条字母：每个字母 3.5 宽 × 6 高，原点在左上；只用直线和（椭圆）弧，能跟随线宽
+import { axisLines, parse } from './svg'
 import { affine } from './transform'
 
 const W = 3.5
@@ -47,6 +48,75 @@ const GLYPHS = {
 // 平移并缩放字母路径（sx、sy 分别作用于 x、y 和圆弧的 rx、ry）
 const place = (d, dx, dy, sx = 1, sy = 1) => affine(d, sx, sy, dx, dy)
 
+// 对齐像素网格（类似字体 hinting）：任意缩放、摆放后，把横线的 y、竖线的 x 吸到最近的 .5（正好居中时往小的一侧），
+// 两条线之间的坐标按比例线性插值，最外侧两条线以外只平移；圆弧半径按端点所在区间的比例缩放
+// 一组路径一起吸附（例如 $ 的 S 和竖线），才不会各吸各的错开；接受字符串、{ d } 对象或它们的数组，原样返回同样的结构
+const half = v => Math.ceil(+(v - 1).toFixed(6)) + 0.5
+function axisMap(lines) {
+  const from = [...new Set(lines.map(v => +v.toFixed(6)))].sort((a, b) => a - b)
+  const to = []
+  from.forEach((v, i) => {
+    // 两条线挨得太近（不到 0.5）就不强求，跟着前一条平移；否则至少隔 1，避免吸成一条
+    if (i && v - from[i - 1] < 0.5)
+      to.push(to[i - 1] + v - from[i - 1])
+    else
+      to.push(i ? Math.max(half(v), to[i - 1] + 1) : half(v))
+  })
+  const map = (v) => {
+    if (!from.length)
+      return v
+    if (v <= from[0])
+      return v + to[0] - from[0]
+    for (let i = 1; i < from.length; i++) {
+      if (v <= from[i])
+        return to[i - 1] + (v - from[i - 1]) * (to[i] - to[i - 1]) / (from[i] - from[i - 1])
+    }
+    return v + to.at(-1) - from.at(-1)
+  }
+  // a → b 这一段的缩放比例（两端重合时取该点所在区间的斜率）
+  const ratio = (a, b) => Math.abs(b - a) > 1e-6 ? (map(b) - map(a)) / (b - a) : (map(a + 1e-3) - map(a)) / 1e-3
+  return { map, ratio }
+}
+export function snap(paths) {
+  const list = [paths].flat()
+  const ds = list.map(p => (typeof p === 'string' ? p : p.d))
+  const lines = ds.flatMap(axisLines)
+  const xs = lines.filter(l => l[0] === 'x').map(l => l[1])
+  const ys = lines.filter(l => l[0] === 'y').map(l => l[1])
+  const [X, Y] = [axisMap(xs), axisMap(ys)]
+  const fmt = (x, y) => `${+X.map(x).toFixed(4)} ${+Y.map(y).toFixed(4)}`
+  const out = ds.map((d) => {
+    let pos = [0, 0]
+    let start = [0, 0]
+    return parse(d, true).map(([t, a]) => {
+      if (t === 'Z') {
+        pos = start
+        return 'Z'
+      }
+      let s
+      if (t === 'A') {
+        const [rx, ry, phi, fa, fs, x, y] = a
+        s = `A${+(rx * X.ratio(pos[0], x)).toFixed(4)} ${+(ry * Y.ratio(pos[1], y)).toFixed(4)} ${phi} ${fa} ${fs} ${fmt(x, y)}`
+      }
+      else {
+        const pts = []
+        for (let i = 0; i < a.length; i += 2)
+          pts.push(fmt(a[i], a[i + 1]))
+        s = t + pts.join(' ')
+      }
+      pos = a.slice(-2)
+      if (t === 'M')
+        start = pos
+      return s
+    }).join('')
+  })
+  const res = list.map((p, i) => (typeof p === 'string' ? out[i] : { ...p, d: out[i] }))
+  return Array.isArray(paths) ? res : res[0]
+}
+
+// 单个字形对齐网格后的版本
+export const crispGlyph = (...args) => snap(glyph(...args))
+
 // 单个字形：左上角放在 (x, y)，按 scale 等比缩放（原始 3.5 × 6）；给了 sy 时横竖分开缩放
 export const glyph = (c, x, y, scale = 1, sy = scale) => place(GLYPHS[c], x, y, scale, sy)
 
@@ -56,15 +126,17 @@ const NARROW = { '1': { advance: 2, shift: 0.375 }, '-': { advance: 2.5, shift: 
 export const advance = c => NARROW[c]?.advance ?? W
 export const textWidth = (str, sx = 1, gap = 1.5) => [...str].reduce((w, c, i) => w + advance(c) * sx + (i ? gap : 0), 0)
 
-// 一行字以 (cx, cy) 为中心排开：字宽 advance·sx、字高 6·sy，字间距 gap
-export function line(str, [cx, cy], sx = 1, gap = 1.5, sy = sx) {
-  let x = cx - textWidth(str, sx, gap) / 2
-  return [...str].map((c) => {
-    const d = glyph(c, x - (NARROW[c]?.shift ?? 0) * sx, cy - 3 * sy, sx, sy)
+// 一行字从左上角 (x, y) 排开：字宽 advance·sx、字高 6·sy，字间距 gap；空格只占位不出字形
+export function lineAt(str, [x, y], sx = 1, gap = 1.5, sy = sx) {
+  return [...str].flatMap((c) => {
+    const d = c === ' ' ? [] : [glyph(c, x - (NARROW[c]?.shift ?? 0) * sx, y, sx, sy)]
     x += advance(c) * sx + gap
     return d
   })
 }
+
+// 一行字以 (cx, cy) 为中心排开
+export const line = (str, [cx, cy], sx = 1, gap = 1.5, sy = sx) => lineAt(str, [cx - textWidth(str, sx, gap) / 2, cy - 3 * sy], sx, gap, sy)
 
 // 把一串字母排进 box（上下固定 6 高）：
 // 三个字母左右撑满；少于三个按固定间距居中；多于三个先把字母横向压窄再撑满

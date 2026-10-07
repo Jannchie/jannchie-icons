@@ -5,8 +5,8 @@ import { crisp, rounded } from '../geometry'
 export default ({ radius }) => {
   const r = Math.min(radius, 1)
   return [
-    rounded([[2.5, 21], [2.5, 13], [8.5, 13, crisp(radius)], [8.5, 8], [15.5, 8], [15.5, 15.5, crisp(radius)], [21.5, 15.5], [21.5, 21]], r),
-    'M8.5 13V21',
-    'M15.5 15.5V21',
+    rounded([[2.5, 20.5], [2.5, 12.5], [8.5, 12.5, crisp(radius)], [8.5, 7.5], [15.5, 7.5], [15.5, 15.5, crisp(radius)], [21.5, 15.5], [21.5, 20.5]], r),
+    'M8.5 12.5V20.5',
+    'M15.5 15.5V20.5',
   ]
 }
