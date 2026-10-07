@@ -75,6 +75,7 @@ const messages = {
       'aett-freyr': 'Freyr’s Ætt', 'aett-hagal': 'Hagal’s Ætt', 'aett-tyr': 'Tyr’s Ætt',
       'notation-clef': 'Clefs', 'notation-note': 'Notes', 'notation-rest': 'Rests', 'notation-accidental': 'Accidentals', 'notation-other': 'Other Marks',
       'laundry-wash': 'Washing', 'laundry-bleach': 'Bleaching', 'laundry-dry': 'Drying', 'laundry-iron': 'Ironing', 'laundry-clean': 'Professional Cleaning',
+      'language': 'Programming Languages',
     },
   },
   zh: {
@@ -143,6 +144,7 @@ const messages = {
       'aett-freyr': '弗雷族', 'aett-hagal': '海格族', 'aett-tyr': '提尔族',
       'notation-clef': '谱号', 'notation-note': '音符', 'notation-rest': '休止符', 'notation-accidental': '变音记号', 'notation-other': '其他记号',
       'laundry-wash': '水洗', 'laundry-bleach': '漂白', 'laundry-dry': '干燥', 'laundry-iron': '熨烫', 'laundry-clean': '专业清洗',
+      'language': '编程语言',
     },
   },
   ja: {
@@ -211,6 +213,7 @@ const messages = {
       'aett-freyr': 'フレイのエット', 'aett-hagal': 'ハガルのエット', 'aett-tyr': 'テュールのエット',
       'notation-clef': '音部記号', 'notation-note': '音符', 'notation-rest': '休符', 'notation-accidental': '変化記号', 'notation-other': 'その他の記号',
       'laundry-wash': '洗濯', 'laundry-bleach': '漂白', 'laundry-dry': '乾燥', 'laundry-iron': 'アイロン', 'laundry-clean': '商業クリーニング',
+      'language': 'プログラミング言語',
     },
   },
 }

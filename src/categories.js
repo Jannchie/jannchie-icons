@@ -54,6 +54,7 @@ const ENLISTED = ['private', 'corporal', 'sergeant', 'staff-sergeant', 'master-s
 const OFFICER = ['second-lieutenant', 'first-lieutenant', 'captain', 'major', 'lieutenant-colonel', 'colonel', 'major-general', 'lieutenant-general', 'general']
 const HOUSEHOLD = ['sofa', 'armchair', 'bed', 'door', 'lamp-desk', 'bathtub', 'shower', 'toilet', 'refrigerator', 'washing-machine', 'microwave', 'air-conditioner']
 const TOOLS = ['wrench', 'screwdriver', 'drill', 'saw', 'shovel', 'paint-bucket', 'flashlight']
+const LANGUAGES = ['python', 'javascript', 'typescript', 'java', 'csharp', 'cpp', 'c', 'golang', 'rust', 'php', 'kotlin', 'swift', 'ruby', 'lua', 'haskell']
 const USER_BASE = ['user', 'users', 'user-circle', 'id-card']
 const USER_STATUS = ['user-plus', 'user-minus', 'user-check', 'user-x', 'user-cog']
 const USER_EMPLOYMENT = ['user-full-time', 'user-part-time', 'user-contractor', 'user-intern', 'user-freelancer', 'user-remote', 'user-temp', 'label-fte', 'label-pt', 'label-ctr', 'label-int']
@@ -216,9 +217,15 @@ export const CATEGORIES = [
   },
   { id: 'git', match: prefixed('git-') },
   { id: 'keyboard', match: prefixed('kbd-'), rank: name => ['enter', 'shift', 'caps-lock', 'tab', 'backspace', 'delete', 'escape', 'space', 'command', 'option', 'control'].indexOf(name.slice(4)) },
+  // 开发：通用的开发、数据图标一节，编程语言一节（按名单顺序，大致按常用程度）
   {
     id: 'dev',
-    match: oneOf('code', 'code-braces', 'terminal', 'database', 'database-arrow-down', 'database-arrow-up', 'server', 'server-cog', 'layers', 'cube', 'chip', 'flask', 'activity', 'robot', 'brain', 'brain-circuit', 'brain-cyborg', 'neural-network', 'mcp', 'api', 'webhook', 'container'),
+    match: any(
+      oneOf('code', 'code-braces', 'terminal', 'database', 'database-arrow-down', 'database-arrow-up', 'server', 'server-cog', 'layers', 'cube', 'chip', 'flask', 'activity', 'robot', 'brain', 'brain-circuit', 'brain-cyborg', 'neural-network', 'mcp', 'api', 'webhook', 'container'),
+      oneOf(...LANGUAGES),
+    ),
+    section: name => LANGUAGES.includes(name) ? { order: 1, key: 'language' } : { order: 0, key: '' },
+    rank: name => LANGUAGES.indexOf(name),
   },
   { id: 'navigation', match: oneOf('navigation', 'route', 'locate', 'signpost', 'milestone') },
   { id: 'network', match: oneOf('router', 'network', 'antenna', 'satellite', 'radio-tower', 'rss', 'nfc') },
