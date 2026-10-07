@@ -32,7 +32,8 @@ export const CC = {
   // NC 非商业：美元符号被斜杠划掉；欧元、日元版本同理
   'cc-nc': { zh: '非商业 NC', paths: () => [ring(), ...snap([small('S'), 'M12 5.5V18.5']), slash] },
   'cc-nc-eu': { zh: '非商业 NC（欧元）', paths: () => [ring(), ...snap([small('C', 1), 'M7.5 11H13.5M7.5 13.5H13.5']), slash] },
-  'cc-nc-jp': { zh: '非商业 NC（日元）', paths: () => [ring(), ...snap([small('Y'), 'M9 13H15M9 15.75H15']), slash] },
+  // ¥ 是左右对称的单竖：竖笔必须落在圆环中心 12 上，不能整体吸附到 .5（吸附会把整个符号往左挪半格，看着歪）
+  'cc-nc-jp': { zh: '非商业 NC（日元）', paths: () => [ring(), 'M9 7L12 11.5L15 7M12 11.5V16.5', 'M9 12.5H15M9 15H15', slash] },
   // SA 相同方式共享：开口朝左的圆弧箭头，箭头在上端、朝下
   'cc-sa': {
     zh: '相同方式共享 SA',
