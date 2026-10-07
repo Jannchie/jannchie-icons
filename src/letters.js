@@ -45,6 +45,47 @@ const GLYPHS = {
   '-': 'M.5 3H3',
 }
 
+// 标签字形（文件类型图标下方的扩展名专用）：3.5 宽 × 7 高，只用横竖线和 1 个单位的 45° 小切角，没有圆弧——
+// 16–20px 下一个字母只有三四个像素宽，圆弧会被抗锯齿成一团灰；横竖笔画加切角能落在整像素上，字母内部也留得出空
+const LABEL_GLYPHS = {
+  A: 'M0 7V1L1 0H2.5L3.5 1V7M0 4H3.5',
+  B: 'M0 0H2.5L3.5 1V2.5L2.5 3.5L3.5 4.5V6L2.5 7H0ZM0 3.5H2.5',
+  C: 'M3.5 0H1L0 1V6L1 7H3.5',
+  D: 'M0 0H2L3.5 1.5V5.5L2 7H0Z',
+  E: 'M3.5 0H0V7H3.5M0 3.5H2.75',
+  F: 'M3.5 0H0V7M0 3.5H2.75',
+  G: 'M3.5 0H1L0 1V6L1 7H3.5V4H2',
+  H: 'M0 0V7M3.5 0V7M0 3.5H3.5',
+  I: 'M0 0H3.5M1.75 0V7M0 7H3.5',
+  J: 'M3.5 0V6L2.5 7H1L0 6',
+  K: 'M0 0V7M0 3.5H1.25L3.5 0M1.25 3.5L3.5 7',
+  L: 'M0 0V7H3.5',
+  M: 'M0 7V0L1.75 2.5L3.5 0V7',
+  N: 'M0 7V0L3.5 7V0',
+  O: 'M1 0H2.5L3.5 1V6L2.5 7H1L0 6V1Z',
+  P: 'M0 7V0H2.5L3.5 1V3L2.5 4H0',
+  Q: 'M1 0H2.5L3.5 1V6L2.5 7H1L0 6V1ZM2.25 5.25L3.5 7',
+  R: 'M0 7V0H2.5L3.5 1V3L2.5 4H0M2 4L3.5 7',
+  S: 'M3.5 0H1L0 1V2.5L1 3.5H2.5L3.5 4.5V6L2.5 7H0',
+  T: 'M0 0H3.5M1.75 0V7',
+  U: 'M0 0V6L1 7H2.5L3.5 6V0',
+  V: 'M0 0V2.5L1.75 7L3.5 2.5V0',
+  W: 'M0 0V7L1.75 4.5L3.5 7V0',
+  X: 'M0 0L3.5 7M3.5 0L0 7',
+  Y: 'M0 0L1.75 3.5L3.5 0M1.75 3.5V7',
+  Z: 'M0 0H3.5L0 7H3.5',
+  0: 'M1 0H2.5L3.5 1V6L2.5 7H1L0 6V1Z',
+  1: 'M.5 1L1.75 0V7M.5 7H3',
+  2: 'M0 1L1 0H2.5L3.5 1V3L0 7H3.5',
+  3: 'M0 0H2.5L3.5 1V2.5L2.5 3.5H1M2.5 3.5L3.5 4.5V6L2.5 7H0',
+  4: 'M2.5 7V0L0 4.5H3.5',
+  5: 'M3.5 0H0V3.5H2.5L3.5 4.5V6L2.5 7H0',
+  6: 'M3 0H1L0 1V6L1 7H2.5L3.5 6V4.5L2.5 3.5H0',
+  7: 'M0 0H3.5V1L1.5 7',
+  8: 'M1 0H2.5L3.5 1V2.5L2.5 3.5H1L0 2.5V1ZM1 3.5L0 4.5V6L1 7H2.5L3.5 6V4.5L2.5 3.5',
+  9: 'M3.5 3.5H1L0 2.5V1L1 0H2.5L3.5 1V6L2.5 7H.5',
+}
+
 // 平移并缩放字母路径（sx、sy 分别作用于 x、y 和圆弧的 rx、ry）
 const place = (d, dx, dy, sx = 1, sy = 1) => affine(d, sx, sy, dx, dy)
 
@@ -140,7 +181,7 @@ export function lineAt(str, [x, y], sx = 1, gap = 1.5, sy = sx) {
 // 一行字以 (cx, cy) 为中心排开
 export const line = (str, [cx, cy], sx = 1, gap = 1.5, sy = sx) => lineAt(str, [cx - textWidth(str, sx, gap) / 2, cy - 3 * sy], sx, gap, sy)
 
-// 把一串字母排进 box（上下固定 6 高）：字距固定 GAP，字宽按排字区算（最多 1 倍），整组居中
+// 把一串字母排进 box（用标签字形 LABEL_GLYPHS，上下固定 7 高）：字距固定 GAP，字宽按排字区算（最多 1 倍），整组居中
 // 排字区左右放宽（文件图标的标签在纸张下方，左右没有边线挡着）：三个字母以内各放宽 1，四个字母以上各放宽 2.5
 // 字距至少 2：吸附网格时相邻两笔最少只保证隔 1，字距再小，像 INDD 的 N 和 D 会贴在一起
 // 字母用细线（thin：外框的 0.7 倍），整组横竖笔画吸到 .5 网格（snap）：
@@ -155,5 +196,5 @@ export function label(text, { left, right, top }) {
   const sx = Math.min(1, (r - l - gap * (n - 1)) / (W * n))
   const w = W * sx
   const start = l + (r - l - (w * n + gap * (n - 1))) / 2
-  return snap(chars.map((c, i) => ({ d: place(GLYPHS[c], start + i * (w + gap), top, sx), thin: true })))
+  return snap(chars.map((c, i) => ({ d: place(LABEL_GLYPHS[c] ?? GLYPHS[c], start + i * (w + gap), top, sx), thin: true })))
 }

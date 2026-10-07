@@ -28,7 +28,7 @@ export function pageAround(shape, stroke, radius) {
   ]
 }
 
-// 格式标签：只画纸张上半部分（侧边在 y = 12 收住），下方 15–21 写三个字母
+// 格式标签：只画纸张上半部分（侧边在 y = 12 收住），下方 14.5–21.5 写扩展名（标签字形 7 高）
 export const pageTop = radius => [[l, 12], [l, t], ...corner(radius), [r, 12]]
-// 字母排版区沿用原来的 5–19，不随纸张边线挪动
-export const labelBox = { left: 5, right: 19, top: 15, bottom: 21 }
+// 字母排版区沿用原来的 5–19，不随纸张边线挪动（label 会按字数再往左右放宽）
+export const labelBox = { left: 5, right: 19, top: 14.5, bottom: 21.5 }
