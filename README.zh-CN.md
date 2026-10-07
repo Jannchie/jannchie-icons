@@ -59,4 +59,6 @@ import { ring } from '../marks'
 export default () => [ring(), 'M12 8V16', 'M8 12H16']
 ```
 
+发布由 GitHub Actions 通过 npm trusted publishing 完成：将 `packages/core/package.json` 与 `packages/iconify-json/package.json` 的 `version` 改为同一版本并提交，再推送对应的标签（`git tag v0.2.0 && git push origin v0.2.0`）。
+
 通用形状与工具函数位于 `src/geometry.js`（圆角多边形、圆）与 `src/letters.js`（用于标识与数字的线条字母）。推送到 `main` 后站点自动部署到 GitHub Pages。

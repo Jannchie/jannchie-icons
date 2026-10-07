@@ -59,4 +59,6 @@ import { ring } from '../marks'
 export default () => [ring(), 'M12 8V16', 'M8 12H16']
 ```
 
+Releases are published from GitHub Actions with npm trusted publishing: set the same `version` in `packages/core/package.json` and `packages/iconify-json/package.json`, commit, then push a matching tag (`git tag v0.2.0 && git push origin v0.2.0`).
+
 Shared shapes and helpers live in `src/geometry.js` (rounded polygons, circles) and `src/letters.js` (line lettering for badges and numerals). Pushes to `main` deploy the site to GitHub Pages.

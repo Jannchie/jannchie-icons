@@ -1,0 +1,16 @@
+import { rounded } from '../geometry'
+import { dot, GROUND, groundLine, opening } from '../scene'
+
+// 消防站：平顶车库，两扇卷帘门各一道横缝；屋顶正中一座带四坡顶的瞭望钟楼，楼里挂钟
+export default ({ radius }) => [
+  groundLine,
+  rounded([[3.5, GROUND], [3.5, 9.5], [9.5, 9.5]], radius, false),
+  rounded([[14.5, 9.5], [20.5, 9.5], [20.5, GROUND]], radius, false),
+  rounded([[9.5, 9.5], [9.5, 6.5], [14.5, 6.5], [14.5, 9.5]], radius, false),
+  rounded([[8.5, 6.5], [12, 3.5], [15.5, 6.5]], radius, false),
+  'M9.5 9.5H14.5',
+  dot(12, 8),
+  rounded(opening(8, 5, 6.5), radius, false),
+  rounded(opening(16, 5, 6.5), radius, false),
+  { d: 'M5.5 16.5H10.5M13.5 16.5H18.5', thin: true },
+]

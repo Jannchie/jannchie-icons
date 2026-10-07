@@ -1,0 +1,49 @@
+name: Publish to npm
+
+# 推送 v* 标签时发布 @jannchie/icons 和 @jannchie/iconify-json
+# 用 npm Trusted Publishing（OIDC）认证，不需要 NPM_TOKEN；需要先在 npmjs.com 的包设置里把本仓库的这个 workflow 加为 trusted publisher
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+      # Trusted Publishing 需要 npm 11.5.1 以上
+      - run: npm install -g npm@latest
+      - run: pnpm install --frozen-lockfile
+
+      - name: Check tag matches package versions
+        if: github.ref_type == 'tag'
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          for pkg in packages/core packages/iconify-json; do
+            version=$(node -p "require('./$pkg/package.json').version")
+            if [ "$version" != "$tag" ]; then
+              echo "::error::$pkg is $version but the tag is v$tag"
+              exit 1
+            fi
+          done
+
+      - run: pnpm build:packages
+
+      - name: Publish
+        run: |
+          for pkg in packages/core packages/iconify-json; do
+            (cd "$pkg" && npm publish --access public)
+          done
