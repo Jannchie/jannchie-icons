@@ -9,9 +9,10 @@
   "keywords": ["icons", "svg", "line-icons", "duotone"],
   "type": "module",
   "sideEffects": false,
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./dist/index.js",
-    "./all": "./dist/all.js"
+    ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
+    "./all": { "types": "./dist/all.d.ts", "default": "./dist/all.js" }
   },
-  "files": ["dist"]
+  "files": ["dist", "NOTICE"]
 }
