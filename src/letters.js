@@ -142,7 +142,8 @@ export const line = (str, [cx, cy], sx = 1, gap = 1.5, sy = sx) => lineAt(str, [
 
 // 把一串字母排进 box（上下固定 6 高）：
 // 三个字母左右撑满；少于三个按固定间距居中；多于三个先把字母横向压窄再撑满
-// 字母内部空间小，标记为细节：粗字重下线宽封顶，不会糊成一团
+// 字母用细线（thin：外框的 0.7 倍），整组横竖笔画吸到 .5 网格（snap）：
+// 16–20px 下一个字母只有三四个像素宽，笔画落在半个像素上会发灰；thin 还会参与像素对齐（detail 不参与），常规线宽下字母内部也多留一点空
 const GAP = 1.75
 export function label(text, { left, right, top }) {
   const chars = [...text.toUpperCase()]
@@ -152,5 +153,5 @@ export function label(text, { left, right, top }) {
   const w = W * sx
   const gap = n > 1 ? Math.min((span - w * n) / (n - 1), GAP) : 0
   const start = left + (span - (w * n + gap * (n - 1))) / 2
-  return chars.map((c, i) => ({ d: place(GLYPHS[c], start + i * (w + gap), top, sx), detail: true }))
+  return snap(chars.map((c, i) => ({ d: place(GLYPHS[c], start + i * (w + gap), top, sx), thin: true })))
 }
