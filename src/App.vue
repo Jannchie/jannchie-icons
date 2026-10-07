@@ -819,7 +819,7 @@ main { min-width: 0; padding-bottom: 80px; }
 /* 圆角 × 字重：第一列是字重名，第一行是圆角名 */
 .style-grid { display: grid; grid-template-columns: auto repeat(var(--cols), minmax(0, 1fr)); gap: 2px; align-items: center; }
 .style-grid small { font-size: 11px; text-align: center; }
-.style-grid button { aspect-ratio: auto; height: 40px; }
+.style-grid button { aspect-ratio: 1; }
 .style-grid .row-head { padding-right: 8px; text-align: left; }
 /* 页头的 GitHub 链接 */
 .repo { display: inline-grid; place-items: center; width: 28px; height: 26px; padding: 0; border-radius: 6px; font: 12.5px var(--mono); color: var(--text-2); text-decoration: none; }
