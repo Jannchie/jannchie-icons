@@ -1,0 +1,12 @@
+import { place } from '../clearance'
+import { aroundTop, badgeTop } from '../calendar'
+import { clock, cornerScale, outlines } from '../symbols'
+import { info } from '../tone'
+
+// 日历 + 右上角时钟
+const k = cornerScale.clock
+
+export default ({ radius, stroke }) => [
+  ...aroundTop(place(outlines.clock, badgeTop, k), radius, stroke),
+  ...info(clock(badgeTop, k, radius)),
+]

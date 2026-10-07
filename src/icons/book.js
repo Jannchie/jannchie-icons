@@ -1,5 +1,4 @@
+import { plain } from '../book'
+
 // 书：封面 + 书脊下方的页线
-export default ({ radius }) => [
-  'M5.5 18V6A2.5 2.5 0 0 1 8 3.5H19.5V20.5H8A2.5 2.5 0 0 1 5.5 18Z',
-  'M5.5 18A2.5 2.5 0 0 1 8 15.5H19.5',
-]
+export default () => plain()

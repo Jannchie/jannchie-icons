@@ -2,6 +2,7 @@
 // 外框只用来区分体系（同样写着 12 的，带横栏的方框是 PEGI、圆是韩国），不是照搬各机构的官方标志
 import { circle, rounded } from './geometry'
 import { line, textWidth } from './letters'
+import { tagShape } from './marks'
 
 // 外框：shape(radius) 画框，box 是留给文字的区域 [左, 上, 右, 下]
 // 外框都撑到画布边缘附近，文字区离外框中心线至少 3（扣掉两边半个线宽后还空 1.5），字不会贴着框
@@ -26,6 +27,8 @@ const FRAMES = {
   shield: { shape: r => rounded([[3.5, 2.5], [20.5, 2.5], [20.5, 12.5], [12, 21.5], [3.5, 12.5]], Math.min(r, 2)), box: [6.5, 5.25, 17.5, 12.75] },
   // 屋形：尖顶朝上，文字在下面方正的部分
   house: { shape: r => rounded([[12, 2], [21.5, 9.5], [21.5, 21.5], [2.5, 21.5], [2.5, 9.5]], Math.min(r, 2)), box: [5.5, 11, 18.5, 18.5] },
+  // 标签：和 tag 系列同一个外框（marks.js），文字在右边方正的部分
+  tag: { shape: tagShape, box: [10.5, 7.5, 18.5, 16.5] },
 }
 
 // 体系：外框 + 分级列表（文字里的 / 表示换行）；name 用来生成图标名 rating-<体系>-<分级>
@@ -40,6 +43,8 @@ export const SYSTEMS = {
   kmrb: { frame: 'circle', zh: '韩国电影 KMRB', ratings: ['ALL', '12', '15', '18'] },
   usk: { frame: 'shield', zh: '德国游戏 USK', ratings: ['0', '6', '12', '16', '18'] },
   cadpa: { frame: 'house', zh: '中国游戏 适龄提示', ratings: ['8+', '12+', '16+'] },
+  // 图片敏感度（图片打标模型常用的四档）：general 普通、sensitive 敏感、questionable 过激、explicit 超过激
+  sensitivity: { frame: 'tag', zh: '图片敏感度', ratings: ['G', 'S', 'Q', 'E'] },
 }
 export const ratingName = (system, text) => `rating-${system}-${text.replace('/', '').replace('+', '').toLowerCase()}`
 

@@ -1,0 +1,9 @@
+import { plain, center, centerScale } from '../book'
+import { star } from '../symbols'
+import { warning } from '../tone'
+
+// 书 + 收藏
+export default ({ radius }) => [
+  ...plain(radius),
+  ...warning(star(center, centerScale, radius)),
+]

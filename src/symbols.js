@@ -34,6 +34,10 @@ const baseCornerScale = {
   lock: 1,
   code: 1,
   search: 1,
+  heart: 1,
+  question: 1,
+  exclaim: 1,
+  ellipsis: 1,
 }
 export const cornerScale = Object.fromEntries(Object.entries(baseCornerScale).map(([name, k]) => [name, k * BADGE_GROW]))
 // 叉的半宽取 inset（cross 在 k = 1 时半宽为 2），端点正好落在右边线、底边线上
@@ -70,6 +74,11 @@ export const outlines = {
   lock: { box: [-3, -3.5, 3, 3.5] },
   code: { box: [-3.5, -2.5, 3.5, 2.5] },
   search: { box: [-3.5, -3.5, 3.5, 3.5] },
+  heart: { box: [-3.5, -3, 3.5, 3] },
+  // 问号、感叹号、省略号本身很窄或很扁，按真实外形让位时外框只断开一小段，角标读起来像接在线上的字；按接近方块的外框占位（同减号）
+  question: { box: [-2.75, -3.5, 2.75, 3.5] },
+  exclaim: { box: [-2.75, -3.5, 2.75, 3.5] },
+  ellipsis: { box: [-3.6, -2.5, 3.6, 2.5] },
 }
 
 // 各符号里的横竖线（未缩放、相对中心），缩小放进系列图标时据此对齐像素网格，见 clearance.js 的 snap
@@ -94,6 +103,8 @@ const grids = {
   clock: { x: 0 }, // 分针
   // 锁孔是正中单线，锁身边长取偶数（半宽 3 缩放后取整），整体往左挪半格让锁孔和两边都清晰
   lock: { unit: 3, x: 0, y: -0.5 },
+  question: { x: 0 }, // 竖笔
+  exclaim: { x: 0 }, // 竖笔
 }
 
 for (const [name, grid] of Object.entries(grids)) {
@@ -482,6 +493,42 @@ const drawSearch = ([x, y], k = 1) => {
   return [circle(cx, cy, r), `M${cx + d} ${cy + d}L${x + 3.5 * k} ${y + 3.5 * k}`]
 }
 
+// 爱心：和 heart 图标同一个造型（两瓣圆鼓、中间凹、底部收尖），缩到外框 7 × 6
+const HEART_PTS = [[12, 20], [9, 18], [3, 14.5], [3, 9.25], [3, 6.5], [5, 4.5], [7.5, 4.5], [9.5, 4.5], [11, 5.5], [12, 7], [13, 5.5], [14.5, 4.5], [16.5, 4.5], [19, 4.5], [21, 6.5], [21, 9.25], [21, 14.5], [15, 18], [12, 20]]
+const drawHeart = (c, k = 1) => {
+  const p = at(c, k)
+  // heart 图标是 18 × 15.5、中心 (12, 12.25)：缩 7 / 18 后外框约 7 × 6
+  const q = ([x, y]) => p([(x - 12) * 7 / 18, (y - 12.25) * 7 / 18]).map(v => +v.toFixed(3)).join(' ')
+  const [m, ...rest] = HEART_PTS.map(q)
+  let d = `M${m}`
+  for (let i = 0; i < rest.length; i += 3)
+    d += `C${rest[i]} ${rest[i + 1]} ${rest[i + 2]}`
+  return [`${d}Z`]
+}
+
+// 问号：和 help 图标同一个字形（上半一段弧、弧尾收成竖笔、下面一个点），缩到高 7；竖笔落在中心线上，竖笔收短，和点之间粗字重下也留缝
+const drawQuestion = (c, k = 1) => {
+  const p = at(c, k)
+  const pt = q => p(q).map(v => +v.toFixed(3)).join(' ')
+  const r = 1.625 * k
+  return [
+    `M${pt([-1.625, -1.875])}A${r} ${r} 0 1 1 ${pt([0.65, -0.375])}C${pt([0.25, -0.175])} ${pt([0, 0.15])} ${pt([0, 0.6])}`,
+    dot(...p([0, 2.75]), 1.75 * k),
+  ]
+}
+
+// 感叹号：竖笔 + 点，高 7；竖笔停在 0.4，和点之间粗字重下也留缝
+const drawExclaim = (c, k = 1) => {
+  const p = at(c, k)
+  return [`M${p([0, -3.5]).join(' ')}V${p([0, 0.4])[1]}`, dot(...p([0, 2.75]), 1.75 * k)]
+}
+
+// 省略号：三个点，间隔 2.75
+const drawEllipsis = (c, k = 1) => {
+  const p = at(c, k)
+  return [-2.75, 0, 2.75].map(x => dot(...p([x, 0]), 1.75 * k))
+}
+
 export const plus = symbol(drawPlus, grids.plus)
 export const minus = symbol(drawMinus, grids.minus)
 export const cross = symbol(drawCross)
@@ -528,6 +575,10 @@ export const arrowDownRightHalf = symbol(halfPointer('downRight'), diagonalArrow
 export const arrowDownLeftHalf = symbol(halfPointer('downLeft'), diagonalArrow('downLeft'))
 export const code = symbol(drawCode)
 export const search = symbol(drawSearch)
+export const heart = symbol(drawHeart)
+export const question = symbol(drawQuestion, grids.question)
+export const exclaim = symbol(drawExclaim, grids.exclaim)
+export const ellipsis = symbol(drawEllipsis)
 
 // 放大镜当刀用：镜框和手柄让底图在附近断开；镜框是遮挡刀，镜片内部的底图也一并清空
 export const searchCut = (c, k, radius) => search(c, k, radius).map(p => ({ d: p.d ?? p, cut: true, occlude: true }))

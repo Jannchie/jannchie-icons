@@ -90,3 +90,10 @@ export function rectAround(shape, stroke, [l, t, r, b]) {
   const bottom = blocked(shape, 'x', b, stroke)
   return [[bottom ? bottom[0] : r, b], [l, b], [l, t], [r, t], [r, right ? right[0] : b]]
 }
+
+// 右上角有角标的矩形外框（-badge-top 变体）：从右边的断口出发，经右下、左下、左上，回到顶边的断口
+export function rectAroundTop(shape, stroke, [l, t, r, b]) {
+  const right = blocked(shape, 'y', r, stroke)
+  const top = blocked(shape, 'x', t, stroke)
+  return [[r, right ? right[1] : t], [r, b], [l, b], [l, t], [top ? top[0] : r, t]]
+}
