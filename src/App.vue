@@ -433,7 +433,7 @@ onUnmounted(() => {
           <button v-for="l in LOCALES" :key="l.id" :aria-pressed="lang === l.id" @click="lang = l.id">{{ l.label }}</button>
         </div>
         <div class="opt">
-          <a class="repo" href="https://github.com/Jannchie/jannchie-icons" target="_blank" rel="noopener"><Icon name="github" :size="16" />{{ t('ui.github') }}</a>
+          <a class="repo" href="https://github.com/Jannchie/jannchie-icons" target="_blank" rel="noopener" :title="t('ui.github')" :aria-label="t('ui.github')"><Icon name="github" :size="16" /></a>
         </div>
       </div>
     </header>
@@ -822,7 +822,7 @@ main { min-width: 0; padding-bottom: 80px; }
 .style-grid button { aspect-ratio: auto; height: 40px; }
 .style-grid .row-head { padding-right: 8px; text-align: left; }
 /* 页头的 GitHub 链接 */
-.repo { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 7px; border-radius: 6px; font: 12.5px var(--mono); color: var(--text-2); text-decoration: none; }
+.repo { display: inline-grid; place-items: center; width: 28px; height: 26px; padding: 0; border-radius: 6px; font: 12.5px var(--mono); color: var(--text-2); text-decoration: none; }
 .repo:hover { color: var(--text); background: var(--sunken); }
 
 .toast {
