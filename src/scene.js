@@ -19,3 +19,10 @@ export const opening = (cx, w, h) => [
   [cx + w / 2, 20 - h],
   [cx + w / 2, GROUND],
 ]
+
+// 软耳朵：从耳根 a 经耳尖 t 到耳根 b 的一段三次曲线（接在路径里，返回 `C…` 段）
+// 两个控制点各从耳根朝耳尖方向推出 1.3 倍：曲线中点几乎正好落在耳尖上，两边微鼓、耳尖圆润，不是折线的尖角
+export const softEar = (a, t, b, k = 1.3) => {
+  const c = p => [p[0] + (t[0] - p[0]) * k, p[1] + (t[1] - p[1]) * k].map(v => +v.toFixed(3)).join(' ')
+  return `C${c(a)} ${c(b)} ${b.map(v => +v.toFixed(3)).join(' ')}`
+}
