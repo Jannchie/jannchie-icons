@@ -1,6 +1,6 @@
 // 构建可发布的包（都从 src/ 生成）：
 // - packages/core：@jannchie/icons，引擎 + 图标定义，ESM、按模块保留结构，可以 tree-shaking
-// - packages/iconify-json：@jannchie/iconify-json，Iconify 格式，圆角 2、四档字重各一个集合
+// - packages/iconify-json：@jannchie/iconify-json，Iconify 格式，每种「圆角 × 字重」一个集合（5 × 4 = 20 个）
 // 用法：pnpm build:packages
 import { copyFileSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { build, createServer } from 'vite'
@@ -57,7 +57,6 @@ const { icons } = await server.ssrLoadModule('/src/iconset.js')
 const { pathsOf } = await server.ssrLoadModule('/src/render.js')
 const { iconifyBody } = await server.ssrLoadModule('/src/export.js')
 const { CORNERS, WEIGHTS } = await server.ssrLoadModule('/src/options.js')
-const corner = CORNERS.find(c => !c.sharp && c.radius === 2)
 
 const OUT = 'packages/iconify-json'
 const info = {
@@ -71,18 +70,29 @@ const info = {
   category: 'General',
   palette: false,
 }
-const files = { light: 'light.json', regular: 'icons.json', bold: 'bold.json', heavy: 'heavy.json' }
-for (const weight of WEIGHTS) {
-  const prefix = weight.id === 'regular' ? 'jannchie' : `jannchie-${weight.id}`
-  const set = {
-    prefix,
-    info: { ...info, name: weight.id === 'regular' ? info.name : `${info.name} ${weight.id[0].toUpperCase()}${weight.id.slice(1)}` },
-    width: 24,
-    height: 24,
-    icons: Object.fromEntries(icons.map(icon => [icon.name, { body: iconifyBody(pathsOf(icon, corner, weight), { stroke: weight.stroke, sharp: false }) }])),
+// 前缀：jannchie[-圆角][-字重]，默认的圆角 2、字重 regular 省略——jannchie、jannchie-bold、jannchie-sharp、jannchie-r1-heavy……
+// 文件名是去掉 jannchie- 的前缀，默认集合叫 icons.json
+const cap = s => s[0].toUpperCase() + s.slice(1)
+const collections = []
+for (const corner of CORNERS) {
+  const radiusPart = corner.sharp ? 'sharp' : corner.radius === 2 ? '' : `r${corner.radius}`
+  for (const weight of WEIGHTS) {
+    const parts = [radiusPart, weight.id === 'regular' ? '' : weight.id].filter(Boolean)
+    const prefix = ['jannchie', ...parts].join('-')
+    const set = {
+      prefix,
+      info: { ...info, name: `${info.name} (${corner.sharp ? 'Sharp' : `Radius ${corner.radius}`} ${cap(weight.id)})` },
+      width: 24,
+      height: 24,
+      icons: Object.fromEntries(icons.map(icon => [icon.name, { body: iconifyBody(pathsOf(icon, corner, weight), { stroke: weight.stroke, sharp: !!corner.sharp }) }])),
+    }
+    const file = `${parts.length ? parts.join('-') : 'icons'}.json`
+    writeFileSync(`${OUT}/${file}`, `${JSON.stringify(set)}\n`)
+    collections.push({ prefix, file, radius: corner.sharp ? 'sharp' : corner.radius, weight: weight.id })
   }
-  writeFileSync(`${OUT}/${files[weight.id]}`, `${JSON.stringify(set)}\n`)
 }
+// 集合清单：前缀、文件、圆角、字重
+writeFileSync(`${OUT}/collections.json`, `${JSON.stringify(collections, null, 2)}\n`)
 writeFileSync(`${OUT}/info.json`, `${JSON.stringify(info, null, 2)}\n`)
 await server.close()
 

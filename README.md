@@ -32,7 +32,7 @@ Exported SVGs use `currentColor`, so they inherit the surrounding text color. Th
 | Package | Use it for |
 |---|---|
 | [`@jannchie/icons`](packages/core) | SVG strings or path data from JavaScript, with any radius, weight, size, duo-tone colors and pixel hinting |
-| [`@jannchie/iconify-json`](packages/iconify-json) | UnoCSS, Iconify and other Iconify-based tools (radius 2, four weights) |
+| [`@jannchie/iconify-json`](packages/iconify-json) | UnoCSS, Iconify and other Iconify-based tools (one collection per radius and weight) |
 
 ```js
 import { IconFolderPlus, toSvg } from '@jannchie/icons'

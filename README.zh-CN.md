@@ -32,7 +32,7 @@ Jannchie Icons 是一套基于 24 单位网格的线条图标库，收录 1800 �
 | 包 | 用途 |
 |---|---|
 | [`@jannchie/icons`](packages/core) | 在 JavaScript 中生成 SVG 字符串或路径数据，支持任意圆角、字重、尺寸、双色与像素对齐 |
-| [`@jannchie/iconify-json`](packages/iconify-json) | 用于 UnoCSS、Iconify 等基于 Iconify 的工具（圆角 2，四档字重） |
+| [`@jannchie/iconify-json`](packages/iconify-json) | 用于 UnoCSS、Iconify 等基于 Iconify 的工具（每种圆角与字重各一个集合） |
 
 ```js
 import { IconFolderPlus, toSvg } from '@jannchie/icons'
