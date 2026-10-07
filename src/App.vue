@@ -60,6 +60,18 @@ const customized = computed(() => !!primary.value || Object.keys(overrides.value
 // 调色盘面板：点外面关闭
 const paletteOpen = ref(false)
 const paletteEl = ref(null)
+// 面板用 fixed 定位：设置栏可以横向滚动（overflow），绝对定位的面板会被它裁掉；打开时按按钮的位置算坐标，
+// 右边和按钮右沿对齐（多出 12），不超出视口
+const PANEL_W = 240
+const panelPos = ref({})
+function togglePalette(e) {
+  paletteOpen.value = !paletteOpen.value
+  if (!paletteOpen.value)
+    return
+  const r = e.currentTarget.getBoundingClientRect()
+  const left = Math.max(8, Math.min(r.right + 12 - PANEL_W, window.innerWidth - PANEL_W - 8))
+  panelPos.value = { top: `${r.bottom + 10}px`, left: `${left}px` }
+}
 function closePalette(e) {
   if (paletteOpen.value && !paletteEl.value?.contains(e.target))
     paletteOpen.value = false
@@ -311,33 +323,29 @@ onUnmounted(() => {
             </button>
           </template>
       </label>
-      <div class="opts">
-        <div class="opt">
-          <span class="label">{{ t('ui.corner') }}</span>
+      <div class="opts" @scroll="paletteOpen = false">
+        <div class="opt" role="group" :aria-label="t('ui.corner')">
           <button v-for="c in corners" :key="c.label" :aria-pressed="corner === c" @click="corner = c">{{ cornerLabel(c) }}</button>
         </div>
-        <div class="opt">
-          <span class="label">{{ t('ui.weight') }}</span>
+        <div class="opt" role="group" :aria-label="t('ui.weight')">
           <button v-for="w in weights" :key="w.id" :aria-pressed="weight === w" @click="weight = w">{{ t(`ui.${w.id}`) }}</button>
         </div>
-        <div class="opt">
-          <span class="label">{{ t('ui.size') }}</span>
+        <div class="opt" role="group" :aria-label="t('ui.size')">
           <input
             v-model.number="size" class="slider" type="range" :min="SIZE.min" :max="SIZE.max" :step="SIZE.step" :aria-label="t('ui.size')"
             :style="{ '--p': `${(size - SIZE.min) / (SIZE.max - SIZE.min) * 100}%` }"
           >
           <output class="size-value mono">{{ size }}</output>
         </div>
-        <div class="opt">
-          <span class="label">{{ t('ui.color') }}</span>
+        <div class="opt" role="group" :aria-label="t('ui.color')">
           <button :aria-pressed="!duo" @click="duo = false">{{ t('ui.mono') }}</button>
           <button :aria-pressed="duo" @click="duo = true">{{ t('ui.duo') }}</button>
           <!-- 双色时一个调色盘按钮：几个小圆点预览当前配色，点开面板逐个设置（色块 + 角色名） -->
           <div v-if="duo" ref="paletteEl" class="palette">
-            <button class="palette-toggle" :aria-expanded="paletteOpen" :title="t('ui.colors')" @click="paletteOpen = !paletteOpen">
+            <button class="palette-toggle" :aria-expanded="paletteOpen" :title="t('ui.colors')" @click="togglePalette">
               <i v-for="(color, role) in roleColors" :key="role" :style="{ background: color }" />
             </button>
-            <div v-if="paletteOpen" class="palette-panel">
+            <div v-if="paletteOpen" class="palette-panel" :style="panelPos">
               <label class="palette-row">
                 <span class="swatch" :class="{ follow: !primary }"><input v-model="primary" type="color"></span>
                 <span>{{ t('ui.primary') }}</span>
@@ -356,8 +364,7 @@ onUnmounted(() => {
             <Icon :name="themes.find(th => th.id === theme).icon" :size="16" />
           </button>
         </div>
-        <div class="opt">
-          <span class="label">{{ t('ui.language') }}</span>
+        <div class="opt" role="group" :aria-label="t('ui.language')">
           <button v-for="l in LOCALES" :key="l.id" :aria-pressed="lang === l.id" @click="lang = l.id">{{ l.label }}</button>
         </div>
       </div>
@@ -543,7 +550,6 @@ small { color: var(--muted); }
 .search .clear:hover { color: var(--text); background: var(--sunken); }
 kbd { font: 12px var(--mono); color: var(--muted); padding: 1px 6px; border: 1px solid var(--line-strong); border-radius: 4px; }
 .opt { display: flex; align-items: center; gap: 2px; padding: 0 12px; border-left: 1px solid var(--line); white-space: nowrap; }
-.opt .label { margin-right: 6px; }
 .opt button {
   height: 26px; min-width: 26px; padding: 0 7px; border: 0; border-radius: 6px; background: none; cursor: pointer;
   font: 12.5px var(--mono); color: var(--text-2);
@@ -565,7 +571,7 @@ kbd { font: 12px var(--mono); color: var(--muted); padding: 1px 6px; border: 1px
 .palette-toggle { display: flex !important; align-items: center; gap: 2px; padding: 0 6px !important; }
 .palette-toggle i { width: 8px; height: 8px; border-radius: 50%; }
 .palette-panel {
-  position: absolute; top: calc(100% + 10px); right: -12px; z-index: 6; display: flex; flex-direction: column; gap: 2px; min-width: 240px; padding: 8px;
+  position: fixed; z-index: 6; display: flex; flex-direction: column; gap: 2px; width: 240px; padding: 8px;
   border: 1px solid var(--line-strong); border-radius: 10px; background: var(--surface); box-shadow: 0 12px 32px rgb(0 0 0 / .18);
 }
 .palette-row { display: flex; align-items: center; gap: 10px; padding: 6px 8px; border-radius: 6px; font-size: 13px; color: var(--text-2); cursor: pointer; white-space: nowrap; }
