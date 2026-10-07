@@ -3,6 +3,10 @@
 import { rounded } from './geometry'
 
 export const shell = radius => [rounded([[2.5, 6.5], [19.5, 6.5], [19.5, 16.5], [2.5, 16.5]], Math.min(radius, 2)), 'M21.5 9.75V13.25']
-// 电量：在电量位置画一条从壳顶贯穿到壳底的竖线，把电池分成「有电 / 没电」两段，像液位刻度；
-// 位置按电量在壳内（2.5–19.5）取比例，再吸到 .5 网格上，不居中
-export const level = ratio => `M${Math.round(2.5 + 17 * ratio - 0.5) + 0.5} 6.5V16.5`
+// 电量：从壳左边一直填到电量位置的实心块，和壳的左半边重合（左侧圆角跟壳一致，填充块也带描边，边缘和壳严丝合缝）；
+// 右边界按电量在壳内（2.5–19.5）取比例，再吸到 .5 网格上
+export const level = (ratio, radius) => {
+  const x = Math.round(2.5 + 17 * ratio - 0.5) + 0.5
+  const r = Math.min(radius, 2)
+  return { d: rounded([[x, 6.5, 0], [x, 16.5, 0], [2.5, 16.5], [2.5, 6.5]], r), fill: true }
+}
