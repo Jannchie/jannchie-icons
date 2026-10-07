@@ -11,6 +11,7 @@ import IconSvg from './IconSvg.vue'
 import { byName, icons } from './iconset'
 import LazyIcon from './LazyIcon.vue'
 import { svgString } from './export'
+import iconTimes from 'virtual:icon-times'
 import { CORNERS, WEIGHTS } from './options'
 import { devicePx, pathsOf } from './render'
 import { ROLES } from './tone'
@@ -45,6 +46,8 @@ const corner = shallowRef(corners.find(c => c.label === saved.corner) ?? corners
 const weight = shallowRef(weights.find(w => w.id === saved.weight) ?? weights[1])
 const size = ref(Number.isFinite(saved.size) ? Math.min(SIZE.max, Math.max(SIZE.min, Math.round(saved.size / SIZE.step) * SIZE.step)) : 32)
 const theme = ref(themes.some(t => t.id === saved.theme) ? saved.theme : 'auto')
+// 排序：按分类（默认）或按最后修改时间（开发时找刚改过的图标）
+const sortBy = ref(saved.sort === 'recent' ? 'recent' : 'category')
 // 着色：单色（全部 currentColor）或双色。双色里主体是 primary（留空跟随文字颜色），角标、划掉的斜杠等按语义角色上色，
 // 每个角色有亮 / 暗两套推荐色（tone.js 的 ROLES），按当前主题取；用户可以逐个覆盖（覆盖的颜色两种主题共用）
 const HEX = /^#[\da-f]{6}$/i
@@ -103,7 +106,7 @@ const cornerLabel = c => c.sharp ? t('ui.sharp') : c.label
 
 watchEffect(() => {
   try {
-    localStorage.setItem('preview', JSON.stringify({ corner: corner.value.label, weight: weight.value.id, size: size.value, theme: theme.value, lang: locale.value, duo: duo.value, primary: primary.value, overrides: overrides.value }))
+    localStorage.setItem('preview', JSON.stringify({ corner: corner.value.label, weight: weight.value.id, size: size.value, theme: theme.value, lang: locale.value, duo: duo.value, primary: primary.value, overrides: overrides.value, sort: sortBy.value }))
   }
   catch {}
 })
@@ -120,7 +123,15 @@ watchEffect(() => {
 // 搜索：按名字或分类名过滤；按 / 聚焦，Esc 清空
 const query = ref('')
 const searchInput = ref(null)
-const sections = computed(() => categorize(icons, query.value, searchTitle, searchGroupTitle))
+const categorized = computed(() => categorize(icons, query.value, searchTitle, searchGroupTitle))
+// 「最近修改」：搜索结果（或全部图标）平铺成一节，最后修改的排最前；没有时间的（刚新建、时间表还没刷新）当作最新
+const sections = computed(() => {
+  if (sortBy.value !== 'recent')
+    return categorized.value
+  const time = name => iconTimes[name] ?? Date.now()
+  const all = [...new Set(categorized.value.flatMap(c => c.groups.flatMap(g => g.icons)))].sort((a, b) => time(b.name) - time(a.name))
+  return all.length ? [{ id: 'recent', count: all.length, groups: [{ key: '', icons: all }] }] : []
+})
 const matched = computed(() => sections.value.reduce((n, c) => n + c.count, 0))
 // 清空搜索（Esc、清除按钮、删光文字）时如果选中了图标：保留选中，并把它在完整列表里的格子滚到视口中间，
 // 不用在两千多个图标里重新找一遍
@@ -374,6 +385,10 @@ onUnmounted(() => {
           </template>
       </label>
       <div class="opts" @scroll="paletteOpen = false">
+        <div class="opt" role="group" :aria-label="t('ui.sort')">
+          <button :aria-pressed="sortBy === 'category'" @click="sortBy = 'category'">{{ t('ui.sortCategory') }}</button>
+          <button :aria-pressed="sortBy === 'recent'" @click="sortBy = 'recent'">{{ t('ui.sortRecent') }}</button>
+        </div>
         <div class="opt" role="group" :aria-label="t('ui.corner')">
           <button v-for="c in corners" :key="c.label" :aria-pressed="corner === c" @click="corner = c">{{ cornerLabel(c) }}</button>
         </div>

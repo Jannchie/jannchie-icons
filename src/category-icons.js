@@ -85,6 +85,9 @@ const PICKS = {
 const ICONS_OF = new Map(categorize(icons).map(c => [c.id, c.groups.flatMap(g => g.icons.map(i => i.name))]))
 
 export function categoryIcon(id) {
+  // 「最近修改」不是真正的分类（预览页按修改时间平铺时用），固定用 history
+  if (id === 'recent')
+    return 'history'
   const names = ICONS_OF.get(id) ?? []
   return names.includes(PICKS[id]) ? PICKS[id] : names[0]
 }

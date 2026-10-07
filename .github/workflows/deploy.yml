@@ -19,6 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # 完整历史：预览页「最近修改」排序要取每个图标最后一次提交的时间（vite.config.js）
+          fetch-depth: 0
       - uses: pnpm/action-setup@v4
         with:
           version: 10
