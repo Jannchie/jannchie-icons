@@ -1,4 +1,6 @@
 <script setup>
+// 版本号取发布包的 package.json（发版时两处一起改），header 上显示当前是哪一版
+import { version } from '../packages/core/package.json'
 import { computed, nextTick, onMounted, onUnmounted, provide, ref, shallowRef, watch, watchEffect } from 'vue'
 import { categorize } from './categories'
 import { categoryIcon } from './category-icons'
@@ -316,6 +318,7 @@ onUnmounted(() => {
         <!-- 标志就是库里的十面骰，跟着当前的圆角、字重一起变 -->
         <Icon class="mark" name="dice-d10" :size="20" />
         <span>Jannchie Icons</span>
+        <span class="version mono">v{{ version }}</span>
       </div>
       <nav class="views">
         <button :aria-pressed="view === 'icons'" @click="view = 'icons'">{{ t('ui.viewIcons') }}</button>
@@ -555,6 +558,7 @@ small { color: var(--muted); }
   background: color-mix(in srgb, var(--surface) 85%, transparent); backdrop-filter: blur(14px) saturate(1.4);
 }
 .brand { grid-area: brand; display: flex; align-items: center; gap: 10px; padding: 0 20px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); font-weight: 600; letter-spacing: -.01em; white-space: nowrap; }
+.brand .version { color: var(--muted); font-size: 12px; font-weight: 400; }
 /* 双色变体的 primary（未设置时就是继承的文字颜色） */
 .ji { color: var(--icon-primary, currentColor); }
 .mark { width: 20px; height: 20px; flex: none; color: var(--accent); }
