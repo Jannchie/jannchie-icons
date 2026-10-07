@@ -202,13 +202,18 @@ const related = computed(() => {
   const family = icons.filter(i => i.name === core || i.name.startsWith(`${core}-`))
   if (family.length > 1)
     return { kind: 'variants', icons: family.slice(0, MAX_RELATED), more: Math.max(0, family.length - MAX_RELATED) }
-  for (const c of sections.value) {
+  // 同组：在完整的分类里找（不受搜索、「最近修改」平铺影响，否则平铺时「同组」就成了全部图标）；
+  // 分类分了小节就取所在小节，没分小节就是同一个分类
+  for (const c of allCategories()) {
     const g = c.groups.find(g => g.icons.some(i => i.name === name))
     if (g && g.icons.length > 1)
-      return { kind: 'series', icons: g.icons.slice(0, MAX_RELATED), more: Math.max(0, g.icons.length - MAX_RELATED) }
+      return { kind: g.key ? 'series' : 'sameCategory', icons: g.icons.slice(0, MAX_RELATED), more: Math.max(0, g.icons.length - MAX_RELATED) }
   }
   return null
 })
+// 完整分类只算一次（图标集在运行时不变）
+let categoriesCache
+const allCategories = () => (categoriesCache ??= categorize(icons))
 // 圆角 × 字重：同一个图标在每种组合下的样子，点一格就切到那套设置
 const styleGrid = computed(() => {
   const icon = selected.value && byName.get(selected.value)
