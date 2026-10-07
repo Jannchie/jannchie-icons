@@ -6,6 +6,6 @@ import { info } from '../tone'
 const k = cornerScale.cloud
 
 export default ({ radius, stroke }) => {
-  const { center, lines } = listBadge(outlines.cloud, k, stroke)
-  return [...lines, ...info(cloud(center, k, radius))]
+  const { center, size, lines } = listBadge(outlines.cloud, k, stroke)
+  return [...lines, ...info(cloud(center, size, radius))]
 }

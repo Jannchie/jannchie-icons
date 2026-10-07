@@ -6,6 +6,6 @@ import { danger } from '../tone'
 const k = cornerScale.cross
 
 export default ({ radius, stroke }) => {
-  const { center, lines } = listBadge(outlines.cross, k, stroke)
-  return [...lines, ...danger(cross(center, k, radius))]
+  const { center, size, lines } = listBadge(outlines.cross, k, stroke)
+  return [...lines, ...danger(cross(center, size, radius))]
 }

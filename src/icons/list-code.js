@@ -6,6 +6,6 @@ import { accent } from '../tone'
 const k = cornerScale.code
 
 export default ({ radius, stroke }) => {
-  const { center, lines } = listBadge(outlines.code, k, stroke)
-  return [...lines, ...accent(code(center, k, radius))]
+  const { center, size, lines } = listBadge(outlines.code, k, stroke)
+  return [...lines, ...accent(code(center, size, radius))]
 }

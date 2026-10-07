@@ -6,6 +6,6 @@ import { info } from '../tone'
 const k = cornerScale.clock
 
 export default ({ radius, stroke }) => {
-  const { center, lines } = listBadge(outlines.clock, k, stroke)
-  return [...lines, ...info(clock(center, k, radius))]
+  const { center, size, lines } = listBadge(outlines.clock, k, stroke)
+  return [...lines, ...info(clock(center, size, radius))]
 }

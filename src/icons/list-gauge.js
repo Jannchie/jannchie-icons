@@ -6,6 +6,6 @@ import { info } from '../tone'
 const k = cornerScale.gauge
 
 export default ({ radius, stroke }) => {
-  const { center, lines } = listBadge(outlines.gauge, k, stroke)
-  return [...lines, ...info(gauge(center, k, radius))]
+  const { center, size, lines } = listBadge(outlines.gauge, k, stroke)
+  return [...lines, ...info(gauge(center, size, radius))]
 }

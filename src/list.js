@@ -11,14 +11,24 @@ const dots = rows.map(y => dot(3.5, y))
 export const list = [...dots, ...rows.map(y => `M${start} ${y}H${end}`)]
 
 // 带符号的变体（参考 Tabler 的 playlist-add）：去掉圆点，三行往左上收紧（4.5 / 9.5 / 14.5），
-// 符号放在右下角 (17.5, 17.5)；每行在离符号 GAP 处截断，碰不到符号的行保持全长
+// 右下角放一个放大的符号——比文件夹等系列的角标大 BADGE_SCALE 倍，整体读起来是「一半列表、一半符号」，
+// 而不是列表上贴一个小角标；每行在离符号 GAP 处截断，碰不到符号的行保持全长
 const badgeRows = [4.5, 9.5, 14.5]
 const from = 3.5
-const center = [17.5, 17.5]
+const BADGE_SCALE = 1.4
+// 符号中心最多到 (16.5, 16.5)；符号放大后外形大小不一，大的（如 assets 方块）往左上收，外缘（含半个线宽）不越过离边 2 的安全区
+const SAFE = 22
+// k：符号在普通角位的缩放（symbols.js 的 cornerScale）；返回实际用的 size 和 center，画符号时用它们
 export function listBadge(outline, k, stroke) {
-  const shape = place(outline, center, k)
+  const size = k * BADGE_SCALE
+  const extent = (outline.circle ?? Math.max(outline.box[2], outline.box[3])) * size
+  // 按最粗的字重（半线宽 1）算，各字重下符号位置一致
+  const c = Math.min(16.5, Math.floor((SAFE - 1 - extent) * 2) / 2)
+  const center = [c, c]
+  const shape = place(outline, center, size)
   return {
     center,
+    size,
     lines: badgeRows.map((y) => {
       const b = blocked(shape, 'x', y, stroke)
       return `M${from} ${y}H${b && b[0] < end ? Math.max(b[0], from) : end}`

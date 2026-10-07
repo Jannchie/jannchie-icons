@@ -6,6 +6,6 @@ import { accent } from '../tone'
 const k = cornerScale.sparkle
 
 export default ({ radius, stroke }) => {
-  const { center, lines } = listBadge(outlines.sparkle, k, stroke)
-  return [...lines, ...accent(sparkle(center, k, radius))]
+  const { center, size, lines } = listBadge(outlines.sparkle, k, stroke)
+  return [...lines, ...accent(sparkle(center, size, radius))]
 }

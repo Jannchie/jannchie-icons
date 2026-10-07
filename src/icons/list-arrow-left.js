@@ -6,6 +6,6 @@ import { info } from '../tone'
 const k = cornerScale.arrowLeft
 
 export default ({ radius, stroke }) => {
-  const { center, lines } = listBadge(outlines.arrowLeft, k, stroke)
-  return [...lines, ...info(arrowLeft(center, k, radius))]
+  const { center, size, lines } = listBadge(outlines.arrowLeft, k, stroke)
+  return [...lines, ...info(arrowLeft(center, size, radius))]
 }

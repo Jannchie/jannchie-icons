@@ -6,6 +6,6 @@ import { warning } from '../tone'
 const k = cornerScale.star
 
 export default ({ radius, stroke }) => {
-  const { center, lines } = listBadge(outlines.star, k, stroke)
-  return [...lines, ...warning(star(center, k, radius))]
+  const { center, size, lines } = listBadge(outlines.star, k, stroke)
+  return [...lines, ...warning(star(center, size, radius))]
 }

@@ -6,6 +6,6 @@ import { accent } from '../tone'
 const k = cornerScale.puzzle
 
 export default ({ radius, stroke }) => {
-  const { center, lines } = listBadge(outlines.puzzle, k, stroke)
-  return [...lines, ...accent(puzzle(center, k, radius))]
+  const { center, size, lines } = listBadge(outlines.puzzle, k, stroke)
+  return [...lines, ...accent(puzzle(center, size, radius))]
 }
