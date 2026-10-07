@@ -33,7 +33,7 @@ const baseCornerScale = {
   gauge: 1,
   lock: 1,
   code: 1,
-  search: 1,
+  search: 0.85, // 外框 7×7 比别的符号大：缩到 0.85，角标外缘才不越过离画布边 2 的安全边距
   heart: 1,
   question: 1,
   exclaim: 1,
