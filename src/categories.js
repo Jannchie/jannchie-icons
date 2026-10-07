@@ -39,6 +39,8 @@ const EXTRA = {
   editor: ['bring-to-front', 'send-to-back', 'bring-forward', 'send-backward', 'corner-radius', 'line-height', 'letter-spacing', 'fold-vertical', 'group', 'ungroup', 'distribute-horizontal', 'distribute-vertical', 'fit-to-screen', 'typography', 'compare'],
   screen: ['window-minimize', 'window-maximize', 'window-restore', 'window-close', 'presentation', 'timeline', 'tree-view'],
   dev: ['json', 'html', 'code-block', 'bug'],
+  // 品牌标志不进本库（直接用 Simple Icons），只留预览站自己要用的 GitHub
+  git: ['github'],
   photo: ['camera-compact', 'camera-body', 'camera-dslr', 'camera-mirrorless', 'camera-film', 'camera-instant', 'camera-action', 'camera-lens', 'camera-lens-zoom', 'camera-lens-telephoto', 'camera-lens-pancake', 'aspect-ratio', 'perspective', 'live-photo', 'movie', 'photo-edit', 'camera-rotate', 'color-filter', 'flip-vertical', 'rotate-ccw'],
   chart: ['candlestick-chart', 'radar'],
   media: ['speaker', 'headphones', 'earbuds', 'music', 'play-circle', 'disc', 'vinyl', 'wave-sine', 'podcast'],
