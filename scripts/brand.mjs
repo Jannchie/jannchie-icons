@@ -15,6 +15,7 @@ const load = path => server.ssrLoadModule(path)
 const { finalize } = await load('/src/svg.js')
 const { pathAttrs } = await load('/src/render.js')
 const { lineAt, textWidth } = await load('/src/letters.js')
+const { CORNERS, WEIGHTS } = await load('/src/options.js')
 
 const names = readdirSync('src/icons').filter(f => f.endsWith('.js')).map(f => f.slice(0, -3))
 const RADIUS = 2
@@ -73,7 +74,8 @@ async function banner({ W, H, split, cell, theme, rounded = 12 }) {
   // 标题区：标志、标题、副标题、一行数据；整块（高约 190）在画布里垂直居中
   const left = 64
   const top = H / 2 - 88
-  const stats = [`${names.length} ICONS`, '24 GRID', '5 RADII', '4 WEIGHTS']
+  // 档位数直接取 options.js，增减档位后重新跑一次就跟着变
+  const stats = [`${names.length} ICONS`, '24 GRID', `${CORNERS.length} RADII`, `${WEIGHTS.length} WEIGHTS`]
   const mark = await icon(MARK, left, top, 48, STROKE)
   const title = text('JANNCHIE ICONS', left, top + 76, 6.5, 10)
   const sub = text('LINE ICON LIBRARY', left, top + 142, 2.5, 5.5)
