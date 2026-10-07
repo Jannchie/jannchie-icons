@@ -142,16 +142,18 @@ export const LOADING = {
     },
   },
   // 圆弧旋转：270° 的弧转一整圈
+  // 帧之间是对路径坐标做直线插值：弧端点沿弦走、不沿圆走，帧间隔大了弧会一缩一缩地抽动；
+  // 每帧转 5°（72 帧），弦和圆的偏差不到 0.01，看不出来
   spinner: {
     duration: 900,
-    frames: 24,
+    frames: 72,
     t0: 0,
     draw: ({ t }) => [arc(9, 360 * t - 90, 360 * t + 180)],
   },
   // 伸缩的圆弧：一边转一边由短变长再变短，像 Material 的加载圈
   ring: {
     duration: 1600,
-    frames: 32,
+    frames: 96, // 同 spinner：帧间隔小，弧端点沿弦插值时才不抽动
     t0: 0.5,
     draw: ({ t }) => {
       const sweep = 30 + 220 * swell(t)
@@ -162,7 +164,7 @@ export const LOADING = {
   // 内外两段圆弧反向旋转
   arcs: {
     duration: 1500,
-    frames: 30,
+    frames: 90, // 同 spinner：两道弧各转一整圈，每帧 4°，弧端点沿弦插值时才不抽动
     t0: 0,
     draw: ({ t }) => [arc(9, 360 * t - 90, 360 * t + 30), arc(5, -360 * t + 90, -360 * t + 210)],
   },
