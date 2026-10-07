@@ -9,6 +9,6 @@ export default ({ radius }) => [
   `M4.5 11.5V${GROUND}`,
   `M19.5 11.5V${GROUND}`,
   circle(12, 8, 1.75),
-  'M12 7V8H13',
+  { d: 'M12 6.75V8H13.25', detail: true },
   rounded(opening(12, 5, 5.5), radius, false),
 ]
