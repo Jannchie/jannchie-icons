@@ -1,6 +1,7 @@
 // 图标路径的懒计算 + 缓存：finalize（裁切、合并）开销不小，上千个图标不能一打开页面就全算
 // 按「图标名 + 圆角 + 字重 + 对齐用的显示像素数」缓存，切回之前的设置不用重算
 import { axisLines, finalize, minify } from './svg'
+import { ROLES } from './tone'
 import { affine, mapPath } from './transform'
 
 // 像素对齐：按图标实际显示的设备像素数 px，把图标整体对齐到像素网格。图形本身不变形，只做两件事：
@@ -124,9 +125,11 @@ export function forget(el) {
 // 尖角用方头（square）而不是平头（butt）：方头和圆头一样把线端往外延伸半个线宽，所以两种样式的几何完全一致——
 // 图标都是按圆头的范围设计的，平头会让每个开放线端缩短半个线宽：加号、短横缩成点，两段线拼成的直角外侧缺一块，
 // 接到别的线上的线头也会露出缝。斜接上限 2：夹角小于 60° 的锐角（A、V、M 的尖）自动切平，不会拉出长尖刺戳出外框
-export const svgAttrs = (stroke, sharp) => ({
+// colors：双色变体的颜色 { primary, danger, success, … }（角色见 tone.js）；不传就是单色（全部 currentColor）
+// 预览用 CSS 变量（PREVIEW_COLORS，切换颜色不用重算路径），导出时传具体颜色值
+export const svgAttrs = (stroke, sharp, colors) => ({
   'fill': 'none',
-  'stroke': 'currentColor',
+  'stroke': colors?.primary ?? 'currentColor',
   'stroke-width': stroke,
   'stroke-linecap': sharp ? 'square' : 'round',
   'stroke-linejoin': sharp ? 'miter' : 'round',
@@ -134,8 +137,14 @@ export const svgAttrs = (stroke, sharp) => ({
 })
 
 // 单条路径的 SVG 属性：点、细线、细节的线宽写在各自的路径上
-export const pathAttrs = p => ({
-  'd': p.d,
-  'stroke-width': p.width ? +p.width.toFixed(3) : undefined,
-  'fill': p.fill ? 'currentColor' : undefined,
-})
+export const pathAttrs = (p, colors) => {
+  const color = p.tone && p.tone !== 'primary' ? colors?.[p.tone] : undefined
+  return {
+    'd': p.d,
+    'stroke-width': p.width ? +p.width.toFixed(3) : undefined,
+    'stroke': color,
+    'fill': p.fill ? color ?? colors?.primary ?? 'currentColor' : undefined,
+  }
+}
+// 预览：各角色用页面上的 CSS 变量（--icon-danger 等），单色模式下都是 currentColor
+export const PREVIEW_COLORS = Object.fromEntries(Object.keys(ROLES).map(r => [r, `var(--icon-${r}, currentColor)`]))

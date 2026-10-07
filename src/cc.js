@@ -3,10 +3,12 @@
 import { circle, rounded } from './geometry'
 import { glyph, snap } from './letters'
 import { ring } from './marks'
+import { danger } from './tone'
 
 const D = 9 * Math.SQRT1_2
 // 贯穿圆环的斜杠：左上到右下，两端落在圆环上
-const slash = { d: `M${12 - D} ${12 - D}L${12 + D} ${12 + D}`, cut: true }
+// 双色时斜杠是划掉记号，标 danger（和 off.js 的斜杠一致）
+const slash = danger({ d: `M${12 - D} ${12 - D}L${12 + D} ${12 + D}`, cut: true })
 // 小写 c：半径 2.5，开口朝右（上下各留 45°）
 const c = (cx, r = 2.5) => {
   const k = r * Math.SQRT1_2

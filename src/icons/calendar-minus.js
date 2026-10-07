@@ -1,8 +1,9 @@
 import { base, center, centerScale } from '../calendar'
 import { minus } from '../symbols'
+import { danger } from '../tone'
 
 // 日历 + 减号
 export default ({ radius }) => [
   ...base(radius),
-  ...minus(center, centerScale, radius),
+  ...danger(minus(center, centerScale, radius)),
 ]

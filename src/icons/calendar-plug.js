@@ -1,8 +1,9 @@
 import { base, center, centerScale } from '../calendar'
 import { plug } from '../symbols'
+import { accent } from '../tone'
 
 // 日历 + 插头
 export default ({ radius }) => [
   ...base(radius),
-  ...plug(center, centerScale, radius),
+  ...accent(plug(center, centerScale, radius)),
 ]

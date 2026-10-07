@@ -1,8 +1,9 @@
 import { plain, center, centerScale } from '../briefcase'
 import { ring } from '../symbols'
+import { accent } from '../tone'
 
 // 公文包 + 圆
 export default ({ radius }) => [
   ...plain(radius),
-  ...ring(center, centerScale, radius),
+  ...accent(ring(center, centerScale, radius)),
 ]

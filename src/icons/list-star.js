@@ -1,10 +1,11 @@
 import { listBadge } from '../list'
 import { cornerScale, outlines, star } from '../symbols'
+import { warning } from '../tone'
 
 // 列表 + 收藏
 const k = cornerScale.star
 
 export default ({ radius, stroke }) => {
   const { center, lines } = listBadge(outlines.star, k, stroke)
-  return [...lines, ...star(center, k, radius)]
+  return [...lines, ...warning(star(center, k, radius))]
 }

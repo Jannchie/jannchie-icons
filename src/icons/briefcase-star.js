@@ -1,8 +1,9 @@
 import { plain, center, centerScale } from '../briefcase'
 import { star } from '../symbols'
+import { warning } from '../tone'
 
 // 公文包 + 收藏
 export default ({ radius }) => [
   ...plain(radius),
-  ...star(center, centerScale, radius),
+  ...warning(star(center, centerScale, radius)),
 ]

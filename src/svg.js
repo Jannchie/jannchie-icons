@@ -411,7 +411,11 @@ function relieve(items, stroke) {
   return parts.map((p, i) => (caps.get(i) < p.w ? { ...p.it, d: p.d, relief: caps.get(i) } : { ...p.it, d: p.d }))
 }
 
-// 路径：字符串或 { d, detail, fill, thin, dot, cut, gap, occlude, hidden }
+// 着色：双色变体里每条路径有一个角色（tone）。primary 是主体；角标、划掉的斜杠这类表示状态的叠加记号
+// 由图标显式标注语义角色（src/tone.js：danger、success、warning、info、accent），不标就是 primary
+const toneOf = item => item.tone ?? 'primary'
+
+// 路径：字符串或 { d, detail, fill, thin, dot, cut, gap, occlude, hidden, tone }
 // - cut 是「刀」：其余路径在离它 gap（默认 GAP）+ 线宽以内的部分被真正裁掉；
 //   occlude 的刀还会把落在它闭合区域内部的线整段删掉（前后叠放、镜片内部之类）；hidden 的刀只裁不画
 // - detail 是缩小的符号（线宽封顶 DETAIL_STROKE），thin 是内部细线（线宽取外框的 THIN 倍），dot 是点在线宽 DOT_STROKE 下的直径（随字重等比缩放）
@@ -439,14 +443,15 @@ export function finalize(paths, stroke, { animated = false } = {}) {
   const snapped = tuckTips(snapEnds(clipped, stroke), stroke)
   for (const item of animated ? snapped : relieve(snapped, stroke)) {
     const dot = dotSize(item)
-    const key = [Boolean(item.detail), Boolean(item.fill), dot, Boolean(item.thin), item.relief ?? 0].join()
+    const tone = toneOf(item)
+    const key = [Boolean(item.detail), Boolean(item.fill), dot, Boolean(item.thin), item.relief ?? 0, tone].join()
     const g = groups.get(key)
     if (g) {
       g.d += item.d
     }
     else {
       const w = widthOf(item, stroke)
-      groups.set(key, { d: item.d, detail: !!item.detail, fill: !!item.fill, dot, thin: !!item.thin, width: dot ? dotWidth(item, stroke) : w !== stroke ? w : undefined })
+      groups.set(key, { d: item.d, detail: !!item.detail, fill: !!item.fill, dot, thin: !!item.thin, tone, width: dot ? dotWidth(item, stroke) : w !== stroke ? w : undefined })
     }
   }
   return [...groups.values()].map(g => ({ ...g, d: animated ? absolute(g.d) : minify(g.d) }))

@@ -1,10 +1,11 @@
 import { listBadge } from '../list'
 import { cornerScale, outlines, check } from '../symbols'
+import { success } from '../tone'
 
 // 列表 + 勾
 const k = cornerScale.check
 
 export default ({ radius, stroke }) => {
   const { center, lines } = listBadge(outlines.check, k, stroke)
-  return [...lines, ...check(center, k, radius)]
+  return [...lines, ...success(check(center, k, radius))]
 }

@@ -4,8 +4,10 @@ import { circle, rounded } from './geometry'
 import { glyph, line } from './letters'
 import { ring, square } from './marks'
 import { dot } from './scene'
+import { danger } from './tone'
 
-const cross = ['M3.5 3.5L20.5 20.5', 'M20.5 3.5L3.5 20.5']
+// 「禁止」的大叉是划掉记号：双色时为 danger，其余部分 primary
+const cross = danger(['M3.5 3.5L20.5 20.5', 'M20.5 3.5L3.5 20.5'])
 
 // 洗衣盆：两侧斜壁 + 平底，盆口下方一条水波纹；top 是盆壁上端，盆高 12
 // 柔和洗涤在盆下加横线，整组上移保持居中；盆底和横线要落在 .5 上，top 取不超过居中位置的 n.5

@@ -1,6 +1,7 @@
 // 列表类图标共用：三个圆点 + 三行线
 import { blocked, GAP, place } from './clearance'
 import { dot } from './scene'
+import { accent } from './tone'
 
 // 三行 5.5 / 11.5 / 17.5（行线落在 .5 上，整体比几何中心偏上半格），圆点 3.5，线 7–20.5
 const rows = [5.5, 11.5, 17.5]
@@ -28,7 +29,8 @@ export function listBadge(outline, k, stroke) {
 // 主次反过来：符号为主时右下角的小列表（圆点 + 三行线，约 7 × 7），作为 cut 让主符号在附近断开
 // 行距 3，三行整体比 cy 偏上半格：cy 取整数时行线正好落在 .5 上
 const markRows = [-3.5, -0.5, 2.5]
-export const listMark = ([cx, cy]) => [
+// 它是角标，双色变体里是 accent
+export const listMark = ([cx, cy]) => accent([
   ...markRows.map(y => dot(cx - 3.25, cy + y, 1.5)),
   ...markRows.map((y, i) => `M${cx - 1.25} ${cy + y}H${cx + (i === 2 ? 1.5 : 3.5)}`),
-]
+])

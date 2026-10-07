@@ -8,6 +8,7 @@ import IconSvg from './IconSvg.vue'
 import { byName, icons } from './iconset'
 import LazyIcon from './LazyIcon.vue'
 import { animateAttrs, devicePx, pathAttrs, pathsOf, svgAttrs } from './render'
+import { ROLES } from './tone'
 import { resnapAll } from './snap'
 import searchIcon from './icons/search'
 import { finalize, minify } from './svg'
@@ -31,9 +32,9 @@ const weights = [
 // 预览大小：滑块 16–128，步长 4
 const SIZE = { min: 16, max: 128, step: 4 }
 const themes = [
-  { id: 'auto', label: 'auto' },
-  { id: 'light', label: 'lightTheme' },
-  { id: 'dark', label: 'darkTheme' },
+  { id: 'auto', label: 'auto', icon: 'theme' },
+  { id: 'light', label: 'lightTheme', icon: 'sun' },
+  { id: 'dark', label: 'darkTheme', icon: 'moon' },
 ]
 
 // 选项存在本地，热更新整页刷新后不丢
@@ -51,6 +52,44 @@ const corner = shallowRef(corners.find(c => c.label === saved.corner) ?? corners
 const weight = shallowRef(weights.find(w => w.id === saved.weight) ?? weights[1])
 const size = ref(Number.isFinite(saved.size) ? Math.min(SIZE.max, Math.max(SIZE.min, Math.round(saved.size / SIZE.step) * SIZE.step)) : 32)
 const theme = ref(themes.some(t => t.id === saved.theme) ? saved.theme : 'auto')
+// 着色：单色（全部 currentColor）或双色。双色里主体是 primary（留空跟随文字颜色），角标、划掉的斜杠等按语义角色上色，
+// 每个角色有亮 / 暗两套推荐色（tone.js 的 ROLES），按当前主题取；用户可以逐个覆盖（覆盖的颜色两种主题共用）
+const HEX = /^#[\da-f]{6}$/i
+const duo = ref(saved.duo === true)
+const primary = ref(HEX.test(saved.primary) ? saved.primary : '')
+const overrides = ref(Object.fromEntries(Object.entries(saved.overrides ?? {}).filter(([r, c]) => r in ROLES && HEX.test(c))))
+// 当前是否暗色：主题选「自动」时跟随系统
+const systemDark = ref(matchMedia('(prefers-color-scheme: dark)').matches)
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => (systemDark.value = e.matches))
+const isDark = computed(() => theme.value === 'dark' || (theme.value === 'auto' && systemDark.value))
+const recommended = role => ROLES[role][isDark.value ? 'dark' : 'light']
+const roleColors = computed(() => Object.fromEntries(Object.keys(ROLES).map(r => [r, overrides.value[r] ?? recommended(r)])))
+const setRole = (role, color) => (overrides.value = color === recommended(role) ? Object.fromEntries(Object.entries(overrides.value).filter(([r]) => r !== role)) : { ...overrides.value, [role]: color })
+const customized = computed(() => !!primary.value || Object.keys(overrides.value).length > 0)
+// 调色盘面板：点外面关闭
+const paletteOpen = ref(false)
+const paletteEl = ref(null)
+function closePalette(e) {
+  if (paletteOpen.value && !paletteEl.value?.contains(e.target))
+    paletteOpen.value = false
+}
+const cycleTheme = () => (theme.value = themes[(themes.findIndex(th => th.id === theme.value) + 1) % themes.length].id)
+function resetColors() {
+  primary.value = ''
+  overrides.value = {}
+}
+// 导出用的具体颜色（当前主题下生效的那套）；单色时不传
+const exportColors = computed(() => (duo.value ? { primary: primary.value || undefined, ...roleColors.value } : undefined))
+// 预览：IconSvg 的路径引用这些变量（见 render.js 的 PREVIEW_COLORS 和 .ji 样式）
+watchEffect(() => {
+  const s = document.documentElement.style
+  for (const [role, color] of Object.entries(roleColors.value))
+    s.setProperty(`--icon-${role}`, duo.value ? color : 'currentColor')
+  if (duo.value && primary.value)
+    s.setProperty('--icon-primary', primary.value)
+  else
+    s.removeProperty('--icon-primary')
+})
 // 界面语言：默认英语
 locale.value = LOCALES.some(l => l.id === saved.lang) ? saved.lang : 'en'
 // 模板里直接给导入的 ref 赋值不可靠，包一层本地的 computed
@@ -59,7 +98,7 @@ const cornerLabel = c => c.sharp ? t('ui.sharp') : c.label
 
 watchEffect(() => {
   try {
-    localStorage.setItem('preview', JSON.stringify({ corner: corner.value.label, weight: weight.value.id, size: size.value, theme: theme.value, lang: locale.value }))
+    localStorage.setItem('preview', JSON.stringify({ corner: corner.value.label, weight: weight.value.id, size: size.value, theme: theme.value, lang: locale.value, duo: duo.value, primary: primary.value, overrides: overrides.value }))
   }
   catch {}
 })
@@ -116,15 +155,15 @@ function toSvg(icon, px = 24) {
   const animated = []
   for (const p of icon.paths) {
     if (p.frames) {
-      animated.push(`  <path ${attrs(pathAttrs(p))}>\n    <animate ${attrs(animateAttrs(p))}/>\n  </path>`)
+      animated.push(`  <path ${attrs(pathAttrs(p, exportColors.value))}>\n    <animate ${attrs(animateAttrs(p))}/>\n  </path>`)
       continue
     }
-    const { d, ...rest } = pathAttrs(p)
+    const { d, ...rest } = pathAttrs(p, exportColors.value)
     const key = attrs(rest)
     merged.set(key, (merged.get(key) ?? '') + d)
   }
   const lines = [...[...merged].map(([key, d]) => `  <path ${attrs({ d: minify(d, { packArcs: true }) })}${key ? ` ${key}` : ''}/>`), ...animated]
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${px}" height="${px}" viewBox="0 0 24 24" ${attrs(svgAttrs(weight.value.stroke, !!corner.value.sharp))}>\n${lines.join('\n')}\n</svg>\n`
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${px}" height="${px}" viewBox="0 0 24 24" ${attrs(svgAttrs(weight.value.stroke, !!corner.value.sharp, exportColors.value))}>\n${lines.join('\n')}\n</svg>\n`
 }
 // 当前选中图标的导出文本：代码面板、复制、下载共用，不在每次重渲染时重新拼
 const svgText = computed(() => selectedIcon.value && toSvg(selectedIcon.value))
@@ -234,6 +273,7 @@ onMounted(() => {
   })
   headerObserver.observe(header.value)
   window.addEventListener('keydown', onKey)
+  window.addEventListener('pointerdown', closePalette)
   window.addEventListener('scroll', onScroll, { passive: true })
   collectSections()
   gridObserver = new ResizeObserver(measureCols)
@@ -242,6 +282,7 @@ onMounted(() => {
 })
 onUnmounted(() => {
   window.removeEventListener('keydown', onKey)
+  window.removeEventListener('pointerdown', closePalette)
   window.removeEventListener('scroll', onScroll)
   headerObserver?.disconnect()
   gridObserver?.disconnect()
@@ -287,7 +328,32 @@ onUnmounted(() => {
           <output class="size-value mono">{{ size }}</output>
         </div>
         <div class="opt">
-          <button v-for="th in themes" :key="th.id" :aria-pressed="theme === th.id" @click="theme = th.id">{{ t(`ui.${th.label}`) }}</button>
+          <span class="label">{{ t('ui.color') }}</span>
+          <button :aria-pressed="!duo" @click="duo = false">{{ t('ui.mono') }}</button>
+          <button :aria-pressed="duo" @click="duo = true">{{ t('ui.duo') }}</button>
+          <!-- 双色时一个调色盘按钮：几个小圆点预览当前配色，点开面板逐个设置（色块 + 角色名） -->
+          <div v-if="duo" ref="paletteEl" class="palette">
+            <button class="palette-toggle" :aria-expanded="paletteOpen" :title="t('ui.colors')" @click="paletteOpen = !paletteOpen">
+              <i v-for="(color, role) in roleColors" :key="role" :style="{ background: color }" />
+            </button>
+            <div v-if="paletteOpen" class="palette-panel">
+              <label class="palette-row">
+                <span class="swatch" :class="{ follow: !primary }"><input v-model="primary" type="color"></span>
+                <span>{{ t('ui.primary') }}</span>
+              </label>
+              <label v-for="(color, role) in roleColors" :key="role" class="palette-row">
+                <span class="swatch" :style="{ '--c': color }"><input :value="color" type="color" @input="setRole(role, $event.target.value)"></span>
+                <span>{{ t(`ui.role.${role}`) }}</span>
+              </label>
+              <button class="palette-reset" :disabled="!customized" @click="resetColors">{{ t('ui.resetColors') }}</button>
+            </div>
+          </div>
+        </div>
+        <div class="opt">
+          <!-- 主题：一个按钮在 自动 → 亮 → 暗 之间循环，图标用库里的 theme / sun / moon -->
+          <button class="icon-btn" :title="t(`ui.${themes.find(th => th.id === theme).label}`)" :aria-label="t(`ui.${themes.find(th => th.id === theme).label}`)" @click="cycleTheme">
+            <Icon :name="themes.find(th => th.id === theme).icon" :size="16" />
+          </button>
         </div>
         <div class="opt">
           <span class="label">{{ t('ui.language') }}</span>
@@ -445,6 +511,8 @@ small { color: var(--muted); }
   background: color-mix(in srgb, var(--surface) 85%, transparent); backdrop-filter: blur(14px) saturate(1.4);
 }
 .brand { grid-area: brand; display: flex; align-items: center; gap: 10px; padding: 0 20px; border-right: 1px solid var(--line); font-weight: 600; letter-spacing: -.01em; white-space: nowrap; }
+/* 双色变体的 primary（未设置时就是继承的文字颜色） */
+.ji { color: var(--icon-primary, currentColor); }
 .mark { width: 20px; height: 20px; flex: none; color: var(--accent); }
 .opts { grid-area: opts; display: flex; align-items: stretch; min-width: 0; }
 /* 视图切换：图标 / 示例，和设置按钮同一套选中样式 */
@@ -480,6 +548,23 @@ kbd { font: 12px var(--mono); color: var(--muted); padding: 1px 6px; border: 1px
 .slider:focus-visible::-webkit-slider-thumb { outline: 2px solid var(--accent-soft); outline-offset: 2px; }
 .slider:focus-visible::-moz-range-thumb { outline: 2px solid var(--accent-soft); outline-offset: 2px; }
 /* 数值定宽，拖动时后面的控件不跟着跳 */
+/* 调色盘：按钮里一排小圆点预览配色；面板逐行「色块 + 角色名」 */
+.palette { position: relative; display: flex; align-items: center; }
+.palette-toggle { display: flex !important; align-items: center; gap: 2px; padding: 0 6px !important; }
+.palette-toggle i { width: 8px; height: 8px; border-radius: 50%; }
+.palette-panel {
+  position: absolute; top: calc(100% + 10px); right: -12px; z-index: 6; display: flex; flex-direction: column; gap: 2px; min-width: 240px; padding: 8px;
+  border: 1px solid var(--line-strong); border-radius: 10px; background: var(--surface); box-shadow: 0 12px 32px rgb(0 0 0 / .18);
+}
+.palette-row { display: flex; align-items: center; gap: 10px; padding: 6px 8px; border-radius: 6px; font-size: 13px; color: var(--text-2); cursor: pointer; white-space: nowrap; }
+.palette-row:hover { background: var(--sunken); color: var(--text); }
+.palette-reset { margin-top: 4px; height: 30px; border: 1px solid var(--line-strong) !important; border-radius: 6px; font: 12.5px var(--sans) !important; }
+.palette-reset:disabled { opacity: .4; cursor: default; }
+/* 取色：圆形色块里藏一个原生取色器；primary 跟随文字颜色时画成半边文字色 */
+.swatch { position: relative; flex: none; width: 16px; height: 16px; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--line-strong); background: var(--c, var(--icon-primary, var(--text))); cursor: pointer; overflow: hidden; }
+.swatch.follow { background: linear-gradient(135deg, var(--text) 50%, transparent 50%); }
+.swatch input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.icon-btn { display: grid !important; place-items: center; width: 28px; padding: 0 !important; }
 .size-value { width: 3ch; font-size: 12.5px; color: var(--text-2); text-align: right; }
 .opt button[aria-pressed='true'] { color: var(--text); background: var(--sunken); box-shadow: inset 0 0 0 1px var(--line-strong); }
 
