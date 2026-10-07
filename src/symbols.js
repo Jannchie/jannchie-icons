@@ -57,7 +57,7 @@ export const outlines = {
   assets: { box: [-3.5, -3.5, 3.5, 3.5] },
   ring: { circle: 3 },
   star: { circle: 3.45 },
-  cloud: { box: [-3.65, -2.65, 3.6, 2.65] },
+  cloud: { box: [-3.66, -1.66, 3.6, 2.67] },
   shield: { box: [-3.01, -3.5, 3.01, 3.5] },
   ban: { circle: 3.25 },
   arrowUp: { box: [-3, -3.5, 3, 3.5] },
@@ -202,7 +202,9 @@ const drawStar = ([x, y], k = 1, radius = 0) => {
 }
 
 // 云：平底 + 左中右三团鼓包，鼓包之间的凹口做圆角，看起来更软；外框约 7.25×5.3
-const cloudCircles = [[-1.95, 0.95, 1.7], [0.1, -0.25, 2.4], [2, 1.05, 1.6]]
+// 四个大小不一的鼓包（积云）：左右宽度和平底（2.65）和原来的三鼓包云一样，各图标里横向对齐、底边都不变；
+// 云顶比原来低约 1（-1.66），扁一些，鼓包之间的凹口更分明
+const cloudCircles = [[-2.68, 1.67, 0.98], [-1.11, 0.29, 1.57], [1.05, 0.1, 1.76], [2.42, 1.49, 1.18]]
 const cloudFillet = 0.5 // 凹口圆角在两段弧上各让出的弧长
 function upperIntersection([x1, y1, r1], [x2, y2, r2]) {
   const d = Math.hypot(x2 - x1, y2 - y1)
@@ -225,20 +227,25 @@ function arcTo([cx, cy, r], from, to) {
 // 云的上轮廓：从左鼓包底部顺时针绕到右鼓包底部（不含底边），返回路径片段和两端点
 function cloudTop([x, y], k) {
   const cs = cloudCircles.map(([cx, cy, r]) => [x + cx * k, y + cy * k, r * k])
-  const [left, mid, right] = cs
   const f = cloudFillet * k
-  const p1 = upperIntersection(left, mid)
-  const p2 = upperIntersection(mid, right)
-  // 每个凹口两侧各退 f 的弧长，用以交点为控制点的曲线接上（顺时针 = 角度增大）
-  const l1 = pointOn(left, angleOn(left, p1) - f / left[2])
-  const m1 = pointOn(mid, angleOn(mid, p1) + f / mid[2])
-  const m2 = pointOn(mid, angleOn(mid, p2) - f / mid[2])
-  const r1 = pointOn(right, angleOn(right, p2) + f / right[2])
-  const start = [left[0], left[1] + left[2]]
-  const end = [right[0], right[1] + right[2]]
   const pt = p => `${p[0]} ${p[1]}`
-  const arcs = `${arcTo(left, start, l1)}Q${pt(p1)} ${pt(m1)}${arcTo(mid, m1, m2)}`
-    + `Q${pt(p2)} ${pt(r1)}${arcTo(right, r1, end)}`
+  const start = [cs[0][0], cs[0][1] + cs[0][2]]
+  const end = [cs.at(-1)[0], cs.at(-1)[1] + cs.at(-1)[2]]
+  // 相邻两个鼓包的上方交点是凹口：两侧各退 f 的弧长，用以交点为控制点的曲线接上（顺时针 = 角度增大）
+  let arcs = ''
+  let from = start
+  cs.forEach((c, i) => {
+    const next = cs[i + 1]
+    if (!next) {
+      arcs += arcTo(c, from, end)
+      return
+    }
+    const p = upperIntersection(c, next)
+    const out = pointOn(c, angleOn(c, p) - f / c[2])
+    const into = pointOn(next, angleOn(next, p) + f / next[2])
+    arcs += `${arcTo(c, from, out)}Q${pt(p)} ${pt(into)}`
+    from = into
+  })
   return { arcs, start, end }
 }
 
