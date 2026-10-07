@@ -1,7 +1,7 @@
 // 倍率文字（×0.5、×2 …）：乘号 + 数字 + 小数点，整体居中
 // 整组共用同一个字高、基线和乘号大小，放在一起高低一致；放不下时只把数字横向压窄，不缩字高
 // 字形只有字母和数字，乘号是一个小叉、小数点是一个点，单独画
-import { advance, glyph, shift, snap } from './letters'
+import { advance, glyph, LABEL, shift, snap } from './letters'
 import { dot } from './scene'
 
 const H = 7 // 字高：数字占 8.5–15.5，竖直居中
@@ -33,8 +33,8 @@ export function rate(text) {
       x += POINT
     }
     else {
-      out.push(glyph(c, x - shift(c) * sx, TOP, sx, sy))
-      x += advance(c) * sx
+      out.push(glyph(c, x - shift(c, LABEL) * sx, TOP, sx, sy, LABEL))
+      x += advance(c, LABEL) * sx
     }
     x += gapAfter(i)
   })

@@ -1,7 +1,7 @@
 // 各国内容分级：每个体系一种外框，框里是放大的线条字母；长的分级（PG-13、MA15+）拆成上下两行
 // 外框只用来区分体系（同样写着 12 的，带横栏的方框是 PEGI、圆是韩国），不是照搬各机构的官方标志
 import { circle, rounded } from './geometry'
-import { line, textWidth } from './letters'
+import { LABEL, line, snap, textWidth } from './letters'
 import { tagShape } from './marks'
 
 // 外框：shape(radius) 画框，box 是留给文字的区域 [左, 上, 右, 下]
@@ -9,7 +9,8 @@ import { tagShape } from './marks'
 const sq = (x0, y0, x1, y1) => [[x0, y0], [x1, y0], [x1, y1], [x0, y1]]
 const FRAMES = {
   square: { shape: r => rounded(sq(2.5, 2.5, 21.5, 21.5), Math.min(r, 2.5)), box: [5.5, 5.5, 18.5, 18.5] },
-  tall: { shape: r => rounded(sq(3.5, 2.5, 20.5, 21.5), Math.min(r, 2.5)), box: [7, 5, 17, 19] },
+  // 文字区左右离框 3（和别的框一样），E/10+ 这行才有地方放下 1、0 和角标 +
+  tall: { shape: r => rounded(sq(3.5, 2.5, 20.5, 21.5), Math.min(r, 2.5)), box: [6.5, 5, 17.5, 19] },
   // PEGI 式：方框底部隔出一条横栏，数字在上面
   divided: { shape: r => [rounded(sq(2.5, 2.5, 21.5, 21.5), Math.min(r, 2.5)), 'M2.5 17.5H21.5'], box: [5.5, 5.5, 18.5, 14] },
   wide: { shape: r => rounded(sq(2.5, 4.5, 21.5, 19.5), Math.min(r, 2.5)), box: [5, 8, 19, 16] },
@@ -62,19 +63,23 @@ function layout(rows, [x0, y0, x1, y1]) {
   const extra = r => (r.plus ? PLUS_GAP + PLUS : 0)
   const sy = Math.min(MAX_SY, (y1 - y0 - GAP * (rows.length - 1)) / (6 * rows.length))
   // 每行宽度和 sx 成正比（字间距固定），所以按「去掉间距后剩下的宽度 / 单位字宽」求 sx
-  const sx = Math.min(sy * ASPECT, ...rows.map(r => (x1 - x0 - extra(r) - GAP * (r.chars.length - 1)) / (textWidth(r.chars, 1, 0))))
+  const sx = Math.min(sy * ASPECT, ...rows.map(r => (x1 - x0 - extra(r) - GAP * (r.chars.length - 1)) / (textWidth(r.chars, 1, 0, LABEL))))
   const h = 6 * sy
   const top = (y0 + y1) / 2 - (h * rows.length + GAP * (rows.length - 1)) / 2
   return rows.flatMap((r, i) => {
-    const width = textWidth(r.chars, sx, GAP)
+    const width = textWidth(r.chars, sx, GAP, LABEL)
     const left = (x0 + x1) / 2 - (width + extra(r)) / 2
     const y = top + i * (h + GAP)
-    const out = line(r.chars, [left + width / 2, y + h / 2], sx, GAP, sy)
+    const out = line(r.chars, [left + width / 2, y + h / 2], sx, GAP, sy, LABEL)
+    // 每一行单独吸附网格：两行一起吸的话，第二行的竖笔会把第一行的字母挤宽（MA15+ 的 M 和 A 贴在一起）
+    const row = snap(out)
+    // 角标 + 不参与吸附（吸附会把两条臂各自挪得不一样长），直接把中心放在 .5 上，四条臂一样长
     if (r.plus) {
-      const [px, py] = [left + width + PLUS_GAP + PLUS / 2, y + PLUS / 2]
-      out.push(`M${px - PLUS / 2} ${py}H${px + PLUS / 2}M${px} ${py - PLUS / 2}V${py + PLUS / 2}`)
+      const half = v => Math.round(v - 0.5) + 0.5
+      const [px, py] = [half(left + width + PLUS_GAP + PLUS / 2), half(y + PLUS / 2)]
+      row.push(`M${px - PLUS / 2} ${py}H${px + PLUS / 2}M${px} ${py - PLUS / 2}V${py + PLUS / 2}`)
     }
-    return out
+    return row
   })
 }
 

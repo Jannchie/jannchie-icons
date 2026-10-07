@@ -1,9 +1,10 @@
 // 手柄按键共用：圆形面键、肩键 / 扳机键外形、按键里的文字、十字键
 import { crisp, rounded } from './geometry'
-import { line, snap } from './letters'
+import { LABEL, line, snap } from './letters'
 
 // 按键文字：以 (cx, cy) 为中心排一行（字高 6 * s），横竖笔画对齐像素网格
-export const text = (str, center, s = 1, gap = 1.5) => snap(line(str, center, s, gap))
+// 和别处框里的小字一样：切角标签字形、细线（外框的 0.7 倍）；字间距 2，LB、RS 这类两个字母在粗字重下也不粘连
+export const text = (str, center, s = 1, gap = 2) => snap(line(str, center, s, gap, s, LABEL)).map(d => ({ d, thin: true }))
 
 // 肩键（LB / RB / L1 / R1）：平底、上沿两角圆润的扁按键。
 // 左右不完全对称：外侧（远离手柄中线的一侧）圆角更大、肩线更低，内侧圆角更紧，右键是左键的镜像

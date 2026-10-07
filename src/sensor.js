@@ -1,7 +1,7 @@
 // 画幅（传感器尺寸）标志：四角取景框的裁切角标 + 框里的线条字母（FF、APS-C、M43……）
 // 外框只用四个角，不画整圈矩形：和画质标识（2K、HDR 的圆角外框）分开，也更像取景器里的画幅框
-// 字母用细线（外框的 0.7 倍，和分级图标的文字一样），字高 6、字间距 1.75：常规线宽下字间还空 0.7
-import { line, textWidth } from './letters'
+// 字母用切角标签字形、细线（外框的 0.7 倍，和分级图标的文字一样）
+import { LABEL, line, snap, textWidth } from './letters'
 
 // 取景框：2.5–21.5 × 5.5–18.5（约 3:2），四角各一个臂长 2.5 的直角
 const L = 2.5
@@ -13,12 +13,14 @@ export const cropMarks = () => [
   `M${X0 + L} ${Y1}H${X0}V${Y1 - L}`,
 ]
 
-// 文字横向最多铺到 4–20、竖向 9–15：离四角竖臂（5.5–8、16–18.5）的端点 1.8 以上，字母的线头不会被吸到角标上
+// 文字横向最多铺到 4–20、竖向 9.5–14.5（字高 5）：离四角竖臂的端点（y 8、16）留够距离，粗字重下 APSC 的 C 也不会碰到角标
+// 字距 2：四个字母时字宽正好 2.5，每一笔都落在半格上，吸附网格时相邻两笔不会被挤到只隔 1
 const SPAN = 16
-const GAP = 1.75
+const GAP = 2
+const SY = 5 / 6
 const label = (text) => {
-  const sx = Math.min(1, (SPAN - GAP * (text.length - 1)) / textWidth(text, 1, 0))
-  return line(text, [12, 12], sx, GAP, 1).map(d => ({ d, thin: true }))
+  const sx = Math.min(1, (SPAN - GAP * (text.length - 1)) / textWidth(text, 1, 0, LABEL))
+  return snap(line(text, [12, 12], sx, GAP, SY, LABEL)).map(d => ({ d, thin: true }))
 }
 
 // 键按传感器从大到小排（预览页的顺序）
@@ -29,7 +31,7 @@ export const SENSORS = {
   'aps-c': { zh: 'APS-C 画幅', paths: () => label('APSC') },
   'mft': { zh: 'M4/3 画幅', paths: () => label('M43') },
   // 1 英寸：数字 1 + 右上角的英寸撇号（两道短竖线，隔 2，粗字重下不粘）
-  'one-inch': { zh: '1 英寸', paths: () => [...line('1', [10.5, 12], 1, GAP, 1), 'M14 9V11M16 9V11'].map(d => ({ d, thin: true })) },
+  'one-inch': { zh: '1 英寸', paths: () => snap([...line('1', [10.5, 12], 1, GAP, SY, LABEL), 'M13.5 9.5V11.5M15.5 9.5V11.5']).map(d => ({ d, thin: true })) },
 }
 
 export const sensor = key => [...cropMarks(), ...SENSORS[key].paths()]

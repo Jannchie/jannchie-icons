@@ -1,6 +1,6 @@
 // 开源协议：横放的证书（右下角压一个带绶带的印章），协议名写在证书上半部分
 import { circle, rounded } from './geometry'
-import { line, textWidth } from './letters'
+import { LABEL, line, snap, textWidth } from './letters'
 
 // 印章：圆心 (17, 16)，半径 2.5，压在证书右下角；遮挡刀，证书外框落在印章里的部分整段去掉
 // 刀会把离印章 gap + 线宽 以内的线都断开：gap 0.5 时最粗字重（2）下是 2.5，协议名底边（y = 10.5）离印章顶（13.5）有 3，不会被切到
@@ -19,8 +19,8 @@ const paper = radius => rounded([[2.5, 2.5], [21.5, 2.5], [21.5, 16.5], [2.5, 16
 // 离外框留 3、离印章留 3；字多时横向压窄
 const GAP = 2
 export function license(text, radius) {
-  const sx = Math.min(0.8, (13 - GAP * (text.length - 1)) / textWidth(text))
-  return [paper(radius), ...seal(), ...line(text, [12, 8], sx, GAP, 5 / 6).map(d => ({ d, thin: true }))]
+  const sx = Math.min(0.8, (13 - GAP * (text.length - 1)) / textWidth(text, 1, 1.5, LABEL))
+  return [paper(radius), ...seal(), ...snap(line(text, [12, 8], sx, GAP, 5 / 6, LABEL)).map(d => ({ d, thin: true }))]
 }
 // 没有协议名的通用证书：两行文字线
 export const certificate = radius => [paper(radius), ...seal(), { d: 'M6 7H18M6 10.5H12.5', thin: true }]

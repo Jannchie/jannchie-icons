@@ -1,6 +1,6 @@
 // 画质标识：横向圆角外框 + 框里放大的线条字母（2–3 个字，整体居中）
 import { rounded } from './geometry'
-import { line } from './letters'
+import { LABEL, line, snap } from './letters'
 
 // 字母都是 7.2 高；两个字母 4.2 宽，三个字母横向压窄到 3（否则挤不下）
 // 字母间距 2.5：减去线宽后还留约 1 的空，不会粘连
@@ -23,6 +23,7 @@ export const QUALITIES = {
 export function quality(text, radius) {
   return [
     rounded([[2.5, 5.5], [21.5, 5.5], [21.5, 18.5], [2.5, 18.5]], Math.min(radius, 2.5)),
-    ...line(text, [12, 12], widthOf(text.length), GAP, H).map(d => ({ d, detail: true })),
+    // 框里的小字：切角标签字形、内部细线，整组横竖笔画吸到 .5 网格（和文件扩展名同一套写法）
+    ...snap(line(text, [12, 12], widthOf(text.length), GAP, H, LABEL)).map(d => ({ d, thin: true })),
   ]
 }

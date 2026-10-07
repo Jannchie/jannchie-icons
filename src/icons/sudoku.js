@@ -1,5 +1,5 @@
 import { rounded } from '../geometry'
-import { glyph } from '../letters'
+import { glyph, LABEL } from '../letters'
 
 // 数独：方框 + 井字分成九格（格线落在 .5 上，三列宽 5 / 7 / 5）+ 中间一格填好的数字
 // 5–6 宽的格子在常规字重下装不下认得出的数字（数字要和格线隔开 0.5），只在最宽的中间格放一个：
@@ -11,5 +11,5 @@ export default ({ radius }) => [
   'M15.5 3.5V20.5',
   'M3.5 8.5H20.5',
   'M3.5 15.5H20.5',
-  { d: glyph('5', 12 - 1.75 * S, 12 - 3 * S, S), thin: true },
+  { d: glyph('5', 12 - 1.75 * S, 12 - 3 * S, S, S, LABEL), thin: true },
 ]

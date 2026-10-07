@@ -45,16 +45,24 @@ const GLYPHS = {
   '-': 'M.5 3H3',
 }
 
-// 标签字形（文件类型图标下方的扩展名专用）：3.5 宽 × 7 高，只用横竖线和 1 个单位的 45° 小切角，没有圆弧——
+// 标签字形（框里、按钮上的小字：文件扩展名、画质、分级、画幅、标签……）：3.5 宽 × 7 高，只用横竖线和 1 个单位的 45° 小切角，没有圆弧——
 // 16–20px 下一个字母只有三四个像素宽，圆弧会被抗锯齿成一团灰；横竖笔画加切角能落在整像素上，字母内部也留得出空
+// 字形结构参照成熟的低分辨率字体（只借鉴规律）：
+// - 3×5 / 4×6 像素字体（Tom Thumb、PICO-8）：笔画尽量横竖，2 不走斜线、R 的腿竖直落下
+// - 5×7 点阵（HD44780、m5x7）：M、W 两条竖边保持完整，中间只是一个浅 V 口（到字高三分之一多一点）；
+//   点阵里那段中竖这里不加：字宽吸附到网格后常是 3，中竖落不到半格上，会被吸偏到一边
+// - 小字号屏幕字体（Terminus、Spleen）：用 45° 小切角代替圆弧；D 左边方角、右边大切角，O/0 四角小切角
+// 中横统一在字高一半（y 3.5）：A B E F G H K P R S 2 3 5 6 8 9 的中横落在同一条线上，一行字吸附网格时不会互相挤开
+// 易混的字靠转角区分：S 左上切角、5 左上方角；B 左边两个方角、8 四周都切角；2 不走斜线、Z 斜线；
+// 斜线只留给 K M N V W X Y Z、4、7（以及 Q 的尾巴）。0 和 O 字形相同：3 像素宽的字里加斜杠或点只会把中间填满
 const LABEL_GLYPHS = {
-  A: 'M0 7V1L1 0H2.5L3.5 1V7M0 4H3.5',
+  A: 'M0 7V1L1 0H2.5L3.5 1V7M0 3.5H3.5',
   B: 'M0 0H2.5L3.5 1V2.5L2.5 3.5L3.5 4.5V6L2.5 7H0ZM0 3.5H2.5',
   C: 'M3.5 0H1L0 1V6L1 7H3.5',
   D: 'M0 0H2L3.5 1.5V5.5L2 7H0Z',
   E: 'M3.5 0H0V7H3.5M0 3.5H2.75',
   F: 'M3.5 0H0V7M0 3.5H2.75',
-  G: 'M3.5 0H1L0 1V6L1 7H3.5V4H2',
+  G: 'M3.5 0H1L0 1V6L1 7H3.5V3.5H2',
   H: 'M0 0V7M3.5 0V7M0 3.5H3.5',
   I: 'M0 0H3.5M1.75 0V7M0 7H3.5',
   J: 'M3.5 0V6L2.5 7H1L0 6',
@@ -63,9 +71,9 @@ const LABEL_GLYPHS = {
   M: 'M0 7V0L1.75 2.5L3.5 0V7',
   N: 'M0 7V0L3.5 7V0',
   O: 'M1 0H2.5L3.5 1V6L2.5 7H1L0 6V1Z',
-  P: 'M0 7V0H2.5L3.5 1V3L2.5 4H0',
+  P: 'M0 7V0H2.5L3.5 1V2.5L2.5 3.5H0',
   Q: 'M1 0H2.5L3.5 1V6L2.5 7H1L0 6V1ZM2.25 5.25L3.5 7',
-  R: 'M0 7V0H2.5L3.5 1V3L2.5 4H0M2 4L3.5 7',
+  R: 'M0 7V0H2.5L3.5 1V2.5L2.5 3.5H0M2.5 3.5L3.5 4.5V7', // 腿先切角再竖直落下（Terminus、Spleen 的做法），不用斜线，和 P 靠右下的竖腿区分
   S: 'M3.5 0H1L0 1V2.5L1 3.5H2.5L3.5 4.5V6L2.5 7H0',
   T: 'M0 0H3.5M1.75 0V7',
   U: 'M0 0V6L1 7H2.5L3.5 6V0',
@@ -75,12 +83,12 @@ const LABEL_GLYPHS = {
   Y: 'M0 0L1.75 3.5L3.5 0M1.75 3.5V7',
   Z: 'M0 0H3.5L0 7H3.5',
   0: 'M1 0H2.5L3.5 1V6L2.5 7H1L0 6V1Z',
-  1: 'M.5 1L1.75 0V7M.5 7H3',
-  2: 'M0 1L1 0H2.5L3.5 1V3L0 7H3.5',
+  1: 'M1 1L2.25 0V7', // 不带底座、按窄字排（字宽 2）：10、15、18 这类挤的行里，带底座的 1 会撞上后面的数字；单独放时竖笔在字格中间偏右，和圆弧字形的 1 一样
+  2: 'M0 1L1 0H2.5L3.5 1V2.5L2.5 3.5H1L0 4.5V7H3.5', // 不走斜线：上半和 S 同一套切角、下半是方角，3 像素宽里斜线会糊成一团；Z 保留斜线和它区分
   3: 'M0 0H2.5L3.5 1V2.5L2.5 3.5H1M2.5 3.5L3.5 4.5V6L2.5 7H0',
-  4: 'M2.5 7V0L0 4.5H3.5',
+  4: 'M2.5 7V0L0 4.5H3.5', // 闭口的 4：开口写法（Tom Thumb、PICO-8）在 4K 这类标牌里读着像 Ч，这里斜线保留
   5: 'M3.5 0H0V3.5H2.5L3.5 4.5V6L2.5 7H0',
-  6: 'M3 0H1L0 1V6L1 7H2.5L3.5 6V4.5L2.5 3.5H0',
+  6: 'M3 0H1L0 1V6L1 7H2.5L3.5 6V4.5L2.5 3.5H0', // 6、9 的开口端缩进 .5：比 b、q 式的闭合写法好认
   7: 'M0 0H3.5V1L1.5 7',
   8: 'M1 0H2.5L3.5 1V2.5L2.5 3.5H1L0 2.5V1ZM1 3.5L0 4.5V6L1 7H2.5L3.5 6V4.5L2.5 3.5',
   9: 'M3.5 3.5H1L0 2.5V1L1 0H2.5L3.5 1V6L2.5 7H.5',
@@ -155,31 +163,41 @@ export function snap(paths) {
   return Array.isArray(paths) ? res : res[0]
 }
 
-// 单个字形对齐网格后的版本
-export const crispGlyph = (...args) => snap(glyph(...args))
-
-// 单个字形：左上角放在 (x, y)，按 scale 等比缩放（原始 3.5 × 6）；给了 sy 时横竖分开缩放
-export const glyph = (c, x, y, scale = 1, sy = scale) => place(GLYPHS[c], x, y, scale, sy)
-
 // 窄字：字宽不足 3.5 的字形按实际宽度排（advance），并左移 shift 让字形落在自己的字宽中间
 // 否则「12」「18」里的 1 两边空出一大块，看起来像隔了个空格
 const NARROW = { '1': { advance: 2, shift: 0.375 }, '-': { advance: 2.5, shift: 0.5 } }
-export const advance = c => NARROW[c]?.advance ?? W
+
+// 字体：两套字形共用同一套排字（字宽 3.5、字高按 6·sy 算），所以各处的版面计算不用分开写
+// - ROUND（默认）：通用的圆弧线条字形，给单独的大字母、数字图标（letter-*、number-*）和字形样本类图标
+// - LABEL：切角的标签字形，给框里、按钮上的小字（画质、分级、画幅、文件扩展名……）；原稿 7 高，按 6/7 压进同样的字格，
+//   调用方按字高 6·sy 算出的版面原样可用。1 是窄字（字宽 2，排字时左挪 0.75 回到自己的字位）；没有的字符（+ . 等）回退到圆弧字形
+export const ROUND = { glyphs: GLYPHS, sy: 1, narrow: NARROW }
+export const LABEL = { glyphs: LABEL_GLYPHS, sy: 6 / 7, narrow: { '1': { advance: 2, shift: 0.75 }, '-': NARROW['-'] } }
+
+// 单个字形：左上角放在 (x, y)，按 scale 等比缩放（字格 3.5 × 6）；给了 sy 时横竖分开缩放
+export function glyph(c, x, y, scale = 1, sy = scale, font = ROUND) {
+  const d = font.glyphs[c]
+  return d ? place(d, x, y, scale, sy * font.sy) : place(GLYPHS[c], x, y, scale, sy)
+}
+// 单个字形对齐网格后的版本
+export const crispGlyph = (...args) => snap(glyph(...args))
+
+export const advance = (c, font = ROUND) => font.narrow[c]?.advance ?? W
 // 窄字（1、-）的字形按 3.5 宽画，排字时往左挪回它的字位里
-export const shift = c => NARROW[c]?.shift ?? 0
-export const textWidth = (str, sx = 1, gap = 1.5) => [...str].reduce((w, c, i) => w + advance(c) * sx + (i ? gap : 0), 0)
+export const shift = (c, font = ROUND) => font.narrow[c]?.shift ?? 0
+export const textWidth = (str, sx = 1, gap = 1.5, font = ROUND) => [...str].reduce((w, c, i) => w + advance(c, font) * sx + (i ? gap : 0), 0)
 
 // 一行字从左上角 (x, y) 排开：字宽 advance·sx、字高 6·sy，字间距 gap；空格只占位不出字形
-export function lineAt(str, [x, y], sx = 1, gap = 1.5, sy = sx) {
+export function lineAt(str, [x, y], sx = 1, gap = 1.5, sy = sx, font = ROUND) {
   return [...str].flatMap((c) => {
-    const d = c === ' ' ? [] : [glyph(c, x - (NARROW[c]?.shift ?? 0) * sx, y, sx, sy)]
-    x += advance(c) * sx + gap
+    const d = c === ' ' ? [] : [glyph(c, x - shift(c, font) * sx, y, sx, sy, font)]
+    x += advance(c, font) * sx + gap
     return d
   })
 }
 
 // 一行字以 (cx, cy) 为中心排开
-export const line = (str, [cx, cy], sx = 1, gap = 1.5, sy = sx) => lineAt(str, [cx - textWidth(str, sx, gap) / 2, cy - 3 * sy], sx, gap, sy)
+export const line = (str, [cx, cy], sx = 1, gap = 1.5, sy = sx, font = ROUND) => lineAt(str, [cx - textWidth(str, sx, gap, font) / 2, cy - 3 * sy], sx, gap, sy, font)
 
 // 把一串字母排进 box（用标签字形 LABEL_GLYPHS，上下固定 7 高）：字距固定 GAP，字宽按排字区算（最多 1 倍），整组居中
 // 排字区左右放宽（文件图标的标签在纸张下方，左右没有边线挡着）：三个字母以内各放宽 1，四个字母以上各放宽 2.5

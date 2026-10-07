@@ -1,7 +1,7 @@
 // 洗涤护理标志（ISO 3758 / GINETEX），键按 水洗 → 漂白 → 干燥 → 熨烫 → 专业清洗 的顺序，预览页据此排序
 // 「禁止」是穿过整个图形的两条对角线，直接压在原图形上（和标签上的画法一致，不挖空）
 import { circle, rounded } from './geometry'
-import { glyph, line } from './letters'
+import { glyph, LABEL, line, snap } from './letters'
 import { ring, square } from './marks'
 import { dot } from './scene'
 import { danger } from './tone'
@@ -32,7 +32,7 @@ function tub(radius, bars = 0) {
   return paths
 }
 // 盆里的温度数字
-const temp = t => r => [...tub(r), ...line(t, [12, 12.75], 0.8).map(d => ({ d, detail: true }))]
+const temp = t => r => [...tub(r), ...snap(line(t, [12, 12.75], 0.8, 1.5, 0.8, LABEL)).map(d => ({ d, thin: true }))]
 
 // 漂白三角：底边在 19.5，落在 .5 上
 const triangle = radius => rounded([[12, 3], [21.5, 19.5], [2.5, 19.5]], Math.min(radius, 2))

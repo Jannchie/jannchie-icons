@@ -2,7 +2,7 @@
 // 外框按规范宽高比 1.5:1：3.5–21.5 × 6.5–18.5（18 × 12），中心 (12.5, 12.5)——整体右下移半格，框的中线也落在 .5 上
 // 框上方 0–6.5 留给部队规模标记（echelon）。兵种符号大多直接用框的对角线、中线，端点就落在框上
 import { circle, crisp, rounded } from './geometry'
-import { line, snap } from './letters'
+import { LABEL, line, snap } from './letters'
 import { dot } from './scene'
 
 const [X0, Y0, X1, Y1] = [3.5, 6.5, 21.5, 18.5]
@@ -21,7 +21,7 @@ const track = `M9.5 9.5H15.5A3 3 0 0 1 15.5 15.5H9.5A3 3 0 0 1 9.5 9.5Z` // 装�
 const wings = `M9.5 ${Y1}A1.5 1.5 0 0 1 ${CX} ${Y1}A1.5 1.5 0 0 1 15.5 ${Y1}` // 空降：贴着底边的一对小拱（半径 1.5，离 X 的两条对角线都还有 2.5 以上）
 const slash = `M${X0} ${Y1}L${X1} ${Y0}` // 侦察：左下到右上的斜线
 // 框里的字（SF、MP、EW）：细线字（外框的 0.7 倍），粗字重下也不糊
-const text = str => [snap(line(str, [CX, CY], 1, 2, 1))].flat().map(d => ({ d, thin: true }))
+const text = str => [snap(line(str, [CX, CY], 1, 2, 1, LABEL))].flat().map(d => ({ d, thin: true }))
 // 一排小波浪（两栖）：从 x0 起 n 个宽 3 的半波，上下摆幅 1
 const waves = (x0, y, n) => `M${x0} ${y}` + Array.from({ length: n }, (_, i) => `Q${x0 + i * 3 + 1.5} ${y + (i % 2 ? 2 : -2)} ${x0 + i * 3 + 3} ${y}`).join('')
 

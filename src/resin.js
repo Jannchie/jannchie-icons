@@ -1,6 +1,6 @@
 // 树脂识别码 ♳–♹：三个首尾追逐的折线箭头围成三角形，中间是编号
 import { crisp, rounded } from './geometry'
-import { line } from './letters'
+import { LABEL, line, snap } from './letters'
 
 // 三角形顶点（顺时针：顶、右下、左下）
 const V = [[12, 3], [21.5, 19.5], [2.5, 19.5]]
@@ -29,5 +29,5 @@ export const RESIN = Object.fromEntries([
   ['7', 'OTHER'],
 ].map(([n, abbr]) => [n, {
   zh: `${n} ${abbr}`,
-  paths: radius => [...[0, 1, 2].flatMap(k => arrow(k, radius)), ...line(n, [12, 14]).map(d => ({ d, detail: true }))],
+  paths: radius => [...[0, 1, 2].flatMap(k => arrow(k, radius)), ...snap(line(n, [12, 14], 1, 1.5, 1, LABEL)).map(d => ({ d, thin: true }))],
 }]))
