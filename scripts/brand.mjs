@@ -32,7 +32,7 @@ const text = (str, x, y, scale, gap) => lineAt(str, [x, y], scale, gap).join('')
 
 // 格子墙：挑各个分类里有代表性的图标；不存在的名字（比如被改名）自动跳过
 const PICKS = [
-  'folder', 'file', 'calendar-heart', 'chat-sparkle', 'mail', 'camera', 'chiikawa', 'astro-saturn', 'zodiac-leo', 'greek-lambda', 'hiragana-a',
+  'folder', 'file', 'calendar-heart', 'chat-sparkle', 'mail', 'camera', 'usagi', 'astro-saturn', 'zodiac-leo', 'greek-lambda', 'hiragana-a',
   'stem-jia', 'branch-zi', 'xiangqi-shuai', 'shogi-ou', 'chess-knight', 'cc-by', 'license-mit', 'rating-esrb-e', 'dice-5', 'gamepad', 'rocket',
   'heart', 'sparkle', 'terminal', 'git-branch', 'brain-circuit', 'atom', 'dna', 'coffee', 'onigiri', 'guitar', 'trophy', 'crown', 'sword',
   'cloud-rain', 'sun', 'umbrella', 'wallet', 'bell', 'globe', 'palette', 'lightbulb', 'robot', 'key', 'lock', 'wifi', 'battery-full', 'music',
