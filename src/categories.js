@@ -47,7 +47,9 @@ const EXTRA = {
   weather: ['moon-star'],
   meeting: ['webcam', 'webcam-off', 'cctv', 'chats', 'collaborate', 'mic-handheld', 'mic-vintage', 'mic-studio'],
   search: ['map-search', 'globe-search'],
-  object: ['stopwatch', 'toolbox', 'tools', 'graduation-cap', 'glasses', 'glasses-square', 'sunglasses', 'vr-headset', 'goggles', 'ghost', 'gift', 'package', 'receipt', 'map', 'rocket', 'ruler', 'books', 'diamond', 'notebook-pen', 'scale-balance', 'language-hiragana', 'calculator', 'backpack', 'library'],
+  object: ['stopwatch', 'toolbox', 'tools', 'graduation-cap', 'glasses', 'glasses-square', 'sunglasses', 'vr-headset', 'goggles', 'ghost', 'gift', 'package', 'receipt', 'map', 'rocket', 'ruler', 'books', 'diamond', 'notebook-pen', 'scale-balance', 'language-hiragana', 'calculator', 'backpack', 'library', 'map-pin-plus', 'region', 'hologram'],
+  // 制图：地形编辑（抬升、压低、抹平）、沙盘、陆块，和山、波浪放在一起
+  nature: ['terrain-raise', 'terrain-lower', 'terrain-smooth', 'diorama', 'continent'],
 }
 const NAVY = ['battleship', 'cruiser', 'destroyer', 'frigate', 'carrier', 'submarine']
 const ARMY = ['tank-heavy', 'tank-medium', 'tank-light', 'tank-destroyer', 'tank-spg', 'apc', 'spaag', 'sam', 'missile', 'radar-dish']
