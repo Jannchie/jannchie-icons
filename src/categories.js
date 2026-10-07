@@ -170,7 +170,15 @@ export const CATEGORIES = [
     ),
   },
   { id: 'money', match: any(prefixed('currency-', 'coin-'), oneOf('wallet', 'coins', 'banknote', 'credit-card')) },
-  { id: 'building', match: oneOf('home', 'building', 'store', 'factory', 'hospital') },
+  {
+    id: 'building',
+    match: oneOf(
+      'home', 'home-heart', 'building', 'apartment', 'skyscraper', 'store', 'factory', 'warehouse', 'garage', 'barn',
+      'hospital', 'school', 'bank', 'hotel', 'police-station', 'fire-station', 'post-office', 'train-station',
+      'torii', 'shrine', 'temple', 'pagoda', 'japanese-castle',
+      'castle', 'church', 'mosque', 'lighthouse', 'stadium', 'windmill', 'tent',
+    ),
+  },
   { id: 'git', match: prefixed('git-') },
   {
     id: 'dev',
