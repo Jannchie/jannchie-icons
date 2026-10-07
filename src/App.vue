@@ -442,7 +442,7 @@ onUnmounted(() => {
         </div>
         <div class="hero">
           <!-- 辅助线（在图标下面）：中线与对角线、常用外形的参考框（大圆、正方形、竖横长方形、内圈）、离边 2 的安全边距、
-               系列角标的位置（右下、右上的圆）；和背景网格同一种淡色，1px 不随预览放大变粗 -->
+               系列角标的位置（右下、右上的圆）；比背景网格深一档，1px 不随预览放大变粗 -->
           <svg class="guides" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 0V24M0 12H24M0 0L24 24M24 0L0 24" />
             <circle cx="12" cy="12" r="10" />
@@ -707,9 +707,9 @@ main { min-width: 0; padding-bottom: 80px; }
   background-size: calc((100% - 56px) / 24) calc((100% - 56px) / 24); background-position: 28px 28px; background-origin: border-box;
 }
 .hero svg { width: 100%; height: 100%; }
-/* 辅助线和图标叠在同一格里：辅助线在下，颜色和背景网格一样淡 */
+/* 辅助线和图标叠在同一格里：辅助线在下，比背景网格深一档（line-strong），和网格分得开 */
 .hero:not(.placeholder) > * { grid-area: 1 / 1; }
-.guides { fill: none; stroke: var(--line); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.guides { fill: none; stroke: var(--line-strong); stroke-width: 1; vector-effect: non-scaling-stroke; }
 .guides * { vector-effect: non-scaling-stroke; }
 .scales { display: grid; grid-template-columns: repeat(5, 1fr); }
 .scales div { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 8px; padding: 16px 0 12px; border-right: 1px solid var(--line); }
