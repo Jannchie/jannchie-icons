@@ -140,18 +140,20 @@ export function lineAt(str, [x, y], sx = 1, gap = 1.5, sy = sx) {
 // 一行字以 (cx, cy) 为中心排开
 export const line = (str, [cx, cy], sx = 1, gap = 1.5, sy = sx) => lineAt(str, [cx - textWidth(str, sx, gap) / 2, cy - 3 * sy], sx, gap, sy)
 
-// 把一串字母排进 box（上下固定 6 高）：
-// 三个字母左右撑满；少于三个按固定间距居中；多于三个先把字母横向压窄再撑满
+// 把一串字母排进 box（上下固定 6 高）：字距固定 GAP，字宽按排字区算（最多 1 倍），整组居中
+// 排字区左右放宽（文件图标的标签在纸张下方，左右没有边线挡着）：三个字母以内各放宽 1，四个字母以上各放宽 2.5
+// 字距至少 2：吸附网格时相邻两笔最少只保证隔 1，字距再小，像 INDD 的 N 和 D 会贴在一起
 // 字母用细线（thin：外框的 0.7 倍），整组横竖笔画吸到 .5 网格（snap）：
 // 16–20px 下一个字母只有三四个像素宽，笔画落在半个像素上会发灰；thin 还会参与像素对齐（detail 不参与），常规线宽下字母内部也多留一点空
-const GAP = 1.75
+const GAP = 2.5
 export function label(text, { left, right, top }) {
   const chars = [...text.toUpperCase()]
   const n = chars.length
-  const span = right - left
-  const sx = n > 3 ? 0.75 : 1
+  const widen = n > 3 ? 2.5 : 1
+  const [l, r] = [left - widen, right + widen]
+  const gap = n > 1 ? GAP : 0
+  const sx = Math.min(1, (r - l - gap * (n - 1)) / (W * n))
   const w = W * sx
-  const gap = n > 1 ? Math.min((span - w * n) / (n - 1), GAP) : 0
-  const start = left + (span - (w * n + gap * (n - 1))) / 2
+  const start = l + (r - l - (w * n + gap * (n - 1))) / 2
   return snap(chars.map((c, i) => ({ d: place(GLYPHS[c], start + i * (w + gap), top, sx), thin: true })))
 }
