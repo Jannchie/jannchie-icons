@@ -1,7 +1,8 @@
 <script setup>
 import { computed, nextTick, onMounted, onUnmounted, provide, ref, shallowRef, watch, watchEffect } from 'vue'
 import { categorize } from './categories'
-import { LOCALES, locale, searchTitle, t } from './i18n'
+import { categoryIcon } from './category-icons'
+import { LOCALES, locale, searchGroupTitle, searchTitle, t } from './i18n'
 import Examples from './Examples.vue'
 import Icon from './Icon.vue'
 import IconSvg from './IconSvg.vue'
@@ -105,8 +106,28 @@ watchEffect(() => {
 // 搜索：按名字或分类名过滤；按 / 聚焦，Esc 清空
 const query = ref('')
 const searchInput = ref(null)
-const sections = computed(() => categorize(icons, query.value, searchTitle))
+const sections = computed(() => categorize(icons, query.value, searchTitle, searchGroupTitle))
 const matched = computed(() => sections.value.reduce((n, c) => n + c.count, 0))
+// 清空搜索（Esc、清除按钮、删光文字）时如果选中了图标：保留选中，并把它在完整列表里的格子滚到视口中间，
+// 不用在两千多个图标里重新找一遍
+function clearSearch() {
+  query.value = ''
+  searchInput.value?.focus()
+}
+watch(query, (q, old) => {
+  if (q || !old || !selected.value)
+    return
+  nextTick(() => mainEl.value?.querySelector(`.cell[data-name="${selected.value}"]`)?.scrollIntoView({ block: 'center' }))
+})
+// 侧栏自己的筛选：只过滤侧栏里的分类列表（顶部搜索过滤的是图标），分类多时快速跳到想看的分类。
+// 和顶部搜索同一套匹配规则（categorize）：分类名（各语言）、小节名、或者分类里任何一个图标的名字对得上，这个分类就留下
+const catFilter = ref('')
+const sideSections = computed(() => {
+  if (!catFilter.value.trim())
+    return sections.value
+  const keep = new Set(categorize(icons, catFilter.value, searchTitle, searchGroupTitle).map(c => c.id))
+  return sections.value.filter(c => keep.has(c.id))
+})
 const searchPaths = finalize(searchIcon(), 1.5)
 // 按名字取图标的 Icon 组件（页头标志、详情的多尺寸预览、示例页）用同一套设置
 provide('iconStyle', computed(() => ({ corner: corner.value, weight: weight.value })))
@@ -181,7 +202,7 @@ function onKey(e) {
 // 上一个区块的尾巴常常还留在视口顶部，会让高亮慢一拍
 const active = ref('')
 let ticking = false
-let headerHeight = 57
+let headerHeight = 102
 let sectionEls = []
 function updateActive() {
   ticking = false
@@ -237,9 +258,10 @@ watch(active, (id) => {
     bar.scrollTop = top + link.offsetHeight - bar.clientHeight + 32
 })
 
-// 页头在窄屏会换行、变高：量出实际高度写进 --header-h，侧栏、详情栏、分类标签、锚点跳转都据此留位置
+// 页头固定两行（不随宽度在一行、两行之间跳变）；仍量出实际高度写进 --header-h，侧栏、详情栏、分类标签、锚点跳转都据此留位置
 const header = ref(null)
 let headerObserver
+
 onMounted(() => {
   headerObserver = new ResizeObserver(([entry]) => {
     headerHeight = entry.target.offsetHeight
@@ -265,7 +287,7 @@ onUnmounted(() => {
 
 <template>
   <div class="shell">
-    <!-- 页头：左栏和侧栏同宽（放名字），右栏是工具条；中间那条竖线和下方侧栏的竖线连成一条 -->
+    <!-- 页头固定两行：第一行 名字 | 搜索，第二行 视图切换 | 设置；左栏和侧栏同宽，中间那条竖线和下方侧栏的竖线连成一条 -->
     <header ref="header" class="top">
       <div class="brand">
         <!-- 标志就是库里的十面骰，跟着当前的圆角、字重一起变 -->
@@ -280,9 +302,14 @@ onUnmounted(() => {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
             <path v-for="p in searchPaths" :key="p.d" :d="p.d" />
           </svg>
-          <input ref="searchInput" v-model="query" type="search" :placeholder="t('ui.search')" @keydown.esc="query = ''">
+          <input ref="searchInput" v-model="query" type="search" :placeholder="t('ui.search')" @keydown.esc="clearSearch">
           <kbd v-if="!query">/</kbd>
-          <small v-else class="mono">{{ matched }}</small>
+          <template v-else>
+            <small class="mono">{{ matched }}</small>
+            <button class="clear" :title="t('ui.clearSearch')" :aria-label="t('ui.clearSearch')" @click.prevent="clearSearch">
+              <Icon name="x" :size="14" />
+            </button>
+          </template>
       </label>
       <div class="opts">
         <div class="opt">
@@ -341,8 +368,12 @@ onUnmounted(() => {
     </main>
     <div v-else class="layout">
       <aside ref="sidebar" class="sidebar">
-        <p class="label">{{ t('ui.categories') }} · {{ sections.length }}</p>
-        <a v-for="c in sections" :key="c.id" :href="`#${c.id}`" :class="{ active: active === c.id }">
+        <div class="side-head">
+          <p class="label">{{ t('ui.categories') }} · {{ sideSections.length }}</p>
+          <input v-model="catFilter" class="cat-filter" type="search" :placeholder="t('ui.filterCategories')" :aria-label="t('ui.filterCategories')" @keydown.esc="catFilter = ''">
+        </div>
+        <a v-for="c in sideSections" :key="c.id" :href="`#${c.id}`" :class="{ active: active === c.id }">
+          <Icon v-if="categoryIcon(c.id)" :name="categoryIcon(c.id)" :size="16" class="cat-icon" />
           <span>{{ t(`cat.${c.id}`) }}</span><small class="mono">{{ c.count }}</small>
         </a>
       </aside>
@@ -350,7 +381,9 @@ onUnmounted(() => {
       <main ref="mainEl" :style="{ '--size': `${size}px` }">
         <!-- 窄屏没有侧栏：分类改成可横向滚动的标签 -->
         <nav class="pills">
-          <a v-for="c in sections" :key="c.id" :href="`#${c.id}`" :class="{ active: active === c.id }">{{ t(`cat.${c.id}`) }}<small class="mono">{{ c.count }}</small></a>
+          <a v-for="c in sections" :key="c.id" :href="`#${c.id}`" :class="{ active: active === c.id }">
+            <Icon v-if="categoryIcon(c.id)" :name="categoryIcon(c.id)" :size="14" class="cat-icon" />{{ t(`cat.${c.id}`) }}<small class="mono">{{ c.count }}</small>
+          </a>
         </nav>
 
         <section v-for="c in sections" :id="c.id" :key="c.id" class="category">
@@ -363,6 +396,7 @@ onUnmounted(() => {
                 :key="icon.name"
                 class="cell"
                 :class="{ selected: selected === icon.name }"
+                :data-name="icon.name"
                 :title="icon.name"
                 @click="selected = selected === icon.name ? null : icon.name"
               >
@@ -438,7 +472,7 @@ onUnmounted(() => {
   /* 不用彩色强调：强调色就是正文色，选中态用一层很淡的正文色 */
   --accent: var(--text);
   --accent-soft: color-mix(in srgb, var(--text) 9%, transparent);
-  --header-h: 57px;
+  --header-h: 102px;
   --side: 220px;
   --detail: 340px;
   --sans: 'Inter', system-ui, -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
@@ -457,7 +491,6 @@ onUnmounted(() => {
 }
 * { box-sizing: border-box; }
 /* 锚点跳转的顶部留白只在这里留一次（页头高度）；.category 的 scroll-margin 只补窄屏标签栏，别再叠加页头高度 */
-html { scroll-padding-top: var(--header-h); }
 body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
 button { font: inherit; color: inherit; }
 small { color: var(--muted); }
@@ -477,18 +510,21 @@ small { color: var(--muted); }
 /* 线框（参考 voidzero.dev）：内容收在居中的容器里，左右两条竖线贯穿整页；每根线只画一次 */
 .shell { max-width: 1680px; min-height: 100vh; margin: 0 auto; border-inline: 1px solid var(--line); background: var(--surface); }
 
-/* 页头：名字 | 搜索 | 设置；名字一栏和侧栏同宽，中间那条竖线和侧栏的竖线连成一条 */
-/* 高 57：减去 1px 底边，内容区是偶数 56，20px 的标志居中后正好落在整数像素上（奇数高度只能偏半像素或发虚） */
+/* 页头固定两行：名字 | 搜索、视图切换 | 设置；左栏和侧栏同宽，中间那条竖线和侧栏的竖线连成一条 */
+/* 第一行高 57：减去 1px 分隔线，内容区是偶数 56，20px 的标志居中后正好落在整数像素上（奇数高度只能偏半像素或发虚）；第二行 44 */
 .top {
-  position: sticky; top: 0; z-index: 3; display: grid; grid-template-columns: var(--side) auto minmax(0, 1fr) auto;
-  grid-template-areas: 'brand views search opts'; min-height: 57px; border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; z-index: 3; display: grid; grid-template-columns: var(--side) minmax(0, 1fr); grid-template-rows: 57px 44px;
+  grid-template-areas: 'brand search' 'views opts'; border-bottom: 1px solid var(--line);
   background: color-mix(in srgb, var(--surface) 85%, transparent); backdrop-filter: blur(14px) saturate(1.4);
 }
-.brand { grid-area: brand; display: flex; align-items: center; gap: 10px; padding: 0 20px; border-right: 1px solid var(--line); font-weight: 600; letter-spacing: -.01em; white-space: nowrap; }
+.brand { grid-area: brand; display: flex; align-items: center; gap: 10px; padding: 0 20px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); font-weight: 600; letter-spacing: -.01em; white-space: nowrap; }
 /* 双色变体的 primary（未设置时就是继承的文字颜色） */
 .ji { color: var(--icon-primary, currentColor); }
 .mark { width: 20px; height: 20px; flex: none; color: var(--accent); }
-.opts { grid-area: opts; display: flex; align-items: stretch; min-width: 0; }
+/* 设置一行放不下时横向滑动，不换行 */
+.opts { grid-area: opts; display: flex; align-items: stretch; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+.opts::-webkit-scrollbar { display: none; }
+.opts .opt:first-child { border-left: 0; }
 /* 视图切换：图标 / 示例，和设置按钮同一套选中样式 */
 .views { grid-area: views; display: flex; align-items: center; gap: 2px; padding: 0 12px; border-right: 1px solid var(--line); }
 .views button {
@@ -498,11 +534,13 @@ small { color: var(--muted); }
 .views button:hover { color: var(--text); }
 .views button[aria-pressed='true'] { color: var(--text); background: var(--sunken); box-shadow: inset 0 0 0 1px var(--line-strong); }
 .examples-main { padding-bottom: 0; }
-.search { grid-area: search; display: flex; align-items: center; gap: 10px; min-width: 120px; padding: 0 20px; cursor: text; }
+.search { grid-area: search; display: flex; align-items: center; gap: 10px; min-width: 0; padding: 0 20px; border-bottom: 1px solid var(--line); cursor: text; }
 .search svg { width: 16px; height: 16px; flex: none; color: var(--muted); }
 .search input { flex: 1; min-width: 0; border: 0; outline: 0; background: none; color: inherit; font: inherit; }
 .search input::placeholder { color: var(--muted); }
 .search input::-webkit-search-cancel-button { display: none; }
+.search .clear { display: grid; place-items: center; width: 24px; height: 24px; padding: 0; border: 0; border-radius: 6px; background: none; color: var(--muted); cursor: pointer; }
+.search .clear:hover { color: var(--text); background: var(--sunken); }
 kbd { font: 12px var(--mono); color: var(--muted); padding: 1px 6px; border: 1px solid var(--line-strong); border-radius: 4px; }
 .opt { display: flex; align-items: center; gap: 2px; padding: 0 12px; border-left: 1px solid var(--line); white-space: nowrap; }
 .opt .label { margin-right: 6px; }
@@ -549,11 +587,24 @@ kbd { font: 12px var(--mono); color: var(--muted); padding: 1px 6px; border: 1px
   overflow-y: auto; padding: 20px 10px 40px; border-right: 1px solid var(--line);
 }
 .sidebar .label { padding: 0 10px 10px; }
+/* 侧栏标题和筛选框：钉在侧栏顶部，列表在下面滚（侧栏 padding-top 20，往上抵掉） */
+.side-head { position: sticky; top: -20px; z-index: 1; margin: -20px -10px 0; padding: 20px 10px 0; background: var(--surface); }
+/* 侧栏的分类筛选框 */
+.cat-filter {
+  display: block; width: 100%; height: 30px; margin: 0 0 10px; padding: 0 10px; border: 1px solid var(--line-strong); border-radius: 6px;
+  background: none; color: inherit; font: 13px var(--sans); outline: 0;
+}
+.cat-filter:focus { border-color: var(--accent); }
+.cat-filter::placeholder { color: var(--muted); }
+.cat-filter::-webkit-search-cancel-button { display: none; }
 .sidebar a {
-  display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 5px 10px; border-radius: 6px;
+  display: flex; align-items: center; gap: 8px; padding: 5px 10px; border-radius: 6px;
   color: var(--text-2); text-decoration: none; font-size: 13.5px; white-space: nowrap;
 }
-.sidebar a span { overflow: hidden; text-overflow: ellipsis; }
+/* 分类的代表图标（见 category-icons.js）：比文字淡一档，悬停、当前分类时跟着文字一起变亮 */
+.cat-icon { color: var(--muted); }
+.sidebar a:hover .cat-icon, .sidebar a.active .cat-icon, .pills a.active .cat-icon { color: currentColor; }
+.sidebar a span { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .sidebar a small { font-size: 12px; }
 .sidebar a:hover { color: var(--text); background: var(--sunken); }
 .sidebar a.active { color: var(--text); background: var(--sunken); }
@@ -564,11 +615,14 @@ main { min-width: 0; padding-bottom: 80px; }
 
 /* 分类区块：不用 content-visibility——未渲染的区块按估计高度占位，点侧栏跳转后实际高度一出来，内容会整体挪动；
    图标本身已经懒加载（LazyIcon），排版开销不大 */
-.category { border-bottom: 1px solid var(--line); }
+.category { border-bottom: 1px solid var(--line); scroll-margin-top: var(--header-h); }
+/* 锚点、选中格子滚动的避让只加在内容上，不用 html 的 scroll-padding-top：页头是 sticky 的，
+   整页留白会让浏览器以为页头里的搜索框被页头挡住，一聚焦就把页面往回滚 */
+.cell { scroll-margin-top: var(--header-h); }
 .category-head { display: flex; align-items: baseline; gap: 10px; margin: 0; padding: 28px 32px 14px; font-size: 18px; line-height: 1.3; letter-spacing: -.01em; font-weight: 600; }
 .category-head small { font-size: 13px; font-weight: 400; }
 /* 小标题上方画一条整行的分割线；上移 1px 盖住上一组网格最后一行格子的下边线，避免叠成双线 */
-.group { position: relative; margin-top: -1px; padding: 18px 32px 10px; border-top: 1px solid var(--line); }
+.group { position: relative; margin-top: -1px; padding: 12px 32px; border-top: 1px solid var(--line); }
 .empty { color: var(--muted); text-align: center; padding: 96px 0; }
 
 /* 网格：格子只画右边和下边，网格只画顶边；最右一列的右边线收进容器竖线 */
@@ -637,14 +691,8 @@ main { min-width: 0; padding-bottom: 80px; }
   box-shadow: 0 8px 24px rgb(0 0 0 / .2);
 }
 
-/* 中屏：设置挪到第二行，可以横向滑动；详情栏放不下第三列，改成从右下浮起 */
+/* 中屏：详情栏放不下第三列，改成从右下浮起 */
 @media (max-width: 1180px) {
-  .top { grid-template-columns: var(--side) auto minmax(0, 1fr); grid-template-areas: 'brand views search' 'opts opts opts'; }
-  .search { height: 52px; }
-  .opts { overflow-x: auto; border-top: 1px solid var(--line); scrollbar-width: none; }
-  .opts::-webkit-scrollbar { display: none; }
-  .opt { height: 44px; }
-  .opt:first-child { border-left: 0; }
   .layout { grid-template-columns: var(--side) minmax(0, 1fr); }
   .empty-detail { display: none !important; }
   .detail {
@@ -655,12 +703,12 @@ main { min-width: 0; padding-bottom: 80px; }
 }
 /* 手机：名字只留图标、和搜索挤一行；去掉侧栏，分类改成固定在页头下方、可横向滑动的标签；详情从底部弹出成半屏面板 */
 @media (max-width: 760px) {
-  .top { grid-template-columns: auto auto minmax(0, 1fr); }
+  .top { grid-template-columns: auto minmax(0, 1fr); grid-template-rows: 49px 44px; }
   .views { padding: 0 6px; }
   .views button { padding: 0 8px; }
   .brand { padding: 0 14px; }
   .brand span { display: none; }
-  .search { height: 48px; padding: 0 14px; }
+  .search { padding: 0 14px; }
   .search kbd { display: none; }
   .opt { padding: 0 10px; }
   .layout { grid-template-columns: minmax(0, 1fr); }
@@ -671,13 +719,13 @@ main { min-width: 0; padding-bottom: 80px; }
   }
   .pills::-webkit-scrollbar { display: none; }
   .pills a {
-    flex: none; display: inline-flex; gap: 6px; align-items: baseline; padding: 4px 11px;
+    flex: none; display: inline-flex; gap: 6px; align-items: center; padding: 4px 11px;
     border: 1px solid var(--line-strong); border-radius: 999px; color: var(--text-2); text-decoration: none; font-size: 13px;
   }
   .pills a.active { color: var(--text); border-color: var(--accent); background: var(--accent-soft); }
-  .category { scroll-margin-top: 50px; }
+  .category { scroll-margin-top: calc(var(--header-h) + 50px); }
   .category-head { padding: 22px 14px 12px; font-size: 16px; }
-  .group { padding: 14px 14px 8px; }
+  .group { padding: 10px 14px; }
   .grid { grid-template-columns: repeat(auto-fill, minmax(max(76px, calc(var(--size) * 2)), 1fr)); }
   .detail { left: 0; right: 0; bottom: 0; width: auto; max-height: 68vh; border-radius: 16px 16px 0 0; border-width: 1px 0 0; }
   .hero { padding: 20px; max-height: 34vh; aspect-ratio: auto; height: 34vh; }
