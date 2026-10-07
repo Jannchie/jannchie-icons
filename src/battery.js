@@ -8,5 +8,7 @@ export const shell = radius => [rounded([[2.5, 6.5], [19.5, 6.5], [19.5, 16.5], 
 export const level = (ratio, radius) => {
   const x = Math.round(2.5 + 17 * ratio - 0.5) + 0.5
   const r = Math.min(radius, 2)
-  return { d: rounded([[x, 6.5, 0], [x, 16.5, 0], [2.5, 16.5], [2.5, 6.5]], r), fill: true }
+  // 填满时右边就是壳的右边：右侧两个角也跟壳一样圆，不然直角会从壳的圆角外面冒出来
+  const rx = x >= 19.5 ? r : 0
+  return { d: rounded([[x, 6.5, rx], [x, 16.5, rx], [2.5, 16.5], [2.5, 6.5]], r), fill: true }
 }
