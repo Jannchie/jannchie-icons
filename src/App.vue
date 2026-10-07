@@ -442,7 +442,7 @@ onUnmounted(() => {
         </div>
         <div class="hero">
           <!-- 辅助线（在图标下面）：中线与对角线、常用外形的参考框（大圆、正方形、竖横长方形、内圈）、离边 2 的安全边距、
-               系列角标的位置（右下、右上，虚线圆）；和背景网格同一种淡色，1px 不随预览放大变粗 -->
+               系列角标的位置（右下、右上的圆）；和背景网格同一种淡色，1px 不随预览放大变粗 -->
           <svg class="guides" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M12 0V24M0 12H24M0 0L24 24M24 0L0 24" />
             <circle cx="12" cy="12" r="10" />
@@ -450,9 +450,9 @@ onUnmounted(() => {
             <rect x="3" y="3" width="18" height="18" rx="2" />
             <rect x="4" y="2" width="16" height="20" rx="2" />
             <rect x="2" y="4" width="20" height="16" rx="2" />
-            <rect class="dashed" x="2" y="2" width="20" height="20" />
-            <circle class="dashed" cx="18" cy="17.5" r="4" />
-            <circle class="dashed" cx="18" cy="6.5" r="4" />
+            <rect x="2" y="2" width="20" height="20" />
+            <circle cx="18" cy="17.5" r="4" />
+            <circle cx="18" cy="6.5" r="4" />
           </svg>
           <IconSvg :paths="selectedIcon.paths" :stroke="weight.stroke" :sharp="!!corner.sharp" />
         </div>
@@ -711,7 +711,6 @@ main { min-width: 0; padding-bottom: 80px; }
 .hero:not(.placeholder) > * { grid-area: 1 / 1; }
 .guides { fill: none; stroke: var(--line); stroke-width: 1; vector-effect: non-scaling-stroke; }
 .guides * { vector-effect: non-scaling-stroke; }
-.guides .dashed { stroke-dasharray: 3 3; }
 .scales { display: grid; grid-template-columns: repeat(5, 1fr); }
 .scales div { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 8px; padding: 16px 0 12px; border-right: 1px solid var(--line); }
 .scales div:last-child { border-right: 0; }
