@@ -161,8 +161,16 @@ watch(view, (v) => {
     nextTick(collectSections)
 })
 
-// 选中的图标：右侧详情面板
-const selected = ref(null)
+// 选中的图标：右侧详情面板；记在网址的 ?icon= 上，可以直接分享某个图标
+const selected = ref(byName.has(new URLSearchParams(location.search).get('icon')) ? new URLSearchParams(location.search).get('icon') : null)
+watch(selected, (name) => {
+  const url = new URL(location.href)
+  if (name)
+    url.searchParams.set('icon', name)
+  else
+    url.searchParams.delete('icon')
+  history.replaceState(null, '', url)
+})
 const selectedIcon = computed(() => {
   const icon = selected.value && byName.get(selected.value)
   if (!icon)
@@ -170,6 +178,33 @@ const selectedIcon = computed(() => {
   // 不做像素对齐的路径：详情大图和导出用
   return { name: icon.name, paths: pathsOf(icon, corner.value, weight.value) }
 })
+// 变体：去掉 -badge-top / -badge / -off 后缀得到「本体」，本体和所有以「本体-」开头的图标算一族（folder-search → folder-search-badge、-badge-top……）；
+// 一族只有自己时，退而显示它所在分组里的其他图标（tag-a → tag-b、tag-c……）
+const VARIANT_SUFFIX = /-(?:badge-top|badge|off)$/
+const MAX_RELATED = 48
+const related = computed(() => {
+  const name = selected.value
+  if (!name)
+    return null
+  const stripped = name.replace(VARIANT_SUFFIX, '')
+  const core = byName.has(stripped) ? stripped : name
+  const family = icons.filter(i => i.name === core || i.name.startsWith(`${core}-`))
+  if (family.length > 1)
+    return { kind: 'variants', icons: family.slice(0, MAX_RELATED), more: Math.max(0, family.length - MAX_RELATED) }
+  for (const c of sections.value) {
+    const g = c.groups.find(g => g.icons.some(i => i.name === name))
+    if (g && g.icons.length > 1)
+      return { kind: 'series', icons: g.icons.slice(0, MAX_RELATED), more: Math.max(0, g.icons.length - MAX_RELATED) }
+  }
+  return null
+})
+// 圆角 × 字重：同一个图标在每种组合下的样子，点一格就切到那套设置
+const styleGrid = computed(() => {
+  const icon = selected.value && byName.get(selected.value)
+  return icon && weights.map(w => ({ w, cells: corners.map(c => ({ c, paths: pathsOf(icon, c, w, devicePx(24)) })) }))
+})
+const selectedAnimated = computed(() => !!(selected.value && byName.get(selected.value)?.animation))
+
 const selectedCategory = computed(() => selected.value && sections.value.find(c => c.groups.some(g => g.icons.some(i => i.name === selected.value)))?.id)
 
 // 导出的 SVG：按当前圆角、字重、配色生成（见 export.js）
@@ -382,6 +417,9 @@ onUnmounted(() => {
         <div class="opt" role="group" :aria-label="t('ui.language')">
           <button v-for="l in LOCALES" :key="l.id" :aria-pressed="lang === l.id" @click="lang = l.id">{{ l.label }}</button>
         </div>
+        <div class="opt">
+          <a class="repo" href="https://github.com/Jannchie/jannchie-icons" target="_blank" rel="noopener">{{ t('ui.github') }}<Icon name="arrow-up-right" :size="14" /></a>
+        </div>
       </div>
     </header>
 
@@ -436,7 +474,7 @@ onUnmounted(() => {
       <aside v-if="selectedIcon" class="detail">
         <div class="detail-head">
           <div>
-            <p class="label">{{ t(`cat.${selectedCategory}`) }}</p>
+            <p class="label">{{ t(`cat.${selectedCategory}`) }}<template v-if="selectedAnimated"> · {{ t('ui.animated') }}</template></p>
             <h3 class="mono">{{ selectedIcon.name }}</h3>
           </div>
           <button class="close" :aria-label="t('ui.close')" @click="selected = null">
@@ -473,10 +511,34 @@ onUnmounted(() => {
           <button @click="copy(svgText, 'ui.copiedSvg')">{{ t('ui.copySvg') }}</button>
           <button @click="download(selectedIcon)">{{ t('ui.download') }}</button>
         </div>
-        <div class="code-wrap">
-          <p class="label">SVG · {{ corner.sharp ? t('ui.sharp') : t('ui.cornerRadius', { r: corner.label }) }} · {{ t(`ui.${weight.id}`) }}</p>
-          <pre class="code">{{ svgText }}</pre>
-        </div>
+        <section v-if="related" class="related">
+          <p class="label">{{ t(`ui.${related.kind}`) }} · {{ related.icons.length + related.more }}</p>
+          <div class="related-grid">
+            <button
+              v-for="i in related.icons" :key="i.name" :class="{ current: i.name === selected }" :title="i.name" :aria-label="i.name"
+              @click="selected = i.name"
+            >
+              <Icon :name="i.name" :size="20" />
+            </button>
+            <span v-if="related.more" class="more mono">+{{ related.more }}</span>
+          </div>
+        </section>
+        <section class="styles">
+          <p class="label">{{ t('ui.styles') }}</p>
+          <div class="style-grid" :style="{ '--cols': corners.length }">
+            <span />
+            <small v-for="c in corners" :key="c.label" class="mono">{{ cornerLabel(c) }}</small>
+            <template v-for="row in styleGrid" :key="row.w.id">
+              <small class="mono row-head">{{ t(`ui.${row.w.id}`) }}</small>
+              <button
+                v-for="cell in row.cells" :key="cell.c.label" :class="{ current: cell.c === corner && row.w === weight }"
+                :aria-label="`${cornerLabel(cell.c)} · ${t(`ui.${row.w.id}`)}`" @click="corner = cell.c; weight = row.w"
+              >
+                <IconSvg :paths="cell.paths" :stroke="row.w.stroke" :sharp="!!cell.c.sharp" snap style="width: 24px; height: 24px" />
+              </button>
+            </template>
+          </div>
+        </section>
       </aside>
       <aside v-else class="detail empty-detail">
         <div class="hero placeholder">
@@ -529,8 +591,9 @@ onUnmounted(() => {
 }
 * { box-sizing: border-box; }
 /* 锚点跳转的顶部留白只在这里留一次（页头高度）；.category 的 scroll-margin 只补窄屏标签栏，别再叠加页头高度 */
-/* 页面滚动条：两侧都预留滚动条宽度，滚动条出现、消失时内容不左右跳，居中的版面也保持左右对称 */
-html { scrollbar-gutter: stable both-edges; }
+/* 页面滚动条：两侧都预留滚动条宽度，滚动条出现、消失时内容不左右跳，居中的版面也保持左右对称；
+   只在桌面（宽屏 + 鼠标）这样做——手机上没有常驻滚动条，预留出来的只是两条白边 */
+@media (min-width: 761px) and (pointer: fine) { html { scrollbar-gutter: stable both-edges; } }
 body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.6 var(--sans); -webkit-font-smoothing: antialiased; }
 button { font: inherit; color: inherit; }
 small { color: var(--muted); }
@@ -538,14 +601,14 @@ small { color: var(--muted); }
 .label { margin: 0; font: 12px/1.4 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 
 /* 内部滚动条：细、圆角、颜色跟随主题 */
-.sidebar, .detail, .code { scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
-.sidebar::-webkit-scrollbar, .detail::-webkit-scrollbar, .code::-webkit-scrollbar { width: 8px; height: 8px; }
-.sidebar::-webkit-scrollbar-track, .detail::-webkit-scrollbar-track, .code::-webkit-scrollbar-track { background: transparent; }
-.sidebar::-webkit-scrollbar-thumb, .detail::-webkit-scrollbar-thumb, .code::-webkit-scrollbar-thumb {
+.sidebar, .detail { scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
+.sidebar::-webkit-scrollbar, .detail::-webkit-scrollbar { width: 8px; height: 8px; }
+.sidebar::-webkit-scrollbar-track, .detail::-webkit-scrollbar-track { background: transparent; }
+.sidebar::-webkit-scrollbar-thumb, .detail::-webkit-scrollbar-thumb {
   border: 2px solid transparent; border-radius: 999px; background: var(--line-strong); background-clip: padding-box;
 }
-.sidebar::-webkit-scrollbar-thumb:hover, .detail::-webkit-scrollbar-thumb:hover, .code::-webkit-scrollbar-thumb:hover { background-color: var(--muted); }
-.sidebar::-webkit-scrollbar-button, .detail::-webkit-scrollbar-button, .code::-webkit-scrollbar-button { display: none; }
+.sidebar::-webkit-scrollbar-thumb:hover, .detail::-webkit-scrollbar-thumb:hover { background-color: var(--muted); }
+.sidebar::-webkit-scrollbar-button, .detail::-webkit-scrollbar-button { display: none; }
 
 /* 线框（参考 voidzero.dev）：内容收在居中的容器里，左右两条竖线贯穿整页；每根线只画一次 */
 .shell { max-width: 1680px; min-height: 100vh; margin: 0 auto; border-inline: 1px solid var(--line); background: var(--surface); }
@@ -729,8 +792,23 @@ main { min-width: 0; padding-bottom: 80px; }
 }
 .actions button:last-child { border-right: 0; }
 .actions button:hover { color: var(--text); background: var(--sunken); }
-.code-wrap { display: flex; flex-direction: column; gap: 10px; padding: 16px 20px 20px; border-bottom: 0; }
-.code { margin: 0; padding: 12px; font: 12px/1.6 var(--mono); color: var(--text-2); border-radius: 8px; background: var(--sunken); overflow: auto; white-space: pre; }
+/* 变体 / 同组图标：小格子平铺，当前这个描一圈强调色 */
+.related, .styles { display: flex; flex-direction: column; gap: 10px; padding: 16px 20px; }
+.related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(36px, 1fr)); gap: 2px; }
+.related-grid button, .style-grid button {
+  display: grid; place-items: center; aspect-ratio: 1; padding: 0; border: 0; border-radius: 6px; background: none; color: var(--text); cursor: pointer;
+}
+.related-grid button:hover, .style-grid button:hover { background: var(--sunken); }
+.related-grid button.current, .style-grid button.current { background: var(--accent-soft); color: var(--accent); box-shadow: inset 0 0 0 1.5px var(--accent); }
+.related-grid .more { align-self: center; font-size: 12px; color: var(--muted); text-align: center; }
+/* 圆角 × 字重：第一列是字重名，第一行是圆角名 */
+.style-grid { display: grid; grid-template-columns: auto repeat(var(--cols), minmax(0, 1fr)); gap: 2px; align-items: center; }
+.style-grid small { font-size: 11px; text-align: center; }
+.style-grid button { aspect-ratio: auto; height: 40px; }
+.style-grid .row-head { padding-right: 8px; text-align: left; }
+/* 页头的 GitHub 链接 */
+.repo { display: inline-flex; align-items: center; gap: 4px; height: 26px; padding: 0 7px; border-radius: 6px; font: 12.5px var(--mono); color: var(--text-2); text-decoration: none; }
+.repo:hover { color: var(--text); background: var(--sunken); }
 
 .toast {
   position: fixed; left: 50%; bottom: 28px; z-index: 5; transform: translateX(-50%);
@@ -774,8 +852,20 @@ main { min-width: 0; padding-bottom: 80px; }
   .category-head { padding: 22px 14px 12px; font-size: 16px; }
   .group { padding: 10px 14px; }
   .grid { grid-template-columns: repeat(auto-fill, minmax(max(76px, calc(var(--size) * 2)), 1fr)); }
-  .detail { left: 0; right: 0; bottom: 0; width: auto; max-height: 68vh; border-radius: 16px 16px 0 0; border-width: 1px 0 0; }
-  .hero { padding: 20px; max-height: 34vh; aspect-ratio: auto; height: 34vh; }
+  /* 输入框字号至少 16px：iOS Safari 聚焦字号更小的输入框时会自动放大整页 */
+  .search input, .cat-filter { font-size: 16px; }
+  /* 触屏：设置按钮、视图切换的点按区域加高 */
+  .opt button, .views button, .repo { height: 32px; }
+  .detail {
+    left: 0; right: 0; bottom: 0; width: auto; max-height: 72vh; border-radius: 16px 16px 0 0; border-width: 1px 0 0;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  /* 底部面板顶上一道把手，提示这是一张可以关掉的卡片 */
+  .detail::before { content: ''; position: sticky; top: 0; z-index: 1; flex: none; align-self: center; width: 36px; height: 4px; margin: 8px 0 -12px; border-radius: 2px; background: var(--line-strong); border: 0; }
+  .detail-head { padding: 16px 16px 12px; }
+  .related, .styles { padding: 14px 16px; }
+  /* 预览区比宽度矮：图标方块按高度居中，背景网格跟着这个方块对齐（格子边长 = 方块边长 / 24；横向按 50% 对齐时格线落在中线左右半格，再挪半格让格线压在中线上） */
+  .hero { --box: calc(34vh - 40px); padding: 20px; aspect-ratio: auto; height: 34vh; background-size: calc(var(--box) / 24) calc(var(--box) / 24); background-position: calc(50% + var(--box) / 48) 20px; }
   .hero svg { width: auto; height: 100%; aspect-ratio: 1; }
 }
 </style>
