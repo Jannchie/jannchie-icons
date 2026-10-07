@@ -1,5 +1,11 @@
-import { code } from '../symbols'
 import base from './window'
 
 // HTML：窗口 + 中间的 </>
-export default opts => [...base(opts), ...code([12, 14.25], 1, opts.radius).map(p => p.d ?? p)]
+// 窗口内容区 x 3.5–20.5、y 8.5–19.5：共用的 code 符号只有 7 宽，放进来三笔挤在一起；
+// 这里单独画得更开——尖括号 2.5 宽、6 高，斜杠居中，和两边尖括号各留约 2 的空
+export default opts => [
+  ...base(opts),
+  'M9 11L6 14L9 17',
+  'M15 11L18 14L15 17',
+  'M13 10.5L11 17.5',
+]

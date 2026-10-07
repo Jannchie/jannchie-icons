@@ -1,5 +1,11 @@
-import braces from './code-braces'
 import { dot } from '../scene'
 
 // JSON：花括号 + 中间三个点
-export default () => [...braces(), dot(9, 12), dot(12, 12), dot(15, 12)]
+// 花括号比 code-braces 各往外挪 1.5（左 4–8.5、右 15.5–20），和三个点拉开距离
+export default () => [
+  'M8.5 4.5H7.5A1.5 1.5 0 0 0 6 6V10A2 2 0 0 1 4 12A2 2 0 0 1 6 14V18A1.5 1.5 0 0 0 7.5 19.5H8.5',
+  'M15.5 4.5H16.5A1.5 1.5 0 0 1 18 6V10A2 2 0 0 0 20 12A2 2 0 0 0 18 14V18A1.5 1.5 0 0 1 16.5 19.5H15.5',
+  dot(9, 12),
+  dot(12, 12),
+  dot(15, 12),
+]
