@@ -43,7 +43,7 @@ const EXTRA = {
   git: ['github'],
   photo: ['camera-compact', 'camera-body', 'camera-dslr', 'camera-mirrorless', 'camera-film', 'camera-instant', 'camera-action', 'camera-lens', 'camera-lens-zoom', 'camera-lens-telephoto', 'camera-lens-pancake', 'aspect-ratio', 'perspective', 'live-photo', 'movie', 'photo-edit', 'camera-rotate', 'color-filter', 'flip-vertical', 'rotate-ccw'],
   chart: ['candlestick-chart', 'radar'],
-  media: ['speaker', 'headphones', 'earbuds', 'music', 'play-circle', 'disc', 'vinyl', 'wave-sine', 'podcast'],
+  media: ['speaker', 'headphones', 'earbuds', 'music', 'play-circle', 'disc', 'vinyl', 'turntable', 'wave-sine', 'podcast'],
   weather: ['moon-star'],
   meeting: ['webcam', 'webcam-off', 'cctv', 'chats', 'collaborate', 'mic-handheld', 'mic-vintage', 'mic-studio'],
   search: ['map-search', 'globe-search'],
@@ -87,7 +87,7 @@ export const CATEGORIES = [
   // ---------- 单个图标 ----------
   {
     id: 'basic',
-    match: oneOf('dot', 'slash', 'line-segment', 'separator-vertical', 'separator-horizontal', 'plus', 'minus', 'plus-circle', 'minus-circle', 'menu', 'menu-left', 'menu-close', 'dots', 'dots-vertical', 'grip-vertical', 'caret-up', 'caret-down', 'chevrons-up-down', 'arrows-up-down', 'sort-ascending', 'sort-descending'),
+    match: oneOf('dot', 'slash', 'line-segment', 'separator-vertical', 'separator-horizontal', 'plus', 'minus', 'plus-circle', 'minus-circle', 'menu', 'menu-left', 'menu-close', 'dots', 'dots-vertical', 'grip-vertical', 'caret-up', 'caret-down', 'chevrons-up-down', 'arrows-up-down', 'arrows-up-down-half', 'sort-ascending', 'sort-descending'),
   },
   { id: 'arrow', match: any(prefixed('arrow-', 'chevron-'), name => /^corner-(?:up|down|left|right)-/.test(name)) },
   {
