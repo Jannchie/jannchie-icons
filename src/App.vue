@@ -7,28 +7,18 @@ import Icon from './Icon.vue'
 import IconSvg from './IconSvg.vue'
 import { byName, icons } from './iconset'
 import LazyIcon from './LazyIcon.vue'
-import { animateAttrs, devicePx, pathAttrs, pathsOf, svgAttrs } from './render'
+import { svgString } from './export'
+import { CORNERS, WEIGHTS } from './options'
+import { devicePx, pathsOf } from './render'
 import { ROLES } from './tone'
 import { resnapAll } from './snap'
 import searchIcon from './icons/search'
-import { finalize, minify } from './svg'
+import { finalize } from './svg'
 
 
-// 文案（尖角、字重名、主题名）按 key 走多语言；圆角档位的数字不用翻译
-const corners = [
-  { label: 'sharp', radius: 0, sharp: true },
-  { label: '0', radius: 0 },
-  { label: '1', radius: 1 },
-  { label: '2', radius: 2 },
-  { label: '3', radius: 3 },
-]
-// 字重：四档，默认「常规」线宽 1；1、1.5、2 配合像素对齐在高清屏上横竖线清晰，0.75 只适合大尺寸
-const weights = [
-  { id: 'light', stroke: 0.75 },
-  { id: 'regular', stroke: 1 },
-  { id: 'bold', stroke: 1.5 },
-  { id: 'heavy', stroke: 2 },
-]
+// 圆角、字重档位见 options.js；文案（尖角、字重名、主题名）按 key 走多语言
+const corners = CORNERS
+const weights = WEIGHTS
 // 预览大小：滑块 16–128，步长 4
 const SIZE = { min: 16, max: 128, step: 4 }
 const themes = [
@@ -147,24 +137,8 @@ const selectedIcon = computed(() => {
 })
 const selectedCategory = computed(() => selected.value && sections.value.find(c => c.groups.some(g => g.icons.some(i => i.name === selected.value)))?.id)
 
-// 导出的 SVG：按当前圆角、字重生成；点、细线、细节的线宽写在各自的路径上
-// 为了体积：属性相同的静态路径合并成一条，圆弧标志位紧排（只在导出时做，见 minify 的 packArcs）；动画图标的路径带 <animate> 子元素
-function toSvg(icon, px = 24) {
-  const attrs = obj => Object.entries(obj).filter(([, v]) => v !== undefined).map(([k, v]) => `${k}="${v}"`).join(' ')
-  const merged = new Map()
-  const animated = []
-  for (const p of icon.paths) {
-    if (p.frames) {
-      animated.push(`  <path ${attrs(pathAttrs(p, exportColors.value))}>\n    <animate ${attrs(animateAttrs(p))}/>\n  </path>`)
-      continue
-    }
-    const { d, ...rest } = pathAttrs(p, exportColors.value)
-    const key = attrs(rest)
-    merged.set(key, (merged.get(key) ?? '') + d)
-  }
-  const lines = [...[...merged].map(([key, d]) => `  <path ${attrs({ d: minify(d, { packArcs: true }) })}${key ? ` ${key}` : ''}/>`), ...animated]
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${px}" height="${px}" viewBox="0 0 24 24" ${attrs(svgAttrs(weight.value.stroke, !!corner.value.sharp, exportColors.value))}>\n${lines.join('\n')}\n</svg>\n`
-}
+// 导出的 SVG：按当前圆角、字重、配色生成（见 export.js）
+const toSvg = (icon, size = 24) => svgString(icon.paths, { stroke: weight.value.stroke, sharp: !!corner.value.sharp, colors: exportColors.value, size })
 // 当前选中图标的导出文本：代码面板、复制、下载共用，不在每次重渲染时重新拼
 const svgText = computed(() => selectedIcon.value && toSvg(selectedIcon.value))
 

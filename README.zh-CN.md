@@ -27,6 +27,19 @@ Jannchie Icons 是一套基于 24 单位网格的线条图标库，收录 1800 �
 | 圆角 | 尖角、0、1、2、3 | 外框转角半径；尖角同时改用方头线帽与斜接转角 |
 | 字重 | 细 0.75、常规 1、粗 1.5、特粗 2 | 线条宽度；点与缩小的细节单独封顶 |
 
+## 在项目中使用
+
+| 包 | 用途 |
+|---|---|
+| [`@jannchie/icons`](packages/core) | 在 JavaScript 中生成 SVG 字符串或路径数据，支持任意圆角、字重、尺寸、双色与像素对齐 |
+| [`@jannchie/iconify-json`](packages/iconify-json) | 用于 UnoCSS、Iconify 等基于 Iconify 的工具（圆角 2，四档字重） |
+
+```js
+import { IconFolderPlus, toSvg } from '@jannchie/icons'
+
+toSvg(IconFolderPlus, { radius: 2, weight: 'regular', size: 24 })
+```
+
 ## 开发
 
 ```sh
@@ -34,6 +47,7 @@ pnpm install
 pnpm dev      # 启动带热更新的预览站
 pnpm build    # 构建静态站点到 dist/
 pnpm brand    # 重新生成横幅、分享图与网站图标
+pnpm build:packages  # 构建 packages/core 与 packages/iconify-json
 ```
 
 每个图标对应 `src/icons/` 下的一个文件，按给定设置返回路径字符串数组。预览站自动收录新文件，`src/categories.js` 按名称将其归入分类。

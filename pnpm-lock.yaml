@@ -19,6 +19,10 @@ importers:
         specifier: ^8.3.2
         version: 8.3.2
 
+  packages/core: {}
+
+  packages/iconify-json: {}
+
 packages:
 
   '@babel/helper-string-parser@7.29.7':

@@ -1,3 +1,8 @@
 node_modules
 dist
 *.stackdump
+packages/core/dist
+packages/core/.gen
+packages/iconify-json/*.json
+!packages/iconify-json/package.json
+packages/*/LICENSE

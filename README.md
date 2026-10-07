@@ -27,6 +27,19 @@ Exported SVGs use `currentColor`, so they inherit the surrounding text color. Th
 | Radius | Sharp, 0, 1, 2, 3 | Corner radius of outlines; Sharp also switches to square caps and miter joins |
 | Weight | Light 0.75, Regular 1, Bold 1.5, Heavy 2 | Stroke width; dots and reduced-size details are capped separately |
 
+## Use in a project
+
+| Package | Use it for |
+|---|---|
+| [`@jannchie/icons`](packages/core) | SVG strings or path data from JavaScript, with any radius, weight, size, duo-tone colors and pixel hinting |
+| [`@jannchie/iconify-json`](packages/iconify-json) | UnoCSS, Iconify and other Iconify-based tools (radius 2, four weights) |
+
+```js
+import { IconFolderPlus, toSvg } from '@jannchie/icons'
+
+toSvg(IconFolderPlus, { radius: 2, weight: 'regular', size: 24 })
+```
+
 ## Development
 
 ```sh
@@ -34,6 +47,7 @@ pnpm install
 pnpm dev      # preview site with hot reload
 pnpm build    # static site in dist/
 pnpm brand    # regenerate the banner, OG image and favicons
+pnpm build:packages  # build packages/core and packages/iconify-json
 ```
 
 Each icon is one file in `src/icons/` that returns a list of path strings for a given setting. The preview site picks up new files automatically, and `src/categories.js` assigns them to a category by name.

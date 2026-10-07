@@ -1,0 +1,19 @@
+{
+  "name": "@jannchie/iconify-json",
+  "version": "0.1.0",
+  "description": "Jannchie Icons in Iconify JSON format (radius 2; light, regular, bold and heavy weights)",
+  "license": "MIT",
+  "author": "Jianqi Pan",
+  "homepage": "https://icons.jannchie.com",
+  "repository": { "type": "git", "url": "git+https://github.com/Jannchie/jannchie-icons.git", "directory": "packages/iconify-json" },
+  "keywords": ["iconify", "iconify-json", "icons"],
+  "type": "module",
+  "exports": {
+    "./icons.json": "./icons.json",
+    "./light.json": "./light.json",
+    "./bold.json": "./bold.json",
+    "./heavy.json": "./heavy.json",
+    "./info.json": "./info.json"
+  },
+  "files": ["*.json"]
+}

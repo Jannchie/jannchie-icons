@@ -1,0 +1,17 @@
+{
+  "name": "@jannchie/icons",
+  "version": "0.1.0",
+  "description": "Line icons on a 24-unit grid, redrawn for every corner radius and stroke weight, with pixel hinting and duo-tone colors",
+  "license": "MIT",
+  "author": "Jianqi Pan",
+  "homepage": "https://icons.jannchie.com",
+  "repository": { "type": "git", "url": "git+https://github.com/Jannchie/jannchie-icons.git", "directory": "packages/core" },
+  "keywords": ["icons", "svg", "line-icons", "duotone"],
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./dist/index.js",
+    "./all": "./dist/all.js"
+  },
+  "files": ["dist"]
+}
