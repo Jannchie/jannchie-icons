@@ -2,6 +2,7 @@
 // 脸是上圆下宽、下巴略平的大福形，由四段三次曲线围成（右上、右下、左下、左上），最宽处在偏下的位置；
 // 耳朵和脸是同一条路径：在右上 / 左上两段曲线上截出耳根，中间换成耳朵，耳朵底下没有线
 import { bezierAt, bezierSub } from './clip'
+import { eye } from './scene'
 
 // 三次曲线取点、截段：复用 clip.js 的 de Casteljau
 const at = bezierAt
@@ -66,7 +67,8 @@ export const longEar = top => (p0, p1) => {
 }
 
 // 圆豆豆眼
-export const eyes = (y, dx) => [{ d: `M${12 - dx} ${y}h0`, dot: 2.25 }, { d: `M${12 + dx} ${y}h0`, dot: 2.25 }]
+// 用 eye：尖角模式下也是圆点、粗字重下不放大
+export const eyes = (y, dx) => [eye(12 - dx, y, 2.25), eye(12 + dx, y, 2.25)]
 // 内部线条（眉、嘴、腮红、花纹）都用细线
 export const thin = d => ({ d, thin: true })
 // 短眉：眼睛上方一小段微弯的线（外低内略高）
@@ -81,10 +83,10 @@ export const mouth = (y, w = 1.6) => {
   const low = (end + depth * 4 / 3 + (tip - end) / 3)
   return thin(`M${12 - w} ${end}C${12 - w} ${low} 12 ${low} 12 ${tip}C12 ${low} ${12 + w} ${low} ${12 + w} ${end}`)
 }
-// 腮红：两侧各两道短斜线
-export const blush = (y, dx) => [
-  thin(`M${12 - dx - 0.8} ${y + 0.5}L${12 - dx - 0.35} ${y - 0.4}`),
-  thin(`M${12 - dx + 0.35} ${y + 0.5}L${12 - dx + 0.8} ${y - 0.4}`),
-  thin(`M${12 + dx - 0.8} ${y + 0.5}L${12 + dx - 0.35} ${y - 0.4}`),
-  thin(`M${12 + dx + 0.35} ${y + 0.5}L${12 + dx + 0.8} ${y - 0.4}`),
-]
+// 腮红：两侧各两道短斜线；两道的中心隔 1.75（垂直距离约 1.55），常规线宽（细线 1.05）下中间还留 0.5 的缝，不会并成一块；
+// 拉开后整组往里收 0.3，外侧那道不贴脸的轮廓
+const BLUSH = 0.875
+export const blush = (y, dx) => [-1, 1].flatMap(side => [-1, 1].map((k) => {
+  const cx = 12 + side * (dx - 0.3) + k * BLUSH
+  return thin(`M${cx - 0.225} ${y + 0.5}L${cx + 0.225} ${y - 0.4}`)
+}))

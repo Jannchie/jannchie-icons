@@ -2,13 +2,15 @@
 // 左右对称的部件只写左半边，另一半镜像得到
 import { face, longEar, pointedEar, roundEar } from './chiikawa'
 import { circle, crisp, rounded } from './geometry'
-import { dot } from './scene'
+import { dot, eye } from './scene'
 import { mirror } from './transform'
 
 const thin = d => ({ d, thin: true })
 // 左半边 + 镜像出的右半边，对象的其他属性（thin、fill…）原样保留
 const pair = p => (typeof p === 'string' ? [p, mirror(p)] : [p, { ...p, d: mirror(p.d) }])
-const eyes = (x, y, size) => [dot(x, y, size), dot(24 - x, y, size)]
+// 眼睛用 eye（尖角模式下也是圆点、粗字重下不放大）；鼻孔是普通的点
+const eyes = (x, y, size) => [eye(x, y, size), eye(24 - x, y, size)]
+const nostrils = (x, y, size) => [dot(x, y, size), dot(24 - x, y, size)]
 // 被头挡住的部件（耳朵等）：头作为遮挡刀，挡住的线删掉，挨着轮廓的线刚好接上
 const head = d => ({ d, cut: true, gap: 0, occlude: true })
 // 头内部的点、线也要设成刀，否则会被头一并遮掉
@@ -38,7 +40,7 @@ export const CHINESE_ZODIAC = {
       ...pair('M7 7.5C4.5 7.5 3 6 3 3.5'),
       ...pair('M6.4 10.5C5 9.75 3.75 10 3 11.5C4.25 12.5 5.5 12.5 6.75 11.75'),
       ...eyes(9.5, 11.5),
-      ...eyes(10, 17.75),
+      ...nostrils(10, 17.75),
     ],
   },
   // 虎：宽圆脸 + 小圆耳 + 额头「王」字 + 两颊条纹 + 倒三角鼻
@@ -73,7 +75,7 @@ export const CHINESE_ZODIAC = {
       ...pair('M7.25 18.5C5 18.5 3.5 17 3.75 14.75'),
       ...pair(thin('M8.25 9.75L10.75 10.5')),
       ...eyes(9.75, 12),
-      ...eyes(10.75, 18.25, 1.5),
+      ...nostrils(10.75, 18.25, 1.5),
     ],
   },
 
@@ -99,7 +101,7 @@ export const CHINESE_ZODIAC = {
       'M8.25 7L7.25 3Q10 4.5 10.5 6.5H13.5Q14 4.5 16.75 3L15.75 7C17 8.5 17 11 16.25 13.5C15.75 15 16 16.5 16.5 17.5C17.25 19.5 15.5 21 12 21C8.5 21 6.75 19.5 7.5 17.5C8 16.5 8.25 15 7.75 13.5C7 11 7 8.5 8.25 7Z',
       thin('M10.5 6.5C11.75 7.75 12.5 8.75 12 10.5M12.5 6.5C13.25 7.5 13.5 8 13.25 9'),
       ...eyes(9.25, 10.5),
-      ...eyes(10, 18.5),
+      ...nostrils(10, 18.5),
     ],
   },
 
@@ -122,7 +124,7 @@ export const CHINESE_ZODIAC = {
       circle(19.5, 12.5, 2.25),
       keep(thin('M12 9.25C11 7.75 7.75 7.75 7.75 11C7.75 12.75 8.75 13.5 8.75 15.25C8.75 17.25 10 18.25 12 18.25C14 18.25 15.25 17.25 15.25 15.25C15.25 13.5 16.25 12.75 16.25 11C16.25 7.75 13 7.75 12 9.25Z')),
       ...eyes(10, 12).map(keep),
-      ...eyes(11.25, 14.75, 1.25).map(keep),
+      ...nostrils(11.25, 14.75, 1.25).map(keep),
       keep(thin('M10.75 16.75Q12 17.5 13.25 16.75')),
     ],
   },
@@ -159,7 +161,7 @@ export const CHINESE_ZODIAC = {
       face({ top: 6.5, bottom: 20.5, half: 9, waist: 13.5 }, { right: { from: 0.2, to: 0.5, draw: pointedEar([19.5, 4], 0.6) }, left: { from: 0.5, to: 0.8, draw: pointedEar([4.5, 4], 0.6) } }),
       ...eyes(8.5, 11.5),
       ellipse(12, 15.5, 3.5, 2.5),
-      ...eyes(10.75, 15.5, 1.5),
+      ...nostrils(10.75, 15.5, 1.5),
     ],
   },
 }

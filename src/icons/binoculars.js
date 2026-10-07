@@ -1,18 +1,16 @@
-import { circle } from '../geometry'
+import { rounded } from '../geometry'
+import { mirror } from '../transform'
 
-// 双筒望远镜（平面）：两个大镜片 + 比镜片窄、顶部全圆的短镜筒 + 中间横梁
-const y = 14.5 // 镜片圆心高度
-// 镜筒宽 2d 取整数 6，两侧竖边才能落在 .5 上；镜片半径随之取 3√2 ≈ 4.24
-const d = 3 // 镜筒两侧接在镜片左上、右上 45° 处
-const r = d / Math.SQRT1_2
-const top = 6
-const barrel = cx => `M${cx - d} ${y - d}V${top + d}A${d} ${d} 0 0 1 ${cx + d} ${top + d}V${y - d}`
-const [lx, rx] = [6.5, 17.5]
-
-export default () => [
-  circle(lx, y, r),
-  circle(rx, y, r),
-  barrel(lx),
-  barrel(rx),
-  `M${lx + d} 9.5H${rx - d}`,
+// 双筒望远镜（平面）：左右两根镜筒，各是窄目镜（4.5–8.5 × 4.5–8.5）+ 向下外扩的梯形镜筒（棱镜望远镜的剪影，
+// 顶 3.5–9.5、底 2.5–10.5，8.5–20.5），两筒之间一块铰链。只画左半边，右半边按 x = 12 镜像
+// 不画镜片：直筒 + 横线读起来像酒瓶，筒里的小圆像眼睛——外扩的镜筒加目镜本身就够认出是望远镜
+const half = radius => [
+  rounded([[4.5, 8.5], [4.5, 4.5], [8.5, 4.5], [8.5, 8.5]], Math.min(radius, 1), false),
+  rounded([[3.5, 8.5], [9.5, 8.5], [10.5, 20.5], [2.5, 20.5]], Math.min(radius, 1.5)),
 ]
+
+export default ({ radius }) => {
+  const left = half(radius)
+  // 铰链：闭合的小块，左右两边（9.5 / 14.5，落在 .5 上）压进镜筒斜边的描边里（横线的两端会斜接在斜边上，尖角时线头冒出去）
+  return [...left, ...left.map(d => mirror(d)), rounded([[9.5, 11.5], [14.5, 11.5], [14.5, 13.5], [9.5, 13.5]], 0)]
+}

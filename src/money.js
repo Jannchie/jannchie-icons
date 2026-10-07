@@ -10,7 +10,8 @@ const RAW = {
   // $：S + 贯穿的竖线
   dollar: { zh: '美元', paths: () => [big('S'), 'M12 2.5V21.5'] },
   // €：C 往右挪 + 两道横线
-  euro: { zh: '欧元', paths: () => [big('C', 8.5), 'M5.5 10.5H13.5', 'M5.5 13.5H13.5'] },
+  // 硬币版两道横拉开到 4（缩小后隔 2.4）：原来的 3 缩到 1.8，常规线宽下两道横就贴在一起了
+  euro: { zh: '欧元', paths: () => [big('C', 8.5), 'M5.5 10.5H13.5', 'M5.5 13.5H13.5'], coin: () => [big('C', 8.5), 'M5.5 10H13.5', 'M5.5 14H13.5'] },
   // ¥：Y + 两道横线（人民币、日元通用）
   yen: { zh: '人民币 / 日元', paths: () => [big('Y'), 'M8 13.5H16', 'M8 16.5H16'] },
   // £：上方弯钩落成竖笔，底部向左收尾，中间一道横
@@ -29,5 +30,5 @@ const RAW = {
 }
 
 export const CURRENCIES = Object.fromEntries(Object.entries(RAW).map(([k, v]) => [k, { ...v, paths: () => snap(v.paths()) }]))
-// 硬币版：缩小到 0.6 倍后重新对齐网格
-export const coin = key => snap(RAW[key].paths().map(d => scale(d, 0.6)))
+// 硬币版：缩小到 0.6 倍后重新对齐网格；有 coin 的符号用它（缩小后线挤在一起的，单独拉开间距）
+export const coin = key => snap((RAW[key].coin ?? RAW[key].paths)().map(d => scale(d, 0.6)))

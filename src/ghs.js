@@ -1,13 +1,13 @@
 // GHS 危险品象形图（GHS01 → GHS09），键按编号顺序，预览页据此排序
 // 外框是转 45° 的菱形；菱形里空间小，内容都标成细节（粗字重下线宽封顶），只保留 24px 能认的骨架
 import { circle, rounded } from './geometry'
-import { dot } from './scene'
+import { dot, eye } from './scene'
 
 const diamond = radius => rounded([[12, 1.5], [22.5, 12], [12, 22.5], [1.5, 12]], Math.min(radius, 2))
-const detail = d => ({ d, detail: true })
+export const detail = d => ({ d, detail: true })
 
 // 火焰：左边一个高火舌、右边一个矮火舌，中间凹进去；(cx, bottom) 是底部中点，s 缩放
-const flame = (cx, bottom, s = 1) => {
+export const flame = (cx, bottom, s = 1) => {
   const p = (x, y) => `${cx + x * s} ${bottom - y * s}`
   return `M${p(0, 0)}C${p(-2.5, 0)} ${p(-3.75, 1.75)} ${p(-3.5, 3.75)}C${p(-3.25, 6)} ${p(-1.5, 7)} ${p(-1.5, 10)}C${p(0.5, 8.75)} ${p(1.5, 7)} ${p(1, 4.75)}C${p(1.75, 5.25)} ${p(2.25, 6)} ${p(2.5, 7)}C${p(3.75, 5.5)} ${p(4, 3.25)} ${p(3.25, 1.75)}C${p(2.5, 0.5)} ${p(1.5, 0)} ${p(0, 0)}Z`
 }
@@ -27,8 +27,8 @@ export const GHS = {
   'explosive': { zh: 'GHS01 爆炸物', paths: () => [circle(12, 14.25, 2), burst(12, 15.5)].map(detail) },
   // GHS02 易燃：火焰 + 底线
   'flammable': { zh: 'GHS02 易燃', paths: () => [flame(12, 15), 'M9.5 17H14.5'].map(detail) },
-  // GHS03 氧化性：圆上火焰
-  'oxidizing': { zh: 'GHS03 氧化性', paths: () => [flame(12, 12.5, 0.8), circle(12, 15.5, 2.25)].map(detail) },
+  // GHS03 氧化性：圆上火焰（火焰缩到 0.7，火舌尖离菱形框的上角留开）
+  'oxidizing': { zh: 'GHS03 氧化性', paths: () => [flame(12, 13, 0.7), circle(12, 15.5, 2.25)].map(detail) },
   // GHS04 压缩气体：横躺的气瓶，右端瓶颈 + 阀门
   'gas-cylinder': {
     zh: 'GHS04 压缩气体',
@@ -48,8 +48,8 @@ export const GHS = {
     zh: 'GHS06 急性毒性',
     paths: () => [
       detail('M9 10.5A3 3 0 1 1 15 10.5V12H9Z'),
-      dot(10.75, 9.75, 1.5),
-      dot(13.25, 9.75, 1.5),
+      eye(10.75, 9.75, 1.5),
+      eye(13.25, 9.75, 1.5),
       detail('M8.5 14L15.5 18'),
       detail('M15.5 14L8.5 18'),
     ],

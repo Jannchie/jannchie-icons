@@ -124,6 +124,8 @@ export const glyph = (c, x, y, scale = 1, sy = scale) => place(GLYPHS[c], x, y, 
 // 否则「12」「18」里的 1 两边空出一大块，看起来像隔了个空格
 const NARROW = { '1': { advance: 2, shift: 0.375 }, '-': { advance: 2.5, shift: 0.5 } }
 export const advance = c => NARROW[c]?.advance ?? W
+// 窄字（1、-）的字形按 3.5 宽画，排字时往左挪回它的字位里
+export const shift = c => NARROW[c]?.shift ?? 0
 export const textWidth = (str, sx = 1, gap = 1.5) => [...str].reduce((w, c, i) => w + advance(c) * sx + (i ? gap : 0), 0)
 
 // 一行字从左上角 (x, y) 排开：字宽 advance·sx、字高 6·sy，字间距 gap；空格只占位不出字形

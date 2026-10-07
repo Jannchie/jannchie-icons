@@ -1,5 +1,5 @@
 // 知识共享（Creative Commons）许可元素：和版权 © 一样的圆环（r = 9），里面放各自的符号
-// 斜杠（NC、公有领域）是刀：穿过的符号在它两边真正断开，不会叠成一团
+// 斜杠（NC、公有领域）直接压在符号上、不断开：圆环里的符号很小，断开以后反而看不清
 import { circle, rounded } from './geometry'
 import { glyph, snap } from './letters'
 import { ring } from './marks'
@@ -8,7 +8,7 @@ import { danger } from './tone'
 const D = 9 * Math.SQRT1_2
 // 贯穿圆环的斜杠：左上到右下，两端落在圆环上
 // 双色时斜杠是划掉记号，标 danger（和 off.js 的斜杠一致）
-const slash = danger({ d: `M${12 - D} ${12 - D}L${12 + D} ${12 + D}`, cut: true })
+const slash = danger({ d: `M${12 - D} ${12 - D}L${12 + D} ${12 + D}` })
 // 小写 c：半径 2.5，开口朝右（上下各留 45°）
 const c = (cx, r = 2.5) => {
   const k = r * Math.SQRT1_2

@@ -1,4 +1,4 @@
-import { dot } from '../scene'
+import { eye } from '../scene'
 import { translate } from '../transform'
 
 // 快（兔子）：侧面坐姿，朝左（与蜗牛同向），底边落在地平线 y = 20.5（按 y = 20 画好后整体下移半格、右移 0.25，前腿竖线落在 7.5）。一条连续的外轮廓：
@@ -17,5 +17,5 @@ export default () => [
   + 'V18.5'
   + 'C7.25 19.5 6.5 20 5.5 20'
   + 'H17Z', 0.25, 0.5),
-  dot(6.75, 9.25),
+  eye(6.75, 9.25),
 ]
