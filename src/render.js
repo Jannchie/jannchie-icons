@@ -5,10 +5,12 @@ import { axisLines, finalize, minify } from './svg'
 import { affine, mapPath } from './transform'
 
 // 像素对齐：按图标实际显示的设备像素数 px，把图标整体对齐到像素网格。图形本身不变形，只做两件事：
-// - 线宽取整到整数个设备像素（至少 1）：1 倍屏 32px 下线宽 1 是 1.33 像素，抗锯齿后又淡又虚，取整成 1 像素就是实线；
-//   缩小的符号（detail，比如文件角标里的小字母）线宽本来就封了顶，不取整
-// - 整体平移不到半个像素：奇数像素宽的线中心要落在像素中心、偶数宽的落在像素边界，横竖线的两条边才正好是像素边界。
-//   x、y 各挑一个平移量，让（按长度加权）落到网格上的横竖线最多。不逐点吸附——逐点取整会把一两个像素大的小字挤成一团
+// - 线宽不取整（只保证至少 1 个设备像素）：取整会让三档字重在小尺寸下变成一样粗（16px 下全是 1 像素），
+//   24px 的常规 1.5 也会被取成 2 像素、和粗体一样。保留实际线宽，字重层次在各尺寸都看得出来
+// - 整体平移不到半个像素，让横竖线的一条边（外缘）落在像素边界上：线宽是小数时两条边不可能同时对齐，
+//   对齐一条边、另一条边留半个像素的灰，比两条边都发虚清楚得多。图标按「外缘落在整数上」设计时（线宽变粗只往里长），
+//   左右、上下两侧的外缘能同时对齐。x、y 各挑一个平移量，让（按长度加权）落到网格上的边最多。
+//   不逐点吸附——逐点取整会把一两个像素大的小字挤成一团
 // 每个网格单位有 HINT_MAX_SCALE 个设备像素以上时虚边已经不明显，不处理；只用于屏幕显示，导出的 SVG 不做（不知道会用在多大）
 const HINT_MAX_SCALE = 3
 // 图标里的横竖线段：[轴向, 坐标, 长度, 线宽]
@@ -17,12 +19,13 @@ const axisLinesOf = (paths, widthOf) => paths.flatMap(p => axisLines(p.d).map(l 
 function bestShift(lines, k) {
   if (!lines.length)
     return 0
-  const off = ([, v, , n]) => v * k - (n % 2 ? 0.5 : 0) // 离网格的偏差，取小数部分
   const frac = v => v - Math.round(v)
-  const cost = dx => lines.reduce((s, l) => s + l[2] * Math.abs(frac(off(l) + dx)), 0)
+  // 一条线的两条边（设备像素）：中心 ± 半个线宽；离网格的偏差取两条边里较近的那条
+  const edges = ([, v, , n]) => [v * k - n / 2, v * k + n / 2]
+  const miss = (l, dx) => Math.min(...edges(l).map(e => Math.abs(frac(e + dx))))
+  const cost = dx => lines.reduce((s, l) => s + l[2] * miss(l, dx), 0)
   let best = [0, cost(0)]
-  for (const l of lines) {
-    const dx = -frac(off(l))
+  for (const dx of lines.flatMap(l => edges(l).map(e => -frac(e)))) {
     const c = cost(dx)
     if (c < best[1] - 1e-9 || (Math.abs(c - best[1]) < 1e-9 && Math.abs(dx) < Math.abs(best[0])))
       best = [dx, c]
@@ -31,11 +34,11 @@ function bestShift(lines, k) {
 }
 function hint(paths, stroke, px) {
   const k = px / 24
-  // 取整后的线宽（设备像素）；点向下取整、但不小于主线宽——四舍五入常常让点比线大一整个像素，显得特别粗
-  const line = Math.max(1, Math.round(stroke * k))
+  // 线宽（设备像素）：不取整，只保证至少 1 像素；点向下取整到整像素（点要吸到像素中心才实），但不小于主线宽
+  const line = Math.max(1, stroke * k)
   const pxWidth = p => p.detail
     ? (p.width ?? stroke) * k
-    : p.dot ? Math.max(line, Math.floor(p.width * k)) : Math.max(1, Math.round((p.width ?? stroke) * k))
+    : p.dot ? Math.max(Math.ceil(line - 1e-9), Math.floor(p.width * k)) : Math.max(1, (p.width ?? stroke) * k)
   const lines = axisLinesOf(paths.filter(p => !p.detail && !p.fill), pxWidth)
   const dx = bestShift(lines.filter(l => l[0] === 'x'), k) / k
   const dy = bestShift(lines.filter(l => l[0] === 'y'), k) / k
