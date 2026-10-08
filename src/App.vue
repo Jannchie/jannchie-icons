@@ -209,9 +209,12 @@ const selectedIcon = computed(() => {
 // 变体：去掉 -badge-top / -badge / -off 后缀得到「本体」，本体和所有以「本体-」开头的图标算一族（folder-search → folder-search-badge、-badge-top……）；
 // 一族只有自己时，退而显示它所在分组里的其他图标（tag-a → tag-b、tag-c……）
 const VARIANT_SUFFIX = /-(?:badge-top|badge|off)$/
-// 每行 RELATED_COLS 个、最多 4 行
+// 每行 RELATED_COLS 个、最多 4 行：放不下时最后一格让给「+N」，所以只显示 MAX_RELATED - 1 个（不让「+N」挤到第 5 行）
 const RELATED_COLS = 8
 const MAX_RELATED = RELATED_COLS * 4
+function capped(list) {
+  return list.length <= MAX_RELATED ? { icons: list, more: 0 } : { icons: list.slice(0, MAX_RELATED - 1), more: list.length - (MAX_RELATED - 1) }
+}
 const related = computed(() => {
   const name = selected.value
   if (!name)
@@ -220,13 +223,13 @@ const related = computed(() => {
   const core = byName.has(stripped) ? stripped : name
   const family = icons.filter(i => i.name === core || i.name.startsWith(`${core}-`))
   if (family.length > 1)
-    return { kind: 'variants', icons: family.slice(0, MAX_RELATED), more: Math.max(0, family.length - MAX_RELATED) }
+    return { kind: 'variants', ...capped(family) }
   // 同组：在完整的分类里找（不受搜索、「最近修改」平铺影响，否则平铺时「同组」就成了全部图标）；
   // 分类分了小节就取所在小节，没分小节就是同一个分类
   for (const c of allCategories()) {
     const g = c.groups.find(g => g.icons.some(i => i.name === name))
     if (g && g.icons.length > 1)
-      return { kind: g.key ? 'series' : 'sameCategory', icons: g.icons.slice(0, MAX_RELATED), more: Math.max(0, g.icons.length - MAX_RELATED) }
+      return { kind: g.key ? 'series' : 'sameCategory', ...capped(g.icons) }
   }
   return null
 })
