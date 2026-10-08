@@ -38,12 +38,12 @@ export function withBadge(name, draw, tone, radius, stroke) {
   return [rounded(outline, radius, false), ...asBadge(tone(draw(at, k, radius)), name)]
 }
 
-// 右上角标（-badge-top）：符号墨迹的右缘贴到 22，上缘和标签页顶边的外缘（3）齐平，骑在本体的右上角上；
+// 右上角标（-badge-top）：符号墨迹的右缘贴到 22，上缘贴到画布留白的边 2（比标签页顶边的外缘 3 高 1，图片、拼图这类成块的符号才不和外框挤在一起），骑在本体的右上角上；
 // 本体顶边和右边在离符号 GAP 处断开，轮廓从右边的断口出发，经右下、左下、标签页，回到顶边的断口
 export function withBadgeTop(name, draw, tone, radius, stroke) {
   const { h, l, t, r, b, tabEnd, tabSlope, body } = frame(stroke)
   // 顶边的断口不越过标签页斜边下端（再往左就把标签页也吃掉了）
-  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, top: t - h }, (s) => {
+  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, top: 2 }, (s) => {
     const top = blocked(s, 'x', body, stroke)
     return !top || top[0] >= tabSlope
   }, GROW)

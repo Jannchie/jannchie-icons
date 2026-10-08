@@ -44,8 +44,8 @@ const baseCornerScale = {
 }
 // 居中符号（系列图标的本体中间）的视觉修正：和角标同一套比例（开放的线形符号略大、封闭的整圈和成块的略小），乘在各系列的 centerScale 上
 // 叉按 inset 定的角标大小换算回来（cross 在 k = 1 时半宽为 2，角标取 inset / 2）
-// 居中时方块形的图片、四宫格占满一整块面积，比角标里更显大，再缩一些
-export const visual = { ...baseCornerScale, cross: inset / 2 / BADGE_GROW, image: 0.8, assets: 0.85 }
+// 居中时成块的图片、书签占满一整块面积，比角标里更显大，再缩一些（四宫格也略缩）；云、代码又扁又宽，居中时显小，放大约 1 个单位
+export const visual = { ...baseCornerScale, cross: inset / 2 / BADGE_GROW, image: 0.8, assets: 0.85, bookmark: 0.85, cloud: 1.1, code: 1.1 }
 export const cornerScale = Object.fromEntries(Object.entries(baseCornerScale).map(([name, k]) => [name, k * BADGE_GROW]))
 // 叉的半宽取 inset（cross 在 k = 1 时半宽为 2），端点正好落在右边线、底边线上
 cornerScale.cross = inset / 2
@@ -96,8 +96,8 @@ const grids = {
   image: { unit: 7, x: 3.5, y: 3.5 },
   music: { x: 0.25 }, // 符干
   video: { x: -triangleWidth(6) / 3 }, // 三角左边
-  // 方框和中间的十字要同时清晰，方框边长得是偶数：半宽 3.5 缩放后取整
-  assets: { unit: 3.5, x: 0, y: 0 },
+  // 按全宽 7 取整（中心在 12 时取奇数宽，方框四边落在 .5 上）：按半宽取整的话宽只能是 6、10 这样隔 4 跳，居中时调不出中间的大小
+  assets: { unit: 7, x: 0, y: 0 },
   cloud: { y: 2.65 }, // 平底
   shield: { unit: 7 * 0.86, x: 3.5 * 0.86 }, // 两侧竖边
   arrowUp: { x: 0 },

@@ -180,6 +180,9 @@
   "book-clock-badge-top": [
     "regular @(16, 6)"
   ],
+  "book-cloud": [
+    "bold @(12, 12)"
+  ],
   "book-gauge": [
     "bold @(12, 9.5)",
     "regular @(12, 9.5)"
@@ -290,6 +293,9 @@
     "bold @(12.5, 10.5)",
     "bold @(16.5, 10.5)",
     "bold @(8.5, 10.5)"
+  ],
+  "calendar-assets": [
+    "bold @(12, 13)"
   ],
   "calendar-clock-badge": [
     "regular @(16.5, 17.5)"
@@ -682,6 +688,9 @@
   "file-clock-badge": [
     "bold @(15, 17)"
   ],
+  "file-cloud": [
+    "bold @(12, 12)"
+  ],
   "file-gauge": [
     "bold @(12, 13.5)",
     "regular @(12, 13.5)"
@@ -721,9 +730,6 @@
   "flute": [
     "bold @(12, 12)"
   ],
-  "folder-bookmark": [
-    "regular @(12, 12)"
-  ],
   "folder-clock": [
     "bold @(12, 13.5)",
     "regular @(12, 13.5)"
@@ -732,7 +738,7 @@
     "bold @(16.5, 16.8)"
   ],
   "folder-clock-badge-top": [
-    "regular @(18, 7)"
+    "regular @(18, 6)"
   ],
   "folder-gauge": [
     "bold @(12, 13.5)",
@@ -757,11 +763,8 @@
     "regular @(18, 18.5)"
   ],
   "folder-lock-badge-top": [
-    "bold @(18, 9.5)",
-    "regular @(18, 9.5)"
-  ],
-  "folder-minus-badge-top": [
-    "bold @(12, 12)"
+    "bold @(18, 8.5)",
+    "regular @(18, 8.5)"
   ],
   "folder-music": [
     "bold @(12, 12)"

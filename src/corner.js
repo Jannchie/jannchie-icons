@@ -2,6 +2,7 @@
 // （对勾又宽又矮、锁比外形框大，按外形框定位会让角标离边忽远忽近）
 import { blocked, place } from './clearance'
 import { samples, segments } from './clip'
+import * as symbols from './symbols'
 import { cornerScale, outlines } from './symbols'
 
 // 符号在 center、size 下的几何范围（中心线，不含线宽）：[x0, y0, x1, y1]
@@ -71,17 +72,28 @@ const outward = (name, { right, bottom, top }) => {
   return { right: right + o, bottom: bottom == null ? bottom : bottom + o, top: top == null ? top : top - o }
 }
 
+// 同一组的符号（上下左右四个箭头）在同一个系列里要一样大：各自按 ok 缩小的话，竖长的、横宽的被截的程度不同，缩出来大小不一
+const SIBLINGS = [['arrowUp', 'arrowDown', 'arrowLeft', 'arrowRight']]
+const siblingsOf = name => SIBLINGS.find(g => g.includes(name)) ?? [name]
+
 export function fitBadge(name, draw, radius, stroke, anchor, ok = () => true, grow = 1, minFit = MIN_FIT) {
-  let fit
   anchor = outward(name, anchor)
-  for (let s = grow; s >= minFit - 1e-6; s -= 0.05) {
-    const k = cornerScale[name] * s
-    const at = cornerCenter(draw, k, radius, stroke, anchor)
-    fit = { k, at, shape: { ...place(outlines[name], at, k), pts: inkOf(draw, at, k, radius) } }
-    if (ok(fit.shape))
-      break
+  const place1 = (n, d, s) => {
+    const k = cornerScale[n] * s
+    const at = cornerCenter(d, k, radius, stroke, anchor)
+    return { k, at, shape: { ...place(outlines[n], at, k), pts: inkOf(d, at, k, radius) } }
   }
-  return fit
+  // 每个兄弟符号各自能放下的最大倍数，取最小的那个
+  const scaleOf = (n, d) => {
+    let s = grow
+    for (; s > minFit + 1e-6; s -= 0.05) {
+      if (ok(place1(n, d, s).shape))
+        break
+    }
+    return Math.max(s, minFit)
+  }
+  const s = Math.min(...siblingsOf(name).map(n => scaleOf(n, n === name ? draw : symbols[n])))
+  return place1(name, draw, s)
 }
 
 // 常用的 ok 条件：外框右边（中心线 x = r）从 top（右边直线段的起点，圆角之前）往下，到角标断口之间至少留 MIN_EDGE——
