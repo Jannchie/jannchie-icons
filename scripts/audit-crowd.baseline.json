@@ -15,7 +15,7 @@
     "bold @(12, 11)"
   ],
   "align-center-both": [
-    "bold @(12.5, 12.5)"
+    "bold @(12, 12)"
   ],
   "any-to-any": [
     "bold @(18, 12)",
@@ -40,49 +40,49 @@
     "bold @(12, 12)"
   ],
   "arrow-down-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "arrow-left-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "arrow-right-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "arrow-up-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "assets-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)"
+    "bold @(12, 12)",
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "audio-classification": [
     "bold @(11.9, 12)",
     "bold @(17.8, 11.8)",
-    "bold @(2.5, 12)",
-    "bold @(6.5, 12)",
+    "bold @(3, 12)",
+    "bold @(7, 12)",
     "regular @(11.9, 12)"
   ],
   "audio-text-to-text": [
-    "bold @(2.5, 7)",
-    "bold @(6.5, 7)",
+    "bold @(3, 7)",
+    "bold @(7, 7)",
     "regular @(11.9, 12)",
-    "regular @(6, 13.5)"
+    "regular @(6, 14)"
   ],
   "audio-to-audio": [
-    "bold @(14.5, 12)",
-    "bold @(18.5, 12)",
-    "bold @(2.5, 12)",
-    "bold @(6.5, 12)",
-    "regular @(11.9, 12)"
+    "bold @(15, 12)",
+    "bold @(19, 12)",
+    "bold @(3, 12)",
+    "bold @(7, 12)"
   ],
   "automatic-speech-recognition": [
     "regular @(11.9, 12)"
@@ -117,9 +117,9 @@
     "regular @(6.8, 18.9)"
   ],
   "ban-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "bandage": [
     "bold @(12, 12)"
@@ -128,27 +128,27 @@
     "bold @(12, 12)"
   ],
   "battery": [
-    "bold @(11, 11.5)"
+    "bold @(11, 12)"
   ],
   "battery-charging": [
-    "bold @(11, 11.5)"
+    "bold @(11, 12)"
   ],
   "battery-full": [
-    "bold @(11, 11.5)",
-    "bold @(21.5, 11.5)"
+    "bold @(11, 12)",
+    "bold @(21.5, 12)"
   ],
   "battery-low": [
-    "bold @(11, 11.5)"
+    "bold @(11, 12)"
   ],
   "battery-medium": [
-    "bold @(11, 11.5)"
+    "bold @(11, 12)"
   ],
   "battery-off": [
-    "bold @(15.1, 10.8)"
+    "bold @(15.4, 11.1)"
   ],
   "battery-warning": [
-    "bold @(11, 11.5)",
-    "bold @(11.5, 10.1)"
+    "bold @(11, 10.6)",
+    "bold @(11, 12)"
   ],
   "bee": [
     "bold @(12, 12.5)",
@@ -213,19 +213,19 @@
     "regular @(12, 12)"
   ],
   "bookmark-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "bowling": [
     "bold @(7, 13.8)",
     "bold @(9.3, 12.6)"
   ],
   "brain": [
-    "bold @(12.5, 12)"
+    "bold @(12, 12)"
   ],
   "brain-cyborg": [
-    "bold @(12.5, 12)"
+    "bold @(12, 12)"
   ],
   "branch-chen": [
     "bold @(5.3, 12.5)"
@@ -234,9 +234,9 @@
     "bold @(13.8, 15)"
   ],
   "branch-yin": [
-    "bold @(11.5, 12.5)",
-    "bold @(11.5, 13.5)",
-    "regular @(11.5, 13.5)"
+    "bold @(12, 12.5)",
+    "bold @(12, 13.5)",
+    "regular @(12, 13.5)"
   ],
   "briefcase-clock": [
     "bold @(12, 14)",
@@ -280,8 +280,8 @@
     "bold @(7.8, 7.8)"
   ],
   "bug": [
-    "bold @(12.5, 14.3)",
-    "bold @(12.5, 7.8)"
+    "bold @(12, 14.3)",
+    "bold @(12, 7.8)"
   ],
   "building": [
     "bold @(10, 10.5)",
@@ -290,9 +290,9 @@
     "bold @(14, 7.5)"
   ],
   "cake": [
-    "bold @(12.5, 10.5)",
-    "bold @(16.5, 10.5)",
-    "bold @(8.5, 10.5)"
+    "bold @(12, 10.5)",
+    "bold @(16, 10.5)",
+    "bold @(8, 10.5)"
   ],
   "calendar-assets": [
     "bold @(12, 13)"
@@ -376,7 +376,7 @@
     "regular @(9.5, 11.5)"
   ],
   "chart-radar": [
-    "bold @(12.5, 12)"
+    "bold @(12, 12)"
   ],
   "chart-sankey": [
     "bold @(12, 6.5)",
@@ -453,10 +453,9 @@
     "bold @(8.8, 9.3)"
   ],
   "check-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)",
-    "regular @(9.2, 14)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "chess-king": [
     "bold @(12, 10)"
@@ -530,47 +529,47 @@
     "regular @(12, 9.3)"
   ],
   "church": [
-    "bold @(12.5, 13.1)",
-    "bold @(18, 16)",
-    "bold @(7, 16)",
-    "regular @(12.5, 13.1)",
-    "regular @(18, 16)",
-    "regular @(7, 16)"
+    "bold @(12, 13.1)",
+    "bold @(17.5, 16)",
+    "bold @(6.5, 16)",
+    "regular @(12, 13.1)",
+    "regular @(17.5, 16)",
+    "regular @(6.5, 16)"
   ],
   "circle-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "clock-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "cloud-drizzle": [
-    "bold @(12.4, 10.8)",
-    "regular @(12.4, 10.8)"
+    "bold @(11.9, 10.8)",
+    "regular @(11.9, 10.8)"
   ],
   "cloud-hail": [
     "bold @(11.9, 10.8)",
     "regular @(11.9, 10.8)"
   ],
   "cloud-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "cloud-rain": [
-    "bold @(12.4, 10.8)",
-    "regular @(12.4, 10.8)"
+    "bold @(11.9, 10.8)",
+    "regular @(11.9, 10.8)"
   ],
   "cloud-snow": [
     "bold @(11.9, 10.8)"
   ],
   "code-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "compass-rose": [
     "bold @(12, 11.8)",
@@ -587,13 +586,13 @@
     "bold @(12, 12)"
   ],
   "crossword": [
-    "bold @(12.5, 8.5)",
-    "bold @(15.5, 11.5)",
-    "regular @(12.5, 11.5)",
-    "regular @(12.5, 14.5)",
-    "regular @(12.5, 8.5)",
-    "regular @(15.5, 11.5)",
-    "regular @(9.5, 11.5)"
+    "bold @(12, 9)",
+    "bold @(15, 12)",
+    "regular @(12, 12)",
+    "regular @(12, 15)",
+    "regular @(12, 9)",
+    "regular @(15, 12)",
+    "regular @(9, 12)"
   ],
   "csharp": [
     "bold @(12, 12)"
@@ -602,7 +601,7 @@
     "bold @(11.9, 12)"
   ],
   "currency-yen": [
-    "regular @(11.5, 8.3)"
+    "regular @(12, 8.3)"
   ],
   "cursor-click": [
     "regular @(14.5, 13.5)"
@@ -635,8 +634,8 @@
     "regular @(6, 7)"
   ],
   "domino": [
-    "bold @(12, 11.5)",
-    "regular @(12, 11.5)"
+    "bold @(12, 12)",
+    "regular @(12, 12)"
   ],
   "donut": [
     "bold @(12, 12)",
@@ -677,7 +676,7 @@
     "bold @(18, 10)",
     "bold @(18, 12)",
     "bold @(19.8, 12)",
-    "bold @(6, 11.5)",
+    "bold @(6, 9)",
     "regular @(16.3, 12)",
     "regular @(19.8, 12)"
   ],
@@ -714,7 +713,7 @@
     "regular @(16, 18.5)"
   ],
   "fill-mask": [
-    "bold @(6, 11.5)",
+    "bold @(6, 9)",
     "regular @(14.8, 13.5)"
   ],
   "flag-checkered": [
@@ -796,13 +795,13 @@
     "bold @(12, 16.5)"
   ],
   "gauge-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "gender-transgender": [
-    "bold @(12.5, 12.5)",
-    "regular @(7.5, 7.5)"
+    "bold @(12, 12.5)",
+    "regular @(7, 7.5)"
   ],
   "ghs-corrosive": [
     "bold @(12, 12)",
@@ -830,9 +829,9 @@
     "regular @(12, 9.8)"
   ],
   "go-board": [
-    "bold @(12.5, 12.5)",
-    "regular @(17.5, 15.9)",
-    "regular @(9.1, 7.5)"
+    "bold @(12, 12)",
+    "regular @(17, 15.4)",
+    "regular @(8.6, 7)"
   ],
   "gpu": [
     "bold @(12, 11.5)",
@@ -864,10 +863,10 @@
     "bold @(12, 12)"
   ],
   "harmonica": [
-    "bold @(11, 11.5)",
-    "bold @(11, 12.5)",
-    "bold @(20.5, 12.5)",
-    "regular @(11, 12.5)"
+    "bold @(11, 11)",
+    "bold @(11, 12)",
+    "bold @(20.5, 12)",
+    "regular @(11, 12)"
   ],
   "hazard-corrosive": [
     "bold @(12, 12.1)",
@@ -904,15 +903,15 @@
     "regular @(12, 12.1)"
   ],
   "heart-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "heart-organ": [
     "bold @(11.9, 14.9)"
   ],
   "hospital": [
-    "bold @(12.5, 17.5)"
+    "bold @(12, 17.5)"
   ],
   "hotel": [
     "bold @(12, 12)",
@@ -939,9 +938,9 @@
     "regular @(6, 12)"
   ],
   "image-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "image-segmentation": [
     "bold @(11.1, 12)",
@@ -949,24 +948,24 @@
     "regular @(6, 12)"
   ],
   "image-text-to-image": [
-    "bold @(11, 11.7)",
+    "bold @(11, 11.9)",
     "bold @(5.3, 8.9)",
     "regular @(11.9, 12)",
     "regular @(18, 12)",
-    "regular @(6, 13.5)",
+    "regular @(6, 14)",
     "regular @(6, 7)"
   ],
   "image-text-to-text": [
     "bold @(5.3, 8.9)",
     "regular @(11.9, 12)",
-    "regular @(6, 13.5)",
+    "regular @(6, 14)",
     "regular @(6, 7)"
   ],
   "image-text-to-video": [
-    "bold @(11, 11.7)",
+    "bold @(11, 11.9)",
     "bold @(5.3, 8.9)",
     "regular @(11.9, 12)",
-    "regular @(6, 13.5)",
+    "regular @(6, 14)",
     "regular @(6, 7)"
   ],
   "image-to-3d": [
@@ -991,8 +990,8 @@
     "bold @(12, 12)"
   ],
   "japanese-castle": [
-    "bold @(17.5, 14)",
-    "bold @(7.5, 14)"
+    "bold @(17, 14)",
+    "bold @(7, 14)"
   ],
   "json": [
     "bold @(12, 12)",
@@ -1049,9 +1048,6 @@
   "letter-a-square": [
     "bold @(12, 12)"
   ],
-  "letter-g-square": [
-    "bold @(12, 12)"
-  ],
   "letter-l-circle": [
     "bold @(12, 12)"
   ],
@@ -1059,9 +1055,6 @@
     "bold @(12, 12)"
   ],
   "letter-t-square": [
-    "bold @(12, 12)"
-  ],
-  "letter-y-circle": [
     "bold @(12, 12)"
   ],
   "license": [
@@ -1121,9 +1114,9 @@
     "regular @(17, 17.5)"
   ],
   "lock-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "mahjong": [
     "bold @(12, 12)",
@@ -1148,6 +1141,9 @@
   ],
   "manga-shout-exclaim": [
     "bold @(12, 11.4)"
+  ],
+  "manga-shout-interrobang": [
+    "regular @(12, 11.4)"
   ],
   "manga-shout-question": [
     "bold @(12, 11.4)"
@@ -1195,9 +1191,9 @@
     "bold @(13.3, 14)"
   ],
   "minus-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "monitor-clock": [
     "bold @(12, 10)",
@@ -1272,10 +1268,9 @@
     "regular @(9.1, 11.5)"
   ],
   "music-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)",
-    "bold @(15, 8.7)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "neural-network": [
     "bold @(16.3, 10)",
@@ -1310,13 +1305,13 @@
     "regular @(6, 12)"
   ],
   "pagoda": [
+    "bold @(12, 12)",
     "bold @(12, 20.5)",
-    "bold @(12.5, 12)",
-    "bold @(12.5, 7)",
-    "regular @(12.5, 12)"
+    "bold @(12, 7)",
+    "regular @(12, 12)"
   ],
   "pants": [
-    "regular @(11.5, 12)"
+    "regular @(12, 12)"
   ],
   "pen": [
     "bold @(18.5, 9.2)"
@@ -1330,9 +1325,9 @@
     "regular @(15, 12.5)"
   ],
   "playstation-create": [
-    "bold @(11.5, 14)",
-    "regular @(11.5, 9.8)",
-    "regular @(12, 12)"
+    "bold @(12, 12)",
+    "bold @(12, 14)",
+    "regular @(12, 9.8)"
   ],
   "playstation-l2": [
     "bold @(12, 12)",
@@ -1342,14 +1337,14 @@
     "bold @(12, 12)"
   ],
   "plug-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "plus-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "police-station": [
     "bold @(12, 15.5)",
@@ -1364,21 +1359,12 @@
     "bold @(12, 16.5)"
   ],
   "puzzle-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "python": [
     "bold @(12, 12.5)"
-  ],
-  "qr-code": [
-    "bold @(14.5, 14.5)",
-    "bold @(14.5, 17.5)",
-    "bold @(14.5, 20.5)",
-    "bold @(17.5, 14.5)",
-    "bold @(17.5, 20.5)",
-    "bold @(20.5, 14.5)",
-    "bold @(20.5, 17.5)"
   ],
   "question-answering": [
     "regular @(11.9, 12)",
@@ -1411,12 +1397,12 @@
   ],
   "rate-x0-5": [
     "bold @(19.5, 12)",
-    "regular @(4.7, 11.8)"
+    "regular @(4.7, 12)"
   ],
   "rate-x0-75": [
     "bold @(21, 12)",
     "bold @(9, 12)",
-    "regular @(3.6, 11.8)"
+    "regular @(3.6, 12)"
   ],
   "rate-x1": [
     "bold @(14.8, 12)"
@@ -1428,17 +1414,17 @@
     "bold @(18.5, 12)"
   ],
   "rate-x2": [
-    "regular @(9.7, 11.8)"
+    "regular @(9.7, 12)"
   ],
   "rate-x3": [
-    "bold @(8.8, 11.8)"
+    "bold @(8.8, 12)"
   ],
   "rate-x4": [
-    "bold @(8.9, 11.5)"
+    "bold @(8.9, 12)"
   ],
   "rate-x8": [
-    "bold @(10.5, 11.8)",
-    "regular @(9.7, 11.8)"
+    "bold @(10.5, 12)",
+    "regular @(9.7, 12)"
   ],
   "rating-acb-ma15": [
     "bold @(12, 12)"
@@ -1488,8 +1474,8 @@
     "bold @(12, 12.4)"
   ],
   "religion-sikhism": [
-    "bold @(17, 10.8)",
-    "bold @(7.6, 12.3)"
+    "bold @(16.5, 10.8)",
+    "bold @(7.1, 12.3)"
   ],
   "religion-zoroastrianism": [
     "bold @(11.9, 12.6)",
@@ -1532,12 +1518,16 @@
     "regular @(12, 13.2)"
   ],
   "scooter": [
-    "bold @(6, 18.5)"
+    "bold @(5.5, 18.5)"
   ],
   "search-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
+  ],
+  "sensor-aps-c": [
+    "bold @(9.8, 12)",
+    "regular @(9.8, 12)"
   ],
   "sensor-full-frame": [
     "bold @(9.1, 11.8)"
@@ -1546,7 +1536,7 @@
     "bold @(6.5, 12)"
   ],
   "sentence-similarity": [
-    "regular @(6, 13.5)"
+    "regular @(6, 14)"
   ],
   "shield-clock": [
     "bold @(12, 11)",
@@ -1660,24 +1650,24 @@
     "bold @(12, 20.5)"
   ],
   "sparkle-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "ssd": [
     "bold @(15.5, 12)",
     "bold @(9.5, 12)"
   ],
   "star-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "stem-geng": [
     "bold @(12.5, 10.5)"
   ],
   "stem-xin": [
-    "bold @(11.5, 5.5)"
+    "bold @(12, 5.5)"
   ],
   "store": [
     "bold @(9.5, 17)"
@@ -1699,10 +1689,10 @@
     "regular @(12, 9.5)"
   ],
   "sunrise": [
-    "bold @(11.5, 16)"
+    "bold @(12, 16)"
   ],
   "sunset": [
-    "bold @(11.5, 16)"
+    "bold @(12, 16)"
   ],
   "surf": [
     "bold @(12, 17.2)"
@@ -1730,18 +1720,14 @@
   "tada": [
     "bold @(16, 8)"
   ],
-  "tag-h": [
-    "bold @(12.1, 12)"
-  ],
   "tag-k": [
-    "bold @(11.5, 11.5)",
-    "bold @(12.1, 12)",
-    "regular @(11.5, 11.5)"
+    "bold @(11.5, 12)",
+    "regular @(11.5, 12)"
   ],
   "text-classification": [
     "bold @(11.9, 12)",
     "bold @(17.8, 11.8)",
-    "bold @(6, 11.5)",
+    "bold @(6, 9)",
     "regular @(11.9, 12)"
   ],
   "text-generation": [
@@ -1749,31 +1735,31 @@
     "regular @(11.9, 12)"
   ],
   "text-ranking": [
-    "bold @(6, 11.5)",
+    "bold @(6, 9)",
     "regular @(11.9, 12)"
   ],
   "text-to-3d": [
-    "bold @(6, 11.5)"
+    "bold @(6, 9)"
   ],
   "text-to-audio": [
-    "bold @(6, 11.5)"
+    "bold @(6, 9)"
   ],
   "text-to-image": [
     "bold @(11.9, 12)",
-    "bold @(6, 11.5)",
+    "bold @(6, 9)",
     "regular @(11.9, 12)",
     "regular @(18, 12)"
   ],
   "text-to-speech": [
-    "bold @(6, 11.5)"
+    "bold @(6, 9)"
   ],
   "text-to-video": [
     "bold @(17, 12)",
-    "bold @(6, 11.5)",
+    "bold @(6, 9)",
     "regular @(11.9, 12)"
   ],
   "thermometer": [
-    "bold @(11.5, 11.9)"
+    "bold @(12, 11.9)"
   ],
   "tic-tac-toe": [
     "bold @(12, 15.5)",
@@ -1807,14 +1793,15 @@
     "regular @(12, 8)"
   ],
   "transistor": [
-    "regular @(6.3, 11.5)"
+    "bold @(12, 17.3)",
+    "bold @(12, 6.7)"
   ],
   "translation": [
-    "bold @(6, 11.5)"
+    "bold @(6, 9)"
   ],
   "tree": [
-    "bold @(11.5, 10)",
-    "regular @(11.5, 10)"
+    "bold @(12, 10)",
+    "regular @(12, 10)"
   ],
   "trumpet": [
     "bold @(6.5, 7.5)",
@@ -1823,8 +1810,8 @@
     "regular @(9.5, 7.5)"
   ],
   "tulip": [
-    "bold @(11.5, 9.1)",
-    "regular @(11.5, 9.1)"
+    "bold @(12, 9.1)",
+    "regular @(12, 9.1)"
   ],
   "turntable": [
     "bold @(12, 12)"
@@ -1835,14 +1822,17 @@
     "regular @(11.9, 12)",
     "regular @(18, 12)"
   ],
+  "unit-electronic-warfare": [
+    "bold @(9.1, 11.5)"
+  ],
   "unit-missile": [
-    "bold @(12.5, 12.5)"
+    "bold @(12, 12)"
   ],
   "unit-self-propelled-artillery": [
-    "bold @(12.5, 12.5)"
+    "bold @(12, 12)"
   ],
   "unit-transport": [
-    "bold @(12.5, 12.5)"
+    "bold @(12, 12)"
   ],
   "usagi": [
     "bold @(12, 11.1)",
@@ -1854,10 +1844,10 @@
     "regular @(12, 11.1)"
   ],
   "usb": [
-    "bold @(11.5, 4.2)",
-    "bold @(9.5, 12.3)",
-    "regular @(11.5, 4.2)",
-    "regular @(9.5, 12.3)"
+    "bold @(10, 12.3)",
+    "bold @(12, 4.2)",
+    "regular @(10, 12.3)",
+    "regular @(12, 4.2)"
   ],
   "usb-a": [
     "bold @(12, 12)"
@@ -1898,13 +1888,13 @@
     "regular @(8.5, 12)"
   ],
   "video-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "video-text-to-text": [
     "regular @(11.9, 12)",
-    "regular @(6, 13.5)"
+    "regular @(6, 14)"
   ],
   "video-to-video": [
     "bold @(17, 12)",
@@ -1913,7 +1903,7 @@
     "regular @(8.5, 12)"
   ],
   "visual-document-retrieval": [
-    "bold @(6, 11.5)"
+    "bold @(6, 9)"
   ],
   "visual-question-answering": [
     "bold @(5.3, 8.9)",
@@ -1922,12 +1912,12 @@
     "regular @(6, 7)"
   ],
   "voice-activity-detection": [
-    "bold @(2.5, 12)",
-    "bold @(6.5, 12)"
+    "bold @(3, 12)",
+    "bold @(7, 12)"
   ],
   "wallet": [
-    "bold @(12, 12.5)",
-    "regular @(18, 12.5)"
+    "bold @(12, 12)",
+    "regular @(18, 12)"
   ],
   "washing-machine": [
     "bold @(12, 15)"
@@ -1937,11 +1927,11 @@
     "regular @(12, 10.8)"
   ],
   "webcam": [
-    "bold @(11.5, 9.5)"
+    "bold @(12, 9.5)"
   ],
   "webcam-off": [
-    "bold @(12.6, 8.4)",
-    "bold @(13.2, 7.9)"
+    "bold @(12.9, 8.6)",
+    "bold @(13.5, 8)"
   ],
   "wheelchair": [
     "regular @(9.5, 4.5)"
@@ -1954,9 +1944,9 @@
     "bold @(12, 8.5)"
   ],
   "x-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "xbox-lb": [
     "bold @(9.1, 12.5)"
@@ -1971,7 +1961,7 @@
     "bold @(12, 12)"
   ],
   "xbox-share": [
-    "bold @(11.5, 14)"
+    "bold @(12, 14)"
   ],
   "xiangqi-bing": [
     "bold @(12, 12)",

@@ -1,4 +1,263 @@
 {
+  "accessibility": [
+    "x 12"
+  ],
+  "alarm-clock": [
+    "x 12"
+  ],
+  "alchemy-antimony": [
+    "x 12"
+  ],
+  "alchemy-copper": [
+    "x 12"
+  ],
+  "alchemy-lead": [
+    "x 9.75",
+    "y 5.75"
+  ],
+  "alchemy-mercury": [
+    "x 12"
+  ],
+  "alchemy-nitre": [
+    "x 12"
+  ],
+  "alchemy-salt": [
+    "y 12"
+  ],
+  "alchemy-sulfur": [
+    "x 12"
+  ],
+  "alert-circle": [
+    "x 12"
+  ],
+  "alert-triangle": [
+    "x 12"
+  ],
+  "align-center-both": [
+    "x 12",
+    "x 16",
+    "x 21",
+    "x 3",
+    "x 8",
+    "y 12",
+    "y 16",
+    "y 21",
+    "y 3",
+    "y 8"
+  ],
+  "align-justify": [
+    "y 15",
+    "y 21",
+    "y 3",
+    "y 9"
+  ],
+  "align-objects-center-horizontal": [
+    "x 12",
+    "x 16",
+    "x 19",
+    "x 5",
+    "x 8"
+  ],
+  "align-objects-center-vertical": [
+    "y 12",
+    "y 16",
+    "y 19",
+    "y 5",
+    "y 8"
+  ],
+  "antenna": [
+    "x 12"
+  ],
+  "api": [
+    "y 12"
+  ],
+  "arrow-down": [
+    "x 12"
+  ],
+  "arrow-down-half": [
+    "x 12"
+  ],
+  "arrow-down-list": [
+    "x 12",
+    "y 15",
+    "y 18",
+    "y 21"
+  ],
+  "arrow-down-to-line": [
+    "x 12"
+  ],
+  "arrow-left": [
+    "y 12"
+  ],
+  "arrow-left-half": [
+    "y 12"
+  ],
+  "arrow-left-list": [
+    "y 12",
+    "y 15",
+    "y 18",
+    "y 21"
+  ],
+  "arrow-right": [
+    "y 12"
+  ],
+  "arrow-right-half": [
+    "y 12"
+  ],
+  "arrow-right-list": [
+    "y 12",
+    "y 15",
+    "y 18",
+    "y 21"
+  ],
+  "arrow-up": [
+    "x 12"
+  ],
+  "arrow-up-half": [
+    "x 12"
+  ],
+  "arrow-up-list": [
+    "x 12",
+    "y 15",
+    "y 18",
+    "y 21"
+  ],
+  "arrow-up-to-line": [
+    "x 12"
+  ],
+  "assets-list": [
+    "x 12",
+    "x 19",
+    "x 5",
+    "y 12",
+    "y 15",
+    "y 18",
+    "y 19",
+    "y 21",
+    "y 5"
+  ],
+  "asterisk": [
+    "x 12"
+  ],
+  "astro-earth": [
+    "x 12",
+    "y 12"
+  ],
+  "astro-mercury": [
+    "x 12"
+  ],
+  "astro-neptune": [
+    "x 12",
+    "x 18",
+    "x 6"
+  ],
+  "astro-saturn": [
+    "x 9.75",
+    "y 5.75"
+  ],
+  "astro-uranus": [
+    "x 12"
+  ],
+  "astro-venus": [
+    "x 12"
+  ],
+  "audio-classification": [
+    "x 3",
+    "x 5",
+    "x 7",
+    "x 9"
+  ],
+  "audio-text-to-text": [
+    "x 3",
+    "x 5",
+    "x 7",
+    "x 9",
+    "y 12",
+    "y 14",
+    "y 15",
+    "y 17",
+    "y 20",
+    "y 9"
+  ],
+  "audio-to-audio": [
+    "x 15",
+    "x 17",
+    "x 19",
+    "x 21",
+    "x 3",
+    "x 5",
+    "x 7",
+    "x 9"
+  ],
+  "automatic-speech-recognition": [
+    "x 5",
+    "x 6",
+    "x 7",
+    "y 12",
+    "y 15",
+    "y 9"
+  ],
+  "ban-list": [
+    "y 15",
+    "y 18",
+    "y 21"
+  ],
+  "basket": [
+    "x 12",
+    "x 15",
+    "x 9"
+  ],
+  "battery": [
+    "y 17",
+    "y 7"
+  ],
+  "battery-charging": [
+    "y 12",
+    "y 17",
+    "y 7"
+  ],
+  "battery-full": [
+    "y 17",
+    "y 7"
+  ],
+  "battery-low": [
+    "y 17",
+    "y 7"
+  ],
+  "battery-medium": [
+    "y 17",
+    "y 7"
+  ],
+  "battery-off": [
+    "y 17",
+    "y 7"
+  ],
+  "battery-warning": [
+    "x 11",
+    "y 17",
+    "y 7"
+  ],
+  "bell": [
+    "x 12",
+    "x 18",
+    "x 6"
+  ],
+  "bell-off": [
+    "x 12",
+    "x 18",
+    "x 6"
+  ],
+  "bell-ring": [
+    "x 12",
+    "x 18",
+    "x 6"
+  ],
+  "bluetooth": [
+    "x 12.25"
+  ],
+  "bluetooth-off": [
+    "x 12.25"
+  ],
   "book-open": [
     "x 12"
   ],
@@ -6,17 +265,105 @@
     "x 15",
     "y 7"
   ],
+  "bookmark": [
+    "x 18",
+    "x 6"
+  ],
+  "bookmark-list": [
+    "x 17",
+    "x 7",
+    "y 15",
+    "y 18",
+    "y 21",
+    "y 5"
+  ],
+  "bookmark-off": [
+    "x 18",
+    "x 6"
+  ],
+  "bow": [
+    "y 12"
+  ],
+  "brain": [
+    "x 12"
+  ],
+  "brain-circuit": [
+    "x 12"
+  ],
+  "brain-cyborg": [
+    "x 12"
+  ],
+  "branch-shen": [
+    "x 12",
+    "x 18",
+    "x 6"
+  ],
+  "branch-wei": [
+    "x 12"
+  ],
+  "branch-yin": [
+    "x 12",
+    "x 16",
+    "x 19",
+    "x 5",
+    "x 8"
+  ],
   "briefcase-plus-badge": [
     "x 17",
     "y 17"
+  ],
+  "bug": [
+    "x 12",
+    "x 17",
+    "x 7"
+  ],
+  "cake": [
+    "x 12",
+    "x 16",
+    "x 20",
+    "x 4",
+    "x 8"
   ],
   "calendar-plus-badge": [
     "x 16",
     "y 17"
   ],
+  "camera-mode-macro": [
+    "x 12",
+    "x 17",
+    "x 7"
+  ],
+  "capacitor": [
+    "y 12"
+  ],
+  "cc-nc": [
+    "x 12"
+  ],
   "cc-nc-jp": [
     "x 12",
     "y 15"
+  ],
+  "chart-donut": [
+    "x 12"
+  ],
+  "chart-heatmap": [
+    "x 15",
+    "x 21",
+    "x 3",
+    "x 9",
+    "y 15",
+    "y 21",
+    "y 3",
+    "y 9"
+  ],
+  "chart-pie": [
+    "x 12",
+    "y 12"
+  ],
+  "chart-radar": [
+    "x 12",
+    "x 20",
+    "x 4"
   ],
   "chat-plus-badge": [
     "x 17",
@@ -26,9 +373,229 @@
     "x 17",
     "y 8"
   ],
+  "check-list": [
+    "y 15",
+    "y 18",
+    "y 21"
+  ],
+  "chess-king": [
+    "x 12"
+  ],
+  "chessboard": [
+    "x 15",
+    "x 21",
+    "x 3",
+    "x 9",
+    "y 15",
+    "y 21",
+    "y 3",
+    "y 9"
+  ],
+  "church": [
+    "x 11",
+    "x 12",
+    "x 13",
+    "x 15",
+    "x 20",
+    "x 4",
+    "x 9"
+  ],
+  "circle-list": [
+    "y 15",
+    "y 18",
+    "y 21"
+  ],
+  "clock": [
+    "x 12"
+  ],
+  "clock-list": [
+    "x 12",
+    "y 15",
+    "y 18",
+    "y 21"
+  ],
+  "clock-off": [
+    "x 12"
+  ],
+  "cloud-download": [
+    "x 12"
+  ],
+  "cloud-drizzle": [
+    "x 12",
+    "x 16",
+    "x 8"
+  ],
+  "cloud-list": [
+    "y 15",
+    "y 18",
+    "y 21"
+  ],
+  "cloud-rain": [
+    "x 12",
+    "x 16",
+    "x 8"
+  ],
+  "cloud-upload": [
+    "x 12"
+  ],
+  "cocktail": [
+    "x 12"
+  ],
+  "code-list": [
+    "y 15",
+    "y 18",
+    "y 21"
+  ],
+  "coin-bitcoin": [
+    "y 12"
+  ],
+  "coin-dollar": [
+    "x 12"
+  ],
+  "coin-yen": [
+    "x 12"
+  ],
+  "compare": [
+    "x 12",
+    "x 21",
+    "x 3"
+  ],
+  "crossword": [
+    "x 15",
+    "x 21",
+    "x 3",
+    "x 9",
+    "y 15",
+    "y 21",
+    "y 3",
+    "y 9"
+  ],
+  "cube": [
+    "x 12",
+    "x 20",
+    "x 4"
+  ],
+  "currency-bitcoin": [
+    "y 12"
+  ],
+  "currency-dollar": [
+    "x 12"
+  ],
+  "currency-yen": [
+    "x 12"
+  ],
+  "cursor-crosshair": [
+    "x 12",
+    "y 12"
+  ],
+  "cursor-move": [
+    "x 12",
+    "y 12"
+  ],
+  "cursor-resize-horizontal": [
+    "y 12"
+  ],
+  "cursor-resize-vertical": [
+    "x 12"
+  ],
+  "cursor-text": [
+    "x 12"
+  ],
+  "dice-d10": [
+    "x 12",
+    "x 21",
+    "x 3"
+  ],
+  "dice-d12": [
+    "x 12",
+    "x 21",
+    "x 3"
+  ],
+  "dice-d20": [
+    "x 12",
+    "x 20",
+    "x 4"
+  ],
+  "dice-d4": [
+    "x 12"
+  ],
+  "dice-d6": [
+    "x 12",
+    "x 20",
+    "x 4"
+  ],
+  "dice-d8": [
+    "x 20",
+    "x 4"
+  ],
+  "diode": [
+    "y 12"
+  ],
+  "divide": [
+    "y 12"
+  ],
+  "document-question-answering": [
+    "y 12",
+    "y 15",
+    "y 9"
+  ],
+  "domino": [
+    "y 12",
+    "y 21",
+    "y 3"
+  ],
+  "download": [
+    "x 12",
+    "x 20",
+    "x 4"
+  ],
+  "drum": [
+    "x 12",
+    "x 16",
+    "x 20",
+    "x 4",
+    "x 8"
+  ],
+  "dumbbell": [
+    "y 12",
+    "y 15",
+    "y 18",
+    "y 6",
+    "y 9"
+  ],
+  "dustpan": [
+    "x 12"
+  ],
+  "element-of": [
+    "y 12",
+    "y 19",
+    "y 5"
+  ],
+  "export": [
+    "x 15",
+    "x 4",
+    "y 12",
+    "y 20",
+    "y 4"
+  ],
+  "feature-extraction": [
+    "y 12",
+    "y 15",
+    "y 9"
+  ],
   "file-plus-badge": [
     "x 15",
     "y 17"
+  ],
+  "fill-mask": [
+    "y 12",
+    "y 15",
+    "y 9"
+  ],
+  "flashlight": [
+    "y 10",
+    "y 12",
+    "y 14"
   ],
   "flip": [
     "x 12",
@@ -39,6 +606,10 @@
     "y 12",
     "y 20",
     "y 4"
+  ],
+  "fold-vertical": [
+    "x 12",
+    "y 12"
   ],
   "folder-open": [
     "y 10.75"
@@ -51,9 +622,347 @@
     "x 18",
     "y 6"
   ],
+  "gauge-list": [
+    "y 15",
+    "y 18",
+    "y 21"
+  ],
+  "gender-female": [
+    "x 12"
+  ],
+  "gender-neuter": [
+    "x 12"
+  ],
+  "gender-nonbinary": [
+    "x 12"
+  ],
+  "gender-transgender": [
+    "x 12",
+    "x 19",
+    "x 5"
+  ],
+  "gift": [
+    "x 12",
+    "x 19",
+    "x 21",
+    "x 3",
+    "x 5"
+  ],
+  "git-commit": [
+    "y 12"
+  ],
+  "git-fork": [
+    "x 12",
+    "x 17",
+    "x 7"
+  ],
+  "globe": [
+    "y 12",
+    "y 17",
+    "y 7"
+  ],
+  "globe-search": [
+    "y 12",
+    "y 17",
+    "y 7"
+  ],
+  "go-board": [
+    "x 12",
+    "x 17",
+    "x 7",
+    "y 12",
+    "y 17",
+    "y 7"
+  ],
+  "golang": [
+    "y 12"
+  ],
+  "grapes": [
+    "x 12"
+  ],
+  "greek-capital-phi": [
+    "x 12"
+  ],
+  "greek-capital-psi": [
+    "x 12",
+    "x 18",
+    "x 6"
+  ],
+  "greek-capital-xi": [
+    "y 12",
+    "y 19",
+    "y 5"
+  ],
+  "greek-gamma": [
+    "x 12"
+  ],
+  "greek-omega": [
+    "x 12"
+  ],
+  "greek-phi": [
+    "x 12"
+  ],
+  "greek-psi": [
+    "x 12",
+    "x 18",
+    "x 6"
+  ],
+  "greek-tau": [
+    "x 12"
+  ],
+  "grid-3x3": [
+    "x 15",
+    "x 21",
+    "x 3",
+    "x 9",
+    "y 15",
+    "y 21",
+    "y 3",
+    "y 9"
+  ],
+  "ground": [
+    "x 12"
+  ],
+  "hanger": [
+    "x 12"
+  ],
+  "harmonica": [
+    "y 11",
+    "y 12",
+    "y 16",
+    "y 8"
+  ],
+  "heart-list": [
+    "y 15",
+    "y 18",
+    "y 21"
+  ],
+  "helm": [
+    "x 12",
+    "y 12"
+  ],
+  "help": [
+    "x 12"
+  ],
+  "hologram": [
+    "x 12",
+    "x 17",
+    "x 7"
+  ],
+  "hospital": [
+    "x 10",
+    "x 12",
+    "x 14",
+    "x 19",
+    "x 5"
+  ],
+  "identical": [
+    "y 12",
+    "y 17",
+    "y 7"
+  ],
+  "image-edit": [
+    "x 18",
+    "x 3",
+    "y 18",
+    "y 3"
+  ],
+  "image-list": [
+    "x 19",
+    "x 5",
+    "y 15",
+    "y 18",
+    "y 19",
+    "y 21",
+    "y 5"
+  ],
+  "image-plus": [
+    "x 18",
+    "x 3",
+    "y 18",
+    "y 3"
+  ],
+  "image-text-to-image": [
+    "y 14",
+    "y 17",
+    "y 20"
+  ],
+  "image-text-to-text": [
+    "y 12",
+    "y 14",
+    "y 15",
+    "y 17",
+    "y 20",
+    "y 9"
+  ],
+  "image-text-to-video": [
+    "y 14",
+    "y 17",
+    "y 20"
+  ],
+  "image-to-3d": [
+    "x 15",
+    "x 18",
+    "x 21"
+  ],
+  "image-to-text": [
+    "y 12",
+    "y 15",
+    "y 9"
+  ],
+  "import": [
+    "y 12",
+    "y 20",
+    "y 4"
+  ],
+  "indent": [
+    "y 15",
+    "y 21",
+    "y 3",
+    "y 9"
+  ],
+  "info": [
+    "x 12"
+  ],
+  "japanese-castle": [
+    "x 17",
+    "x 7"
+  ],
+  "joystick": [
+    "x 12",
+    "x 16",
+    "x 18",
+    "x 20",
+    "x 4"
+  ],
   "json": [
     "x 18",
     "x 6"
+  ],
+  "kanban": [
+    "x 12",
+    "x 16",
+    "x 21",
+    "x 3",
+    "x 8"
+  ],
+  "katakana-e": [
+    "x 12"
+  ],
+  "katakana-yo": [
+    "y 12",
+    "y 19",
+    "y 5"
+  ],
+  "keyboard": [
+    "y 15",
+    "y 18",
+    "y 6"
+  ],
+  "keyboard-tab": [
+    "y 12"
+  ],
+  "keypoint-detection": [
+    "x 18"
+  ],
+  "laundry-dry-drip": [
+    "x 12",
+    "x 16",
+    "x 8"
+  ],
+  "layout-columns": [
+    "x 15",
+    "x 21",
+    "x 3",
+    "x 9"
+  ],
+  "layout-grid-plus": [
+    "x 17",
+    "y 17"
+  ],
+  "layout-rows": [
+    "x 21",
+    "x 3"
+  ],
+  "layout-split": [
+    "x 12",
+    "x 21",
+    "x 3"
+  ],
+  "layout-split-rows": [
+    "x 21",
+    "x 3",
+    "y 12",
+    "y 20",
+    "y 4"
+  ],
+  "letter-b": [
+    "y 12"
+  ],
+  "letter-b-circle": [
+    "y 12"
+  ],
+  "letter-b-square": [
+    "y 12"
+  ],
+  "letter-e": [
+    "y 12"
+  ],
+  "letter-e-circle": [
+    "y 12"
+  ],
+  "letter-e-square": [
+    "y 12"
+  ],
+  "letter-g": [
+    "y 12"
+  ],
+  "letter-g-circle": [
+    "y 12"
+  ],
+  "letter-g-square": [
+    "y 12"
+  ],
+  "letter-h": [
+    "y 12"
+  ],
+  "letter-h-circle": [
+    "y 12"
+  ],
+  "letter-h-square": [
+    "y 12"
+  ],
+  "letter-i": [
+    "x 12"
+  ],
+  "letter-i-circle": [
+    "x 12"
+  ],
+  "letter-i-square": [
+    "x 12"
+  ],
+  "letter-t": [
+    "x 12"
+  ],
+  "letter-t-circle": [
+    "x 12"
+  ],
+  "letter-t-square": [
+    "x 12"
+  ],
+  "letter-y": [
+    "x 12"
+  ],
+  "letter-y-circle": [
+    "x 12"
+  ],
+  "letter-y-square": [
+    "x 12"
+  ],
+  "line-height": [
+    "y 12",
+    "y 19",
+    "y 5"
   ],
   "list": [
     "y 12",
@@ -89,9 +998,99 @@
     "x 12",
     "y 12"
   ],
+  "locate": [
+    "x 12",
+    "y 12"
+  ],
+  "lock": [
+    "x 12",
+    "x 16",
+    "x 18",
+    "x 6",
+    "x 8",
+    "y 11",
+    "y 19"
+  ],
+  "lock-list": [
+    "x 12",
+    "x 16",
+    "x 6",
+    "x 8",
+    "y 11",
+    "y 15",
+    "y 18",
+    "y 19",
+    "y 21"
+  ],
+  "lock-open": [
+    "x 12",
+    "x 19",
+    "x 5",
+    "x 8"
+  ],
+  "login": [
+    "y 12",
+    "y 20",
+    "y 4"
+  ],
+  "logout": [
+    "y 12",
+    "y 20",
+    "y 4"
+  ],
+  "manga-shout-exclaim": [
+    "x 12"
+  ],
+  "manga-shout-interrobang": [
+    "x 15"
+  ],
   "map-pin-plus": [
     "x 17",
     "y 17"
+  ],
+  "menu": [
+    "y 12",
+    "y 18",
+    "y 6"
+  ],
+  "menu-left": [
+    "y 12",
+    "y 18",
+    "y 6"
+  ],
+  "mic": [
+    "x 12",
+    "x 15",
+    "x 9"
+  ],
+  "mic-off": [
+    "x 12",
+    "x 15",
+    "x 9"
+  ],
+  "mic-studio": [
+    "x 12",
+    "x 15",
+    "x 9"
+  ],
+  "mic-vintage": [
+    "x 12"
+  ],
+  "minesweeper": [
+    "x 12",
+    "y 12"
+  ],
+  "minus": [
+    "y 12"
+  ],
+  "minus-circle": [
+    "y 12"
+  ],
+  "minus-list": [
+    "y 12",
+    "y 15",
+    "y 18",
+    "y 21"
   ],
   "monitor": [
     "x 12"
@@ -370,8 +1369,301 @@
   "monitor-x-badge-top": [
     "x 12"
   ],
+  "mouse": [
+    "x 12",
+    "x 17",
+    "x 7"
+  ],
+  "movie": [
+    "y 12",
+    "y 16",
+    "y 20",
+    "y 4",
+    "y 8"
+  ],
+  "music-list": [
+    "y 15",
+    "y 18",
+    "y 21"
+  ],
+  "network": [
+    "x 12",
+    "x 15",
+    "x 18",
+    "x 21",
+    "x 3",
+    "x 6",
+    "x 9"
+  ],
+  "notation-coda": [
+    "x 12",
+    "y 12"
+  ],
+  "notation-half-rest": [
+    "y 14"
+  ],
+  "notation-whole-rest": [
+    "y 10"
+  ],
+  "okta-1": [
+    "x 12"
+  ],
+  "okta-3": [
+    "x 12"
+  ],
+  "okta-5": [
+    "y 12"
+  ],
+  "outdent": [
+    "y 15",
+    "y 21",
+    "y 3",
+    "y 9"
+  ],
+  "package": [
+    "x 12",
+    "x 20",
+    "x 4"
+  ],
+  "pagoda": [
+    "x 12",
+    "x 15",
+    "x 16",
+    "x 8",
+    "x 9"
+  ],
+  "pants": [
+    "x 12"
+  ],
+  "paperclip": [
+    "x 10",
+    "x 14",
+    "x 16",
+    "x 8"
+  ],
+  "peace": [
+    "x 12"
+  ],
+  "perpendicular": [
+    "x 12"
+  ],
+  "piano": [
+    "x 12",
+    "x 15",
+    "x 16",
+    "x 17",
+    "x 20",
+    "x 4",
+    "x 7",
+    "x 8",
+    "x 9"
+  ],
+  "pin": [
+    "x 10",
+    "x 12",
+    "x 14"
+  ],
+  "pin-off": [
+    "x 10",
+    "x 12",
+    "x 14"
+  ],
+  "playstation-create": [
+    "x 12"
+  ],
+  "playstation-options": [
+    "y 12",
+    "y 15",
+    "y 9"
+  ],
+  "plug": [
+    "x 10",
+    "x 12",
+    "x 14",
+    "x 18",
+    "x 6"
+  ],
+  "plug-list": [
+    "x 10",
+    "x 12",
+    "x 14",
+    "x 17",
+    "x 7",
+    "y 15",
+    "y 18",
+    "y 21"
+  ],
+  "plug-off": [
+    "x 10",
+    "x 12",
+    "x 14",
+    "x 18",
+    "x 6"
+  ],
+  "plus": [
+    "x 12",
+    "y 12"
+  ],
+  "plus-circle": [
+    "x 12",
+    "y 12"
+  ],
+  "plus-list": [
+    "x 12",
+    "y 12",
+    "y 15",
+    "y 18",
+    "y 21"
+  ],
+  "plus-minus": [
+    "x 12"
+  ],
+  "podcast": [
+    "x 12"
+  ],
+  "poker-chip": [
+    "x 12",
+    "y 12"
+  ],
+  "power": [
+    "x 12"
+  ],
+  "power-state-on": [
+    "x 12"
+  ],
+  "power-toggle": [
+    "x 12"
+  ],
+  "presentation": [
+    "x 12",
+    "y 15",
+    "y 3"
+  ],
+  "puzzle-cube": [
+    "x 12",
+    "x 20",
+    "x 4"
+  ],
+  "puzzle-list": [
+    "y 15",
+    "y 18",
+    "y 21"
+  ],
+  "question-answering": [
+    "y 10",
+    "y 12",
+    "y 15",
+    "y 4",
+    "y 7",
+    "y 9"
+  ],
+  "rate-x0-5": [
+    "y 12"
+  ],
+  "rate-x0-75": [
+    "y 12"
+  ],
+  "rate-x1-25": [
+    "y 12"
+  ],
+  "rate-x1-5": [
+    "y 12"
+  ],
+  "rate-x2": [
+    "y 12"
+  ],
+  "rate-x3": [
+    "y 12"
+  ],
+  "rate-x4": [
+    "y 13"
+  ],
+  "rate-x8": [
+    "y 12"
+  ],
+  "reinforcement-learning": [
+    "x 12",
+    "x 15",
+    "x 9"
+  ],
+  "religion-catholicism": [
+    "x 12"
+  ],
+  "religion-orthodoxy": [
+    "x 12"
+  ],
+  "religion-sikhism": [
+    "x 11",
+    "x 12",
+    "x 13"
+  ],
+  "resistor": [
+    "y 12"
+  ],
+  "robot": [
+    "x 12"
+  ],
+  "roman-1": [
+    "x 12"
+  ],
+  "roman-12": [
+    "x 15",
+    "x 18"
+  ],
+  "roman-3": [
+    "x 12",
+    "x 15",
+    "x 9"
+  ],
+  "roman-7": [
+    "x 15",
+    "x 18"
+  ],
+  "rune-algiz": [
+    "x 12"
+  ],
+  "rune-eihwaz": [
+    "x 12"
+  ],
+  "rune-isa": [
+    "x 12"
+  ],
+  "rune-naudiz": [
+    "x 12"
+  ],
+  "rune-tiwaz": [
+    "x 12"
+  ],
+  "scale-balance": [
+    "x 12"
+  ],
   "scooter": [
     "y 14"
+  ],
+  "search-list": [
+    "y 15",
+    "y 18",
+    "y 21"
+  ],
+  "send-right": [
+    "y 12"
+  ],
+  "send-up": [
+    "x 12"
+  ],
+  "sentence-similarity": [
+    "y 10",
+    "y 14",
+    "y 17",
+    "y 20",
+    "y 4",
+    "y 7"
+  ],
+  "separator-horizontal": [
+    "y 12"
+  ],
+  "separator-vertical": [
+    "x 12"
   ],
   "shield-alert": [
     "x 12"
@@ -382,6 +1674,269 @@
   "shield-plus-badge": [
     "x 17",
     "y 17"
+  ],
+  "shutter-speed": [
+    "x 12"
+  ],
+  "sinan": [
+    "x 12",
+    "x 21",
+    "x 3",
+    "y 21",
+    "y 3"
+  ],
+  "skyscraper": [
+    "x 12",
+    "x 15",
+    "x 17",
+    "x 7",
+    "x 9"
+  ],
+  "sliders": [
+    "y 12",
+    "y 18",
+    "y 6"
+  ],
+  "snowflake": [
+    "x 12"
+  ],
+  "sparkle-list": [
+    "y 15",
+    "y 18",
+    "y 21"
+  ],
+  "sprout": [
+    "x 12"
+  ],
+  "star-list": [
+    "y 15",
+    "y 18",
+    "y 21"
+  ],
+  "stem-jia": [
+    "x 12",
+    "x 19",
+    "x 5"
+  ],
+  "stem-xin": [
+    "x 12"
+  ],
+  "stopwatch": [
+    "x 10",
+    "x 12",
+    "x 14"
+  ],
+  "strikethrough": [
+    "y 12"
+  ],
+  "summarization": [
+    "y 12",
+    "y 15",
+    "y 9"
+  ],
+  "sun": [
+    "x 12",
+    "y 12"
+  ],
+  "sunrise": [
+    "x 12"
+  ],
+  "sunset": [
+    "x 12"
+  ],
+  "table-question-answering": [
+    "y 12",
+    "y 15",
+    "y 9"
+  ],
+  "tag-2": [
+    "y 12"
+  ],
+  "tag-3": [
+    "y 12"
+  ],
+  "tag-5": [
+    "y 12"
+  ],
+  "tag-6": [
+    "y 12"
+  ],
+  "tag-8": [
+    "y 12"
+  ],
+  "tag-9": [
+    "y 12"
+  ],
+  "tag-b": [
+    "y 12"
+  ],
+  "tag-e": [
+    "y 12"
+  ],
+  "tag-g": [
+    "y 12"
+  ],
+  "tag-h": [
+    "y 12"
+  ],
+  "tag-k": [
+    "y 12"
+  ],
+  "tag-s": [
+    "y 12"
+  ],
+  "tally-five-1": [
+    "x 12"
+  ],
+  "tally-five-2": [
+    "x 10",
+    "x 14"
+  ],
+  "tally-five-3": [
+    "x 12",
+    "x 16",
+    "x 8"
+  ],
+  "tally-five-4": [
+    "x 10",
+    "x 14",
+    "x 18",
+    "x 6"
+  ],
+  "tally-five-5": [
+    "x 10",
+    "x 14",
+    "x 18",
+    "x 6"
+  ],
+  "tally-rod-1": [
+    "x 12"
+  ],
+  "tally-rod-3": [
+    "x 12",
+    "x 15",
+    "x 9"
+  ],
+  "tally-rod-5": [
+    "x 12",
+    "x 15",
+    "x 18",
+    "x 6",
+    "x 9"
+  ],
+  "tally-rod-6": [
+    "x 12"
+  ],
+  "tally-rod-8": [
+    "x 12",
+    "x 15",
+    "x 9"
+  ],
+  "tally-zheng-2": [
+    "x 12"
+  ],
+  "tally-zheng-3": [
+    "x 12"
+  ],
+  "tally-zheng-4": [
+    "x 12",
+    "x 7"
+  ],
+  "tally-zheng-5": [
+    "x 12",
+    "x 7"
+  ],
+  "teapot": [
+    "x 12"
+  ],
+  "terrain-lower": [
+    "x 12"
+  ],
+  "terrain-raise": [
+    "x 12"
+  ],
+  "test-tube": [
+    "x 10",
+    "x 14"
+  ],
+  "tetromino": [
+    "x 15",
+    "x 21",
+    "x 3",
+    "x 9",
+    "y 12",
+    "y 18",
+    "y 6"
+  ],
+  "text": [
+    "x 12",
+    "x 19",
+    "x 5"
+  ],
+  "text-classification": [
+    "y 12",
+    "y 15",
+    "y 9"
+  ],
+  "text-generation": [
+    "y 12",
+    "y 15",
+    "y 9"
+  ],
+  "text-ranking": [
+    "y 12",
+    "y 15",
+    "y 9"
+  ],
+  "text-to-3d": [
+    "x 15",
+    "x 18",
+    "x 21",
+    "y 12",
+    "y 15",
+    "y 9"
+  ],
+  "text-to-audio": [
+    "y 12",
+    "y 15",
+    "y 9"
+  ],
+  "text-to-image": [
+    "y 12",
+    "y 15",
+    "y 9"
+  ],
+  "text-to-speech": [
+    "x 17",
+    "x 18",
+    "x 19",
+    "y 12",
+    "y 15",
+    "y 9"
+  ],
+  "text-to-video": [
+    "y 12",
+    "y 15",
+    "y 9"
+  ],
+  "thermometer": [
+    "x 10",
+    "x 12",
+    "x 14"
+  ],
+  "timeline": [
+    "y 12",
+    "y 19",
+    "y 5"
+  ],
+  "transistor": [
+    "y 12"
+  ],
+  "translation": [
+    "y 12",
+    "y 13.15",
+    "y 15",
+    "y 9"
   ],
   "trash": [
     "x 10",
@@ -394,5 +1949,423 @@
   ],
   "trash-x": [
     "y 6"
+  ],
+  "tree": [
+    "x 12"
+  ],
+  "tree-pine": [
+    "x 12"
+  ],
+  "trigram-dui": [
+    "y 12",
+    "y 17",
+    "y 7"
+  ],
+  "trigram-gen": [
+    "y 12",
+    "y 17",
+    "y 7"
+  ],
+  "trigram-kan": [
+    "y 12",
+    "y 17",
+    "y 7"
+  ],
+  "trigram-kun": [
+    "y 12",
+    "y 17",
+    "y 7"
+  ],
+  "trigram-li": [
+    "y 12",
+    "y 17",
+    "y 7"
+  ],
+  "trigram-qian": [
+    "y 12",
+    "y 17",
+    "y 7"
+  ],
+  "trigram-xun": [
+    "y 12",
+    "y 17",
+    "y 7"
+  ],
+  "trigram-zhen": [
+    "y 12",
+    "y 17",
+    "y 7"
+  ],
+  "trophy": [
+    "x 12",
+    "x 16",
+    "x 17",
+    "x 7",
+    "x 8"
+  ],
+  "tulip": [
+    "x 12",
+    "x 17",
+    "x 7"
+  ],
+  "umbrella": [
+    "x 12"
+  ],
+  "unit-air-defense": [
+    "x 21",
+    "x 3",
+    "y 18",
+    "y 6"
+  ],
+  "unit-airborne": [
+    "x 21",
+    "x 3",
+    "y 18",
+    "y 6"
+  ],
+  "unit-amphibious": [
+    "x 21",
+    "x 3",
+    "y 18",
+    "y 6"
+  ],
+  "unit-anti-tank": [
+    "x 21",
+    "x 3",
+    "y 18",
+    "y 6"
+  ],
+  "unit-armor": [
+    "x 21",
+    "x 3",
+    "y 15",
+    "y 18",
+    "y 6",
+    "y 9"
+  ],
+  "unit-armored-recon": [
+    "x 21",
+    "x 3",
+    "y 15",
+    "y 18",
+    "y 6",
+    "y 9"
+  ],
+  "unit-artillery": [
+    "x 21",
+    "x 3",
+    "y 18",
+    "y 6"
+  ],
+  "unit-aviation": [
+    "x 17",
+    "x 21",
+    "x 3",
+    "x 7",
+    "y 18",
+    "y 6"
+  ],
+  "unit-echelon-army": [
+    "x 21",
+    "x 3",
+    "y 18",
+    "y 6"
+  ],
+  "unit-echelon-battalion": [
+    "x 21",
+    "x 3",
+    "y 18",
+    "y 6"
+  ],
+  "unit-echelon-brigade": [
+    "x 21",
+    "x 3",
+    "y 18",
+    "y 6"
+  ],
+  "unit-echelon-company": [
+    "x 21",
+    "x 3",
+    "y 18",
+    "y 6"
+  ],
+  "unit-echelon-corps": [
+    "x 21",
+    "x 3",
+    "y 18",
+    "y 6"
+  ],
+  "unit-echelon-division": [
+    "x 21",
+    "x 3",
+    "y 18",
+    "y 6"
+  ],
+  "unit-echelon-platoon": [
+    "x 21",
+    "x 3",
+    "y 18",
+    "y 6"
+  ],
+  "unit-echelon-regiment": [
+    "x 21",
+    "x 3",
+    "y 18",
+    "y 6"
+  ],
+  "unit-echelon-section": [
+    "x 21",
+    "x 3",
+    "y 18",
+    "y 6"
+  ],
+  "unit-echelon-squad": [
+    "x 21",
+    "x 3",
+    "y 18",
+    "y 6"
+  ],
+  "unit-electronic-warfare": [
+    "x 21",
+    "x 3",
+    "y 18",
+    "y 6"
+  ],
+  "unit-engineer": [
+    "x 12",
+    "x 16",
+    "x 21",
+    "x 3",
+    "x 8",
+    "y 10",
+    "y 18",
+    "y 6"
+  ],
+  "unit-frame-friendly": [
+    "x 21",
+    "x 3",
+    "y 18",
+    "y 6"
+  ],
+  "unit-frame-neutral": [
+    "x 19",
+    "x 5",
+    "y 19",
+    "y 5"
+  ],
+  "unit-headquarters": [
+    "x 21",
+    "x 3",
+    "y 18",
+    "y 6"
+  ],
+  "unit-infantry": [
+    "x 21",
+    "x 3",
+    "y 18",
+    "y 6"
+  ],
+  "unit-maintenance": [
+    "x 21",
+    "x 3",
+    "y 12",
+    "y 18",
+    "y 6"
+  ],
+  "unit-mechanized": [
+    "x 21",
+    "x 3",
+    "y 15",
+    "y 18",
+    "y 6",
+    "y 9"
+  ],
+  "unit-medical": [
+    "x 12",
+    "x 21",
+    "x 3",
+    "y 12",
+    "y 18",
+    "y 6"
+  ],
+  "unit-military-police": [
+    "x 21",
+    "x 3",
+    "y 18",
+    "y 6"
+  ],
+  "unit-missile": [
+    "x 10",
+    "x 14",
+    "x 21",
+    "x 3",
+    "y 16",
+    "y 18",
+    "y 6"
+  ],
+  "unit-mortar": [
+    "x 12",
+    "x 21",
+    "x 3",
+    "y 11",
+    "y 18",
+    "y 6"
+  ],
+  "unit-mountain": [
+    "x 21",
+    "x 3",
+    "y 18",
+    "y 6"
+  ],
+  "unit-recon": [
+    "x 21",
+    "x 3",
+    "y 18",
+    "y 6"
+  ],
+  "unit-self-propelled-artillery": [
+    "x 21",
+    "x 3",
+    "y 15",
+    "y 18",
+    "y 6",
+    "y 9"
+  ],
+  "unit-signal": [
+    "x 21",
+    "x 3",
+    "y 18",
+    "y 6"
+  ],
+  "unit-special-forces": [
+    "x 21",
+    "x 3",
+    "y 18",
+    "y 6"
+  ],
+  "unit-supply": [
+    "x 21",
+    "x 3",
+    "y 14",
+    "y 18",
+    "y 6"
+  ],
+  "unit-transport": [
+    "x 21",
+    "x 3",
+    "y 18",
+    "y 6"
+  ],
+  "upgrade": [
+    "x 12"
+  ],
+  "upload": [
+    "x 12",
+    "x 20",
+    "x 4"
+  ],
+  "usb": [
+    "x 12",
+    "x 15",
+    "x 16",
+    "x 17",
+    "x 8"
+  ],
+  "usb-c": [
+    "y 12",
+    "y 15",
+    "y 9"
+  ],
+  "video": [
+    "x 15",
+    "x 21",
+    "x 3"
+  ],
+  "video-list": [
+    "y 15",
+    "y 18",
+    "y 21"
+  ],
+  "video-off": [
+    "x 15",
+    "x 21",
+    "x 3"
+  ],
+  "video-text-to-text": [
+    "y 12",
+    "y 14",
+    "y 15",
+    "y 17",
+    "y 20",
+    "y 9"
+  ],
+  "visual-document-retrieval": [
+    "y 12",
+    "y 15",
+    "y 9"
+  ],
+  "visual-question-answering": [
+    "y 12",
+    "y 15",
+    "y 9"
+  ],
+  "voice-activity-detection": [
+    "x 3",
+    "x 5",
+    "x 7",
+    "x 9"
+  ],
+  "wallet": [
+    "y 10",
+    "y 14",
+    "y 19",
+    "y 5"
+  ],
+  "watch": [
+    "x 12",
+    "x 15",
+    "x 9"
+  ],
+  "webcam": [
+    "x 12"
+  ],
+  "webcam-off": [
+    "x 12"
+  ],
+  "wine": [
+    "x 12"
+  ],
+  "x-list": [
+    "y 15",
+    "y 18",
+    "y 21"
+  ],
+  "xbox-menu": [
+    "y 12",
+    "y 15",
+    "y 9"
+  ],
+  "xbox-share": [
+    "x 12",
+    "x 16",
+    "x 8"
+  ],
+  "zero-shot-classification": [
+    "y 10",
+    "y 4",
+    "y 7"
+  ],
+  "zodiac-aries": [
+    "x 12"
+  ],
+  "zodiac-scorpio": [
+    "x 11",
+    "x 16",
+    "x 6"
+  ],
+  "zodiac-virgo": [
+    "x 11",
+    "x 16",
+    "x 6"
   ]
 }
