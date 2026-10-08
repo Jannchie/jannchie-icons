@@ -173,12 +173,6 @@
     "bold @(12, 12)",
     "regular @(12, 12)"
   ],
-  "book-assets": [
-    "bold @(12, 12)",
-    "bold @(12, 17.3)",
-    "regular @(12, 12)",
-    "regular @(12, 17.5)"
-  ],
   "book-clock": [
     "bold @(12, 9.5)",
     "regular @(12, 9.5)"
@@ -305,10 +299,6 @@
   ],
   "calendar-heart": [
     "bold @(12, 13)"
-  ],
-  "calendar-image": [
-    "bold @(12, 13)",
-    "regular @(12, 15.5)"
   ],
   "calendar-lock": [
     "bold @(12, 10)",
@@ -685,9 +675,6 @@
     "regular @(16.3, 12)",
     "regular @(19.8, 12)"
   ],
-  "file-assets": [
-    "bold @(12, 12)"
-  ],
   "file-clock": [
     "bold @(12, 13.5)",
     "regular @(12, 13.5)"
@@ -704,9 +691,7 @@
     "regular @(15, 17.5)"
   ],
   "file-image": [
-    "bold @(12, 13.5)",
-    "bold @(16.8, 5.3)",
-    "regular @(16.9, 5.1)"
+    "regular @(12, 13.5)"
   ],
   "file-image-badge": [
     "regular @(15, 17.5)"
@@ -736,9 +721,6 @@
   "flute": [
     "bold @(12, 12)"
   ],
-  "folder-assets": [
-    "regular @(12, 12)"
-  ],
   "folder-bookmark": [
     "regular @(12, 12)"
   ],
@@ -761,8 +743,7 @@
     "regular @(16.8, 17.2)"
   ],
   "folder-image": [
-    "bold @(12, 12)",
-    "bold @(12, 13.5)"
+    "regular @(12, 13.5)"
   ],
   "folder-image-badge": [
     "bold @(16.5, 17)"
@@ -1570,9 +1551,6 @@
   "sentence-similarity": [
     "regular @(6, 13.5)"
   ],
-  "shield-assets": [
-    "bold @(12, 12)"
-  ],
   "shield-clock": [
     "bold @(12, 11)",
     "regular @(12, 11)"
@@ -1590,7 +1568,7 @@
     "regular @(17, 17)"
   ],
   "shield-image": [
-    "bold @(12, 11)"
+    "regular @(12, 11)"
   ],
   "shield-image-badge": [
     "regular @(17, 17)"

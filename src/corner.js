@@ -64,8 +64,16 @@ export function cornerCenter(draw, size, radius, stroke, { right, bottom, top })
 // ok(shape) 不满足时（比如断口太靠近外框的拐角），每次缩小 0.05 倍再摆，最小缩到普通大小的 minFit 倍（默认 MIN_FIT）。返回 { k, at, shape }：画符号用 k、at，断开轮廓用 shape
 // 符号会把缩放吸到网格上（见 clearance.js 的 snap），相邻几档可能画出来一样大，所以缩不下去的符号要靠更低的 minFit
 const MIN_FIT = 0.75
+// 往角外多挪一点的符号：圆圈角标当作「小红点」式的指示标记，压在外框角外侧才平衡；圆形按设计规则可以比方形多出半格（离画布边 1.5）
+const OUTWARD = { ring: 0.5 }
+const outward = (name, { right, bottom, top }) => {
+  const o = OUTWARD[name] ?? 0
+  return { right: right + o, bottom: bottom == null ? bottom : bottom + o, top: top == null ? top : top - o }
+}
+
 export function fitBadge(name, draw, radius, stroke, anchor, ok = () => true, grow = 1, minFit = MIN_FIT) {
   let fit
+  anchor = outward(name, anchor)
   for (let s = grow; s >= minFit - 1e-6; s -= 0.05) {
     const k = cornerScale[name] * s
     const at = cornerCenter(draw, k, radius, stroke, anchor)
@@ -101,6 +109,8 @@ export const roomBelow = (stroke, r, bottom) => (shape) => {
 // 一排看下来位置忽左忽右；固定中心后各符号落在同一个位置。从 grow 倍开始，墨迹（含半个线宽）超出 limit（右、下）就缩小 0.05 倍再试
 export function centerBadge(name, draw, radius, stroke, center, limit, grow = 1) {
   const h = stroke / 2
+  const o = OUTWARD[name] ?? 0
+  ;[center, limit] = [[center[0] + o, center[1] + o], limit + o]
   let fit
   for (let s = grow; s >= MIN_FIT - 1e-6; s -= 0.05) {
     const k = cornerScale[name] * s
