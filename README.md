@@ -6,7 +6,7 @@
   <a href="https://icons.jannchie.com">Website</a> · <a href="README.zh-CN.md">中文</a>
 </p>
 
-Jannchie Icons is a line icon library of 2,500+ icons on a 24-unit grid. Corner radius and stroke weight are inputs to each icon's geometry, not CSS overrides: every icon is redrawn for the selected setting, so corners stay consistent at any radius, dots and fine details keep their proportions at heavier weights, and horizontal and vertical strokes land on whole pixels on HiDPI screens.
+Jannchie Icons is a line icon library of 2,600+ icons on a 24-unit grid. Corner radius and stroke weight are inputs to each icon's geometry, not CSS overrides: every icon is redrawn for the selected setting, so corners stay consistent at any radius, dots and fine details keep their proportions at heavier weights, and horizontal and vertical strokes land on whole pixels on HiDPI screens.
 
 Besides the usual interface icons, the set covers symbol systems that general-purpose libraries rarely include: Hiragana and Katakana, Greek letters, Heavenly Stems and Earthly Branches, the Chinese zodiac, I Ching trigrams and hexagrams, runes, alchemical symbols, Maya numerals, music notation, xiangqi and shogi pieces, content rating marks, Creative Commons and license badges, and laundry care symbols.
 
