@@ -2,7 +2,7 @@
 // 墨迹框左右 2–22、上下 3–21，以画布中线对称；线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽
 // 标签页右端在 x 9，45° 斜边往下 3 接到本体顶边（线宽 1 时本体顶边落在 6.5 上，横线清晰）
 import { blocked } from './clearance'
-import { fitBadge, roomOnRight } from './corner'
+import { asBadge, fitBadge, roomOnRight } from './corner'
 import { rounded } from './geometry'
 import { inset } from './inset'
 
@@ -33,7 +33,7 @@ export function withBadge(name, draw, tone, radius, stroke) {
   const right = blocked(shape, 'y', r, stroke)
   const bottom = blocked(shape, 'x', b, stroke)
   const outline = [[bottom ? bottom[0] : r, b], [l, b], [l, t], [tabEnd, t], [tabSlope, body], [r, body], [r, right ? right[0] : b]]
-  return [rounded(outline, radius, false), ...tone(draw(at, k, radius))]
+  return [rounded(outline, radius, false), ...asBadge(tone(draw(at, k, radius)))]
 }
 
 // 右上角标（-badge-top）：符号墨迹的右缘贴到 22，上缘和标签页顶边的外缘（3）齐平，骑在本体的右上角上；
@@ -50,7 +50,7 @@ export function withBadgeTop(name, draw, tone, radius, stroke) {
   // 大符号的断口会一直延伸到标签页斜边下端附近：剩下的顶边不到 1.5 就不画，轮廓停在斜边下端
   const topEnd = top ? top[0] : r
   const outline = [[r, right ? right[1] : body], [r, b], [l, b], [l, t], [tabEnd, t], [tabSlope, body], ...(topEnd - tabSlope >= 1.5 ? [[topEnd, body]] : [])]
-  return [rounded(outline, radius, false), ...tone(draw(at, k, radius))]
+  return [rounded(outline, radius, false), ...asBadge(tone(draw(at, k, radius)))]
 }
 
 // 以下是旧版几何（中心线固定在 .5 上），文件、对话框、盾牌等系列还在用它们的角标位置；那些系列按新规则重画时再换掉

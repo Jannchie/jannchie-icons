@@ -2,7 +2,7 @@
 // 墨迹框左右 2–22、上下 3–21，以画布中线对称：箱体外缘 2–22 × 7–21，提手外缘 8–16 × 3–7
 // 线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽；线宽 1 时箱体四边、提手三边都落在 .5 上
 import { blocked, rectAround } from './clearance'
-import { fitBadge, roomOnRight } from './corner'
+import { asBadge, fitBadge, roomOnRight } from './corner'
 import { rounded } from './geometry'
 
 function frame(stroke) {
@@ -49,6 +49,6 @@ export function withBadge(name, draw, tone, radius, stroke) {
     rounded(rectAround(shape, stroke, [l, t, r, b]), bodyRadius(radius), false),
     handle(stroke),
     `M${l} ${WAIST}H${w ? w[0] : r}`,
-    ...tone(draw(at, k, radius)),
+    ...asBadge(tone(draw(at, k, radius))),
   ]
 }

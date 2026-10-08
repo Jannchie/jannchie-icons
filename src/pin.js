@@ -6,7 +6,7 @@
 // 右下角标：针体右下是一段收向针尖的曲线，没有横平竖直的边可以按区间断开，和盾牌系列一样
 // 用一个隐藏的遮挡框：角标外形外扩一圈，框里的针线删掉、框边附近的线断开（clip 按 GAP + 线宽留缝），断口比只让符号本身去切宽得多
 import { GAP } from './clearance'
-import { fitBadge } from './corner'
+import { asBadge, fitBadge } from './corner'
 import { circle } from './geometry'
 
 const fmt = v => +v.toFixed(3)
@@ -44,5 +44,5 @@ export function withBadge(name, draw, tone, radius, stroke) {
   const ys = shape.pts.map(q => q[1])
   const [x0, y0, x1, y1] = [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)]
   const hole = { d: `M${x0} ${y0}H${x1}V${y1}H${x0}Z`, cut: true, hidden: true, occlude: true }
-  return [...plain(stroke), hole, ...tone(draw(at, k, radius)).map(p => (typeof p === 'string' ? { d: p, cut: true } : { ...p, cut: true }))]
+  return [...plain(stroke), hole, ...asBadge(tone(draw(at, k, radius))).map(p => (typeof p === 'string' ? { d: p, cut: true } : { ...p, cut: true }))]
 }

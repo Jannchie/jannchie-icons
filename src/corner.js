@@ -111,3 +111,6 @@ export function centerBadge(name, draw, radius, stroke, center, limit, grow = 1)
   }
   return fit
 }
+
+// 标记成角标：渲染时线宽比外框细（见 svg.js 的 BADGE_RATIO）
+export const asBadge = paths => paths.map(p => (typeof p === 'string' ? { d: p, badge: true } : { ...p, badge: true }))

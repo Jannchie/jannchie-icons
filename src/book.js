@@ -3,7 +3,7 @@
 // 页线在封面底边上方 5（线宽 1 时落在 16.5 上）；封面左上角是半径 2.5 的书脊圆弧，左下角圆角 1.5
 // 页线从书脊处顺着竖边起笔（起点切线朝上，比左下圆角的起点高 1），线头落在竖边的直段里，尖角模式下不会从左下圆角外侧冒出来
 import { blocked } from './clearance'
-import { fitBadge, roomOnBottom } from './corner'
+import { asBadge, fitBadge, roomOnBottom } from './corner'
 
 function frame(stroke) {
   const h = stroke / 2
@@ -41,6 +41,6 @@ export function withBadgeTop(name, draw, tone, radius, stroke) {
   return [
     `M${f.r} ${right ? right[1] : f.t}V${f.b}${spine(f)}H${top ? top[0] : f.r}`,
     pageLine(f, f.r),
-    ...tone(draw(at, k, radius)),
+    ...asBadge(tone(draw(at, k, radius))),
   ]
 }

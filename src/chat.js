@@ -3,7 +3,7 @@
 // 线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽。线宽 1 时主体四边都落在 .5 上
 // 尾巴：主体底边往下 4、45° 斜下，尾尖在 x 6，斜边在底边上的起点（尾巴根部）x 10，给右下角标留出底边（尾尖、底边都随线宽各收半个线宽，落差不变）
 import { blocked } from './clearance'
-import { fitBadge, roomBelow, roomOnBottom, roomOnRight } from './corner'
+import { asBadge, fitBadge, roomBelow, roomOnBottom, roomOnRight } from './corner'
 import { rounded } from './geometry'
 
 function frame(stroke) {
@@ -39,7 +39,7 @@ export function withBadge(name, draw, tone, radius, stroke) {
   return [
     rounded([[tip[0], b], [l, b], [l, t], [r, t], [r, right ? right[0] : b]], radius, false),
     rounded(tail, radius, false),
-    ...tone(draw(at, k, radius)),
+    ...asBadge(tone(draw(at, k, radius))),
   ]
 }
 
@@ -57,6 +57,6 @@ export function withBadgeTop(name, draw, tone, radius, stroke) {
   return [
     rounded([[tip[0], b], [l, b], [l, t], [top ? top[0] : r, t]], radius, false),
     rounded([[r, right ? right[1] : t], [r, b], [root, b], tip], radius, false),
-    ...tone(draw(at, k, radius)),
+    ...asBadge(tone(draw(at, k, radius))),
   ]
 }

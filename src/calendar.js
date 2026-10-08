@@ -3,7 +3,7 @@
 // 线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽
 // 外框墨迹 3–21 × 4–22；表头线在外框顶边下 5（线宽 1 时落在 9.5 上）；挂环 x 7.5 / 16.5，从 2 往下穿过顶边，停在离表头线 2.5 处
 import { rectAround } from './clearance'
-import { fitBadge, roomOnBottom, roomOnRight } from './corner'
+import { asBadge, fitBadge, roomOnBottom, roomOnRight } from './corner'
 import { rounded } from './geometry'
 
 const RINGS = [7.5, 16.5]
@@ -45,6 +45,6 @@ export function withBadge(name, draw, tone, radius, stroke) {
   return [
     ...(turn ? [`${rounded(outline, Math.min(radius, R), false)}H${l}`] : [rounded(outline, Math.min(radius, R), false), `M${l} ${head}H${r}`]),
     ...RINGS.map(x => ring(x, stroke)),
-    ...tone(draw(at, k, radius)),
+    ...asBadge(tone(draw(at, k, radius))),
   ]
 }

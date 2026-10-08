@@ -55,7 +55,7 @@
     "bold (15.54, 6.74)"
   ],
   "book-clock-badge-top": [
-    "bold (15.54, 3.24)"
+    "bold (13.3, 8.37)"
   ],
   "book-search-badge": [
     "light (15.98, 10.98)",
@@ -95,25 +95,17 @@
     "bold (9.32, 4.24)",
     "regular (9.5, 4.06)"
   ],
-  "briefcase-ban-badge": [
-    "bold (13.84, 13.84)",
-    "bold (19.66, 19.66)"
-  ],
   "briefcase-search-badge": [
     "bold (17.48, 17.48)",
     "light (17.98, 17.98)",
     "regular (17.73, 17.73)"
-  ],
-  "calendar-ban-badge": [
-    "regular (14.37, 15.37)",
-    "regular (19.13, 20.13)"
   ],
   "calendar-ban-badge-top": [
     "regular (14.37, 3.87)",
     "regular (19.13, 8.63)"
   ],
   "calendar-clock-badge": [
-    "bold (16.54, 14.74)"
+    "bold (14.3, 19.87)"
   ],
   "calendar-clock-badge-top": [
     "bold (16.54, 3.24)"
@@ -140,16 +132,6 @@
   "cc-sa": [
     "bold (9.81, 8.29)",
     "regular (9.3, 8.64)"
-  ],
-  "chat-ban-badge": [
-    "bold (15.12, 10.12)",
-    "bold (19.88, 14.88)",
-    "regular (14.09, 9.09)",
-    "regular (19.91, 14.91)"
-  ],
-  "chat-ban-badge-top": [
-    "bold (15.12, 5.12)",
-    "bold (19.88, 9.88)"
   ],
   "chat-search-badge": [
     "bold (17.48, 12.48)",
@@ -271,17 +253,13 @@
     "light (9, 12)",
     "light (9.01, 12.2)"
   ],
-  "file-ban-badge": [
-    "bold (11.84, 13.84)",
-    "bold (17.66, 19.66)"
-  ],
   "file-search-badge": [
     "bold (15.48, 17.48)",
     "light (15.98, 17.98)",
     "regular (15.73, 17.73)"
   ],
   "folder-clock-badge-top": [
-    "bold (17.54, 4.24)"
+    "bold (15.3, 9.37)"
   ],
   "folder-search-badge": [
     "bold (17.48, 17.48)",
@@ -444,10 +422,6 @@
   "list-search": [
     "bold (16.48, 16.48)"
   ],
-  "mail-ban-badge": [
-    "bold (13.84, 13.84)",
-    "bold (19.66, 19.66)"
-  ],
   "map-pin-search": [
     "light (17.98, 17.98)",
     "regular (17.69, 17.69)"
@@ -467,13 +441,8 @@
     "regular (11.93, 8.24)",
     "regular (8.24, 11.93)"
   ],
-  "monitor-ban-badge": [
-    "regular (15.37, 10.37)",
-    "regular (20.13, 15.13)"
-  ],
-  "monitor-ban-badge-top": [
-    "bold (15.12, 5.12)",
-    "bold (19.88, 9.88)"
+  "monitor-gauge-badge": [
+    "bold (20.24, 12.43)"
   ],
   "monitor-off": [
     "bold (12, 16.24)"
@@ -681,10 +650,6 @@
   ],
   "search-off": [
     "regular (4.01, 10.06)"
-  ],
-  "shield-ban-badge": [
-    "regular (14.09, 14.09)",
-    "regular (19.91, 19.91)"
   ],
   "shoe-formal": [
     "bold (21.44, 18.18)",

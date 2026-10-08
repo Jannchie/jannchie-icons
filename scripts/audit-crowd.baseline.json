@@ -173,6 +173,9 @@
     "bold @(12, 12)",
     "regular @(12, 12)"
   ],
+  "book-clock-badge-top": [
+    "regular @(16, 6)"
+  ],
   "book-image": [
     "regular @(12, 9.5)"
   ],
@@ -187,9 +190,6 @@
   "book-lock-badge-top": [
     "bold @(16, 8.5)",
     "regular @(16, 8.5)"
-  ],
-  "book-plug-badge-top": [
-    "bold @(12, 17.3)"
   ],
   "book-plus-badge": [
     "bold @(12, 12)",
@@ -228,12 +228,10 @@
     "regular @(11.5, 13.5)"
   ],
   "briefcase-clock-badge": [
-    "bold @(16.5, 16.8)",
-    "regular @(16, 16.3)"
+    "bold @(16.5, 16.8)"
   ],
   "briefcase-gauge-badge": [
-    "bold @(16.3, 16.7)",
-    "regular @(16, 16.8)"
+    "bold @(16.3, 16.7)"
   ],
   "briefcase-image": [
     "regular @(12, 14)"
@@ -269,6 +267,12 @@
   ],
   "calendar-arrow-left-badge": [
     "bold @(12, 10)"
+  ],
+  "calendar-clock-badge": [
+    "regular @(16.5, 17.8)"
+  ],
+  "calendar-gauge-badge": [
+    "regular @(16, 17.5)"
   ],
   "calendar-heart": [
     "bold @(12, 13)"
@@ -353,10 +357,10 @@
     "regular @(12, 6.5)"
   ],
   "chat-clock-badge": [
-    "regular @(17, 12)"
+    "bold @(17.5, 12.5)"
   ],
   "chat-clock-badge-top": [
-    "regular @(17, 8)"
+    "bold @(17.5, 7.5)"
   ],
   "chat-ellipsis": [
     "bold @(12, 10)",
@@ -374,6 +378,12 @@
   ],
   "chat-exclaim-badge-top": [
     "bold @(21, 5.8)"
+  ],
+  "chat-gauge-badge": [
+    "regular @(17, 12.5)"
+  ],
+  "chat-gauge-badge-top": [
+    "regular @(17.3, 7.3)"
   ],
   "chat-image": [
     "regular @(12, 10)"
@@ -404,12 +414,6 @@
   ],
   "chat-question-badge-top": [
     "bold @(19, 6.3)"
-  ],
-  "chat-sparkle-badge": [
-    "regular @(12, 10)"
-  ],
-  "chat-sparkle-badge-top": [
-    "regular @(13.6, 16.3)"
   ],
   "chats": [
     "bold @(8.8, 9.3)"
@@ -644,7 +648,10 @@
     "regular @(19.8, 12)"
   ],
   "file-clock-badge": [
-    "regular @(14.5, 16.5)"
+    "bold @(15, 17)"
+  ],
+  "file-gauge-badge": [
+    "regular @(15, 17.5)"
   ],
   "file-image": [
     "regular @(12, 13.5)"
@@ -677,15 +684,14 @@
   "flute": [
     "bold @(12, 12)"
   ],
-  "folder-clock-badge": [
-    "bold @(16, 16.3)"
-  ],
-  "folder-gauge-badge": [
-    "bold @(15.8, 16.5)",
-    "regular @(16, 16.8)"
+  "folder-clock-badge-top": [
+    "regular @(18, 7)"
   ],
   "folder-image": [
     "regular @(12, 13.5)"
+  ],
+  "folder-image-badge": [
+    "bold @(16.5, 17)"
   ],
   "folder-lock": [
     "bold @(12, 15)",
@@ -698,9 +704,6 @@
   "folder-lock-badge-top": [
     "bold @(18, 9.5)",
     "regular @(18, 9.5)"
-  ],
-  "folder-minus-badge-top": [
-    "bold @(12, 12)"
   ],
   "fuel": [
     "bold @(9.5, 12)"
@@ -1075,8 +1078,10 @@
     "regular @(12, 12)"
   ],
   "mail-clock-badge": [
-    "bold @(16.5, 16.9)",
-    "regular @(16.5, 16.6)"
+    "bold @(16.5, 16.9)"
+  ],
+  "mail-gauge-badge": [
+    "regular @(17.3, 17.8)"
   ],
   "mail-image-badge": [
     "regular @(17, 17.5)"
@@ -1095,9 +1100,10 @@
     "bold @(12, 11.4)"
   ],
   "map-pin-clock": [
-    "regular @(17, 17)"
+    "bold @(17, 17)"
   ],
   "map-pin-image": [
+    "bold @(16.5, 17)",
     "regular @(16.5, 17)"
   ],
   "map-pin-lock": [
@@ -1140,8 +1146,11 @@
     "bold @(14.8, 17.5)",
     "bold @(14.8, 20.5)"
   ],
+  "monitor-clock-badge": [
+    "regular @(18, 13)"
+  ],
   "monitor-clock-badge-top": [
-    "regular @(17, 8)"
+    "bold @(17.5, 7.5)"
   ],
   "monitor-ellipsis": [
     "bold @(12, 10)",
@@ -1164,11 +1173,11 @@
   "monitor-exclaim-badge-top": [
     "bold @(21, 5.8)"
   ],
+  "monitor-gauge-badge-top": [
+    "regular @(17.3, 7.3)"
+  ],
   "monitor-image": [
     "regular @(12, 10)"
-  ],
-  "monitor-image-badge": [
-    "bold @(17.5, 14.9)"
   ],
   "monitor-lock": [
     "bold @(12, 11.5)",
@@ -1193,10 +1202,6 @@
   ],
   "monitor-question-badge-top": [
     "bold @(19, 6.3)"
-  ],
-  "monitor-sparkle-badge-top": [
-    "bold @(12, 10)",
-    "regular @(12, 10)"
   ],
   "mosque": [
     "bold @(19.5, 13.2)",
@@ -1497,6 +1502,10 @@
     "regular @(18, 17.5)"
   ],
   "shield-clock-badge": [
+    "bold @(17, 17)"
+  ],
+  "shield-gauge-badge": [
+    "bold @(17, 17)",
     "regular @(17, 17)"
   ],
   "shield-image": [

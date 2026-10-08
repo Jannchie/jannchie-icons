@@ -4,7 +4,7 @@
 // 立杆是一条居中的竖线，放在 x 12：居中优先，线宽 1 时它落在整数上、1 倍屏略虚，可以接受；
 // 底座墨迹 8–16，以立杆为中心；立杆露出来的长度是 4 − 线宽（常规 2.5）
 import { blocked, rectAroundTop } from './clearance'
-import { fitBadge, roomBelow, roomOnRight } from './corner'
+import { asBadge, fitBadge, roomBelow, roomOnRight } from './corner'
 import { rounded } from './geometry'
 
 const pole = 12
@@ -47,7 +47,7 @@ export function withBadge(name, draw, tone, radius, stroke) {
   return [
     rounded([[bottom ? bottom[0] : r, b], [l, b], [l, t], [r, t], [r, right ? right[0] : b]], Math.min(radius, 2.5), false),
     ...standOf(f),
-    ...tone(draw(at, k, radius)),
+    ...asBadge(tone(draw(at, k, radius))),
   ]
 }
 
@@ -62,7 +62,7 @@ export function withBadgeTop(name, draw, tone, radius, stroke) {
   return [
     rounded(rectAroundTop(shape, stroke, [f.l, f.t, f.r, f.b]), Math.min(radius, 2.5), false),
     ...standOf(f),
-    ...tone(draw(at, k, radius)),
+    ...asBadge(tone(draw(at, k, radius))),
   ]
 }
 
