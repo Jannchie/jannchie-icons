@@ -9,6 +9,12 @@ How icons are drawn on the 24 × 24 canvas. Naming rules are in [naming.md](nami
 - Keep ink at least **2 units** from every canvas edge. Content lives in the central 20 × 20 area.
 - Round and diagonal shapes (circles, triangles, slanted strokes) may overshoot to **1.5 units** from the edge so they look as large as squares. Never go closer than 1.
 - Center the content. If the ink box is narrower or shorter than 20, put the same space on both sides. Do not shift a shape half a unit off center only to land a centerline on a .5 coordinate.
+- Use the space: every icon should reach the 2-unit padding on at least one side, so a centered drawing does not look a size smaller than its neighbors. A full square body may stop at 3 instead, because a square that fills 20 × 20 looks larger than a circle of diameter 20.
+- These are a baseline, not a hard rule. Keep an exception when it has a reason, and say why in a comment:
+  - small marks that are small by nature (chevrons, carets, dots, a lone minus, punctuation);
+  - sign sets drawn at one shared glyph size (letters, kana, hexagrams, notation);
+  - members of a family that stay the same size as the rest of the family;
+  - long thin rows such as list lines, which may stop at 3.
 
 ## Stroke weights grow inward
 
