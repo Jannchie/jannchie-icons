@@ -5,10 +5,9 @@
 // 角标墨迹贴到右缘 22、下缘 22（和针尖同高），整体墨迹框 2–22 × 2–22；角标的遮挡框只切到针体右下的曲线，碰不到中心小圆
 // 右下角标：针体右下是一段收向针尖的曲线，没有横平竖直的边可以按区间断开，和盾牌系列一样
 // 用一个隐藏的遮挡框：角标外形外扩一圈，框里的针线删掉、框边附近的线断开（clip 按 GAP + 线宽留缝），断口比只让符号本身去切宽得多
-import { place } from './clearance'
-import { cornerCenter } from './corner'
+import { GAP } from './clearance'
+import { fitBadge } from './corner'
 import { circle } from './geometry'
-import { cornerScale, outlines } from './symbols'
 
 const fmt = v => +v.toFixed(3)
 
@@ -30,13 +29,20 @@ export const pin = stroke => [body(12, 2, 8, stroke), circle(12, 10, 2.5)]
 export const plain = stroke => [body(9, 2, 7, stroke), circle(9, 9, 2.25)]
 
 // 角标版：针 + 遮挡框 + 角标符号（符号本身也是刀，不会被遮挡框删掉）
+// 角标比普通角标大 GROW 倍，和文件夹等系列一样（16px 下也认得出符号）；遮挡框离中心小圆不到 GAP + 线宽时缩回一点
+const GROW = 1.3
+const clearOfDot = stroke => (shape) => {
+  const x0 = Math.min(...shape.pts.map(q => q[0]))
+  const y0 = Math.min(...shape.pts.map(q => q[1]))
+  const [dx, dy] = [Math.max(0, x0 - 9), Math.max(0, y0 - 9)]
+  return Math.hypot(dx, dy) >= 2.25 + GAP + stroke
+}
 export function withBadge(name, draw, tone, radius, stroke) {
-  const k = cornerScale[name]
-  const at = cornerCenter(draw, k, radius, stroke, { right: 22, bottom: 22 })
-  const shape = place(outlines[name], at, k)
-  const [x0, y0, x1, y1] = shape.circle
-    ? [shape.c[0] - shape.circle, shape.c[1] - shape.circle, shape.c[0] + shape.circle, shape.c[1] + shape.circle]
-    : shape.box
+  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, bottom: 22 }, clearOfDot(stroke), GROW)
+  // 遮挡框取符号实际墨迹（中心线）的外接框：按 outlines 的近似外形会比墨迹大（对勾、云），线断得太早
+  const xs = shape.pts.map(q => q[0])
+  const ys = shape.pts.map(q => q[1])
+  const [x0, y0, x1, y1] = [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)]
   const hole = { d: `M${x0} ${y0}H${x1}V${y1}H${x0}Z`, cut: true, hidden: true, occlude: true }
   return [...plain(stroke), hole, ...tone(draw(at, k, radius)).map(p => (typeof p === 'string' ? { d: p, cut: true } : { ...p, cut: true }))]
 }

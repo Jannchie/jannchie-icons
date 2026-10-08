@@ -169,6 +169,10 @@
     "bold @(10.5, 14)",
     "regular @(10.5, 14)"
   ],
+  "book-arrow-left-badge": [
+    "bold @(12, 12)",
+    "regular @(12, 12)"
+  ],
   "book-image": [
     "regular @(12, 9.5)"
   ],
@@ -177,12 +181,25 @@
     "regular @(12, 11)"
   ],
   "book-lock-badge": [
-    "bold @(16, 19)",
-    "regular @(16, 19)"
+    "bold @(16, 11)",
+    "regular @(16, 11.5)"
   ],
   "book-lock-badge-top": [
     "bold @(16, 8.5)",
-    "regular @(16, 8)"
+    "regular @(16, 8.5)"
+  ],
+  "book-plug-badge-top": [
+    "bold @(12, 17.3)"
+  ],
+  "book-plus-badge": [
+    "bold @(12, 12)",
+    "regular @(12, 12)"
+  ],
+  "book-search-badge": [
+    "regular @(12, 12)"
+  ],
+  "book-sparkle-badge": [
+    "regular @(12, 12)"
   ],
   "bookmark-list": [
     "bold @(14.8, 14.5)",
@@ -210,11 +227,20 @@
     "bold @(11.5, 13.5)",
     "regular @(11.5, 13.5)"
   ],
+  "briefcase-arrow-down-badge": [
+    "bold @(12, 6)"
+  ],
   "briefcase-clock-badge": [
     "regular @(17, 16)"
   ],
+  "briefcase-gauge-badge": [
+    "regular @(16, 15.8)"
+  ],
   "briefcase-image": [
     "regular @(12, 14)"
+  ],
+  "briefcase-image-badge": [
+    "regular @(17, 16.5)"
   ],
   "briefcase-lock": [
     "bold @(12, 15.5)",
@@ -222,7 +248,11 @@
   ],
   "briefcase-lock-badge": [
     "bold @(18, 18)",
-    "regular @(18, 18)"
+    "regular @(18, 17.5)"
+  ],
+  "briefcase-sparkle-badge": [
+    "bold @(12, 14)",
+    "regular @(12, 14)"
   ],
   "broom": [
     "bold @(7.8, 7.8)"
@@ -241,6 +271,9 @@
     "bold @(12.5, 10.5)",
     "bold @(16.5, 10.5)",
     "bold @(8.5, 10.5)"
+  ],
+  "calendar-arrow-left-badge": [
+    "bold @(12, 10)"
   ],
   "calendar-heart": [
     "bold @(12, 13)"
@@ -267,6 +300,9 @@
     "bold @(12, 13)"
   ],
   "calendar-plug": [
+    "bold @(12, 10)"
+  ],
+  "calendar-plus-badge": [
     "bold @(12, 10)"
   ],
   "calendar-puzzle": [
@@ -331,13 +367,9 @@
     "bold @(12, 10)",
     "bold @(9.3, 10)"
   ],
-  "chat-ellipsis-badge": [
-    "bold @(15.2, 16)",
-    "bold @(18, 16)"
-  ],
   "chat-ellipsis-badge-top": [
-    "bold @(16.1, 4)",
-    "bold @(18.5, 4)"
+    "bold @(15.2, 4)",
+    "bold @(18, 4)"
   ],
   "chat-exclaim": [
     "bold @(12, 8.4)"
@@ -346,10 +378,13 @@
     "bold @(21, 11.8)"
   ],
   "chat-exclaim-badge-top": [
-    "bold @(21, 5.9)"
+    "bold @(21, 5.8)"
   ],
   "chat-image": [
     "regular @(12, 10)"
+  ],
+  "chat-image-badge": [
+    "regular @(17, 12.5)"
   ],
   "chat-lock": [
     "bold @(12, 11.5)",
@@ -357,25 +392,32 @@
   ],
   "chat-lock-badge": [
     "bold @(18, 14)",
-    "regular @(18, 14)"
+    "regular @(18, 13.5)"
   ],
   "chat-lock-badge-top": [
     "bold @(18, 9.5)",
     "regular @(18, 9)"
   ],
+  "chat-music-badge-top": [
+    "bold @(13.5, 15.2)"
+  ],
   "chat-question": [
     "bold @(12, 8.6)"
   ],
   "chat-question-badge": [
-    "bold @(19.5, 11.9)"
+    "bold @(19, 11.8)"
   ],
   "chat-question-badge-top": [
-    "bold @(19.5, 6)",
-    "regular @(19.5, 5.8)"
+    "bold @(19, 6.3)"
+  ],
+  "chat-sparkle-badge": [
+    "regular @(12, 10)"
+  ],
+  "chat-sparkle-badge-top": [
+    "regular @(13.6, 16.3)"
   ],
   "chats": [
-    "bold @(6, 13)",
-    "bold @(8.8, 7.8)"
+    "bold @(8.8, 9.3)"
   ],
   "check-list": [
     "bold @(14.8, 14.5)",
@@ -495,9 +537,7 @@
   "code-list": [
     "bold @(14.8, 14.5)",
     "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)",
-    "regular @(16.9, 10)",
-    "regular @(7.1, 12)"
+    "bold @(14.8, 20.5)"
   ],
   "compass-rose": [
     "bold @(12, 11.8)",
@@ -646,23 +686,30 @@
     "bold @(16.5, 15.8)",
     "regular @(16, 15.3)"
   ],
+  "folder-gauge-badge": [
+    "bold @(16.3, 15.7)",
+    "regular @(16, 15.8)"
+  ],
   "folder-image": [
     "regular @(12, 13.5)"
   ],
   "folder-image-badge": [
-    "regular @(17, 16.5)"
+    "regular @(16.5, 16)"
   ],
   "folder-lock": [
     "bold @(12, 15)",
     "regular @(12, 15)"
   ],
   "folder-lock-badge": [
-    "bold @(18, 18)",
+    "bold @(18, 17.5)",
     "regular @(18, 17.5)"
   ],
   "folder-lock-badge-top": [
     "bold @(18, 9.5)",
     "regular @(18, 9.5)"
+  ],
+  "folder-minus-badge-top": [
+    "bold @(12, 12)"
   ],
   "fuel": [
     "bold @(9.5, 12)"
@@ -1038,15 +1085,14 @@
     "bold @(12, 11.4)"
   ],
   "map-pin-clock": [
-    "bold @(16.5, 16.9)",
     "regular @(17, 17)"
   ],
   "map-pin-image": [
     "regular @(16.5, 17)"
   ],
   "map-pin-lock": [
-    "bold @(18, 19)",
-    "regular @(18, 19)"
+    "bold @(18, 18.5)",
+    "regular @(18, 18.5)"
   ],
   "mask-generation": [
     "bold @(11.1, 12)",
@@ -1092,12 +1138,12 @@
     "bold @(9.3, 10)"
   ],
   "monitor-ellipsis-badge": [
-    "bold @(17.1, 16)",
-    "bold @(19, 16)"
+    "bold @(16.1, 16)",
+    "bold @(18.5, 16)"
   ],
   "monitor-ellipsis-badge-top": [
-    "bold @(16.1, 4)",
-    "bold @(18.5, 4)"
+    "bold @(15.2, 4)",
+    "bold @(18, 4)"
   ],
   "monitor-exclaim": [
     "bold @(12, 8.4)"
@@ -1106,7 +1152,7 @@
     "bold @(21, 11.8)"
   ],
   "monitor-exclaim-badge-top": [
-    "bold @(21, 5.9)"
+    "bold @(21, 5.8)"
   ],
   "monitor-image": [
     "regular @(12, 10)"
@@ -1126,15 +1172,21 @@
     "bold @(18, 9.5)",
     "regular @(18, 9)"
   ],
+  "monitor-music-badge-top": [
+    "bold @(12, 10)"
+  ],
   "monitor-question": [
     "bold @(12, 8.6)"
   ],
   "monitor-question-badge": [
-    "bold @(19.5, 12.3)"
+    "bold @(19, 11.8)"
   ],
   "monitor-question-badge-top": [
-    "bold @(19.5, 6)",
-    "regular @(19.5, 5.8)"
+    "bold @(19, 6.3)"
+  ],
+  "monitor-sparkle-badge-top": [
+    "bold @(12, 10)",
+    "regular @(12, 10)"
   ],
   "mosque": [
     "bold @(19.5, 13.2)",
@@ -1419,15 +1471,12 @@
     "bold @(18, 17.5)",
     "regular @(18, 17.5)"
   ],
-  "shield-clock-badge": [
-    "bold @(16.5, 16.9)",
-    "regular @(17, 17)"
+  "shield-gauge-badge": [
+    "bold @(15.8, 16.5)",
+    "regular @(16, 16.8)"
   ],
   "shield-image": [
     "regular @(12, 11)"
-  ],
-  "shield-image-badge": [
-    "regular @(16.5, 17)"
   ],
   "shield-list": [
     "bold @(14.3, 15)",
@@ -1439,8 +1488,8 @@
     "regular @(12, 12.5)"
   ],
   "shield-lock-badge": [
-    "bold @(18, 19)",
-    "regular @(18, 19)"
+    "bold @(18, 18.5)",
+    "regular @(18, 18.5)"
   ],
   "shoe-formal": [
     "bold @(16.1, 18.5)"

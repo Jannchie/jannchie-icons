@@ -51,9 +51,9 @@ export function withBadge(name, draw, tone, radius, stroke) {
 
 // 右上角标（-badge-top）：符号墨迹的右缘贴到外框右边的外缘 21，上缘和挂环顶（2）齐平，骑在外框的右上角上；
 // 外框顶边、右边、表头线在离符号 GAP 处断开。右边那根挂环正好在角标里，不画（只剩左边一根挂环 + 表头，仍然认得出是日历）
+// 表头线至少伸到画布中线 12
 export function withBadgeTop(name, draw, tone, radius, stroke) {
   const { l, t, r, b, head } = frame(stroke)
-  // 表头线至少伸到画布中线 12：只剩左挂环那一截的话，挂环和短横线读成一个「+」
   const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 21, top: 2 }, (s) => {
     const c = blocked(s, 'x', head, stroke)
     return !c || c[0] >= 12

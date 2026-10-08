@@ -62,8 +62,21 @@ export function place(shape, center, scale) {
 }
 
 // 一条轴对齐的线（axis='x' 表示水平线 y=at，'y' 表示竖线 x=at）上需要让出的区间，不相交返回 null
+// shape 带 pts（符号实际画出来的中心线采样点，见 corner.js 的 fitBadge）时按真实墨迹算：每个离线不到 g 的点各让出一段，取并集的两端；
+// 否则按 outlines 里近似的外形（圆或方框）算——外形框往往比墨迹大（对勾、云），按它断开线会断得太早
 export function blocked(shape, axis, at, stroke) {
   const g = GAP + stroke
+  if (shape.pts) {
+    let [lo, hi] = [Infinity, -Infinity]
+    for (const [x, y] of shape.pts) {
+      const [d, m] = axis === 'x' ? [Math.abs(y - at), x] : [Math.abs(x - at), y]
+      if (d >= g)
+        continue
+      const e = Math.sqrt(g * g - d * d)
+      ;[lo, hi] = [Math.min(lo, m - e), Math.max(hi, m + e)]
+    }
+    return lo === Infinity ? null : [lo, hi]
+  }
   if (shape.circle) {
     const [cx, cy] = shape.c
     const d = axis === 'x' ? Math.abs(at - cy) : Math.abs(at - cx)

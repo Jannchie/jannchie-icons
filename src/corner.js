@@ -18,6 +18,23 @@ export function extentOf(draw, center, size, radius) {
   return [x0, y0, x1, y1]
 }
 
+// 符号在 at、k 下画出来的中心线采样点（给 clearance.js 的 blocked 按真实墨迹断线用）
+function inkOf(draw, at, k, radius) {
+  const pts = []
+  for (const p of draw(at, k, radius)) {
+    for (const s of segments(typeof p === 'string' ? p : p.d)) {
+      // 直线也按 0.25 一步细分：只取两端的话，斜线中段贴近外框也查不出来
+      for (const g of s.segs) {
+        const [a, b] = [g.at(0), g.at(1)]
+        const n = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1]) / 0.25))
+        for (let i = 0; i <= n; i++)
+          pts.push(g.at(i / n))
+      }
+    }
+  }
+  return pts
+}
+
 // 符号中心：让符号墨迹（中心线 + 半个线宽 h）的右缘贴到 right，下缘贴到 bottom（或上缘贴到 top，二选一）
 // 符号画的时候会把自己吸到网格上、步长不一，所以先按原点量出的范围估一个位置，再在附近按 0.25 试几个候选，
 // 取墨迹不越过边界、又最贴近边界的那个；结果吸到 0.25 的网格上
@@ -52,7 +69,7 @@ export function fitBadge(name, draw, radius, stroke, anchor, ok = () => true, gr
   for (let s = grow; s >= minFit - 1e-6; s -= 0.05) {
     const k = cornerScale[name] * s
     const at = cornerCenter(draw, k, radius, stroke, anchor)
-    fit = { k, at, shape: place(outlines[name], at, k) }
+    fit = { k, at, shape: { ...place(outlines[name], at, k), pts: inkOf(draw, at, k, radius) } }
     if (ok(fit.shape))
       break
   }

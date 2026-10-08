@@ -31,7 +31,7 @@ export const plain = (radius, stroke) => {
 // 立杆和底座始终在正中 x 12，立杆要接在一段完整的底边上：底边断口离立杆不到 MIN_SHOULDER 时（宽符号），
 // 或者右边断口太靠近右上圆角时（高符号），把符号缩小一点再摆（corner.js 的 fitBadge）；
 // 拼图这类缩放吸在网格上、缩不下去的宽符号允许缩到普通大小的 0.6 倍，否则底边够不到立杆、立杆会被端点吸附拽歪
-const MIN_SHOULDER = 2
+const MIN_SHOULDER = 1
 // 角标比普通角标大 GROW 倍，和文件夹一样（16px 下也认得出符号）；放不下时 fitBadge 再缩回去
 const GROW = 1.3
 export function withBadge(name, draw, tone, radius, stroke) {
