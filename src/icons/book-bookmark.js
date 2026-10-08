@@ -1,9 +1,9 @@
 import { plain, center, centerScale } from '../book'
-import { bookmark } from '../symbols'
+import { bookmark, visual } from '../symbols'
 import { accent } from '../tone'
 
 // 书 + 书签
 export default ({ radius, stroke }) => [
   ...plain(radius, stroke),
-  ...accent(bookmark(center, centerScale, radius)),
+  ...accent(bookmark(center, centerScale * visual.bookmark, radius)),
 ]

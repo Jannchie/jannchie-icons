@@ -27,7 +27,7 @@ export const plain = (radius, stroke) => [cover(stroke), page(stroke)]
 // 封面（页线以上）的中心，放居中符号用：顶边和页线都随线宽各收半个线宽，中点不变（9.5）
 export const center = [12, 9.5]
 // 封面中心线约 14.5 × 13.5，比文件夹本体还宽裕，符号和文件夹里一样大
-export const centerScale = 1
+export const centerScale = 1.25
 
 // 右上角标比普通角标大 GROW 倍，和文件夹等系列一样（16px 下也认得出符号）；放不下时 fitBadge 再缩回去
 const GROW = 1.3
@@ -41,6 +41,6 @@ export function withBadgeTop(name, draw, tone, radius, stroke) {
   return [
     `M${f.r} ${right ? right[1] : f.t}V${f.b}${spine(f)}H${top ? top[0] : f.r}`,
     pageLine(f, f.r),
-    ...asBadge(tone(draw(at, k, radius))),
+    ...asBadge(tone(draw(at, k, radius)), name),
   ]
 }

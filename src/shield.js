@@ -37,7 +37,7 @@ export function outline(stroke) {
 
 // 居中符号放在中心偏上：盾下半收窄，视觉重心在 y 11 附近
 export const center = [12, 11]
-export const centerScale = 1
+export const centerScale = 1.3
 export const plain = stroke => [outline(stroke)]
 
 // 角标：中心固定在 BADGE_CENTER，各符号落在同一个位置（盾的右下是曲线，贴墨迹边缘的话圆的、方的、扁的符号中心各不相同，
@@ -52,5 +52,5 @@ export function withBadge(name, draw, tone, radius, stroke) {
   const ys = shape.pts.map(q => q[1])
   const [x0, y0, x1, y1] = [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)]
   const hole = { d: `M${x0} ${y0}H${x1}V${y1}H${x0}Z`, cut: true, hidden: true, occlude: true }
-  return [...plain(stroke), hole, ...asBadge(tone(draw(at, k, radius))).map(p => (typeof p === 'string' ? { d: p, cut: true } : { ...p, cut: true }))]
+  return [...plain(stroke), hole, ...asBadge(tone(draw(at, k, radius)), name).map(p => (typeof p === 'string' ? { d: p, cut: true } : { ...p, cut: true }))]
 }

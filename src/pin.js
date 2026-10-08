@@ -44,5 +44,5 @@ export function withBadge(name, draw, tone, radius, stroke) {
   const ys = shape.pts.map(q => q[1])
   const [x0, y0, x1, y1] = [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)]
   const hole = { d: `M${x0} ${y0}H${x1}V${y1}H${x0}Z`, cut: true, hidden: true, occlude: true }
-  return [...plain(stroke), hole, ...asBadge(tone(draw(at, k, radius))).map(p => (typeof p === 'string' ? { d: p, cut: true } : { ...p, cut: true }))]
+  return [...plain(stroke), hole, ...asBadge(tone(draw(at, k, radius)), name).map(p => (typeof p === 'string' ? { d: p, cut: true } : { ...p, cut: true }))]
 }

@@ -1,10 +1,10 @@
-import { bubble, center } from '../chat'
+import { bubble, center, centerScale } from '../chat'
 import { rounded } from '../geometry'
-import { sparkle } from '../symbols'
+import { sparkle, visual } from '../symbols'
 import { accent } from '../tone'
 
 // 对话 + 星芒
 export default ({ radius, stroke }) => [
   rounded(bubble(stroke), radius, false),
-  ...accent(sparkle(center, 1, radius)),
+  ...accent(sparkle(center, centerScale * visual.sparkle, radius)),
 ]

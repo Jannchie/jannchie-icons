@@ -35,7 +35,7 @@ export const plain = (radius, stroke) => [rounded(body(stroke), bodyRadius(radiu
 
 // 居中符号放在箱体中间：箱体顶边和底边都随线宽各收半个线宽，中点不变
 export const center = [12, 14]
-export const centerScale = 1
+export const centerScale = 1.2
 
 // 右下角标：符号墨迹的右缘贴到箱体右缘 22，下缘贴到画布留白的边 22（比箱体底缘 21 低 1，和文件夹一样压在外框角上）；右边和底边在离符号 GAP 处断开，腰线碰到符号时也截断
 // 角标比普通角标大 GROW 倍，和文件夹一样（16px 下也认得出符号）；放不下时 fitBadge 再缩回去
@@ -49,6 +49,6 @@ export function withBadge(name, draw, tone, radius, stroke) {
     rounded(rectAround(shape, stroke, [l, t, r, b]), bodyRadius(radius), false),
     handle(stroke),
     `M${l} ${WAIST}H${w ? w[0] : r}`,
-    ...asBadge(tone(draw(at, k, radius))),
+    ...asBadge(tone(draw(at, k, radius)), name),
   ]
 }

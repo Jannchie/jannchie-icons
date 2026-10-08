@@ -7,7 +7,7 @@ import { triangle, triangleWidth } from './media'
 
 // 放进角位（文件夹角标、列表右下）时各符号的缩放：先按视觉大小逐个调，再整体放大 BADGE_GROW
 // 以开放的线形符号（加号、对勾、搜索，墨迹约 7 见方）为准；封闭的形状看起来更重、更大，缩小一些：
-// 整圈（圆圈 0.9、禁止 0.85、仪表 0.85、时钟 0.8——时钟外框 7×7 比圆圈大）、实心或成块的（图片、星、心、四角星、盾 0.9，拼图 0.95）；
+// 整圈（圆圈 0.9、禁止 0.85、仪表 0.85、时钟 0.8——时钟外框 7×7 比圆圈大）、实心或成块的（图片、心、四角星、盾 0.9，拼图 0.95）；
 // 箭头长边 7 比别的符号长，缩到 0.9
 const BADGE_GROW = 1.15
 const baseCornerScale = {
@@ -20,7 +20,7 @@ const baseCornerScale = {
   video: 1,
   assets: 1,
   ring: 0.9,
-  star: 0.9,
+  star: 1.15, // 五角星尖角多、实际面积小，比别的符号放大一些（线宽和其他角标一样细）
   cloud: 1,
   shield: 0.9,
   ban: 0.85,
@@ -42,6 +42,9 @@ const baseCornerScale = {
   exclaim: 1,
   ellipsis: 1,
 }
+// 居中符号（系列图标的本体中间）的视觉修正：和角标同一套比例（开放的线形符号略大、封闭的整圈和成块的略小），乘在各系列的 centerScale 上
+// 叉按 inset 定的角标大小换算回来（cross 在 k = 1 时半宽为 2，角标取 inset / 2）
+export const visual = { ...baseCornerScale, cross: inset / 2 / BADGE_GROW }
 export const cornerScale = Object.fromEntries(Object.entries(baseCornerScale).map(([name, k]) => [name, k * BADGE_GROW]))
 // 叉的半宽取 inset（cross 在 k = 1 时半宽为 2），端点正好落在右边线、底边线上
 cornerScale.cross = inset / 2

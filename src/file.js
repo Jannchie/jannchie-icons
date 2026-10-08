@@ -36,6 +36,8 @@ export function flap(stroke) {
 // 居中符号的中心：折角以下纸张部分（7.5–22）的中点偏上一点，和整张纸的中点 12 之间取 13.5，
 // 上下看起来都不挤（和文件夹的 center 同高）
 export const center = [12, 13.5]
+// 纸张内部约 13 宽，符号放大到 1.3 倍
+export const centerScale = 1.3
 
 // 角标：符号墨迹的右缘贴到纸张外缘 20、下缘贴到 22；右边和底边在离符号 GAP 处断开，轮廓从底边的断口出发绕一圈到右边的断口
 // 角标比普通角标大 GROW 倍，和文件夹一样（16px 下也认得出符号）；放不下时 fitBadge 再缩回去
@@ -47,7 +49,7 @@ export function withBadge(name, draw, tone, radius, stroke) {
   const right = blocked(shape, 'y', r, stroke)
   const bottom = blocked(shape, 'x', b, stroke)
   const outline = [[bottom ? bottom[0] : r, b], [l, b], [l, t], ...corner(stroke, radius), [r, right ? right[0] : b]]
-  return [rounded(outline, radius, false), flap(stroke), ...asBadge(tone(draw(at, k, radius)))]
+  return [rounded(outline, radius, false), flap(stroke), ...asBadge(tone(draw(at, k, radius)), name)]
 }
 
 // 格式标签：只画纸张上半部分（侧边在 y = 12 收住），下方 14.5–21.5 写扩展名（标签字形 7 高，墨迹底边约在 22）

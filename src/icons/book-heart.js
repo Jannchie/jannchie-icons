@@ -1,9 +1,9 @@
 import { plain, center, centerScale } from '../book'
-import { heart } from '../symbols'
+import { heart, visual } from '../symbols'
 import { danger } from '../tone'
 
 // 书 + 爱心
 export default ({ radius, stroke }) => [
   ...plain(radius, stroke),
-  ...danger(heart(center, centerScale, radius)),
+  ...danger(heart(center, centerScale * visual.heart, radius)),
 ]

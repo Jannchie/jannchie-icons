@@ -97,6 +97,12 @@
     "light (17.98, 17.98)",
     "regular (17.73, 17.73)"
   ],
+  "calendar-ban": [
+    "bold (14.05, 17.55)",
+    "bold (9.95, 13.45)",
+    "regular (14.05, 17.55)",
+    "regular (9.95, 13.45)"
+  ],
   "calendar-ban-badge-top": [
     "regular (14.37, 3.87)",
     "regular (19.13, 8.63)"

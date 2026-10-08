@@ -53,5 +53,5 @@ export function withBadge(name, draw, tone, radius, stroke) {
   const right = blocked(shape, 'y', r, stroke)
   const bottom = blocked(shape, 'x', b, stroke)
   const outline = [[bottom ? bottom[0] : r, b], [l, b], [l, t], [r, t], [r, right ? right[0] : b]]
-  return [rounded(outline, radius, false), flap(stroke, radius), ...asBadge(tone(draw(at, k, radius)))]
+  return [rounded(outline, radius, false), flap(stroke, radius), ...asBadge(tone(draw(at, k, radius)), name)]
 }

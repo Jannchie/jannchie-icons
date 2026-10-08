@@ -1,10 +1,10 @@
-import { bubble, center } from '../chat'
+import { bubble, center, centerScale } from '../chat'
 import { rounded } from '../geometry'
-import { image } from '../symbols'
+import { image, visual } from '../symbols'
 import { accent } from '../tone'
 
 // 对话 + 图片
 export default ({ radius, stroke }) => [
   rounded(bubble(stroke), radius, false),
-  ...accent(image(center, 1, radius)),
+  ...accent(image(center, centerScale * visual.image, radius)),
 ]

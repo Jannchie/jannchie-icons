@@ -1,11 +1,11 @@
-import { center, flap, page } from '../file'
+import { center, flap, page, centerScale } from '../file'
 import { rounded } from '../geometry'
-import { lock } from '../symbols'
+import { lock, visual } from '../symbols'
 import { warning } from '../tone'
 
 // 文件 + 锁
 export default ({ radius, stroke }) => [
   rounded(page(stroke, radius), radius),
   flap(stroke),
-  ...warning(lock(center, 1, radius)),
+  ...warning(lock(center, centerScale * visual.lock, radius)),
 ]

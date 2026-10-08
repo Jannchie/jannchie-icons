@@ -20,6 +20,8 @@ export function bubble(stroke) {
 
 // 主体中心，放居中符号用：顶边和底边各随线宽收半个线宽，中点不变
 export const center = [12, 10]
+// 主体内部约 16 × 11（比文件夹矮），符号放大到 1.15 倍
+export const centerScale = 1.15
 
 // 角标：符号墨迹的右缘贴到 22，下缘贴到主体底边的外缘 17；右边和底边在离符号 GAP 处断开，所以轮廓分成两段：
 // 尾巴左侧的底边 → 左下 → 左上 → 右上 → 右边断口；底边断口 → 尾巴斜边到尾尖
@@ -39,7 +41,7 @@ export function withBadge(name, draw, tone, radius, stroke) {
   return [
     rounded([[tip[0], b], [l, b], [l, t], [r, t], [r, right ? right[0] : b]], radius, false),
     rounded(tail, radius, false),
-    ...asBadge(tone(draw(at, k, radius))),
+    ...asBadge(tone(draw(at, k, radius)), name),
   ]
 }
 
@@ -57,6 +59,6 @@ export function withBadgeTop(name, draw, tone, radius, stroke) {
   return [
     rounded([[tip[0], b], [l, b], [l, t], [top ? top[0] : r, t]], radius, false),
     rounded([[r, right ? right[1] : t], [r, b], [root, b], tip], radius, false),
-    ...asBadge(tone(draw(at, k, radius))),
+    ...asBadge(tone(draw(at, k, radius)), name),
   ]
 }

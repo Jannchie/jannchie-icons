@@ -1,9 +1,9 @@
 import { plain, center, centerScale } from '../briefcase'
-import { shield } from '../symbols'
+import { shield, visual } from '../symbols'
 import { success } from '../tone'
 
 // 公文包 + 盾
 export default ({ radius, stroke }) => [
   ...plain(radius, stroke),
-  ...success(shield(center, centerScale, radius)),
+  ...success(shield(center, centerScale * visual.shield, radius)),
 ]

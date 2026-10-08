@@ -20,7 +20,7 @@ const standOf = ({ b, foot, base }) => [`M${pole} ${b}V${foot}`, `M${base[0]} ${
 
 // 屏幕中心，放符号用：顶边和底边各随线宽收半个线宽，中点不变
 export const center = [12, 10]
-export const centerScale = 1
+export const centerScale = 1.15
 export const plain = (radius, stroke) => {
   const f = frame(stroke)
   return [rounded(screenOf(f), Math.min(radius, 2.5)), ...standOf(f)]
@@ -47,7 +47,7 @@ export function withBadge(name, draw, tone, radius, stroke) {
   return [
     rounded([[bottom ? bottom[0] : r, b], [l, b], [l, t], [r, t], [r, right ? right[0] : b]], Math.min(radius, 2.5), false),
     ...standOf(f),
-    ...asBadge(tone(draw(at, k, radius))),
+    ...asBadge(tone(draw(at, k, radius)), name),
   ]
 }
 
@@ -62,7 +62,7 @@ export function withBadgeTop(name, draw, tone, radius, stroke) {
   return [
     rounded(rectAroundTop(shape, stroke, [f.l, f.t, f.r, f.b]), Math.min(radius, 2.5), false),
     ...standOf(f),
-    ...asBadge(tone(draw(at, k, radius))),
+    ...asBadge(tone(draw(at, k, radius)), name),
   ]
 }
 

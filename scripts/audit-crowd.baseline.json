@@ -173,6 +173,12 @@
     "bold @(12, 12)",
     "regular @(12, 12)"
   ],
+  "book-assets": [
+    "bold @(12, 12)",
+    "bold @(12, 17.3)",
+    "regular @(12, 12)",
+    "regular @(12, 17.5)"
+  ],
   "book-clock-badge-top": [
     "regular @(16, 6)"
   ],
@@ -190,6 +196,12 @@
   "book-lock-badge-top": [
     "bold @(16, 8.5)",
     "regular @(16, 8.5)"
+  ],
+  "book-music": [
+    "bold @(12, 17.3)"
+  ],
+  "book-plug": [
+    "bold @(12, 17.3)"
   ],
   "book-plus-badge": [
     "bold @(12, 12)",
@@ -227,6 +239,12 @@
     "bold @(11.5, 13.5)",
     "regular @(11.5, 13.5)"
   ],
+  "briefcase-arrow-down": [
+    "bold @(12, 14)"
+  ],
+  "briefcase-arrow-up": [
+    "bold @(12, 14)"
+  ],
   "briefcase-clock-badge": [
     "bold @(16.5, 16.8)"
   ],
@@ -248,6 +266,23 @@
     "bold @(18, 18.5)",
     "regular @(18, 18.5)"
   ],
+  "briefcase-music": [
+    "bold @(12, 14)"
+  ],
+  "briefcase-plug": [
+    "bold @(12, 14)",
+    "bold @(12, 6)",
+    "regular @(12, 14)"
+  ],
+  "briefcase-shield": [
+    "bold @(12, 14)"
+  ],
+  "briefcase-sparkle": [
+    "bold @(12, 14)"
+  ],
+  "briefcase-star": [
+    "bold @(12, 14)"
+  ],
   "broom": [
     "bold @(7.8, 7.8)"
   ],
@@ -265,6 +300,12 @@
     "bold @(12.5, 10.5)",
     "bold @(16.5, 10.5)",
     "bold @(8.5, 10.5)"
+  ],
+  "calendar-arrow-down": [
+    "bold @(12, 10)"
+  ],
+  "calendar-arrow-up": [
+    "bold @(12, 13)"
   ],
   "calendar-clock-badge": [
     "regular @(16.5, 17.5)"
@@ -297,13 +338,20 @@
     "bold @(12, 13)"
   ],
   "calendar-plug": [
-    "bold @(12, 10)"
+    "bold @(12, 13)",
+    "regular @(12, 9.8)"
   ],
   "calendar-plus-badge": [
     "bold @(12, 10)"
   ],
   "calendar-puzzle": [
     "bold @(12, 10)"
+  ],
+  "calendar-sparkle": [
+    "bold @(12, 13)"
+  ],
+  "calendar-star": [
+    "bold @(12, 13)"
   ],
   "camera-action": [
     "bold @(12, 11)"
@@ -362,14 +410,14 @@
   ],
   "chat-ellipsis": [
     "bold @(12, 10)",
-    "bold @(9.3, 10)"
+    "bold @(8.8, 10)"
   ],
   "chat-ellipsis-badge-top": [
     "bold @(15.2, 4)",
     "bold @(18, 4)"
   ],
   "chat-exclaim": [
-    "bold @(12, 8.4)"
+    "bold @(12, 12)"
   ],
   "chat-exclaim-badge": [
     "bold @(21, 11.8)"
@@ -402,17 +450,27 @@
     "bold @(18, 9.5)",
     "regular @(18, 9)"
   ],
+  "chat-music": [
+    "bold @(12, 12)"
+  ],
   "chat-music-badge-top": [
     "bold @(13.5, 15.2)"
   ],
+  "chat-plug": [
+    "regular @(12, 12)"
+  ],
   "chat-question": [
-    "bold @(12, 8.6)"
+    "bold @(12, 12)",
+    "bold @(12, 8.3)"
   ],
   "chat-question-badge": [
     "bold @(19, 11.8)"
   ],
   "chat-question-badge-top": [
     "bold @(19, 6.3)"
+  ],
+  "chat-shield": [
+    "bold @(12, 12)"
   ],
   "chats": [
     "bold @(8.8, 9.3)"
@@ -646,15 +704,23 @@
     "regular @(16.3, 12)",
     "regular @(19.8, 12)"
   ],
+  "file-assets": [
+    "bold @(12, 12)"
+  ],
   "file-clock-badge": [
     "bold @(15, 17)"
+  ],
+  "file-cloud": [
+    "bold @(12, 12)"
   ],
   "file-gauge-badge": [
     "bold @(15.3, 17.8)",
     "regular @(15, 17.5)"
   ],
   "file-image": [
-    "regular @(12, 13.5)"
+    "bold @(12, 13.5)",
+    "bold @(16.8, 5.3)",
+    "regular @(16.9, 5.1)"
   ],
   "file-image-badge": [
     "regular @(15, 17.5)"
@@ -684,6 +750,12 @@
   "flute": [
     "bold @(12, 12)"
   ],
+  "folder-assets": [
+    "regular @(12, 12)"
+  ],
+  "folder-bookmark": [
+    "regular @(12, 12)"
+  ],
   "folder-clock-badge": [
     "bold @(16.5, 16.8)"
   ],
@@ -695,7 +767,8 @@
     "regular @(16.8, 17.2)"
   ],
   "folder-image": [
-    "regular @(12, 13.5)"
+    "bold @(12, 12)",
+    "bold @(12, 13.5)"
   ],
   "folder-image-badge": [
     "bold @(16.5, 17)"
@@ -711,6 +784,16 @@
   "folder-lock-badge-top": [
     "bold @(18, 9.5)",
     "regular @(18, 9.5)"
+  ],
+  "folder-minus-badge-top": [
+    "bold @(12, 12)"
+  ],
+  "folder-music": [
+    "bold @(12, 12)"
+  ],
+  "folder-plug": [
+    "bold @(12, 12)",
+    "regular @(12, 12)"
   ],
   "fuel": [
     "bold @(9.5, 12)"
@@ -1162,7 +1245,7 @@
   ],
   "monitor-ellipsis": [
     "bold @(12, 10)",
-    "bold @(9.3, 10)"
+    "bold @(8.8, 10)"
   ],
   "monitor-ellipsis-badge": [
     "bold @(16.1, 16)",
@@ -1173,7 +1256,7 @@
     "bold @(18, 4)"
   ],
   "monitor-exclaim": [
-    "bold @(12, 8.4)"
+    "bold @(12, 10)"
   ],
   "monitor-exclaim-badge": [
     "bold @(21, 11.8)"
@@ -1199,17 +1282,28 @@
     "bold @(18, 9.5)",
     "regular @(18, 9)"
   ],
+  "monitor-music": [
+    "bold @(12, 10)"
+  ],
   "monitor-music-badge-top": [
     "bold @(12, 10)"
   ],
+  "monitor-plug": [
+    "regular @(12, 10)"
+  ],
   "monitor-question": [
-    "bold @(12, 8.6)"
+    "bold @(12, 10)",
+    "bold @(12, 8.3)"
   ],
   "monitor-question-badge": [
     "bold @(19, 11.8)"
   ],
   "monitor-question-badge-top": [
     "bold @(19, 6.3)"
+  ],
+  "monitor-shield": [
+    "bold @(12, 10)",
+    "bold @(12, 18)"
   ],
   "mosque": [
     "bold @(19.5, 13.2)",
@@ -1509,6 +1603,9 @@
     "bold @(18, 17.5)",
     "regular @(18, 17.5)"
   ],
+  "shield-assets": [
+    "bold @(12, 12)"
+  ],
   "shield-clock-badge": [
     "bold @(17, 17)",
     "regular @(17, 17)"
@@ -1518,7 +1615,7 @@
     "regular @(17, 17)"
   ],
   "shield-image": [
-    "regular @(12, 11)"
+    "bold @(12, 11)"
   ],
   "shield-image-badge": [
     "regular @(17, 17)"

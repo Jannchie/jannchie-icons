@@ -26,7 +26,7 @@ export function base(radius, stroke) {
 // 格子区（表头线到底边）的中心，放居中符号用：表头线和底边都随线宽各收半个线宽，中点不变（15.5）
 export const center = [12, 15.5]
 // 格子区比文件夹本体矮（常规线宽下中心线高 11.5，文件夹本体 13.5），符号缩到 0.9，粗线宽下才不顶到表头线和底边
-export const centerScale = 0.9
+export const centerScale = 1.05
 
 // 角标：符号墨迹的右缘、下缘贴到外框右下角的外缘（21, 22）；右边和底边在离符号 GAP 处断开
 // 角标比普通角标大 GROW 倍，和文件夹一样（16px 下也认得出符号）；放不下时 fitBadge 再缩回去
@@ -45,6 +45,6 @@ export function withBadge(name, draw, tone, radius, stroke) {
   return [
     ...(turn ? [`${rounded(outline, Math.min(radius, R), false)}H${l}`] : [rounded(outline, Math.min(radius, R), false), `M${l} ${head}H${r}`]),
     ...RINGS.map(x => ring(x, stroke)),
-    ...asBadge(tone(draw(at, k, radius))),
+    ...asBadge(tone(draw(at, k, radius)), name),
   ]
 }

@@ -1,10 +1,10 @@
-import { bubble, center } from '../chat'
+import { bubble, center, centerScale } from '../chat'
 import { rounded } from '../geometry'
-import { ellipsis } from '../symbols'
+import { ellipsis, visual } from '../symbols'
 import { accent } from '../tone'
 
 // 对话 + 省略号
 export default ({ radius, stroke }) => [
   rounded(bubble(stroke), radius, false),
-  ...accent(ellipsis(center, 1, radius)),
+  ...accent(ellipsis(center, centerScale * visual.ellipsis, radius)),
 ]

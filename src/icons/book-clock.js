@@ -1,9 +1,9 @@
 import { plain, center, centerScale } from '../book'
-import { clock } from '../symbols'
+import { clock, visual } from '../symbols'
 import { info } from '../tone'
 
 // 书 + 时钟
 export default ({ radius, stroke }) => [
   ...plain(radius, stroke),
-  ...info(clock(center, centerScale, radius)),
+  ...info(clock(center, centerScale * visual.clock, radius)),
 ]
