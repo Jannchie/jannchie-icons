@@ -1,8 +1,10 @@
 // 各国内容分级：每个体系一种外框，框里是放大的线条字母；长的分级（PG-13、MA15+）拆成上下两行
 // 外框只用来区分体系（同样写着 12 的，带横栏的方框是 PEGI、圆是韩国），不是照搬各机构的官方标志
+import { segments } from './clip'
 import { circle, rounded } from './geometry'
 import { LABEL, line, snap, textWidth } from './letters'
 import { tagShape } from './marks'
+import { translate } from './transform'
 
 // 外框：shape(radius) 画框，box 是留给文字的区域 [左, 上, 右, 下]
 // 外框都撑到画布边缘附近，文字区离外框中心线至少 3（扣掉两边半个线宽后还空 1.5），字不会贴着框
@@ -64,21 +66,28 @@ const ASPECT = 0.95
 function layout(rows, [x0, y0, x1, y1]) {
   const extra = r => (r.plus ? PLUS_GAP + PLUS : 0)
   const sy = Math.min(MAX_SY, (y1 - y0 - ROW_GAP * (rows.length - 1)) / (6 * rows.length))
-  // 每行宽度和 sx 成正比（字间距固定），所以按「去掉间距后剩下的宽度 / 单位字宽」求 sx
-  const sx = Math.min(sy * ASPECT, ...rows.map(r => (x1 - x0 - extra(r) - GAP * (r.chars.length - 1)) / (textWidth(r.chars, 1, 0, LABEL))))
+  // 每行宽度和 sx 成正比（字间距固定），所以按「去掉间距后剩下的宽度 / 单位字宽」求 sx；
+  // 各行单独求（字高统一）：共用一个 sx 的话，短行（R/15+ 的 R）会被长行压成一条窄缝，吸附网格后笔画缠成一团
+  const sxOf = r => Math.min(sy * ASPECT, (x1 - x0 - extra(r) - GAP * (r.chars.length - 1)) / (textWidth(r.chars, 1, 0, LABEL)))
   const h = 6 * sy
   const top = (y0 + y1) / 2 - (h * rows.length + ROW_GAP * (rows.length - 1)) / 2
   return rows.flatMap((r, i) => {
+    const sx = sxOf(r)
     const width = textWidth(r.chars, sx, GAP, LABEL)
     const left = (x0 + x1) / 2 - (width + extra(r)) / 2
     const y = top + i * (h + ROW_GAP)
     const out = line(r.chars, [left + width / 2, y + h / 2], sx, GAP, sy, LABEL)
     // 每一行单独吸附网格：两行一起吸的话，第二行的竖笔会把第一行的字母挤宽（MA15+ 的 M 和 A 贴在一起）
-    const row = snap(out)
+    // 再按吸附后的实际墨迹左右居中：按字位宽度居中时，窄字形 1 的竖笔偏在字位右侧，18、12 整体看着偏右；
+    // 平移量取整数，吸附好的竖笔仍在 .5 上（行末的 + 一起挪）
+    let row = snap(out)
+    const xs = row.flatMap(d => segments(d).flatMap(sub => sub.segs.flatMap(g => [g.at(0)[0], g.at(1)[0]])))
+    const shiftX = Math.round((x0 + x1) / 2 - (Math.min(...xs) + Math.max(...xs) + (r.plus ? PLUS_GAP + PLUS : 0)) / 2)
+    row = row.map(d => translate(d, shiftX, 0))
     // 角标 + 不参与吸附（吸附会把两条臂各自挪得不一样长），直接把中心放在 .5 上，四条臂一样长
     if (r.plus) {
       const half = v => Math.round(v - 0.5) + 0.5
-      const [px, py] = [half(left + width + PLUS_GAP + PLUS / 2), half(y + PLUS / 2)]
+      const [px, py] = [half(left + width + PLUS_GAP + PLUS / 2) + shiftX, half(y + PLUS / 2)]
       row.push(`M${px - PLUS / 2} ${py}H${px + PLUS / 2}M${px} ${py - PLUS / 2}V${py + PLUS / 2}`)
     }
     return row
