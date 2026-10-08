@@ -61,10 +61,23 @@ function iconTimes() {
           delete times[name]
         else
           times[name] = t
+        // 已打开的页面通过事件更新那一条；同时让模块缓存失效（不触发热更新），之后刷新、新开的页面拿到的是最新的表
+        const mod = server.moduleGraph.getModuleById(RESOLVED)
+        if (mod)
+          server.moduleGraph.invalidateModule(mod)
         server.ws.send({ type: 'custom', event: EVENT, data: { name, t } })
       }
-      server.watcher.on('add', file => push(file, Date.now()))
-      server.watcher.on('change', file => push(file, Date.now()))
+      // 用文件真实的修改时间（和启动时扫描的一致），不用事件发生的时刻
+      const mtime = (file) => {
+        try {
+          return Math.round(statSync(file).mtimeMs)
+        }
+        catch {
+          return Date.now()
+        }
+      }
+      server.watcher.on('add', file => push(file, mtime(file)))
+      server.watcher.on('change', file => push(file, mtime(file)))
       server.watcher.on('unlink', file => push(file, null))
     },
   }
