@@ -98,12 +98,15 @@ const LABEL_GLYPHS = {
 const place = (d, dx, dy, sx = 1, sy = 1) => affine(d, sx, sy, dx, dy)
 
 // 对齐像素网格（类似字体 hinting）：任意缩放、摆放后，把横线的 y、竖线的 x 吸到最近的 .5（正好居中时往小的一侧），
+// 但落在整数上、又正好在这组线正中的那条（T 的竖笔、H 的中横）不吸：吸过去整个字会偏半格；
 // 两条线之间的坐标按比例线性插值，最外侧两条线以外只平移；圆弧半径按端点所在区间的比例缩放
 // 一组路径一起吸附（例如 $ 的 S 和竖线），才不会各吸各的错开；接受字符串、{ d } 对象或它们的数组，原样返回同样的结构
-const half = v => Math.ceil(+(v - 1).toFixed(6)) + 0.5
+const snapHalf = v => Math.ceil(+(v - 1).toFixed(6)) + 0.5
 function axisMap(lines) {
   const from = [...new Set(lines.map(v => +v.toFixed(6)))].sort((a, b) => a - b)
   const to = []
+  const mid = (from[0] + from.at(-1)) / 2
+  const half = v => (Math.abs(v - Math.round(v)) < 1e-6 && Math.abs(v - mid) < 1e-6 ? v : snapHalf(v))
   from.forEach((v, i) => {
     // 两条线挨得太近（不到 0.5）就不强求，跟着前一条平移；否则至少隔 1，避免吸成一条
     if (i && v - from[i - 1] < 0.5)

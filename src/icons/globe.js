@@ -1,8 +1,8 @@
 import { circle } from '../geometry'
 
 // 地球：圆 + 中央经线（椭圆）+ 赤道 + 两条纬线
-// 圆心上移半格到 (12, 11.5)，赤道和纬线（间距 5）都落在 .5 上；纬线两端正好落在圆上
-const [cy, r, lat] = [11.5, 9, 5]
+// 圆心在画布中心 (12, 12)，纬线间距 5；纬线两端正好落在圆上
+const [cy, r, lat] = [12, 9, 5]
 const half = +Math.sqrt(r * r - lat * lat).toFixed(3)
 export default () => [
   circle(12, cy, r),

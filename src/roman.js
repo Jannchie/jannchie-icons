@@ -1,5 +1,5 @@
 // 罗马数字 Ⅰ–Ⅻ：竖线 I、两撇 V、交叉 X 拼成，上下各一道贯通整个数字的横线（钟面、Unicode Ⅰ–Ⅻ 的样式）
-// 字形之间统一隔 3（整数间距，竖线才能都落在 .5 上）；整体以 12 为中心，起点吸到 .5 上，竖线和上下横线都落在 .5 网格
+// 字形之间统一隔 3；整体以 12 为中心，上下横线落在 .5 网格
 const [TOP, BOTTOM] = [5.5, 18.5]
 const WIDTH = { I: 0, V: 6, X: 6 }
 const OVERHANG = 1 // 横线两端伸出字形外的长度
@@ -19,7 +19,7 @@ function stroke(c, x) {
 export function roman(n) {
   const chars = [...ROMAN[n]]
   const width = chars.reduce((w, c) => w + WIDTH[c], 0) + GAP * (chars.length - 1)
-  const left = Math.floor(12 - width / 2) + 0.5
+  const left = 12 - width / 2
   let x = left
   const paths = chars.flatMap((c) => {
     const out = stroke(c, x)

@@ -23,7 +23,7 @@ const shoutPoints = () => Array.from({ length: SPIKES * 2 }, (_, i) => {
   return [+(CX + Math.cos(a) * rx).toFixed(3), +(CY + Math.sin(a) * ry).toFixed(3), i % 2 ? '' : 'tip']
 })
 export const shout = radius => rounded(shoutPoints().map(([x, y, tip]) => (tip ? [x, y, crisp(radius)] : [x, y])), Math.min(radius, 0.75))
-export const SHOUT_CENTER = [12.5, 10] // 内容的竖笔落在 .5 上，比锯齿圆心右偏半格
+export const SHOUT_CENTER = [CX, CY] // 内容放在锯齿圆心上
 
 // 内容符号：画在中心 (cx, cy) 附近，s 缩放（1 = 普通气泡里的大小）；竖笔和下面的点之间留 2.75，粗字重下也分得开
 const question = (cx, cy, s = 1) => [

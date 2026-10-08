@@ -2,8 +2,7 @@ import { eaves } from '../roofs'
 import { GROUND, groundLine } from '../scene'
 
 // 塔（五重塔的简化）：三层飞檐，自下而上收窄，每层之间露一小段塔身，顶上相轮
-// 相轮是正中单线，整体右移半格（中线 12.5），相轮和各层墙才能都落在 .5 上
-const cx = 12.5
+const cx = 12
 
 export default ({ radius }) => [
   groundLine,

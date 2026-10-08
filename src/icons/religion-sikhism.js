@@ -1,8 +1,8 @@
 import { circle } from '../geometry'
 
 // 锡克教：坎达（Khanda）。正中一把双刃剑竖穿过一个圆环（剑挡在环前，把环切开），
-// 两侧两把弯刀从底部交叉、刀身沿圆环外侧弯上去；剑是正中单线，整体中线 12.5
-const cx = 12.5
+// 两侧两把弯刀从底部交叉、刀身沿圆环外侧弯上去；剑是正中单线，整体中线 12
+const cx = 12
 export default () => [
   circle(cx, 11.5, 5),
   { d: `M${cx} 2.5L${cx + 1} 4.5V15.5H${cx - 1}V4.5Z`, cut: true, occlude: true },

@@ -2,8 +2,8 @@
 // 涂实的扇形和外圈同半径，描边把两者连成一体
 import { circle } from './geometry'
 
-// 圆心放在 11.5：竖、横的分界线和圆的上下左右边都落在 .5 上（整体左上偏半格）
-const [C, R] = [11.5, 9]
+// 圆心放在画布正中 (12, 12)
+const [C, R] = [12, 9]
 const ring = () => circle(C, C, R)
 const fill = d => ({ d, fill: true })
 const D = R * Math.SQRT1_2

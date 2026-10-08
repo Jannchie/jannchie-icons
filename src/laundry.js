@@ -84,8 +84,8 @@ export const LAUNDRY = {
   // 晾挂：方框上沿一条下垂的弧线
   'dry-line': { group: 'dry', zh: '悬挂晾干', paths: r => [square(Math.min(r, 2)), 'M3.5 6.5Q12 13 20.5 6.5'] },
   'dry-flat': { group: 'dry', zh: '平摊晾干', paths: r => [square(Math.min(r, 2)), 'M7 11.5H17'] },
-  // 三根竖等距 4，都在 .5 上，整体偏左半格
-  'dry-drip': { group: 'dry', zh: '滴干', paths: r => [square(Math.min(r, 2)), 'M7.5 7.5V16.5', 'M11.5 7.5V16.5', 'M15.5 7.5V16.5'] },
+  // 三根竖等距 4，以中轴对称
+  'dry-drip': { group: 'dry', zh: '滴干', paths: r => [square(Math.min(r, 2)), 'M8 7.5V16.5', 'M12 7.5V16.5', 'M16 7.5V16.5'] },
   'dry-shade': { group: 'dry', zh: '阴干', paths: r => [square(Math.min(r, 2)), 'M4 7L7 4', 'M4 10.5L10.5 4'] },
   // ---------- 熨烫 ----------
   'iron': { group: 'iron', zh: '可熨烫', paths: iron },

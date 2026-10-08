@@ -3,8 +3,7 @@ import { eaves } from '../roofs'
 import { dot, GROUND, groundLine } from '../scene'
 
 // 天守阁：向上收分的石垣，上面两层飞檐，屋脊两端的鯱上翘；石垣的斜角不随全局圆角
-// 中线 12.5，和塔一样让墙都落在 .5 上
-const cx = 12.5
+const cx = 12
 
 export default ({ radius }) => [
   groundLine,

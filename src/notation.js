@@ -140,12 +140,12 @@ export const NOTATION = {
   'whole-rest': {
     zh: '全休止符',
     section: 'rest',
-    paths: r => ['M4.5 9.5H19.5', { d: rounded([[8.5, 9.5], [15.5, 9.5], [15.5, 13.5], [8.5, 13.5]], crisp(r)), fill: true }],
+    paths: r => ['M4.5 10H19.5', { d: rounded([[8.5, 10], [15.5, 10], [15.5, 14], [8.5, 14]], crisp(r)), fill: true }],
   },
   'half-rest': {
     zh: '二分休止符',
     section: 'rest',
-    paths: r => ['M4.5 14.5H19.5', { d: rounded([[8.5, 10.5], [15.5, 10.5], [15.5, 14.5], [8.5, 14.5]], crisp(r)), fill: true }],
+    paths: r => ['M4.5 14H19.5', { d: rounded([[8.5, 10], [15.5, 10], [15.5, 14], [8.5, 14]], crisp(r)), fill: true }],
   },
   'quarter-rest': {
     zh: '四分休止符',
@@ -214,8 +214,8 @@ export const NOTATION = {
   'coda': {
     zh: '尾声（Coda）',
     section: 'other',
-    // 十字连同椭圆整体左上移半格，横竖落在 .5 上
-    paths: () => [ellipse(11.5, 11.5, 5, 6), 'M11.5 2.5V20.5', 'M2.5 11.5H20.5'],
+    // 十字连同椭圆居中
+    paths: () => [ellipse(12, 12, 5, 6), 'M12 3V21', 'M3 12H21'],
   },
   'staff': {
     zh: '五线谱',

@@ -2,9 +2,9 @@
 import { circle } from './geometry'
 import { mirror } from './transform'
 
-// 脑沟在 12.5 上（见 icons/brain.js），走线的横段也都落在 .5 上
+// 脑沟在 12 上（见 icons/brain.js），走线的横段落在 .5 上
 export const RIGHT_TRACES = [
-  'M12.5 9.5H14.75', circle(16, 9.5, 1.25),
-  'M12.5 13.5H14L15.5 15', circle(16.4, 15.9, 1.25),
+  'M12 9.5H14.25', circle(15.5, 9.5, 1.25),
+  'M12 13.5H13.5L15 15', circle(15.9, 15.9, 1.25),
 ]
-export const LEFT_TRACES = RIGHT_TRACES.map(d => mirror(d, 12.5))
+export const LEFT_TRACES = RIGHT_TRACES.map(d => mirror(d, 12))

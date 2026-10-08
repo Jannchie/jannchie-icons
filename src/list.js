@@ -55,8 +55,8 @@ export function listBadge(outline, k, stroke, draw, radius) {
 }
 
 // 主次反过来：符号为主时右下角的小列表（圆点 + 三行线，约 7 × 7），作为 cut 让主符号在附近断开
-// 行距 3，三行整体比 cy 偏上半格：cy 取整数时行线正好落在 .5 上
-const markRows = [-3.5, -0.5, 2.5]
+// 行距 3，三行以 cy 为中
+const markRows = [-3, 0, 3]
 // 它是角标，双色变体里是 accent
 export const listMark = ([cx, cy]) => accent([
   ...markRows.map(y => dot(cx - 3.25, cy + y, 1.5)),

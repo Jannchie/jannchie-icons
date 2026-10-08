@@ -2,8 +2,7 @@ import { rounded } from '../geometry'
 import { GROUND, groundLine } from '../scene'
 
 // 摩天楼：两级退台的高塔，顶上天线；下段三道竖向窗带
-// 天线是正中单线，整体右移半格（中线 12.5）
-const cx = 12.5
+const cx = 12
 
 export default ({ radius }) => [
   groundLine,

@@ -1,8 +1,8 @@
 import { crisp, rounded } from '../geometry'
 
 // 魔方：等距视角的立方体（六边形 + Y 形棱）+ 每个面一横一竖的分格线（2 × 2）
-// 像素网格：居中的竖棱要落在 .5 上，中心取 x = 11.5、半宽 8（左右竖边 3.5 / 19.5），斜棱接近 30°
-const [c, w] = [11.5, 8]
+// 中心 x = 12、半宽 8（左右竖边 4 / 20），斜棱接近 30°
+const [c, w] = [12, 8]
 const [top, upper, mid, lower, bottom] = [2.5, 7.25, 12, 16.75, 21.5]
 const p = ([x, y]) => `${x} ${y}`
 const line = (a, b) => `M${p(a)}L${p(b)}`

@@ -18,9 +18,9 @@ export const ALCHEMY = {
   water: { section: 'element', zh: '🜄 水', paths: r => [down(r)] },
   air: { section: 'element', zh: '🜁 风', paths: r => [up(r), upBar] },
   earth: { section: 'element', zh: '🜃 土', paths: r => [down(r), downBar] },
-  // 盐、硝石：圆不动，直径上移 / 左移半格落在 .5 上（端点仍在圆上）
-  salt: { section: 'principle', zh: '🜔 盐', paths: () => [circle(12, 12, 8.5), 'M3.515 11.5H20.485'] },
-  sulfur: { section: 'principle', zh: '🜍 硫', paths: r => [rounded([[11.5, 2.5], [16.5, 11.5], [6.5, 11.5]], crisp(r)), 'M11.5 11.5V21.5', 'M7.5 16.5H15.5'] },
+  // 盐 🜔：圆 + 横直径
+  salt: { section: 'principle', zh: '🜔 盐', paths: () => [circle(12, 12, 8.5), 'M3.5 12H20.5'] },
+  sulfur: { section: 'principle', zh: '🜍 硫', paths: r => [rounded([[12, 2.5], [17, 11.5], [7, 11.5]], crisp(r)), 'M12 11.5V21.5', 'M8 16.5H16'] },
   mercury: { section: 'principle', zh: '☿ 汞' },
   gold: { section: 'metal', zh: '☉ 金' },
   silver: { section: 'metal', zh: '☽ 银' },
@@ -36,10 +36,10 @@ export const ALCHEMY = {
     // 内切圆按严格相切会在粗字重下糊成一团，半径收小一圈留出缝
     circle(12, 18.5 - incircle, incircle - 1),
   ] },
-  // 锑 ♁：圆上立十字（倒过来的 ♀）；竖笔在 11.5，圆跟着左移，半径 6 让圆的上下左右边也落在 .5 上
-  antimony: { section: 'other', zh: '♁ 锑', paths: () => [circle(11.5, 14.5, 6), 'M11.5 2.5V8.5', 'M8 5.5H15'] },
+  // 锑 ♁：圆上立十字（倒过来的 ♀），居中于 x = 12
+  antimony: { section: 'other', zh: '♁ 锑', paths: () => [circle(12, 14.5, 6), 'M12 2.5V8.5', 'M8.5 5.5H15.5'] },
   // 硝石 🜕：圆 + 竖直径
-  nitre: { section: 'other', zh: '🜕 硝石', paths: () => [circle(12, 12, 8.5), 'M11.5 3.515V20.485'] },
+  nitre: { section: 'other', zh: '🜕 硝石', paths: () => [circle(12, 12, 8.5), 'M12 3.5V20.5'] },
 }
 
 export const ALCHEMY_SECTIONS = ['element', 'principle', 'metal', 'other']
