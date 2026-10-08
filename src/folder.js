@@ -26,10 +26,10 @@ export const center = [12, 13.5]
 // 角标比普通角标大 GROW 倍：本体右下是一整块空白，放大后 16px 下也认得出符号
 const GROW = 1.3
 
-// 角标：符号墨迹的右缘贴到 22，下缘贴到本体底边的外缘 21；右边和底边在离符号 GAP 处断开，轮廓从底边的断口出发绕一圈到右边的断口
+// 角标：符号墨迹的右缘、下缘贴到画布留白的边 (22, 22)（比本体底边的外缘 21 低 1，角标压在外框角上，不显得缩在文件夹里）；右边和底边在离符号 GAP 处断开，轮廓从底边的断口出发绕一圈到右边的断口
 export function withBadge(name, draw, tone, radius, stroke) {
   const { l, t, r, b, tabEnd, tabSlope, body } = frame(stroke)
-  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, bottom: 21 }, roomOnRight(stroke, r, body), GROW)
+  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, bottom: 22 }, roomOnRight(stroke, r, body), GROW)
   const right = blocked(shape, 'y', r, stroke)
   const bottom = blocked(shape, 'x', b, stroke)
   const outline = [[bottom ? bottom[0] : r, b], [l, b], [l, t], [tabEnd, t], [tabSlope, body], [r, body], [r, right ? right[0] : b]]

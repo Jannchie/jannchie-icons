@@ -227,32 +227,27 @@
     "bold @(11.5, 13.5)",
     "regular @(11.5, 13.5)"
   ],
-  "briefcase-arrow-down-badge": [
-    "bold @(12, 6)"
-  ],
   "briefcase-clock-badge": [
-    "regular @(17, 16)"
+    "bold @(16.5, 16.8)",
+    "regular @(16, 16.3)"
   ],
   "briefcase-gauge-badge": [
-    "regular @(16, 15.8)"
+    "bold @(16.3, 16.7)",
+    "regular @(16, 16.8)"
   ],
   "briefcase-image": [
     "regular @(12, 14)"
   ],
   "briefcase-image-badge": [
-    "regular @(17, 16.5)"
+    "regular @(16.5, 17)"
   ],
   "briefcase-lock": [
     "bold @(12, 15.5)",
     "regular @(12, 15.5)"
   ],
   "briefcase-lock-badge": [
-    "bold @(18, 18)",
-    "regular @(18, 17.5)"
-  ],
-  "briefcase-sparkle-badge": [
-    "bold @(12, 14)",
-    "regular @(12, 14)"
+    "bold @(18, 18.5)",
+    "regular @(18, 18.5)"
   ],
   "broom": [
     "bold @(7.8, 7.8)"
@@ -683,26 +678,22 @@
     "bold @(12, 12)"
   ],
   "folder-clock-badge": [
-    "bold @(16.5, 15.8)",
-    "regular @(16, 15.3)"
+    "bold @(16, 16.3)"
   ],
   "folder-gauge-badge": [
-    "bold @(16.3, 15.7)",
-    "regular @(16, 15.8)"
+    "bold @(15.8, 16.5)",
+    "regular @(16, 16.8)"
   ],
   "folder-image": [
     "regular @(12, 13.5)"
-  ],
-  "folder-image-badge": [
-    "regular @(16.5, 16)"
   ],
   "folder-lock": [
     "bold @(12, 15)",
     "regular @(12, 15)"
   ],
   "folder-lock-badge": [
-    "bold @(18, 17.5)",
-    "regular @(18, 17.5)"
+    "bold @(18, 18.5)",
+    "regular @(18, 18.5)"
   ],
   "folder-lock-badge-top": [
     "bold @(18, 9.5)",
@@ -1002,8 +993,23 @@
     "bold @(12, 8)",
     "regular @(12, 8)"
   ],
-  "letter-k-circle": [
-    "bold @(9.5, 12)"
+  "letter-a-square": [
+    "bold @(12, 12)"
+  ],
+  "letter-g-square": [
+    "bold @(12, 12)"
+  ],
+  "letter-l-circle": [
+    "bold @(12, 12)"
+  ],
+  "letter-l-square": [
+    "bold @(12, 12)"
+  ],
+  "letter-t-square": [
+    "bold @(12, 12)"
+  ],
+  "letter-y-circle": [
+    "bold @(12, 12)"
   ],
   "license": [
     "regular @(15.4, 21.1)",
@@ -1069,11 +1075,15 @@
     "regular @(12, 12)"
   ],
   "mail-clock-badge": [
-    "regular @(17, 16)"
+    "bold @(16.5, 16.9)",
+    "regular @(16.5, 16.6)"
+  ],
+  "mail-image-badge": [
+    "regular @(17, 17.5)"
   ],
   "mail-lock-badge": [
-    "bold @(18, 18)",
-    "regular @(18, 17.5)"
+    "bold @(18, 18.5)",
+    "regular @(18, 18.5)"
   ],
   "manga-bubble-interrobang": [
     "bold @(12, 11.9)"
@@ -1211,6 +1221,21 @@
   "notebook-pen": [
     "bold @(10, 11.5)",
     "bold @(10, 8.5)"
+  ],
+  "number-2-square": [
+    "bold @(12, 12)"
+  ],
+  "number-4-square": [
+    "bold @(12, 12)"
+  ],
+  "number-6-square": [
+    "bold @(12, 12)"
+  ],
+  "number-7-square": [
+    "bold @(12, 12)"
+  ],
+  "number-9-square": [
+    "bold @(12, 12)"
   ],
   "object-detection": [
     "bold @(15.5, 14.5)",
@@ -1471,12 +1496,14 @@
     "bold @(18, 17.5)",
     "regular @(18, 17.5)"
   ],
-  "shield-gauge-badge": [
-    "bold @(15.8, 16.5)",
-    "regular @(16, 16.8)"
+  "shield-clock-badge": [
+    "regular @(17, 17)"
   ],
   "shield-image": [
     "regular @(12, 11)"
+  ],
+  "shield-image-badge": [
+    "regular @(17, 17)"
   ],
   "shield-list": [
     "bold @(14.3, 15)",
@@ -1488,8 +1515,8 @@
     "regular @(12, 12.5)"
   ],
   "shield-lock-badge": [
-    "bold @(18, 18.5)",
-    "regular @(18, 18.5)"
+    "bold @(17, 18.5)",
+    "regular @(17, 18.5)"
   ],
   "shoe-formal": [
     "bold @(16.1, 18.5)"

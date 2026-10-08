@@ -45,11 +45,11 @@ function clearOfFlap(stroke) {
   }
 }
 
-// 角标：符号墨迹的右缘贴到 22、下缘贴到 21；右边和底边在离符号 GAP 处断开，轮廓从底边的断口出发绕一圈到右边的断口
+// 角标：符号墨迹的右缘、下缘贴到画布留白的边 (22, 22)（比信封底缘 21 低 1，和文件夹一样压在外框角上）；右边和底边在离符号 GAP 处断开，轮廓从底边的断口出发绕一圈到右边的断口
 export function withBadge(name, draw, tone, radius, stroke) {
   const { l, t, r, b } = frame(stroke)
   const [roomRight, flapClear] = [roomOnRight(stroke, r, t), clearOfFlap(stroke)]
-  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, bottom: 21 }, s => roomRight(s) && flapClear(s), GROW)
+  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, bottom: 22 }, s => roomRight(s) && flapClear(s), GROW)
   const right = blocked(shape, 'y', r, stroke)
   const bottom = blocked(shape, 'x', b, stroke)
   const outline = [[bottom ? bottom[0] : r, b], [l, b], [l, t], [r, t], [r, right ? right[0] : b]]

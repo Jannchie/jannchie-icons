@@ -96,15 +96,13 @@
     "regular (9.5, 4.06)"
   ],
   "briefcase-ban-badge": [
-    "bold (15.12, 14.12)",
-    "bold (19.88, 18.88)",
-    "regular (14.09, 13.09)",
-    "regular (19.91, 18.91)"
+    "bold (13.84, 13.84)",
+    "bold (19.66, 19.66)"
   ],
   "briefcase-search-badge": [
-    "bold (17.48, 16.48)",
-    "light (17.98, 16.98)",
-    "regular (17.73, 16.73)"
+    "bold (17.48, 17.48)",
+    "light (17.98, 17.98)",
+    "regular (17.73, 17.73)"
   ],
   "calendar-ban-badge": [
     "regular (14.37, 15.37)",
@@ -282,17 +280,13 @@
     "light (15.98, 17.98)",
     "regular (15.73, 17.73)"
   ],
-  "folder-ban-badge": [
-    "bold (13.84, 12.84)",
-    "bold (19.66, 18.66)"
-  ],
   "folder-clock-badge-top": [
     "bold (17.54, 4.24)"
   ],
   "folder-search-badge": [
-    "bold (17.48, 16.48)",
-    "light (17.98, 16.98)",
-    "regular (17.73, 16.73)"
+    "bold (17.48, 17.48)",
+    "light (17.98, 17.98)",
+    "regular (17.73, 17.73)"
   ],
   "folder-search-badge-top": [
     "bold (18.64, 7.64)",
@@ -440,13 +434,6 @@
     "bold (13.18, 11.57)",
     "regular (12.94, 11.53)"
   ],
-  "letter-b-circle": [
-    "bold (13.37, 11.6)"
-  ],
-  "letter-b-square": [
-    "bold (12.79, 11.6)",
-    "regular (12.55, 11.54)"
-  ],
   "list-ban": [
     "light (11.51, 11.27)",
     "light (18.99, 18.73)"
@@ -457,12 +444,9 @@
   "list-search": [
     "bold (16.48, 16.48)"
   ],
-  "mail-assets-badge": [
-    "light (21.1, 6.23)",
-    "light (21.3, 5.91)"
-  ],
-  "mail-search-badge": [
-    "light (18.54, 17.54)"
+  "mail-ban-badge": [
+    "bold (13.84, 13.84)",
+    "bold (19.66, 19.66)"
   ],
   "map-pin-search": [
     "light (17.98, 17.98)",
@@ -698,10 +682,9 @@
   "search-off": [
     "regular (4.01, 10.06)"
   ],
-  "shield-search-badge": [
-    "bold (17.48, 17.48)",
-    "light (17.98, 17.98)",
-    "regular (17.73, 17.73)"
+  "shield-ban-badge": [
+    "regular (14.09, 14.09)",
+    "regular (19.91, 19.91)"
   ],
   "shoe-formal": [
     "bold (21.44, 18.18)",
