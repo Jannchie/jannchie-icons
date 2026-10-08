@@ -1,0 +1,64 @@
+{
+  "name": "@jannchie/icons-react",
+  "version": "0.5.0",
+  "description": "React component for Jannchie Icons: one <JIcon> for every icon, with context defaults for radius and weight, pixel hinting and duo-tone colors",
+  "license": "MIT",
+  "author": "Jianqi Pan",
+  "homepage": "https://icons.jannchie.com",
+  "bugs": {
+    "url": "https://github.com/Jannchie/jannchie-icons/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jannchie/jannchie-icons.git",
+    "directory": "packages/react"
+  },
+  "keywords": [
+    "icons",
+    "svg",
+    "line-icons",
+    "react", "component"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./static": {
+      "import": {
+        "types": "./dist/static.d.ts",
+        "default": "./dist/static.js"
+      },
+      "require": {
+        "types": "./dist/static.d.cts",
+        "default": "./dist/static.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
+  "peerDependencies": {
+    "@jannchie/icons": "^0.5.0",
+    "react": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@jannchie/icons": "workspace:^"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "dist",
+    "NOTICE"
+  ]
+}

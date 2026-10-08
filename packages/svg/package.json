@@ -1,0 +1,32 @@
+{
+  "name": "@jannchie/icons-svg",
+  "version": "0.5.0",
+  "description": "Jannchie Icons as static SVG files and sprites: default (radius 2, regular), bold and sharp styles",
+  "license": "MIT",
+  "author": "Jianqi Pan",
+  "homepage": "https://icons.jannchie.com",
+  "bugs": {
+    "url": "https://github.com/Jannchie/jannchie-icons/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jannchie/jannchie-icons.git",
+    "directory": "packages/svg"
+  },
+  "keywords": [
+    "icons",
+    "svg",
+    "sprite",
+    "line-icons"
+  ],
+  "files": [
+    "svg",
+    "svg-bold",
+    "svg-sharp",
+    "sprite.svg",
+    "sprite-bold.svg",
+    "sprite-sharp.svg",
+    "names.json",
+    "NOTICE"
+  ]
+}
