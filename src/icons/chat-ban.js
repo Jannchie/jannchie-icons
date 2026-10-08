@@ -4,7 +4,7 @@ import { ban } from '../symbols'
 import { danger } from '../tone'
 
 // 对话 + 禁止
-export default ({ radius }) => [
-  rounded(bubble(radius), radius, false),
+export default ({ radius, stroke }) => [
+  rounded(bubble(stroke), radius, false),
   ...danger(ban(center, 1, radius)),
 ]

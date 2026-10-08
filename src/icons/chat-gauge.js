@@ -4,7 +4,7 @@ import { gauge } from '../symbols'
 import { info } from '../tone'
 
 // 对话 + 计速器
-export default ({ radius }) => [
-  rounded(bubble(radius), radius, false),
+export default ({ radius, stroke }) => [
+  rounded(bubble(stroke), radius, false),
   ...info(gauge(center, 1, radius)),
 ]

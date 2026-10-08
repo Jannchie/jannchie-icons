@@ -1,12 +1,6 @@
-import { place } from '../clearance'
-import { aroundBase, badge } from '../calendar'
-import { cornerScale, outlines, arrowDown } from '../symbols'
+import { withBadge } from '../calendar'
+import { arrowDown } from '../symbols'
 import { info } from '../tone'
 
 // 日历 + 右下角下箭头
-const k = cornerScale.arrowDown
-
-export default ({ radius, stroke }) => [
-  ...aroundBase(place(outlines.arrowDown, badge, k), radius, stroke),
-  ...info(arrowDown(badge, k, radius)),
-]
+export default ({ radius, stroke }) => withBadge('arrowDown', arrowDown, info, radius, stroke)

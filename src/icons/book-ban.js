@@ -3,7 +3,7 @@ import { ban } from '../symbols'
 import { danger } from '../tone'
 
 // 书 + 禁止
-export default ({ radius }) => [
-  ...plain(radius),
+export default ({ radius, stroke }) => [
+  ...plain(radius, stroke),
   ...danger(ban(center, centerScale, radius)),
 ]

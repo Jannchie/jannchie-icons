@@ -1,12 +1,6 @@
-import { place } from '../clearance'
-import { aroundTop, badgeTop } from '../chat'
-import { cornerScale, outlines, sparkle } from '../symbols'
+import { withBadgeTop } from '../chat'
+import { sparkle } from '../symbols'
 import { accent } from '../tone'
 
 // 对话 + 右上角星芒
-const k = cornerScale.sparkle
-
-export default ({ radius, stroke }) => [
-  ...aroundTop(place(outlines.sparkle, badgeTop, k), radius, stroke),
-  ...accent(sparkle(badgeTop, k, radius)),
-]
+export default ({ radius, stroke }) => withBadgeTop('sparkle', sparkle, accent, radius, stroke)

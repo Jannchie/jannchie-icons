@@ -1,32 +1,66 @@
-// 日历类图标共用：外框 3.5–20.5 × 4.5–20.5，表头线 y = 9.5，两个挂环 x = 7.5 / 16.5
-import { blocked, rectAround, rectAroundTop } from './clearance'
+// 日历类图标共用：外框 + 表头线 + 两个挂环
+// 墨迹框左右 3–21（方形主体收到 3）、上下 2–22（挂环顶在 2、外框底在 22），以画布中线对称；
+// 线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽
+// 外框墨迹 3–21 × 4–22；表头线在外框顶边下 5（线宽 1 时落在 9.5 上）；挂环 x 7.5 / 16.5，从 2 往下穿过顶边，停在离表头线 2.5 处
+import { blocked, place, rectAround, rectAroundTop } from './clearance'
+import { cornerCenter } from './corner'
 import { rounded } from './geometry'
+import { cornerScale, outlines } from './symbols'
 
-const [l, t, r, b] = [3.5, 4.5, 20.5, 20.5]
-export const frame = [[l, t], [r, t], [r, b], [l, b]]
-export const header = 'M3.5 9.5H20.5'
-export const rings = ['M7.5 3V7', 'M16.5 3V7']
-export const base = radius => [rounded(frame, Math.min(radius, 2.5)), header, ...rings]
+const RINGS = [7.5, 16.5]
+const R = 2.5 // 外框圆角上限
 
-// 居中符号放在表头下面的格子里（9.5–20.5 的中点）；格子比文件夹本体矮，符号缩到 0.9（对齐网格后相框取 7、书签 5，与其他系列观感一致）
-export const center = [12, 15]
+function frame(stroke) {
+  const h = stroke / 2
+  const [l, t, r, b] = [3 + h, 4 + h, 21 - h, 22 - h]
+  const head = t + 5
+  return { h, l, t, r, b, head, ringEnd: head - 2.5 }
+}
+
+const ring = (x, stroke) => `M${x} ${2 + stroke / 2}V${frame(stroke).ringEnd}`
+
+export function base(radius, stroke) {
+  const { l, t, r, b, head } = frame(stroke)
+  return [rounded([[l, t], [r, t], [r, b], [l, b]], Math.min(radius, R)), `M${l} ${head}H${r}`, ...RINGS.map(x => ring(x, stroke))]
+}
+
+// 格子区（表头线到底边）的中心，放居中符号用：表头线和底边都随线宽各收半个线宽，中点不变（15.5）
+export const center = [12, 15.5]
+// 格子区比文件夹本体矮（常规线宽下中心线高 11.5，文件夹本体 13.5），符号缩到 0.9，粗线宽下才不顶到表头线和底边
 export const centerScale = 0.9
 
-// 角标：符号中心从右下角往内收 2.5（与文件夹规则相同），右边和底边在离符号 GAP 处断开
-export const badge = [r - 2.5, b - 2.5]
-export const calendarAround = (shape, stroke) => rectAround(shape, stroke, [l, t, r, b])
-export const aroundBase = (shape, radius, stroke) => [rounded(calendarAround(shape, stroke), Math.min(radius, 2.5), false), header, ...rings]
-
-// 右上角标变体（-badge-top）：和其他系列一样从外框右上角往内收 2.5；外框顶边、右边、表头线在离符号 GAP 处断开。
-// 右边那根挂环正好在角标里，不画（放到表头下面的格子里时，挂环会直插进角标上方，外框右上还剩一截，很乱）；
-// 只剩左边一根挂环 + 表头，仍然认得出是日历
-const HEADER = 9.5
-export const badgeTop = [r - 2.5, t + 2.5]
-export function aroundTop(shape, radius, stroke) {
-  const head = blocked(shape, 'x', HEADER, stroke)
+// 角标：符号墨迹的右缘、下缘贴到外框右下角的外缘（21, 22）；右边和底边在离符号 GAP 处断开
+export function withBadge(name, draw, tone, radius, stroke) {
+  const { l, t, r, b, head } = frame(stroke)
+  const k = cornerScale[name]
+  const at = cornerCenter(draw, k, radius, stroke, { right: 21, bottom: 22 })
+  const shape = place(outlines[name], at, k)
+  const outline = rectAround(shape, stroke, [l, t, r, b])
+  // 高的符号（插头、拼图）让右边断到表头线下面不远处：剩下不到 1.5 的一小截像表头线下挂的毛刺，
+  // 右边就停在表头线上，并和表头线连成一笔拐过去（分开画的话，尖角模式下表头线的方头会从右边外侧冒出来）
+  const end = outline.at(-1)
+  const turn = end[1] < head + 1.5
+  if (turn)
+    end[1] = head
   return [
-    rounded(rectAroundTop(shape, stroke, [l, t, r, b]), Math.min(radius, 2.5), false),
-    `M${l} ${HEADER}H${head ? head[0] : r}`,
-    rings[0],
+    ...(turn ? [`${rounded(outline, Math.min(radius, R), false)}H${l}`] : [rounded(outline, Math.min(radius, R), false), `M${l} ${head}H${r}`]),
+    ...RINGS.map(x => ring(x, stroke)),
+    ...tone(draw(at, k, radius)),
+  ]
+}
+
+// 右上角标（-badge-top）：符号墨迹的右缘贴到外框右边的外缘 21，上缘和挂环顶（2）齐平，骑在外框的右上角上；
+// 外框顶边、右边、表头线在离符号 GAP 处断开。右边那根挂环正好在角标里，不画（只剩左边一根挂环 + 表头，仍然认得出是日历）
+export function withBadgeTop(name, draw, tone, radius, stroke) {
+  const { l, t, r, b, head } = frame(stroke)
+  const k = cornerScale[name]
+  const at = cornerCenter(draw, k, radius, stroke, { right: 21, top: 2 })
+  const shape = place(outlines[name], at, k)
+  const cut = blocked(shape, 'x', head, stroke)
+  return [
+    rounded(rectAroundTop(shape, stroke, [l, t, r, b]), Math.min(radius, R), false),
+    `M${l} ${head}H${cut ? cut[0] : r}`,
+    ring(RINGS[0], stroke),
+    ...tone(draw(at, k, radius)),
   ]
 }

@@ -4,8 +4,8 @@ import { ring } from '../symbols'
 import { accent } from '../tone'
 
 // 文件 + 圆
-export default ({ radius }) => [
-  rounded(page(radius), radius),
-  flap,
+export default ({ radius, stroke }) => [
+  rounded(page(stroke, radius), radius),
+  flap(stroke),
   ...accent(ring(center, 1, radius)),
 ]

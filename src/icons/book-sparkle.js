@@ -3,7 +3,7 @@ import { sparkle } from '../symbols'
 import { accent } from '../tone'
 
 // 书 + 星芒
-export default ({ radius }) => [
-  ...plain(radius),
+export default ({ radius, stroke }) => [
+  ...plain(radius, stroke),
   ...accent(sparkle(center, centerScale, radius)),
 ]

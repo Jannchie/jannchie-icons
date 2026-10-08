@@ -3,4 +3,4 @@ import { cloud } from '../symbols'
 import { info } from '../tone'
 
 // 盾 + 右下角云
-export default ({ radius }) => withBadge('cloud', cloud, info, radius)
+export default ({ radius, stroke }) => withBadge('cloud', cloud, info, radius, stroke)

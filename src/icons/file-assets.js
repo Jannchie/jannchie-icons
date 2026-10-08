@@ -4,8 +4,8 @@ import { assets } from '../symbols'
 import { accent } from '../tone'
 
 // 文件 + 素材
-export default ({ radius }) => [
-  rounded(page(radius), radius),
-  flap,
+export default ({ radius, stroke }) => [
+  rounded(page(stroke, radius), radius),
+  flap(stroke),
   ...accent(assets(center, 1, radius)),
 ]

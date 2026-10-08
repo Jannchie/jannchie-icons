@@ -1,9 +1,9 @@
-import { plain, center, centerScale } from '../monitor'
+import { center, centerScale, plain } from '../monitor'
 import { ban } from '../symbols'
 import { danger } from '../tone'
 
 // 显示器 + 禁止
-export default ({ radius }) => [
-  ...plain(radius),
+export default ({ radius, stroke }) => [
+  ...plain(radius, stroke),
   ...danger(ban(center, centerScale, radius)),
 ]

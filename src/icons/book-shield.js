@@ -3,7 +3,7 @@ import { shield } from '../symbols'
 import { success } from '../tone'
 
 // 书 + 盾
-export default ({ radius }) => [
-  ...plain(radius),
+export default ({ radius, stroke }) => [
+  ...plain(radius, stroke),
   ...success(shield(center, centerScale, radius)),
 ]

@@ -1,7 +1,7 @@
-import { circle, rounded } from '../geometry'
+import { tagDiagonal, tagHole } from '../tag'
 
-// 标签：左上切出的五边形 + 穿孔
-export default ({ radius }) => [
-  rounded([[3.5, 3.5], [11.5, 3.5], [20.5, 12.5], [12.5, 20.5], [3.5, 11.5]], Math.min(radius, 2)),
-  circle(8, 8, 1.25),
+// 标签：左上方角的斜放标签 + 穿孔
+export default ({ radius, stroke }) => [
+  tagDiagonal(stroke, radius),
+  tagHole(),
 ]

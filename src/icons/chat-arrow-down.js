@@ -4,7 +4,7 @@ import { arrowDown } from '../symbols'
 import { info } from '../tone'
 
 // 对话 + 下箭头
-export default ({ radius }) => [
-  rounded(bubble(radius), radius, false),
+export default ({ radius, stroke }) => [
+  rounded(bubble(stroke), radius, false),
   ...info(arrowDown(center, 1, radius)),
 ]

@@ -1,7 +1,7 @@
-import { rounded } from '../geometry'
 import { bubble } from '../chat'
+import { rounded } from '../geometry'
 
 // 对话气泡
-export default ({ radius }) => [
-  rounded(bubble(radius), radius, false),
+export default ({ radius, stroke }) => [
+  rounded(bubble(stroke), radius, false),
 ]

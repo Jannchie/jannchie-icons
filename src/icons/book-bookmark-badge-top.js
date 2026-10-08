@@ -1,12 +1,6 @@
-import { place } from '../clearance'
-import { aroundTop, badgeTop } from '../book'
-import { bookmark, cornerScale, outlines } from '../symbols'
+import { withBadgeTop } from '../book'
+import { bookmark } from '../symbols'
 import { accent } from '../tone'
 
 // 书 + 右上角书签
-const k = cornerScale.bookmark
-
-export default ({ radius, stroke }) => [
-  ...aroundTop(place(outlines.bookmark, badgeTop, k), radius, stroke),
-  ...accent(bookmark(badgeTop, k, radius)),
-]
+export default ({ radius, stroke }) => withBadgeTop('bookmark', bookmark, accent, radius, stroke)

@@ -4,7 +4,7 @@ import { ellipsis } from '../symbols'
 import { accent } from '../tone'
 
 // 对话 + 省略号
-export default ({ radius }) => [
-  rounded(bubble(radius), radius, false),
+export default ({ radius, stroke }) => [
+  rounded(bubble(stroke), radius, false),
   ...accent(ellipsis(center, 1, radius)),
 ]

@@ -4,8 +4,8 @@ import { arrowDown } from '../symbols'
 import { info } from '../tone'
 
 // 文件 + 下箭头
-export default ({ radius }) => [
-  rounded(page(radius), radius),
-  flap,
+export default ({ radius, stroke }) => [
+  rounded(page(stroke, radius), radius),
+  flap(stroke),
   ...info(arrowDown(center, 1, radius)),
 ]

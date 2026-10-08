@@ -170,30 +170,33 @@
     "regular @(10.5, 14)"
   ],
   "book-clock-badge": [
-    "bold @(17, 18.1)",
-    "regular @(17, 18)"
+    "bold @(14.5, 16.8)",
+    "regular @(15, 17)"
   ],
   "book-clock-badge-top": [
-    "bold @(17, 6.1)",
-    "regular @(17, 6)"
+    "bold @(14.5, 7.3)",
+    "regular @(15, 7)"
   ],
-  "book-code": [
-    "bold @(11, 9.6)",
-    "regular @(11, 9.6)"
+  "book-image": [
+    "regular @(12, 9.5)"
   ],
   "book-image-badge": [
-    "regular @(17, 18)"
+    "regular @(14.5, 17)"
   ],
   "book-image-badge-top": [
-    "regular @(17, 6)"
+    "regular @(14.5, 7)"
+  ],
+  "book-lock": [
+    "bold @(12, 11)",
+    "regular @(12, 11)"
   ],
   "book-lock-badge": [
-    "bold @(17, 19.5)",
-    "regular @(17, 19.5)"
+    "bold @(16, 19)",
+    "regular @(16, 19)"
   ],
   "book-lock-badge-top": [
-    "bold @(17, 7.5)",
-    "regular @(17, 7.5)"
+    "bold @(16, 8.5)",
+    "regular @(16, 8)"
   ],
   "bookmark-list": [
     "bold @(14.8, 14.5)",
@@ -222,22 +225,22 @@
     "regular @(11.5, 13.5)"
   ],
   "briefcase-clock-badge": [
-    "bold @(18, 17.1)",
-    "regular @(18, 17)"
+    "bold @(16.5, 15.9)",
+    "regular @(17, 16)"
   ],
   "briefcase-image": [
-    "regular @(12, 13)"
+    "regular @(12, 14)"
   ],
   "briefcase-image-badge": [
-    "regular @(18, 17)"
+    "regular @(16.5, 16)"
   ],
   "briefcase-lock": [
-    "bold @(12, 14.5)",
-    "regular @(12, 14.5)"
+    "bold @(12, 15.5)",
+    "regular @(12, 15.5)"
   ],
   "briefcase-lock-badge": [
-    "bold @(18, 18.5)",
-    "regular @(18, 18.5)"
+    "bold @(18, 18)",
+    "regular @(18, 18)"
   ],
   "broom": [
     "bold @(7.8, 7.8)"
@@ -258,50 +261,52 @@
     "bold @(8.5, 10.5)"
   ],
   "calendar-clock-badge": [
-    "bold @(18, 18.1)",
-    "regular @(18, 18)"
+    "bold @(15.5, 16.8)",
+    "regular @(16, 17)"
   ],
   "calendar-clock-badge-top": [
-    "bold @(18, 7.1)",
-    "regular @(18, 7)"
+    "bold @(15.5, 7.3)",
+    "regular @(16, 7)"
   ],
   "calendar-code": [
-    "bold @(10.3, 15.1)",
-    "regular @(10.3, 15.1)"
+    "bold @(10.3, 15.6)",
+    "regular @(10.3, 15.6)"
   ],
   "calendar-heart": [
-    "bold @(12, 12.5)"
+    "bold @(12, 13)"
   ],
   "calendar-image": [
-    "bold @(12, 12.5)",
-    "regular @(12, 15)"
+    "bold @(12, 13)",
+    "regular @(12, 15.5)"
   ],
   "calendar-image-badge": [
-    "regular @(18, 18)"
+    "regular @(15.5, 17)"
   ],
   "calendar-image-badge-top": [
-    "regular @(18, 7)"
+    "regular @(15.5, 7)"
   ],
   "calendar-lock": [
-    "bold @(12, 12.5)",
-    "bold @(12, 16.5)",
-    "bold @(12, 9.5)",
-    "regular @(12, 16.5)",
-    "regular @(12, 9.5)"
+    "bold @(12, 10)",
+    "bold @(12, 13)",
+    "bold @(12, 17)",
+    "regular @(12, 17)"
   ],
   "calendar-lock-badge": [
-    "bold @(18, 19.5)",
-    "regular @(18, 19.5)"
+    "bold @(17, 19)",
+    "regular @(17, 19)"
   ],
   "calendar-lock-badge-top": [
-    "bold @(18, 8.5)",
-    "regular @(18, 8.5)"
+    "bold @(17, 8.5)",
+    "regular @(17, 8)"
   ],
   "calendar-music": [
-    "bold @(12, 12.5)"
+    "bold @(12, 13)"
+  ],
+  "calendar-plug": [
+    "bold @(12, 10)"
   ],
   "calendar-puzzle": [
-    "bold @(12, 12.5)"
+    "bold @(12, 10)"
   ],
   "camera-action": [
     "bold @(12, 11)"
@@ -353,61 +358,61 @@
     "regular @(12, 6.5)"
   ],
   "chat-clock-badge": [
-    "bold @(18, 14.1)",
-    "regular @(18, 14)"
+    "bold @(16.5, 11.9)",
+    "regular @(17, 12)"
   ],
   "chat-clock-badge-top": [
-    "bold @(18, 7.1)",
-    "regular @(18, 7)"
+    "bold @(16.5, 8.4)",
+    "regular @(17, 8)"
   ],
   "chat-ellipsis": [
-    "bold @(12, 10.5)",
-    "bold @(9.3, 10.5)"
+    "bold @(12, 10)",
+    "bold @(9.3, 10)"
   ],
   "chat-ellipsis-badge": [
-    "bold @(14.8, 14)",
-    "bold @(18, 14)"
+    "bold @(14.6, 16)",
+    "bold @(17.8, 16)"
   ],
   "chat-ellipsis-badge-top": [
-    "bold @(14.8, 7)",
-    "bold @(18, 7)"
+    "bold @(14.6, 4)",
+    "bold @(17.8, 4)"
   ],
   "chat-exclaim": [
-    "bold @(12, 8.9)"
+    "bold @(12, 8.4)"
   ],
   "chat-image": [
-    "regular @(12, 10.5)"
+    "regular @(12, 10)"
   ],
   "chat-image-badge": [
-    "regular @(18, 14)"
+    "regular @(16.5, 12)"
   ],
   "chat-image-badge-top": [
-    "regular @(18, 7)"
+    "regular @(16.5, 8)"
   ],
   "chat-lock": [
-    "bold @(12, 12)",
-    "regular @(12, 12)"
+    "bold @(12, 11.5)",
+    "regular @(12, 11.5)"
   ],
   "chat-lock-badge": [
-    "bold @(18, 15.5)",
-    "regular @(18, 15.5)"
+    "bold @(18, 14)",
+    "regular @(18, 14)"
   ],
   "chat-lock-badge-top": [
-    "bold @(18, 8.5)",
-    "regular @(18, 8.5)"
+    "bold @(18, 9.5)",
+    "regular @(18, 9)"
   ],
   "chat-question": [
-    "bold @(12, 9.1)"
+    "bold @(12, 8.6)"
   ],
   "chat-question-badge": [
-    "bold @(18, 12.3)"
+    "bold @(19, 11.1)"
   ],
   "chat-question-badge-top": [
-    "bold @(18, 5.3)"
+    "bold @(19, 6.6)"
   ],
   "chats": [
     "bold @(6, 13)",
-    "bold @(8.5, 7.5)"
+    "bold @(8.8, 7.8)"
   ],
   "check-list": [
     "bold @(14.8, 14.5)",
@@ -447,11 +452,16 @@
     "regular @(12, 12)"
   ],
   "chinese-zodiac-monkey": [
-    "bold @(12, 12)",
     "bold @(12, 13.3)",
+    "bold @(2.3, 12.4)",
+    "bold @(2.3, 12.7)",
+    "bold @(21.7, 12.6)",
     "regular @(11.3, 14.8)",
     "regular @(12, 12)",
-    "regular @(12, 13.3)"
+    "regular @(12, 13.3)",
+    "regular @(2.5, 11.8)",
+    "regular @(2.6, 13.3)",
+    "regular @(21.4, 12.6)"
   ],
   "chinese-zodiac-pig": [
     "bold @(12, 15.5)"
@@ -460,7 +470,8 @@
     "regular @(12, 11.5)"
   ],
   "chinese-zodiac-rat": [
-    "regular @(12, 14.2)"
+    "regular @(12, 14.2)",
+    "regular @(6.5, 5.3)"
   ],
   "chinese-zodiac-rooster": [
     "bold @(12, 18.4)",
@@ -635,25 +646,22 @@
     "regular @(19.8, 12)"
   ],
   "file-clock-badge": [
-    "bold @(17, 18.1)",
-    "regular @(17, 18)"
+    "bold @(14.5, 16.8)",
+    "regular @(15, 17)"
   ],
   "file-image": [
-    "regular @(12, 13)"
+    "regular @(12, 13.5)"
   ],
   "file-image-badge": [
-    "regular @(17, 18)"
+    "regular @(14.5, 17)"
   ],
   "file-lock": [
-    "bold @(12, 14.5)",
-    "regular @(12, 14.5)"
+    "bold @(12, 15)",
+    "regular @(12, 15)"
   ],
   "file-lock-badge": [
-    "bold @(17, 19.5)",
-    "regular @(17, 19.5)"
-  ],
-  "file-text": [
-    "bold @(12, 11.5)"
+    "bold @(16, 19)",
+    "regular @(16, 19)"
   ],
   "fill-mask": [
     "bold @(6, 11.5)",
@@ -1018,33 +1026,42 @@
     "bold @(9.5, 12)"
   ],
   "license": [
-    "regular @(17, 16)"
+    "regular @(15.4, 21.1)",
+    "regular @(18.6, 21.1)"
   ],
   "license-agpl": [
-    "regular @(17, 16)"
+    "regular @(15.4, 21.1)",
+    "regular @(18.6, 21.1)"
   ],
   "license-apache": [
-    "regular @(17, 16)"
+    "regular @(15.4, 21.1)",
+    "regular @(18.6, 21.1)"
   ],
   "license-bsd": [
-    "regular @(17, 16)"
+    "regular @(15.4, 21.1)",
+    "regular @(18.6, 21.1)"
   ],
   "license-gpl": [
-    "regular @(17, 16)"
+    "regular @(15.4, 21.1)",
+    "regular @(18.6, 21.1)"
   ],
   "license-isc": [
     "bold @(7.5, 10.5)",
-    "regular @(17, 16)"
+    "regular @(15.4, 21.1)",
+    "regular @(18.6, 21.1)"
   ],
   "license-lgpl": [
-    "regular @(17, 16)"
+    "regular @(15.4, 21.1)",
+    "regular @(18.6, 21.1)"
   ],
   "license-mit": [
     "bold @(7.5, 8)",
-    "regular @(17, 16)"
+    "regular @(15.4, 21.1)",
+    "regular @(18.6, 21.1)"
   ],
   "license-mpl": [
-    "regular @(17, 16)"
+    "regular @(15.4, 21.1)",
+    "regular @(18.6, 21.1)"
   ],
   "lighthouse": [
     "bold @(12, 8)",
@@ -1072,15 +1089,15 @@
     "regular @(12, 12)"
   ],
   "mail-clock-badge": [
-    "bold @(18, 17.1)",
-    "regular @(18, 17)"
+    "bold @(16.5, 15.9)",
+    "regular @(17, 16)"
   ],
   "mail-image-badge": [
-    "regular @(18, 17)"
+    "regular @(16.5, 16)"
   ],
   "mail-lock-badge": [
-    "bold @(18, 18.5)",
-    "regular @(18, 18.5)"
+    "bold @(18, 18)",
+    "regular @(18, 18)"
   ],
   "manga-bubble-interrobang": [
     "bold @(12, 11.9)"
@@ -1092,15 +1109,15 @@
     "bold @(12, 11.4)"
   ],
   "map-pin-clock": [
-    "bold @(18, 17.1)",
-    "regular @(18, 17)"
+    "bold @(16.5, 16.9)",
+    "regular @(17, 17)"
   ],
   "map-pin-image": [
-    "regular @(18, 17)"
+    "regular @(16.5, 17)"
   ],
   "map-pin-lock": [
-    "bold @(18, 18.5)",
-    "regular @(18, 18.5)"
+    "bold @(18, 19)",
+    "regular @(18, 19)"
   ],
   "mask-generation": [
     "bold @(11.1, 12)",
@@ -1139,57 +1156,64 @@
     "bold @(14.8, 20.5)"
   ],
   "monitor-clock-badge": [
-    "bold @(18, 14.1)",
-    "regular @(18, 14)"
+    "bold @(16.5, 11.9)",
+    "regular @(17, 12)"
   ],
   "monitor-clock-badge-top": [
-    "bold @(18, 6.1)",
-    "regular @(18, 6)"
+    "bold @(16.5, 8.4)",
+    "regular @(17, 8)"
+  ],
+  "monitor-cloud-badge": [
+    "regular @(12, 12)"
   ],
   "monitor-ellipsis": [
     "bold @(12, 10)",
     "bold @(9.3, 10)"
   ],
   "monitor-ellipsis-badge": [
-    "bold @(14.8, 14)",
-    "bold @(18, 14)"
+    "bold @(14.6, 16)",
+    "bold @(17.8, 16)"
   ],
   "monitor-ellipsis-badge-top": [
-    "bold @(14.8, 6)",
-    "bold @(18, 6)"
+    "bold @(14.6, 4)",
+    "bold @(17.8, 4)"
   ],
   "monitor-exclaim": [
     "bold @(12, 8.4)"
+  ],
+  "monitor-gauge-badge": [
+    "bold @(12, 12)"
   ],
   "monitor-image": [
     "regular @(12, 10)"
   ],
   "monitor-image-badge": [
-    "regular @(18, 14)"
+    "bold @(12, 12)",
+    "regular @(16.5, 12)"
   ],
   "monitor-image-badge-top": [
-    "regular @(18, 6)"
+    "regular @(16.5, 8)"
   ],
   "monitor-lock": [
     "bold @(12, 11.5)",
     "regular @(12, 11.5)"
   ],
   "monitor-lock-badge": [
-    "bold @(18, 15.5)",
-    "regular @(18, 15.5)"
+    "bold @(18, 14)",
+    "regular @(18, 14)"
   ],
   "monitor-lock-badge-top": [
-    "bold @(18, 7.5)",
-    "regular @(18, 7.5)"
+    "bold @(18, 9.5)",
+    "regular @(18, 9)"
   ],
   "monitor-question": [
     "bold @(12, 8.6)"
   ],
   "monitor-question-badge": [
-    "bold @(18, 12.3)"
+    "bold @(19, 11.1)"
   ],
   "monitor-question-badge-top": [
-    "bold @(18, 4.3)"
+    "bold @(19, 6.6)"
   ],
   "mosque": [
     "bold @(19.5, 13.2)",
@@ -1203,8 +1227,7 @@
     "bold @(14.8, 14.5)",
     "bold @(14.8, 17.5)",
     "bold @(14.8, 20.5)",
-    "bold @(15, 8.7)",
-    "regular @(12.4, 16)"
+    "bold @(15, 8.7)"
   ],
   "neural-network": [
     "bold @(16.3, 10)",
@@ -1476,27 +1499,27 @@
     "regular @(18, 17.5)"
   ],
   "shield-clock-badge": [
-    "bold @(18, 17.1)",
-    "regular @(18, 17)"
+    "bold @(16.5, 16.9)",
+    "regular @(17, 17)"
   ],
   "shield-image": [
     "regular @(12, 11)"
   ],
   "shield-image-badge": [
-    "regular @(18, 17)"
+    "regular @(16.5, 17)"
   ],
   "shield-list": [
-    "bold @(14.8, 14.5)",
-    "bold @(14.8, 17.5)",
-    "bold @(14.8, 20.5)"
+    "bold @(14.3, 15)",
+    "bold @(14.3, 18)",
+    "bold @(14.3, 21)"
   ],
   "shield-lock": [
     "bold @(12, 12.5)",
     "regular @(12, 12.5)"
   ],
   "shield-lock-badge": [
-    "bold @(18, 18.5)",
-    "regular @(18, 18.5)"
+    "bold @(18, 19)",
+    "regular @(18, 19)"
   ],
   "shoe-formal": [
     "bold @(16.1, 18.5)"
@@ -1646,8 +1669,12 @@
   "tada": [
     "bold @(16, 8)"
   ],
+  "tag-h": [
+    "bold @(12.1, 12)"
+  ],
   "tag-k": [
     "bold @(11.5, 11.5)",
+    "bold @(12.1, 12)",
     "regular @(11.5, 11.5)"
   ],
   "text-classification": [

@@ -3,4 +3,4 @@ import { check } from '../symbols'
 import { success } from '../tone'
 
 // 定位针 + 右下角对勾
-export default ({ radius }) => withBadge('check', check, success, radius)
+export default ({ radius, stroke }) => withBadge('check', check, success, radius, stroke)

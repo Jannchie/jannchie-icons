@@ -1,12 +1,6 @@
-import { place } from '../clearance'
-import { aroundTop, badgeTop } from '../book'
-import { cornerScale, gauge, outlines } from '../symbols'
+import { withBadgeTop } from '../book'
+import { gauge } from '../symbols'
 import { info } from '../tone'
 
 // 书 + 右上角计速器
-const k = cornerScale.gauge
-
-export default ({ radius, stroke }) => [
-  ...aroundTop(place(outlines.gauge, badgeTop, k), radius, stroke),
-  ...info(gauge(badgeTop, k, radius)),
-]
+export default ({ radius, stroke }) => withBadgeTop('gauge', gauge, info, radius, stroke)

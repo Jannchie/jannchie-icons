@@ -1,12 +1,6 @@
-import { place } from '../clearance'
-import { aroundTop, badgeTop } from '../chat'
-import { cornerScale, outlines, star } from '../symbols'
+import { withBadgeTop } from '../chat'
+import { star } from '../symbols'
 import { warning } from '../tone'
 
 // 对话 + 右上角收藏
-const k = cornerScale.star
-
-export default ({ radius, stroke }) => [
-  ...aroundTop(place(outlines.star, badgeTop, k), radius, stroke),
-  ...warning(star(badgeTop, k, radius)),
-]
+export default ({ radius, stroke }) => withBadgeTop('star', star, warning, radius, stroke)

@@ -4,8 +4,8 @@ import { minus } from '../symbols'
 import { danger } from '../tone'
 
 // 文件 + 减号
-export default ({ radius }) => [
-  rounded(page(radius), radius),
-  flap,
+export default ({ radius, stroke }) => [
+  rounded(page(stroke, radius), radius),
+  flap(stroke),
   ...danger(minus(center, 1, radius)),
 ]

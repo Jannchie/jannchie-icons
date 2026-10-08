@@ -4,7 +4,7 @@ import { clock } from '../symbols'
 import { info } from '../tone'
 
 // 对话 + 时钟
-export default ({ radius }) => [
-  rounded(bubble(radius), radius, false),
+export default ({ radius, stroke }) => [
+  rounded(bubble(stroke), radius, false),
   ...info(clock(center, 1, radius)),
 ]

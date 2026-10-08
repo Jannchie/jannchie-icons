@@ -1,4 +1,4 @@
-import { shield } from '../symbols'
+import { plain } from '../shield'
 
 // 盾
-export default ({ radius }) => shield([12, 12], 2.3, radius)
+export default ({ stroke }) => plain(stroke)

@@ -4,7 +4,7 @@ import { lock } from '../symbols'
 import { warning } from '../tone'
 
 // 对话 + 锁
-export default ({ radius }) => [
-  rounded(bubble(radius), radius, false),
+export default ({ radius, stroke }) => [
+  rounded(bubble(stroke), radius, false),
   ...warning(lock(center, 1, radius)),
 ]

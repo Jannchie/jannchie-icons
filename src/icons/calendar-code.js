@@ -3,7 +3,7 @@ import { code } from '../symbols'
 import { accent } from '../tone'
 
 // 日历 + 代码
-export default ({ radius }) => [
-  ...base(radius),
+export default ({ radius, stroke }) => [
+  ...base(radius, stroke),
   ...accent(code(center, centerScale, radius)),
 ]

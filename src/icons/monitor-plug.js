@@ -1,9 +1,9 @@
-import { plain, center, centerScale } from '../monitor'
+import { center, centerScale, plain } from '../monitor'
 import { plug } from '../symbols'
 import { accent } from '../tone'
 
 // 显示器 + 插头
-export default ({ radius }) => [
-  ...plain(radius),
+export default ({ radius, stroke }) => [
+  ...plain(radius, stroke),
   ...accent(plug(center, centerScale, radius)),
 ]

@@ -4,8 +4,8 @@ import { star } from '../symbols'
 import { warning } from '../tone'
 
 // 文件 + 收藏
-export default ({ radius }) => [
-  rounded(page(radius), radius),
-  flap,
+export default ({ radius, stroke }) => [
+  rounded(page(stroke, radius), radius),
+  flap(stroke),
   ...warning(star(center, 1, radius)),
 ]

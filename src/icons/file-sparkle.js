@@ -4,8 +4,8 @@ import { sparkle } from '../symbols'
 import { accent } from '../tone'
 
 // 文件 + 星芒
-export default ({ radius }) => [
-  rounded(page(radius), radius),
-  flap,
+export default ({ radius, stroke }) => [
+  rounded(page(stroke, radius), radius),
+  flap(stroke),
   ...accent(sparkle(center, 1, radius)),
 ]

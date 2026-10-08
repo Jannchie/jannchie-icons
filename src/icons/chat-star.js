@@ -4,7 +4,7 @@ import { star } from '../symbols'
 import { warning } from '../tone'
 
 // 对话 + 收藏
-export default ({ radius }) => [
-  rounded(bubble(radius), radius, false),
+export default ({ radius, stroke }) => [
+  rounded(bubble(stroke), radius, false),
   ...warning(star(center, 1, radius)),
 ]

@@ -3,7 +3,7 @@ import { arrowDown } from '../symbols'
 import { info } from '../tone'
 
 // 日历 + 下箭头
-export default ({ radius }) => [
-  ...base(radius),
+export default ({ radius, stroke }) => [
+  ...base(radius, stroke),
   ...info(arrowDown(center, centerScale, radius)),
 ]

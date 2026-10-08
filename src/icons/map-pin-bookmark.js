@@ -3,4 +3,4 @@ import { bookmark } from '../symbols'
 import { accent } from '../tone'
 
 // 定位针 + 右下角书签
-export default ({ radius }) => withBadge('bookmark', bookmark, accent, radius)
+export default ({ radius, stroke }) => withBadge('bookmark', bookmark, accent, radius, stroke)

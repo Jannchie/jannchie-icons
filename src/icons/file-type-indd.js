@@ -1,10 +1,10 @@
-import { flap, labelBox, pageTop } from '../file'
+import { flap, pageTop, wideLabelBox } from '../file'
 import { rounded } from '../geometry'
 import { label } from '../letters'
 
 // INDD 文件：纸张上半部分 + 下方线条字母
-export default ({ radius }) => [
-  rounded(pageTop(radius), radius, false),
-  flap,
-  ...label('indd', labelBox),
+export default ({ radius, stroke }) => [
+  rounded(pageTop(stroke, radius), radius, false),
+  flap(stroke),
+  ...label('indd', wideLabelBox),
 ]

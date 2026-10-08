@@ -1,14 +1,6 @@
-import { place } from '../clearance'
-import { badge, flap, pageAround } from '../file'
-import { rounded } from '../geometry'
-import { arrowDown, cornerScale, outlines } from '../symbols'
+import { withBadge } from '../file'
+import { arrowDown } from '../symbols'
 import { info } from '../tone'
 
 // 文件 + 右下角下箭头
-const k = cornerScale.arrowDown
-
-export default ({ radius, stroke }) => [
-  rounded(pageAround(place(outlines.arrowDown, badge, k), stroke, radius), radius, false),
-  flap,
-  ...info(arrowDown(badge, k, radius)),
-]
+export default ({ radius, stroke }) => withBadge('arrowDown', arrowDown, info, radius, stroke)

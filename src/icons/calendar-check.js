@@ -3,7 +3,7 @@ import { check } from '../symbols'
 import { success } from '../tone'
 
 // 日历 + 勾
-export default ({ radius }) => [
-  ...base(radius),
+export default ({ radius, stroke }) => [
+  ...base(radius, stroke),
   ...success(check(center, centerScale, radius)),
 ]

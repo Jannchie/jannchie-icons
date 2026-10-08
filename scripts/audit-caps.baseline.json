@@ -11,8 +11,10 @@
     "bold (3.06, 11)"
   ],
   "arrow-down-list": [
-    "bold (11.5, 18.44)",
-    "regular (11.5, 18.58)"
+    "bold (11.94, 18.56)"
+  ],
+  "arrow-right-list": [
+    "regular (18.5, 12)"
   ],
   "astro-earth": [
     "bold (3.55, 11.1)",
@@ -78,10 +80,6 @@
   "branch-mao": [
     "bold (9.32, 4.24)",
     "regular (9.5, 4.06)"
-  ],
-  "calendar-off": [
-    "regular (7.78, 3.79)",
-    "regular (8.07, 3.99)"
   ],
   "camera-rotate": [
     "bold (14.32, 10.98)",
@@ -254,16 +252,17 @@
   ],
   "globe-search": [
     "bold (11.21, 2.64)",
-    "bold (12.7, 20.48)",
+    "bold (12.76, 20.37)",
     "bold (12.78, 2.64)",
+    "bold (3.01, 11.91)",
     "bold (3.02, 10.84)",
-    "bold (3.02, 12.04)",
-    "light (3, 11.32)",
-    "light (5.02, 16.5)",
+    "light (11.65, 2.53)",
+    "light (13.23, 20.16)",
+    "light (13.47, 20.38)",
     "regular (11.43, 2.57)",
     "regular (12.55, 2.57)",
-    "regular (3.01, 11.08)",
-    "regular (3.02, 11.92)"
+    "regular (3, 11.68)",
+    "regular (3.01, 11.08)"
   ],
   "golf": [
     "bold (10.05, 3.22)",
@@ -334,11 +333,7 @@
     "regular (3.54, 20.5)"
   ],
   "home-off": [
-    "bold (5.64, 11.25)",
-    "bold (5.94, 11.12)",
-    "light (17.5, 20.33)",
-    "regular (5.97, 10.47)",
-    "regular (6.25, 10.52)"
+    "light (17.5, 20.33)"
   ],
   "keypoint-detection": [
     "bold (16.39, 10.05)",
@@ -355,10 +350,6 @@
     "bold (4.82, 7.27)",
     "bold (5.05, 7)",
     "bold (9.95, 7)"
-  ],
-  "laundry-wash-hand": [
-    "bold (20.32, 8.63)",
-    "bold (20.45, 8.91)"
   ],
   "laundry-wash-off": [
     "bold (19.79, 4.21)",
@@ -389,14 +380,6 @@
   "list-search": [
     "bold (16.48, 16.48)"
   ],
-  "map-pin-clock": [
-    "bold (12.04, 11.14)",
-    "bold (12.14, 11.04)"
-  ],
-  "map-pin-star": [
-    "bold (11.95, 11.22)",
-    "bold (12.22, 10.95)"
-  ],
   "mask-generation": [
     "bold (17.53, 13.13)",
     "regular (17.52, 13.24)"
@@ -411,6 +394,9 @@
     "light (8.13, 11.85)",
     "regular (11.93, 8.24)",
     "regular (8.24, 11.93)"
+  ],
+  "monitor-off": [
+    "bold (12, 16.24)"
   ],
   "moon-phase-first-quarter": [
     "bold (3.03, 11.22)",
@@ -432,11 +418,13 @@
   ],
   "music-list": [
     "bold (6.5, 16.5)",
-    "regular (12.37, 15.63)",
-    "regular (12.44, 16.98)"
+    "regular (12.44, 15.92)",
+    "regular (12.5, 15.92)"
   ],
   "music-off": [
     "bold (12.49, 16.74)",
+    "light (12.5, 15.83)",
+    "regular (12.48, 16.58)",
     "regular (12.5, 16.04)"
   ],
   "neural-network": [
@@ -599,9 +587,9 @@
     "bold (5.6, 6.73)"
   ],
   "screen-share-off": [
-    "light (11.5, 8.09)",
+    "regular (11.27, 7.73)",
     "regular (11.5, 7.5)",
-    "regular (11.5, 7.73)"
+    "regular (11.5, 7.96)"
   ],
   "search-off": [
     "regular (4.01, 10.06)"
@@ -678,6 +666,9 @@
   "strawberry": [
     "bold (15.85, 7.52)",
     "bold (8.15, 7.52)"
+  ],
+  "swords": [
+    "light (13.41, 14.83)"
   ],
   "tent": [
     "bold (20.31, 20.16)",

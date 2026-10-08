@@ -1,12 +1,6 @@
-import { place } from '../clearance'
-import { aroundTop, badgeTop } from '../monitor'
-import { clock, cornerScale, outlines } from '../symbols'
+import { withBadgeTop } from '../monitor'
+import { clock } from '../symbols'
 import { info } from '../tone'
 
 // 显示器 + 右上角时钟
-const k = cornerScale.clock
-
-export default ({ radius, stroke }) => [
-  ...aroundTop(place(outlines.clock, badgeTop, k), radius, stroke),
-  ...info(clock(badgeTop, k, radius)),
-]
+export default ({ radius, stroke }) => withBadgeTop('clock', clock, info, radius, stroke)

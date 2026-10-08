@@ -4,7 +4,7 @@ import { sparkle } from '../symbols'
 import { accent } from '../tone'
 
 // 对话 + 星芒
-export default ({ radius }) => [
-  rounded(bubble(radius), radius, false),
+export default ({ radius, stroke }) => [
+  rounded(bubble(stroke), radius, false),
   ...accent(sparkle(center, 1, radius)),
 ]

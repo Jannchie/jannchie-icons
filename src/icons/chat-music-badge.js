@@ -1,13 +1,6 @@
-import { badge, bubbleAround } from '../chat'
-import { place } from '../clearance'
-import { rounded } from '../geometry'
-import { cornerScale, music, outlines } from '../symbols'
+import { withBadge } from '../chat'
+import { music } from '../symbols'
 import { accent } from '../tone'
 
 // 对话 + 右下角音乐
-const k = cornerScale.music
-
-export default ({ radius, stroke }) => [
-  ...bubbleAround(place(outlines.music, badge, k), stroke, radius).map(p => rounded(p, radius, false)),
-  ...accent(music(badge, k, radius)),
-]
+export default ({ radius, stroke }) => withBadge('music', music, accent, radius, stroke)

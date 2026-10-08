@@ -1,12 +1,6 @@
-import { place } from '../clearance'
-import { aroundTop, badgeTop } from '../book'
-import { cornerScale, minus, outlines } from '../symbols'
+import { withBadgeTop } from '../book'
+import { minus } from '../symbols'
 import { danger } from '../tone'
 
 // 书 + 右上角减号
-const k = cornerScale.minus
-
-export default ({ radius, stroke }) => [
-  ...aroundTop(place(outlines.minus, badgeTop, k), radius, stroke),
-  ...danger(minus(badgeTop, k, radius)),
-]
+export default ({ radius, stroke }) => withBadgeTop('minus', minus, danger, radius, stroke)

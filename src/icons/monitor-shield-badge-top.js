@@ -1,12 +1,6 @@
-import { place } from '../clearance'
-import { aroundTop, badgeTop } from '../monitor'
-import { cornerScale, outlines, shield } from '../symbols'
+import { withBadgeTop } from '../monitor'
+import { shield } from '../symbols'
 import { success } from '../tone'
 
 // 显示器 + 右上角盾
-const k = cornerScale.shield
-
-export default ({ radius, stroke }) => [
-  ...aroundTop(place(outlines.shield, badgeTop, k), radius, stroke),
-  ...success(shield(badgeTop, k, radius)),
-]
+export default ({ radius, stroke }) => withBadgeTop('shield', shield, success, radius, stroke)

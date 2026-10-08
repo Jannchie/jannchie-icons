@@ -1,13 +1,6 @@
-import { badge, bubbleAround } from '../chat'
-import { place } from '../clearance'
-import { rounded } from '../geometry'
-import { cornerScale, outlines, sparkle } from '../symbols'
+import { withBadge } from '../chat'
+import { sparkle } from '../symbols'
 import { accent } from '../tone'
 
 // 对话 + 右下角星芒
-const k = cornerScale.sparkle
-
-export default ({ radius, stroke }) => [
-  ...bubbleAround(place(outlines.sparkle, badge, k), stroke, radius).map(p => rounded(p, radius, false)),
-  ...accent(sparkle(badge, k, radius)),
-]
+export default ({ radius, stroke }) => withBadge('sparkle', sparkle, accent, radius, stroke)

@@ -1,9 +1,12 @@
-import { shield } from '../symbols'
+import { center, plain } from '../shield'
 import { dot } from '../scene'
 
-// 盾 + 感叹号；感叹号是正中单线，按统一规则往左偏半格到 11.5 才清晰
-export default ({ radius, stroke }) => [
-  ...shield([12, 12], 2.3),
-  'M11.5 7.5V12.5',
-  dot(11.5, 15.5),
+// 盾 + 感叹号：竖线 + 圆点，整体以盾的居中符号中心为准，竖线在正中 x 12
+// （外框里的居中符号不为正中单线挪半格，见 clearance.js 的 snap）
+const [x, y] = center
+
+export default ({ stroke }) => [
+  ...plain(stroke),
+  `M${x} ${y - 4}V${y + 1}`,
+  dot(x, y + 4),
 ]

@@ -1,13 +1,6 @@
-import { place } from '../clearance'
-import { rounded } from '../geometry'
-import { badge, screenAround } from '../monitor'
-import { clock, cornerScale, outlines } from '../symbols'
+import { withBadge } from '../monitor'
+import { clock } from '../symbols'
 import { info } from '../tone'
 
 // 显示器 + 右下角时钟
-const k = cornerScale.clock
-
-export default ({ radius, stroke }) => {
-  const { outline, stand } = screenAround(place(outlines.clock, badge, k), stroke)
-  return [rounded(outline, Math.min(radius, 2.5), false), ...stand, ...info(clock(badge, k, radius))]
-}
+export default ({ radius, stroke }) => withBadge('clock', clock, info, radius, stroke)

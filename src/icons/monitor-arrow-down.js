@@ -1,9 +1,9 @@
-import { plain, center, centerScale } from '../monitor'
+import { center, centerScale, plain } from '../monitor'
 import { arrowDown } from '../symbols'
 import { info } from '../tone'
 
 // 显示器 + 下箭头
-export default ({ radius }) => [
-  ...plain(radius),
+export default ({ radius, stroke }) => [
+  ...plain(radius, stroke),
   ...info(arrowDown(center, centerScale, radius)),
 ]

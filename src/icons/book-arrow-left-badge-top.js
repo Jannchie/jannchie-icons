@@ -1,12 +1,6 @@
-import { place } from '../clearance'
-import { aroundTop, badgeTop } from '../book'
-import { arrowLeft, cornerScale, outlines } from '../symbols'
+import { withBadgeTop } from '../book'
+import { arrowLeft } from '../symbols'
 import { info } from '../tone'
 
 // 书 + 右上角左箭头
-const k = cornerScale.arrowLeft
-
-export default ({ radius, stroke }) => [
-  ...aroundTop(place(outlines.arrowLeft, badgeTop, k), radius, stroke),
-  ...info(arrowLeft(badgeTop, k, radius)),
-]
+export default ({ radius, stroke }) => withBadgeTop('arrowLeft', arrowLeft, info, radius, stroke)

@@ -1,12 +1,6 @@
-import { place } from '../clearance'
-import { aroundBase, badge } from '../briefcase'
-import { cornerScale, outlines, plus } from '../symbols'
+import { withBadge } from '../briefcase'
+import { plus } from '../symbols'
 import { success } from '../tone'
 
 // 公文包 + 右下角加号
-const k = cornerScale.plus
-
-export default ({ radius, stroke }) => [
-  ...aroundBase(place(outlines.plus, badge, k), radius, stroke),
-  ...success(plus(badge, k, radius)),
-]
+export default ({ radius, stroke }) => withBadge('plus', plus, success, radius, stroke)

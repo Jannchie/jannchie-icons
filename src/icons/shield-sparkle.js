@@ -1,8 +1,9 @@
-import { shield, sparkle } from '../symbols'
+import { center, centerScale, plain } from '../shield'
+import { sparkle } from '../symbols'
 import { accent } from '../tone'
 
 // 盾 + 星芒；盾下半收窄，符号放在中心偏上
-export default ({ radius }) => [
-  ...shield([12, 12], 2.3, radius),
-  ...accent(sparkle([12, 11.25], 1, radius)),
+export default ({ radius, stroke }) => [
+  ...plain(stroke),
+  ...accent(sparkle(center, centerScale, radius)),
 ]

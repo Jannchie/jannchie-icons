@@ -4,7 +4,7 @@ import { code } from '../symbols'
 import { accent } from '../tone'
 
 // 对话 + 代码
-export default ({ radius }) => [
-  rounded(bubble(radius), radius, false),
+export default ({ radius, stroke }) => [
+  rounded(bubble(stroke), radius, false),
   ...accent(code(center, 1, radius)),
 ]

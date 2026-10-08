@@ -3,7 +3,7 @@ import { assets } from '../symbols'
 import { accent } from '../tone'
 
 // 书 + 素材
-export default ({ radius }) => [
-  ...plain(radius),
+export default ({ radius, stroke }) => [
+  ...plain(radius, stroke),
   ...accent(assets(center, centerScale, radius)),
 ]

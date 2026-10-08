@@ -4,8 +4,8 @@ import { gauge } from '../symbols'
 import { info } from '../tone'
 
 // 文件 + 计速器
-export default ({ radius }) => [
-  rounded(page(radius), radius),
-  flap,
+export default ({ radius, stroke }) => [
+  rounded(page(stroke, radius), radius),
+  flap(stroke),
   ...info(gauge(center, 1, radius)),
 ]

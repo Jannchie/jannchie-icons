@@ -3,4 +3,4 @@ import { image } from '../symbols'
 import { accent } from '../tone'
 
 // 盾 + 右下角图片
-export default ({ radius }) => withBadge('image', image, accent, radius)
+export default ({ radius, stroke }) => withBadge('image', image, accent, radius, stroke)

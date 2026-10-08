@@ -3,7 +3,7 @@ import { check } from '../symbols'
 import { success } from '../tone'
 
 // 书 + 勾
-export default ({ radius }) => [
-  ...plain(radius),
+export default ({ radius, stroke }) => [
+  ...plain(radius, stroke),
   ...success(check(center, centerScale, radius)),
 ]

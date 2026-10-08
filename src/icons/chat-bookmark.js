@@ -4,7 +4,7 @@ import { bookmark } from '../symbols'
 import { accent } from '../tone'
 
 // 对话 + 书签
-export default ({ radius }) => [
-  rounded(bubble(radius), radius, false),
+export default ({ radius, stroke }) => [
+  rounded(bubble(stroke), radius, false),
   ...accent(bookmark(center, 1, radius)),
 ]

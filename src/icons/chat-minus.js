@@ -4,7 +4,7 @@ import { minus } from '../symbols'
 import { danger } from '../tone'
 
 // 对话 + 减号
-export default ({ radius }) => [
-  rounded(bubble(radius), radius, false),
+export default ({ radius, stroke }) => [
+  rounded(bubble(stroke), radius, false),
   ...danger(minus(center, 1, radius)),
 ]

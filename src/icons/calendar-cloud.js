@@ -3,7 +3,7 @@ import { cloud } from '../symbols'
 import { info } from '../tone'
 
 // 日历 + 云
-export default ({ radius }) => [
-  ...base(radius),
+export default ({ radius, stroke }) => [
+  ...base(radius, stroke),
   ...info(cloud(center, centerScale, radius)),
 ]

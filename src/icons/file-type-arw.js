@@ -3,8 +3,8 @@ import { rounded } from '../geometry'
 import { label } from '../letters'
 
 // ARW 文件：纸张上半部分 + 下方线条字母
-export default ({ radius }) => [
-  rounded(pageTop(radius), radius, false),
-  flap,
+export default ({ radius, stroke }) => [
+  rounded(pageTop(stroke, radius), radius, false),
+  flap(stroke),
   ...label('arw', labelBox),
 ]

@@ -3,4 +3,4 @@ import { clock } from '../symbols'
 import { info } from '../tone'
 
 // 盾 + 右下角时钟
-export default ({ radius }) => withBadge('clock', clock, info, radius)
+export default ({ radius, stroke }) => withBadge('clock', clock, info, radius, stroke)
