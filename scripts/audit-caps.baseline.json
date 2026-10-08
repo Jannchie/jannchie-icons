@@ -223,17 +223,19 @@
     "light (9, 12)",
     "light (9.01, 12.2)"
   ],
-  "folder-arrow-right-badge-top": [
-    "bold (12, 6.82)",
-    "bold (12.26, 7.02)",
-    "regular (12.43, 6.99)"
-  ],
-  "folder-ban-badge-top": [
-    "bold (13.51, 8)",
-    "bold (13.58, 7.25)"
+  "folder-ban-badge": [
+    "bold (13.84, 12.84)",
+    "bold (19.66, 18.66)"
   ],
   "folder-clock-badge-top": [
-    "regular (12.94, 6.88)"
+    "bold (17.54, 4.24)"
+  ],
+  "folder-search-badge": [
+    "light (17.98, 16.98)"
+  ],
+  "folder-search-badge-top": [
+    "bold (18.64, 7.64)",
+    "light (18.54, 8.04)"
   ],
   "game-card-reverse": [
     "bold (14.41, 13.5)",

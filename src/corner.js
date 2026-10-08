@@ -43,12 +43,12 @@ export function cornerCenter(draw, size, radius, stroke, { right, bottom, top })
   return center
 }
 
-// 摆一个角标：先按普通角标大小（cornerScale）用 cornerCenter 贴角；ok(shape) 不满足时（比如断口太靠近外框的拐角），
-// 每次缩小 0.05 倍再摆，最小缩到 MIN_FIT 倍。返回 { k, at, shape }：画符号用 k、at，断开轮廓用 shape
+// 摆一个角标：先按普通角标大小（cornerScale）乘上系列自己定的 grow（主体留给角标的空间各系列不同，见各系列模块）用 cornerCenter 贴角；
+// ok(shape) 不满足时（比如断口太靠近外框的拐角），每次缩小 0.05 倍再摆，最小缩到普通大小的 MIN_FIT 倍。返回 { k, at, shape }：画符号用 k、at，断开轮廓用 shape
 const MIN_FIT = 0.75
-export function fitBadge(name, draw, radius, stroke, anchor, ok = () => true) {
+export function fitBadge(name, draw, radius, stroke, anchor, ok = () => true, grow = 1) {
   let fit
-  for (let s = 1; s >= MIN_FIT - 1e-6; s -= 0.05) {
+  for (let s = grow; s >= MIN_FIT - 1e-6; s -= 0.05) {
     const k = cornerScale[name] * s
     const at = cornerCenter(draw, k, radius, stroke, anchor)
     fit = { k, at, shape: place(outlines[name], at, k) }

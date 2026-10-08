@@ -264,10 +264,6 @@
     "bold @(15.5, 7.3)",
     "regular @(16, 7)"
   ],
-  "calendar-code": [
-    "bold @(10.3, 15.6)",
-    "regular @(10.3, 15.6)"
-  ],
   "calendar-heart": [
     "bold @(12, 13)"
   ],
@@ -675,26 +671,9 @@
   "flute": [
     "bold @(12, 12)"
   ],
-  "folder-arrow-up-badge-top": [
-    "bold @(12, 12)"
-  ],
-  "folder-ban-badge-top": [
-    "bold @(12, 12)",
-    "regular @(12, 12)"
-  ],
-  "folder-check-badge-top": [
-    "bold @(12, 12)"
-  ],
-  "folder-circle-badge-top": [
-    "bold @(12, 12)"
-  ],
   "folder-clock-badge": [
-    "bold @(16.5, 15.9)",
-    "regular @(17, 16)"
-  ],
-  "folder-clock-badge-top": [
-    "bold @(16.5, 8.4)",
-    "regular @(17, 8)"
+    "bold @(16.5, 15.8)",
+    "regular @(16, 15.3)"
   ],
   "folder-image": [
     "regular @(12, 13.5)"
@@ -702,29 +681,17 @@
   "folder-image-badge": [
     "regular @(17, 16.5)"
   ],
-  "folder-image-badge-top": [
-    "regular @(16.5, 8)"
-  ],
   "folder-lock": [
     "bold @(12, 15)",
     "regular @(12, 15)"
   ],
   "folder-lock-badge": [
     "bold @(18, 18)",
-    "regular @(18, 18)"
+    "regular @(18, 17.5)"
   ],
   "folder-lock-badge-top": [
     "bold @(18, 9.5)",
-    "regular @(18, 9)"
-  ],
-  "folder-plus-badge-top": [
-    "bold @(12, 12)"
-  ],
-  "folder-puzzle-badge-top": [
-    "regular @(12, 12)"
-  ],
-  "folder-search-badge-top": [
-    "bold @(12, 12)"
+    "regular @(18, 9.5)"
   ],
   "fuel": [
     "bold @(9.5, 12)"
@@ -1153,10 +1120,6 @@
   "monitor-clock-badge-top": [
     "bold @(16.5, 8.4)",
     "regular @(17, 8)"
-  ],
-  "monitor-code-badge": [
-    "bold @(16.3, 13.9)",
-    "regular @(16.6, 14.1)"
   ],
   "monitor-ellipsis": [
     "bold @(12, 10)",

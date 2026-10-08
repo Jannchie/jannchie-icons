@@ -482,8 +482,17 @@ const drawLock = (c, k = 1, radius = 0) => {
 }
 
 // 代码 </>：两个 45° 尖括号 + 一道与竖直约成 15° 的斜杠；外框 7×5
+// 角标、居中符号这类小尺寸（k < SLASH_MIN）只画 < >：括号和斜杠之间不到 1 的空隙在 16px 下糊成一团，
+// 括号还是原来的位置（离中线 1.5、高 4）：中间空出 3，读成 < > 而不是一个菱形
+const SLASH_MIN = 2
 const drawCode = (c, k = 1, radius = 0) => {
   const p = at(c, k)
+  if (k < SLASH_MIN) {
+    return [
+      rounded([[-1.5, -2], [-3.5, 0], [-1.5, 2]].map(p), crisp(radius), false),
+      rounded([[1.5, -2], [3.5, 0], [1.5, 2]].map(p), crisp(radius), false),
+    ]
+  }
   const slash = 2.5 * Math.tan(Math.PI / 12)
   return [
     rounded([[-1.5, -2], [-3.5, 0], [-1.5, 2]].map(p), crisp(radius), false),

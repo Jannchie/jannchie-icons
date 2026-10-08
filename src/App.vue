@@ -532,8 +532,8 @@ onUnmounted(() => {
         </div>
         <div class="hero">
           <!-- 辅助线（在图标下面）：中线与对角线、常用外形的参考框（大圆、正方形、竖横长方形、内圈）、离边 2 的安全边距、
-               四个角上的角标区（圆心对准系列角标：右下 (18, 17) 同文件夹，右上 (18, 7) 同对话框、日历，左边两个镜像；
-               半径 5 盖住角标符号和它让出的空隙）；整体以画布中心左右对称；比背景网格明显，1px 不随预览放大变粗 -->
+               四个角上的角标区（放大后的角标约 9 宽：右下圆心 (17, 16)、右上 (17, 8)，左边两个镜像；
+               半径 5 的圆正好切到右边 22 和底边 21 / 顶边 3，盖住角标符号的墨迹）；整体以画布中心左右对称；比背景网格明显，1px 不随预览放大变粗 -->
           <svg class="guides" viewBox="0 0 24 24" aria-hidden="true">
             <!-- 24×24 画布本身的边界（svg 设了 overflow: visible，1px 的边线不会被裁掉一半） -->
             <rect x="0" y="0" width="24" height="24" />
@@ -544,10 +544,10 @@ onUnmounted(() => {
             <rect x="4" y="2" width="16" height="20" rx="2" />
             <rect x="2" y="4" width="20" height="16" rx="2" />
             <rect x="2" y="2" width="20" height="20" />
-            <circle cx="6" cy="7" r="5" />
-            <circle cx="18" cy="7" r="5" />
-            <circle cx="6" cy="17" r="5" />
-            <circle cx="18" cy="17" r="5" />
+            <circle cx="7" cy="8" r="5" />
+            <circle cx="17" cy="8" r="5" />
+            <circle cx="7" cy="16" r="5" />
+            <circle cx="17" cy="16" r="5" />
           </svg>
           <IconSvg :paths="selectedIcon.paths" :stroke="weight.stroke" :sharp="!!corner.sharp" />
         </div>
