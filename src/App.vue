@@ -5,6 +5,8 @@ import { computed, nextTick, onMounted, onUnmounted, provide, ref, shallowRef, w
 import { categorize } from './categories'
 import { categoryIcon } from './category-icons'
 import { LOCALES, locale, searchGroupTitle, searchTitle, t } from './i18n'
+import { metaOf, tagsOf } from './meta/meta.js'
+import { oldNamesOf, resolveName } from './aliases.js'
 import Examples from './Examples.vue'
 import Icon from './Icon.vue'
 import IconSvg from './IconSvg.vue'
@@ -13,7 +15,8 @@ import LazyIcon from './LazyIcon.vue'
 import { svgString } from './export'
 import iconTimes from 'virtual:icon-times'
 import { CORNERS, WEIGHTS } from './options'
-import { devicePx, pathsOf } from './render'
+import { pathsOf } from './render'
+import { devicePx } from './site/preview'
 import { ROLES } from './tone'
 import { resnapAll } from './snap'
 import searchIcon from './icons/search'
@@ -88,7 +91,7 @@ function resetColors() {
 }
 // 导出用的具体颜色（当前主题下生效的那套）；单色时不传
 const exportColors = computed(() => (duo.value ? { primary: primary.value || undefined, ...roleColors.value } : undefined))
-// 预览：IconSvg 的路径引用这些变量（见 render.js 的 PREVIEW_COLORS 和 .ji 样式）
+// 预览：IconSvg 的路径引用这些变量（见 site/preview.js 的 PREVIEW_COLORS 和 .ji 样式）
 watchEffect(() => {
   const s = document.documentElement.style
   for (const [role, color] of Object.entries(roleColors.value))
@@ -123,7 +126,10 @@ watchEffect(() => {
 // 搜索：按名字或分类名过滤；按 / 聚焦，Esc 清空
 const query = ref('')
 const searchInput = ref(null)
-const categorized = computed(() => categorize(icons, query.value, searchTitle, searchGroupTitle))
+// 搜索关键词（meta/tags.js：同义词、用途、中日文叫法）也参与匹配：love → heart、设置 → settings
+// 改名前的旧名（aliases.js）也算关键词：搜 volume-mute 能找到 volume-x
+const searchTags = name => (oldNamesOf(name).length ? [...tagsOf(name), ...oldNamesOf(name)] : tagsOf(name))
+const categorized = computed(() => categorize(icons, query.value, searchTitle, searchGroupTitle, searchTags))
 // 「最近修改」：搜索结果（或全部图标）平铺成一节，最后修改的排最前；没有时间的（刚新建、时间表还没刷新）当作最新
 const sections = computed(() => {
   if (sortBy.value !== 'recent')
@@ -150,7 +156,7 @@ const catFilter = ref('')
 const sideSections = computed(() => {
   if (!catFilter.value.trim())
     return sections.value
-  const keep = new Set(categorize(icons, catFilter.value, searchTitle, searchGroupTitle).map(c => c.id))
+  const keep = new Set(categorize(icons, catFilter.value, searchTitle, searchGroupTitle, searchTags).map(c => c.id))
   return sections.value.filter(c => keep.has(c.id))
 })
 const searchPaths = finalize(searchIcon(), 1.5)
@@ -172,8 +178,9 @@ watch(view, (v) => {
     nextTick(collectSections)
 })
 
-// 选中的图标：右侧详情面板；记在网址的 ?icon= 上，可以直接分享某个图标
-const selected = ref(byName.has(new URLSearchParams(location.search).get('icon')) ? new URLSearchParams(location.search).get('icon') : null)
+// 选中的图标：右侧详情面板；记在网址的 ?icon= 上，可以直接分享某个图标（旧名的链接跳到改名后的图标）
+const initialIcon = resolveName(new URLSearchParams(location.search).get('icon') ?? '')
+const selected = ref(byName.has(initialIcon) ? initialIcon : null)
 watch(selected, (name) => {
   const url = new URL(location.href)
   if (name)
@@ -220,6 +227,8 @@ const styleGrid = computed(() => {
   return icon && weights.map(w => ({ w, cells: corners.map(c => ({ c, paths: pathsOf(icon, c, w, devicePx(24)) })) }))
 })
 const selectedAnimated = computed(() => !!(selected.value && byName.get(selected.value)?.animation))
+// 元数据（meta/meta.js）：搜索关键词、首次发布的版本（"next" = 还没发布）
+const selectedMeta = computed(() => selected.value && metaOf(selected.value))
 
 const selectedCategory = computed(() => selected.value && sections.value.find(c => c.groups.some(g => g.icons.some(i => i.name === selected.value)))?.id)
 
@@ -496,6 +505,7 @@ onUnmounted(() => {
           <div>
             <p class="label">{{ t(`cat.${selectedCategory}`) }}<template v-if="selectedAnimated"> · {{ t('ui.animated') }}</template></p>
             <h3 class="mono">{{ selectedIcon.name }}</h3>
+            <p v-if="oldNamesOf(selectedIcon.name).length" class="old-names">{{ t('ui.oldNames', { names: oldNamesOf(selectedIcon.name).join(', ') }) }}</p>
           </div>
           <button class="close" :aria-label="t('ui.close')" @click="selected = null">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 7L17 17M17 7L7 17" /></svg>
@@ -531,6 +541,18 @@ onUnmounted(() => {
           <button @click="copy(svgText, 'ui.copiedSvg')">{{ t('ui.copySvg') }}</button>
           <button @click="download(selectedIcon)">{{ t('ui.download') }}</button>
         </div>
+        <!-- 关键词：点一下就拿它搜索；右上角是首次发布的版本 -->
+        <section v-if="selectedMeta" class="meta">
+          <div class="meta-head">
+            <p class="label">{{ t('ui.tags') }}</p>
+            <small class="mono since">{{ selectedMeta.since === 'next' ? t('ui.unreleased') : t('ui.since', { v: selectedMeta.since }) }}</small>
+          </div>
+          <div v-if="selectedMeta.tags.length" class="tags">
+            <button v-for="tag in selectedMeta.tags" :key="tag" :title="t('ui.searchTag', { tag })" @click="query = tag">
+              {{ tag }}
+            </button>
+          </div>
+        </section>
         <section v-if="related" class="related">
           <p class="label">{{ t(`ui.${related.kind}`) }} · {{ related.icons.length + related.more }}</p>
           <div class="related-grid">
@@ -788,6 +810,7 @@ main { min-width: 0; padding-bottom: 80px; }
 .detail > * { border-bottom: 1px solid var(--line); }
 .detail-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 20px; }
 .detail-head h3 { margin: 6px 0 0; font-size: 16px; font-weight: 600; word-break: break-all; }
+.detail-head .old-names { margin: 4px 0 0; font-size: 12px; color: var(--muted); word-break: break-all; }
 .close { display: grid; place-items: center; width: 28px; height: 28px; flex: none; padding: 0; border: 0; border-radius: 6px; background: none; color: var(--muted); cursor: pointer; }
 .close svg { width: 16px; height: 16px; }
 .close:hover { color: var(--text); background: var(--sunken); }
@@ -813,7 +836,16 @@ main { min-width: 0; padding-bottom: 80px; }
 .actions button:last-child { border-right: 0; }
 .actions button:hover { color: var(--text); background: var(--sunken); }
 /* 变体 / 同组图标：小格子平铺，当前这个描一圈强调色 */
-.related, .styles { display: flex; flex-direction: column; gap: 10px; padding: 16px 20px; }
+.related, .styles, .meta { display: flex; flex-direction: column; gap: 10px; padding: 16px 20px; }
+/* 关键词：小标签，点了就搜这个词 */
+.meta-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.meta-head .since { font-size: 12px; }
+.tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.tags button {
+  padding: 1px 7px; border: 1px solid var(--line-strong); border-radius: 999px; background: none; cursor: pointer;
+  font-size: 12px; line-height: 18px; color: var(--text-2);
+}
+.tags button:hover { color: var(--text); background: var(--sunken); border-color: var(--muted); }
 .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(36px, 1fr)); gap: 2px; }
 .related-grid button, .style-grid button {
   display: grid; place-items: center; aspect-ratio: 1; padding: 0; border: 0; border-radius: 6px; background: none; color: var(--text); cursor: pointer;
