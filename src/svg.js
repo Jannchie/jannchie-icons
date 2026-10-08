@@ -706,11 +706,14 @@ export function finalize(paths, stroke, { animated = false, sharp = false } = {}
     cuts.set(g, group)
   }
   const cutAll = d => [...cuts].reduce((acc, [g, { ds, occluders }]) => (acc ? clip(acc, ds, g + stroke, occluders) : acc), d)
-  const clipped = items
+  // 先把设计里差一点接上的线头吸上（snapEnds），再裁：反过来的话，刀切出来的断口也会被当成「差一点接上」，
+  // 被拉去接附近的线（calendar-off 的顶边被拽歪、左挂环被拽弯）
+  const joined = snapEnds(items.filter(p => !p.cut), stroke)
+  const clipped = [...joined, ...items.filter(p => p.cut)]
     .map(p => (cuts.size && !p.cut ? { ...p, d: cutAll(p.d) } : p))
     .filter(p => p.d && !p.hidden)
   const groups = new Map()
-  const snapped = tuckTips(snapEnds(clipped, stroke), stroke)
+  const snapped = tuckTips(clipped, stroke)
   const relieved = animated ? snapped : relieve(snapped, stroke)
   for (const item of sharp && !animated ? fitSquareCaps(relieved, stroke) : relieved) {
     const dot = dotSize(item)
