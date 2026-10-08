@@ -1,5 +1,5 @@
 <script setup>
-// 按名字取图标，用页面当前的圆角、字重（App 通过 provide('iconStyle') 提供），按显示大小做像素对齐
+// 按名字取图标，用页面当前的圆角、字重（App 通过 provide('iconStyle') 提供）；打开像素对齐时按显示大小对齐
 import { computed, inject } from 'vue'
 import IconSvg from './IconSvg.vue'
 import { byName } from './iconset'
@@ -13,7 +13,7 @@ const props = defineProps({
 const style = inject('iconStyle')
 const paths = computed(() => {
   const icon = byName.get(props.name)
-  return icon && pathsOf(icon, style.value.corner, style.value.weight, devicePx(props.size))
+  return icon && pathsOf(icon, style.value.corner, style.value.weight, style.value.hinting ? devicePx(props.size) : 0)
 })
 </script>
 

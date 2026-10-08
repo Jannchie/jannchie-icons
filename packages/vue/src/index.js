@@ -26,7 +26,7 @@ export const JIcon = defineComponent({
       const d = defaults?.value ?? {}
       const size = props.size ?? d.size ?? 24
       const css = pixelSize(size)
-      const hinting = props.hinting ?? d.hinting ?? true
+      const hinting = props.hinting ?? d.hinting ?? false
       const colors = d.colors || props.colors ? { ...d.colors, ...props.colors } : undefined
       return {
         size,

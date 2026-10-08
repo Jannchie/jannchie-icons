@@ -34,13 +34,13 @@ Icons are imported one by one, so bundlers keep only those you use. One icon, th
 | `theme` | `'light'` or `'dark'` recommended colors for `duo` | `'light'` |
 | `colors` | overrides: `{ primary, danger, success, warning, info, accent }`, any CSS color including `var(--x)` | — |
 | `title` | accessible name, see [Accessibility](#accessibility) | — |
-| `hinting` | snap strokes to the device pixel grid | `true` |
+| `hinting` | shift the icon so stroke edges land on device pixels | `false` |
 
 The icon is drawn with `currentColor`, so it follows the text color. All other props (`className`, `style`, event handlers, `aria-*`, `data-*`) go to the root `<svg>`, and `ref` gives you the `SVGSVGElement`. Animated icons (such as `IconLoadingAtom`) play through SVG `<animate>` elements, without JavaScript.
 
 ### Pixel hinting
 
-When `size` is in pixels (a number, `'20'` or `'20px'`), the icon is redrawn for `size × devicePixelRatio` device pixels: stroke widths are rounded to whole pixels and horizontal and vertical lines land on pixel boundaries, so small icons look crisp instead of blurry. It follows changes of the device pixel ratio (browser zoom, moving the window to another screen). Sizes in other units (`'1em'`) are not hinted; pass `hinting={false}` to turn it off.
+Off by default: icons render with their exact geometry, like other icon sets. Turn it on (`hinting`, or in the defaults) to redraw the icon for `size × devicePixelRatio` device pixels and shift it by less than half a pixel so the outer edges of horizontal and vertical strokes land on pixel boundaries. This sharpens small icons on 1× screens (16 and 20 px) at the cost of sub-pixel offsets between icons. It needs `size` in pixels (a number, `'20'` or `'20px'`) and follows changes of the device pixel ratio.
 
 ## App-wide defaults
 

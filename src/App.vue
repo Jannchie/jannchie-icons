@@ -49,6 +49,9 @@ const corner = shallowRef(corners.find(c => c.label === saved.corner) ?? corners
 const weight = shallowRef(weights.find(w => w.id === saved.weight) ?? weights[1])
 const size = ref(Number.isFinite(saved.size) ? Math.min(SIZE.max, Math.max(SIZE.min, Math.round(saved.size / SIZE.step) * SIZE.step)) : 32)
 const theme = ref(themes.some(t => t.id === saved.theme) ? saved.theme : 'auto')
+// 像素对齐（render.js 的 hint）：默认关闭，按原始几何显示；打开后按实际显示的设备像素数整体微移，小尺寸在 1 倍屏上更清晰
+const hinting = ref(saved.hinting === true)
+const hintPx = css => (hinting.value ? devicePx(css) : 0)
 // 排序：按分类（默认）或按最后修改时间（开发时找刚改过的图标）
 const sortBy = ref(saved.sort === 'recent' ? 'recent' : 'category')
 // 着色：单色（全部 currentColor）或双色。双色里主体是 primary（留空跟随文字颜色），角标、划掉的斜杠等按语义角色上色，
@@ -111,7 +114,7 @@ const cornerLabel = c => c.sharp ? t('ui.sharp') : c.label
 
 watchEffect(() => {
   try {
-    localStorage.setItem('preview', JSON.stringify({ corner: corner.value.label, weight: weight.value.id, size: size.value, theme: theme.value, lang: locale.value, duo: duo.value, primary: primary.value, overrides: overrides.value, sort: sortBy.value }))
+    localStorage.setItem('preview', JSON.stringify({ corner: corner.value.label, weight: weight.value.id, size: size.value, theme: theme.value, lang: locale.value, duo: duo.value, primary: primary.value, overrides: overrides.value, sort: sortBy.value, hinting: hinting.value }))
   }
   catch {}
 })
@@ -168,7 +171,7 @@ const keptCategories = computed(() => catFilter.value.trim() ? new Set(categoriz
 const sideSections = computed(() => keptCategories.value ? sections.value.filter(c => keptCategories.value.has(c.id)) : sections.value)
 const searchPaths = finalize(searchIcon(), 1.5)
 // 按名字取图标的 Icon 组件（页头标志、详情的多尺寸预览、示例页）用同一套设置
-provide('iconStyle', computed(() => ({ corner: corner.value, weight: weight.value })))
+provide('iconStyle', computed(() => ({ corner: corner.value, weight: weight.value, hinting: hinting.value })))
 
 // 视图：图标网格 / 示例组件；记在网址的 ?view=examples 上，方便直接分享示例页
 const view = ref(new URLSearchParams(location.search).get('view') === 'examples' ? 'examples' : 'icons')
@@ -233,7 +236,7 @@ const allCategories = () => (categoriesCache ??= categorize(icons))
 // 圆角 × 字重：同一个图标在每种组合下的样子，点一格就切到那套设置
 const styleGrid = computed(() => {
   const icon = selected.value && byName.get(selected.value)
-  return icon && weights.map(w => ({ w, cells: corners.map(c => ({ c, paths: pathsOf(icon, c, w, devicePx(24)) })) }))
+  return icon && weights.map(w => ({ w, cells: corners.map(c => ({ c, paths: pathsOf(icon, c, w, hintPx(24)) })) }))
 })
 const selectedAnimated = computed(() => !!(selected.value && byName.get(selected.value)?.animation))
 // 元数据（meta/meta.js）：搜索关键词、首次发布的版本（"next" = 还没发布）
@@ -413,6 +416,9 @@ onUnmounted(() => {
           </template>
       </label>
       <div class="opts" @scroll="paletteOpen = false">
+        <div class="opt">
+          <button :aria-pressed="hinting" :title="t('ui.hintingTip')" @click="hinting = !hinting">{{ t('ui.hinting') }}</button>
+        </div>
         <div class="opt" role="group" :aria-label="t('ui.sort')">
           <button :aria-pressed="sortBy === 'category'" @click="sortBy = 'category'">{{ t('ui.sortCategory') }}</button>
           <button :aria-pressed="sortBy === 'recent'" @click="sortBy = 'recent'">{{ t('ui.sortRecent') }}</button>
@@ -503,7 +509,7 @@ onUnmounted(() => {
                 :title="icon.name"
                 @click="selected = selected === icon.name ? null : icon.name"
               >
-                <LazyIcon :icon="icon" :corner="corner" :weight="weight" :px="devicePx(size)" />
+                <LazyIcon :icon="icon" :corner="corner" :weight="weight" :px="hintPx(size)" />
                 <span class="name">{{ icon.name }}</span>
               </button>
               <div v-for="i in fillers(g.icons.length)" :key="`fill-${i}`" class="cell filler" aria-hidden="true" />

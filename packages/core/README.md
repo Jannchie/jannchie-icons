@@ -29,7 +29,7 @@ Each icon is a separate module, so bundlers keep only the icons you import. One 
 | `title` | accessible name; see [Accessibility](#accessibility) | — |
 | `attrs` | extra attributes for the root `<svg>` (`class`, `style`, `data-*`, …); values are escaped, `null` or `undefined` removes an attribute | — |
 
-`toPaths(icon, options)` returns the root attributes (`svg`), the per-path attributes (`paths`) and, when given, the `title`, for rendering in a framework component; pass `px` (the displayed size in device pixels) to snap strokes to the pixel grid. To look icons up by name, import `icons` from `@jannchie/icons/all` (this includes every icon).
+`toPaths(icon, options)` returns the root attributes (`svg`), the per-path attributes (`paths`) and, when given, the `title`, for rendering in a framework component; pass `px` (the displayed size in device pixels) to opt into pixel hinting, which shifts the icon so the outer edges of horizontal and vertical strokes land on pixel boundaries; without it the exact geometry is returned. To look icons up by name, import `icons` from `@jannchie/icons/all` (this includes every icon).
 
 Invalid options throw a `RangeError` (unknown `radius` or `weight`) or a `TypeError` (not an icon, invalid attribute name).
 
@@ -84,6 +84,6 @@ MIT, covering the library code and the original icons. Some icons refer to or de
 
 ## Framework packages
 
-- [`@jannchie/icons-vue`](https://www.npmjs.com/package/@jannchie/icons-vue): a Vue 3 `<JIcon>` component with app-wide defaults for radius and weight, pixel hinting for the device pixel ratio, and SSR support.
+- [`@jannchie/icons-vue`](https://www.npmjs.com/package/@jannchie/icons-vue): a Vue 3 `<JIcon>` component with app-wide defaults for radius and weight, optional pixel hinting, and SSR support.
 - [`@jannchie/icons-react`](https://www.npmjs.com/package/@jannchie/icons-react): the same `<JIcon>` for React 18+, with defaults from `<IconProvider>`.
 - [`@jannchie/icons-svg`](https://www.npmjs.com/package/@jannchie/icons-svg): plain SVG files and sprites in the default, bold and sharp styles, for use without JavaScript.

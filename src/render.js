@@ -8,7 +8,7 @@ import { affine, mapPath } from './transform'
 // - 线宽不取整（只保证至少 MIN_LINE 个设备像素）：取整会让三档字重在小尺寸下变成一样粗（16px 下全是 1 像素），
 //   下限也不能是 1：16px 下细体是 0.67、常规正好 1，抬到 1 就又一样了；不到 1 像素的线抗锯齿后是一条更浅的线，看起来就是更轻
 //   24px 的常规 1.5 也会被取成 2 像素、和粗体一样。保留实际线宽，字重层次在各尺寸都看得出来
-// - 整体平移不到半个像素，让横竖线的一条边（外缘）落在像素边界上：线宽是小数时两条边不可能同时对齐，
+// - 整体平移不到半个像素，让横竖线的外缘（离画布中线远的那条边）落在像素边界上：线宽是小数时两条边不可能同时对齐，
 //   对齐一条边、另一条边留半个像素的灰，比两条边都发虚清楚得多。图标按「外缘落在整数上」设计时（线宽变粗只往里长），
 //   左右、上下两侧的外缘能同时对齐。x、y 各挑一个平移量，让（按长度加权）落到网格上的边最多。
 //   不逐点吸附——逐点取整会把一两个像素大的小字挤成一团
@@ -23,17 +23,22 @@ function bestShift(lines, k) {
   if (!lines.length)
     return 0
   const frac = v => v - Math.round(v)
-  // 每条线的两条边（设备像素）：中心 ± 半个线宽，和长度一起预先算好；离网格的偏差取两条边里较近的那条
-  const lo = lines.map(([, v, , n]) => v * k - n / 2)
-  const hi = lines.map(([, v, , n]) => v * k + n / 2)
+  // 每条线只看外缘（离画布中线远的那条边，设备像素）：图标按「外缘固定、线宽变粗往里长」设计时外缘不随字重变，
+  // 三档字重算出同一个平移量，切换字重时图标不会整体跳动；如果按较近的那条边算，内缘会随线宽变、每档挑出的平移量不同
+  // 正好压在中线上的线没有内外之分，两条边取较近的
+  const mid = 12 * k
+  const edges = lines.map(([, v, , n]) => {
+    const [lo, hi] = [v * k - n / 2, v * k + n / 2]
+    return Math.abs(v * k - mid) < 1e-6 ? [lo, hi] : [v * k < mid ? lo : hi]
+  })
   const cost = (dx) => {
     let s = 0
     for (let i = 0; i < lines.length; i++)
-      s += lines[i][2] * Math.min(Math.abs(frac(lo[i] + dx)), Math.abs(frac(hi[i] + dx)))
+      s += lines[i][2] * Math.min(...edges[i].map(e => Math.abs(frac(e + dx))))
     return s
   }
-  // 候选平移：让某一条边正好落在网格上；很多线坐标相同，去重后再逐个算
-  const candidates = new Set([...lo, ...hi].map(e => Math.round(-frac(e) * 1e6) / 1e6))
+  // 候选平移：让某一条外缘正好落在网格上；很多线坐标相同，去重后再逐个算
+  const candidates = new Set(edges.flat().map(e => Math.round(-frac(e) * 1e6) / 1e6))
   let best = [0, cost(0)]
   for (const dx of candidates) {
     const c = cost(dx)
@@ -42,16 +47,22 @@ function bestShift(lines, k) {
   }
   return best[0]
 }
-function hint(paths, stroke, px) {
-  const k = px / 24
-  // 线宽（设备像素）：不取整，只保证至少 MIN_LINE；点向下取整到整像素（点要吸到像素中心才实），但至少 1 像素、不小于主线宽
+// 线宽（设备像素）：不取整，只保证至少 MIN_LINE；点向下取整到整像素（点要吸到像素中心才实），但至少 1 像素、不小于主线宽
+function pxWidthOf(stroke, k) {
   const line = Math.max(MIN_LINE, stroke * k)
-  const pxWidth = p => p.detail
+  return p => p.detail
     ? (p.width ?? stroke) * k
     : p.dot ? Math.max(1, Math.ceil(line - 1e-9), Math.floor(p.width * k)) : Math.max(MIN_LINE, (p.width ?? stroke) * k)
-  const lines = axisLinesOf(paths.filter(p => !p.detail && !p.fill), pxWidth)
-  const dx = bestShift(lines.filter(l => l[0] === 'x'), k) / k
-  const dy = bestShift(lines.filter(l => l[0] === 'y'), k) / k
+}
+// 整体平移量（网格单位）：x、y 各挑一个，让横竖线的外缘尽量落在像素边界上
+function shiftOf(paths, stroke, px) {
+  const k = px / 24
+  const lines = axisLinesOf(paths.filter(p => !p.detail && !p.fill), pxWidthOf(stroke, k))
+  return [bestShift(lines.filter(l => l[0] === 'x'), k) / k, bestShift(lines.filter(l => l[0] === 'y'), k) / k]
+}
+function hint(paths, stroke, px, [dx, dy]) {
+  const k = px / 24
+  const pxWidth = pxWidthOf(stroke, k)
   return paths.map((p) => {
     const d = dx || dy ? minify(affine(p.d, 1, 1, dx, dy)) : p.d
     // 点单独吸到像素中心（偶数像素宽的点吸到像素边界）：1 像素的点落在两个像素交界上会被摊成四个很淡的灰点，小尺寸下几乎看不见。
@@ -91,7 +102,9 @@ export const animateAttrs = p => p.frames
 const finalized = new Map()
 const hinted = new Map()
 const HINTED_LIMIT = 20000
-export function pathsOf(icon, corner, weight, px = 0) {
+// 对齐用的平移量只按常规字重算一次，三档字重共用：各字重的内缘不同，分开算会挑出不同的平移量，切换字重时整个图标跳半个像素
+const REFERENCE = { id: 'regular', stroke: 1.5 }
+function finalizedOf(icon, corner, weight) {
   // 尖角单独一份（finalize 要缩方头线帽）；动画图标不走 fitSquareCaps，和 0 圆角共用
   const base = `${icon.name}|${corner.sharp && !icon.animation ? 'sharp' : corner.radius}|${weight.stroke}`
   let paths = finalized.get(base)
@@ -101,6 +114,10 @@ export function pathsOf(icon, corner, weight, px = 0) {
     paths = icon.animation ? animatedPaths(icon, opts, stroke) : finalize(icon.draw(opts), stroke, { sharp: !!corner.sharp })
     finalized.set(base, paths)
   }
+  return [base, paths]
+}
+export function pathsOf(icon, corner, weight, px = 0) {
+  const [base, paths] = finalizedOf(icon, corner, weight)
   // 大尺寸、动画图标不对齐（见 hint），直接用 finalize 的结果
   if (!px || px / 24 >= HINT_MAX_SCALE || icon.animation)
     return paths
@@ -110,7 +127,12 @@ export function pathsOf(icon, corner, weight, px = 0) {
     // 对齐结果按 px 缓存，拖大小滑块会不断产生新的 px：超过上限就整个清空，免得长时间使用后无限增长
     if (hinted.size >= HINTED_LIMIT)
       hinted.clear()
-    out = hint(paths, weight.stroke, px)
+    const [refBase, ref] = finalizedOf(icon, corner, REFERENCE)
+    const shiftKey = `${refBase}|${px}|shift`
+    let shift = hinted.get(shiftKey)
+    if (!shift)
+      hinted.set(shiftKey, shift = shiftOf(ref, REFERENCE.stroke, px))
+    out = hint(paths, weight.stroke, px, shift)
     hinted.set(key, out)
   }
   return out
