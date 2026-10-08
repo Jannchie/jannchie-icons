@@ -2,7 +2,7 @@
 // 墨迹框左右 3–21（方形主体收到 3）、上下 2–22（挂环顶在 2、外框底在 22），以画布中线对称；
 // 线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽
 // 外框墨迹 3–21 × 4–22；表头线在外框顶边下 5（线宽 1 时落在 9.5 上）；挂环 x 7.5 / 16.5，从 2 往下穿过顶边，停在离表头线 2.5 处
-import { blocked, rectAround, rectAroundTop } from './clearance'
+import { rectAround } from './clearance'
 import { fitBadge, roomOnBottom, roomOnRight } from './corner'
 import { rounded } from './geometry'
 
@@ -45,24 +45,6 @@ export function withBadge(name, draw, tone, radius, stroke) {
   return [
     ...(turn ? [`${rounded(outline, Math.min(radius, R), false)}H${l}`] : [rounded(outline, Math.min(radius, R), false), `M${l} ${head}H${r}`]),
     ...RINGS.map(x => ring(x, stroke)),
-    ...tone(draw(at, k, radius)),
-  ]
-}
-
-// 右上角标（-badge-top）：符号墨迹的右缘贴到外框右边的外缘 21，上缘和挂环顶（2）齐平，骑在外框的右上角上；
-// 外框顶边、右边、表头线在离符号 GAP 处断开。右边那根挂环正好在角标里，不画（只剩左边一根挂环 + 表头，仍然认得出是日历）
-// 表头线至少伸到画布中线 12
-export function withBadgeTop(name, draw, tone, radius, stroke) {
-  const { l, t, r, b, head } = frame(stroke)
-  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 21, top: 2 }, (s) => {
-    const c = blocked(s, 'x', head, stroke)
-    return !c || c[0] >= 12
-  }, GROW)
-  const cut = blocked(shape, 'x', head, stroke)
-  return [
-    rounded(rectAroundTop(shape, stroke, [l, t, r, b]), Math.min(radius, R), false),
-    `M${l} ${head}H${cut ? cut[0] : r}`,
-    ring(RINGS[0], stroke),
     ...tone(draw(at, k, radius)),
   ]
 }
