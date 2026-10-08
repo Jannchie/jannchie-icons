@@ -13,6 +13,9 @@ export const icons = Object.entries(modules)
 // 磁盘上的文件名（含非 .js 文件，命名校验用）
 export const files = readdirSync(new URL('../src/icons/', import.meta.url))
 
+// 合法的图标名（含改名留下的旧名）：kebab-case，只用 a-z、0-9、-
+export const KEBAB = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
+
 // 合法 SVG path 数据：按 SVG 规范逐个命令解析，检查参数个数、数字格式和弧线标志位（紧排的 "011" 也认）
 const ARGS = { m: 2, l: 2, h: 1, v: 1, c: 6, s: 4, q: 4, t: 2, a: 7, z: 0 }
 const NUM = /^[+-]?(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?/i

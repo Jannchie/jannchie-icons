@@ -17,13 +17,13 @@ const git = (...args) => execFileSync('git', args, { cwd: root, encoding: 'utf8'
 
 const UNTAGGED = [{ version: '0.1.0', ref: 'ec790d9591837bfecb362adb6cb22bcf2e6a8399' }]
 
-const semver = v => v.split('.').map(Number)
-const byVersion = (a, b) => {
-  const [x, y] = [semver(a.version), semver(b.version)]
+// 比较两个 x.y.z 版本字符串
+const compareVersions = (a, b) => {
+  const [x, y] = [a, b].map(v => v.split('.').map(Number))
   return x[0] - y[0] || x[1] - y[1] || x[2] - y[2]
 }
 const tagged = git('tag', '--list', 'v*').split('\n').filter(t => /^v\d+\.\d+\.\d+$/.test(t)).map(t => ({ version: t.slice(1), ref: t }))
-const releases = [...UNTAGGED, ...tagged].sort(byVersion)
+const releases = [...UNTAGGED, ...tagged].sort((a, b) => compareVersions(a.version, b.version))
 
 const iconsAt = ref => git('ls-tree', '--name-only', ref, 'src/icons/')
   .split('\n')
@@ -37,7 +37,7 @@ for (const { version, ref } of releases) {
 }
 // 改名：旧名发布过的版本算到新名上
 for (const [old, name] of Object.entries(ALIASES)) {
-  if (first[old] && (!first[name] || byVersion({ version: first[old] }, { version: first[name] }) < 0))
+  if (first[old] && (!first[name] || compareVersions(first[old], first[name]) < 0))
     first[name] = first[old]
 }
 // 只收当前还在的图标（发布过又删掉、改名的不留）

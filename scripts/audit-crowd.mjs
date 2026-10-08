@@ -2,35 +2,25 @@
 // 每个图标给出两档下最小的空隙和挤在一起的对数，按最小空隙从小到大排
 // 用法：pnpm audit:crowd [名字前缀...] [--json] [--baseline [文件]] [--update-baseline [文件]] [--max <n>]
 // 门禁：--baseline 和 scripts/audit-crowd.baseline.json 里的已知问题比，有新问题就以非零码退出（见 audit-baseline.mjs）
-import { readdirSync } from 'node:fs'
-import { createServer } from 'vite'
-import { gate, load, parseArgs } from './audit-baseline.mjs'
+import { gate, load, setup } from './audit-baseline.mjs'
 
-const opts = parseArgs(process.argv.slice(2), 'crowd')
-const { json, prefixes } = opts
-// 门禁模式只打印汇总和新问题，不列完整报告
-const quiet = opts.baseline && !json
-// 不做依赖预构建：只在 SSR 里加载 src，三个审计并行跑（audit-icons.mjs）时也不会抢着改写 node_modules/.vite
-const server = await createServer({ server: { middlewareMode: true, ws: false }, appType: 'custom', logLevel: 'error', optimizeDeps: { noDiscovery: true, include: [] } })
+const { opts, quiet, server, names, icons } = await setup('crowd')
+const { json } = opts
 const { finalize, crowdedPairs } = await load(server, '/src/svg.js')
 const { WEIGHTS } = await load(server, '/src/options.js')
-
-const names = readdirSync('src/icons').filter(f => f.endsWith('.js')).map(f => f.slice(0, -3))
-  .filter(n => !prefixes.length || prefixes.some(p => n.startsWith(p))).sort()
 
 const report = []
 // 门禁用：{ 图标名: ['bold @(12, 8.5)', …] }
 const issues = {}
-for (const name of names) {
-  const mod = await load(server, `/src/icons/${name}.js`)
-  if (mod.animation)
+for (const { name, draw, animation } of icons) {
+  if (animation)
     continue
   const row = { name, min: Infinity, weights: [] }
   for (const w of WEIGHTS.filter(w => w.id !== 'light')) {
-    const pairs = crowdedPairs(finalize(mod.default({ radius: 2, stroke: w.stroke, weight: w.id }), w.stroke), w.stroke)
+    const pairs = crowdedPairs(finalize(draw({ radius: 2, stroke: w.stroke, weight: w.id }), w.stroke), w.stroke)
     if (!pairs.length)
       continue
-    issues[name] = [...(issues[name] ?? []), ...pairs.map(p => `${w.id} @(${p.at.join(', ')})`)]
+    (issues[name] ??= []).push(...pairs.map(p => `${w.id} @(${p.at.join(', ')})`))
     row.min = Math.min(row.min, pairs[0].gap)
     row.weights.push(`${w.id} ${pairs.length}: ${pairs.slice(0, 4).map(p => `${p.gap.toFixed(2)}@(${p.at.join(', ')})`).join(' ')}`)
   }

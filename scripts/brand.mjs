@@ -8,10 +8,10 @@ import { execFileSync } from 'node:child_process'
 import { mkdirSync, mkdtempSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { createServer } from 'vite'
+import { createSsrServer, load as loadWith } from './audit-baseline.mjs'
 
-const server = await createServer({ server: { middlewareMode: true, ws: false }, appType: 'custom', logLevel: 'error' })
-const load = path => server.ssrLoadModule(path)
+const server = await createSsrServer()
+const load = path => loadWith(server, path)
 const { finalize } = await load('/src/svg.js')
 const { pathAttrs } = await load('/src/render.js')
 const { lineAt, textWidth } = await load('/src/letters.js')

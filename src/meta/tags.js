@@ -8,6 +8,8 @@
 //   4. 其余：把名字按 - 切开，从左往右取最长的已知片段（TAGS 或 PARTS），把各片段的词拼起来
 //      （folder-arrow-down = folder 的词 + arrow-down 的词）
 // 纯数据、不依赖 Vite：Node 里可以直接 import。
+import { oldNamesOf } from '../aliases.js'
+
 
 // 一行一个：名字: 词, 词, ……
 const parse = raw => Object.fromEntries(raw.trim().split('\n').map((line) => {
@@ -1670,11 +1672,12 @@ function compute(name) {
 }
 
 // 名字 → 搜索关键词（去重，去掉名字里已经有的词）；匹配时请自己转小写（个别词带大写，如 QRコード、Δ）
+// 改名前的旧名（aliases.js）也算关键词：站点、./meta、Iconify metadata 用的都是这一份，搜 volume-mute 能找到 volume-x
 const cache = new Map()
 export function tagsOf(name) {
   let tags = cache.get(name)
   if (!tags) {
-    tags = [...new Set(compute(name).filter(Boolean))].filter(t => !name.includes(t.toLowerCase()))
+    tags = [...new Set([...compute(name), ...oldNamesOf(name)].filter(Boolean))].filter(t => !name.includes(t.toLowerCase()))
     cache.set(name, tags)
   }
   return tags

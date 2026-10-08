@@ -68,3 +68,25 @@ for (const [old, name] of Object.entries(ALIASES))
 export const oldNamesOf = name => OLD[name] ?? []
 // 旧名 → 现名；不是别名时原样返回
 export const resolveName = name => ALIASES[name] ?? name
+
+// 核心包的导出名：Icon + PascalCase（加前缀避开 import、2k 这类不能直接当标识符的名字）
+export const exportName = name => `Icon${name.split('-').map(s => s[0].toUpperCase() + s.slice(1)).join('')}`
+
+// 校验别名表，返回错误信息（空数组表示没问题）。names：src/icons 里现有的图标名
+// 现名必须存在、旧名不能还有文件、不能链式或指向自己、旧名的导出名不能和现有图标撞
+export function validateAliases(names) {
+  const present = new Set(names)
+  const exportNames = new Set(names.map(exportName))
+  const errors = []
+  for (const [old, name] of Object.entries(ALIASES)) {
+    if (!present.has(name))
+      errors.push(`alias ${old} → ${name}: target icon not found`)
+    if (present.has(old))
+      errors.push(`alias ${old} → ${name}: src/icons/${old}.js still exists`)
+    if (old === name || name in ALIASES)
+      errors.push(`alias ${old} → ${name}: chained alias`)
+    if (exportNames.has(exportName(old)))
+      errors.push(`alias ${old}: export name ${exportName(old)} clashes with an icon`)
+  }
+  return errors
+}

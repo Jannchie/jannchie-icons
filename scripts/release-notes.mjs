@@ -1,4 +1,5 @@
-// 发版说明：按 git diff --name-status 列出两个版本之间 src/icons 里新增、重画（修改）、删除、改名的图标
+// 发版说明：按 git diff --name-status 列出两个版本之间 src/icons 里新增、重画（修改）、删除的图标；
+// 改名以两个版本之间 src/aliases.js 新增的条目为准（旧名 → 现名），git 的相似度检测（-M）只作兜底
 // 用法：
 //   node scripts/release-notes.mjs v0.4.0 v0.5.0      两个 tag（或任意提交）之间
 //   node scripts/release-notes.mjs v0.5.0             上一个 tag 到 v0.5.0
@@ -11,7 +12,8 @@ import { execFileSync } from 'node:child_process'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 
 const REPO = 'https://github.com/Jannchie/jannchie-icons'
-const git = (...args) => execFileSync('git', args, { encoding: 'utf8' }).trim()
+// stderr 收进异常里，不直接打到终端（比如旧版本里没有 src/aliases.js）
+const git = (...args) => execFileSync('git', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim()
 
 const argv = process.argv.slice(2)
 const flag = name => argv.includes(name)
@@ -21,8 +23,9 @@ const option = (name) => {
 }
 const positional = argv.filter((a, i) => !a.startsWith('--') && argv[i - 1] !== '--title')
 
-// 某个提交之前最近的 v* tag
-const previousTag = ref => git('describe', '--tags', '--abbrev=0', '--match', 'v*', `${ref}^`)
+// 某个提交上（含）最近的 v* tag；previousTag：这个提交之前的
+const latestTag = ref => git('describe', '--tags', '--abbrev=0', '--match', 'v*', ref)
+const previousTag = ref => latestTag(`${ref}^`)
 
 let [from, to] = positional
 if (positional.length === 1) {
@@ -31,36 +34,60 @@ if (positional.length === 1) {
 }
 else if (!positional.length) {
   to = 'HEAD'
-  from = git('describe', '--tags', '--abbrev=0', '--match', 'v*', 'HEAD')
+  from = latestTag('HEAD')
 }
 const title = option('--title') ?? (to === 'HEAD' ? 'Unreleased' : to)
 
-// 只看图标文件；改名按 git 的相似度检测（-M），改名同时改了形状也算改名
+// 某个版本的别名表（src/aliases.js 是不依赖别的模块的纯数据，直接按 ES 模块求值）；那时还没有这个文件就是空表
+async function aliasesAt(ref) {
+  let source
+  try {
+    source = git('show', `${ref}:src/aliases.js`)
+  }
+  catch {
+    return {}
+  }
+  return (await import(`data:text/javascript,${encodeURIComponent(source)}`)).ALIASES ?? {}
+}
+const [fromAliases, toAliases] = await Promise.all([aliasesAt(from), aliasesAt(to)])
+// 新登记的旧名 → 现名（已有的旧名改指向别的名字不算新的改名）
+const aliasRenames = new Map(Object.entries(toAliases).filter(([old]) => !(old in fromAliases)))
+const renamedTo = new Set(aliasRenames.values())
+
+// 只看图标文件；别名表里登记过的改名不再算新增 / 删除；没登记的按 git 的相似度检测（-M），改名同时改了形状也算改名
 const iconName = path => path.match(/^src\/icons\/(.+)\.js$/)?.[1]
 const added = []
 const redrawn = []
 const removed = []
-const renamed = []
+const renamed = [...aliasRenames]
 for (const line of git('diff', '--name-status', '-M', `${from}..${to}`, '--', 'src/icons').split('\n').filter(Boolean)) {
   const [status, a, b] = line.split('\t')
+  // 改名在 git 里是一条 R（旧 → 新），也可能是一条 D 加一条 A：拆成删除 + 新增，再扣掉别名表里登记过的
   const [na, nb] = [iconName(a), b && iconName(b)]
   if (status.startsWith('R')) {
-    if (na && nb)
+    if (na && nb && !aliasRenames.has(na) && !renamedTo.has(nb)) {
       renamed.push([na, nb])
-    else if (nb)
-      added.push(nb)
-    else if (na)
+      continue
+    }
+    if (na && !aliasRenames.has(na))
       removed.push(na)
+    if (nb && !renamedTo.has(nb))
+      added.push(nb)
     continue
   }
   if (!na)
     continue
-  if (status === 'A')
-    added.push(na)
-  else if (status === 'D')
-    removed.push(na)
-  else
+  if (status === 'A') {
+    if (!renamedTo.has(na))
+      added.push(na)
+  }
+  else if (status === 'D') {
+    if (!aliasRenames.has(na))
+      removed.push(na)
+  }
+  else {
     redrawn.push(na)
+  }
 }
 
 const code = names => names.sort().map(n => `\`${n}\``).join(', ')

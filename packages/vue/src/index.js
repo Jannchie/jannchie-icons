@@ -1,7 +1,8 @@
 // @jannchie/icons-vue：通用的图标组件 <JIcon :icon="IconHeart" />，按 radius、weight 现场重绘，按显示尺寸 × 设备像素比做像素对齐
 import { toPaths } from '@jannchie/icons'
-import { computed, defineComponent, h, onMounted } from 'vue'
-import { dpr, pixelSize, useIconDefaults, watchDpr } from './shared.js'
+import { pixelSize } from '@jannchie/icons/runtime'
+import { computed, defineComponent, onMounted } from 'vue'
+import { dpr, renderSvg, useIconDefaults, watchDpr } from './shared.js'
 
 export { ICON_DEFAULTS, JIconPlugin, provideIconDefaults } from './shared.js'
 
@@ -21,7 +22,7 @@ export const JIcon = defineComponent({
   setup(props) {
     const defaults = useIconDefaults()
     onMounted(watchDpr)
-    const shape = computed(() => {
+    const state = computed(() => {
       const d = defaults?.value ?? {}
       const size = props.size ?? d.size ?? 24
       const css = pixelSize(size)
@@ -29,7 +30,7 @@ export const JIcon = defineComponent({
       const colors = d.colors || props.colors ? { ...d.colors, ...props.colors } : undefined
       return {
         size,
-        ...toPaths(props.icon, {
+        shape: toPaths(props.icon, {
           radius: props.radius ?? d.radius,
           weight: props.weight ?? d.weight,
           duo: props.duo ?? d.duo,
@@ -40,14 +41,9 @@ export const JIcon = defineComponent({
         }),
       }
     })
-    return () => {
-      const { size, svg, paths, title } = shape.value
-      const children = paths.map(({ animate, ...p }, i) => h('path', { key: i, ...p }, animate ? [h('animate', animate)] : undefined))
-      if (title)
-        children.unshift(h('title', title))
-      return h('svg', { xmlns: 'http://www.w3.org/2000/svg', width: size, height: size, viewBox: '0 0 24 24', ...svg }, children)
-    }
+    return () => renderSvg(state.value.size, state.value.shape)
   },
 })
 
 export default JIcon
+

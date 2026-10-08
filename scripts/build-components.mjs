@@ -2,61 +2,43 @@
 // - packages/vue：@jannchie/icons-vue，<JIcon> 组件 + 全局默认配置（插件 / provideIconDefaults），入口 . 和 ./static
 // - packages/react：@jannchie/icons-react，<JIcon> 组件 + IconProvider，入口 . 和 ./static
 // - packages/svg：@jannchie/icons-svg，默认样式、bold、sharp 三套 svg/<name>.svg 和 sprite（<symbol id="<name>">）
-// 三个包的版本号跟 packages/core/package.json 同步，peerDependencies 里的 @jannchie/icons 也跟着改成 ^<version>
-// （devDependencies 里的 workspace:^ 不动：开发时用工作区里的核心包满足 peer，pnpm 不会去 npm 上找还没发布的新版本）
+// 版本号由 scripts/version.mjs 统一写入；这里只校验所有包的版本、组件包对 @jannchie/icons 的 peerDependencies 都一致
 // 用法：pnpm build:components
-import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
-import { build } from 'vite'
+import { buildLib, copyLegal, PACKAGES, readPackage } from './packages.mjs'
 
 const CORE = 'packages/core'
 if (!existsSync(`${CORE}/dist/index.js`) || !existsSync(`${CORE}/dist/all.js`)) {
   console.error('packages/core/dist is missing: run pnpm build:packages first')
   process.exit(1)
 }
-const { version } = JSON.parse(readFileSync(`${CORE}/package.json`, 'utf8'))
 
 // ---------- 版本号 ----------
-// 只替换 version 一行和 peerDependencies 里 @jannchie/icons 一行（^ 开头的那个），不重新格式化文件
-for (const pkg of ['vue', 'react', 'svg']) {
-  const file = `packages/${pkg}/package.json`
-  const text = readFileSync(file, 'utf8')
-  const out = text
-    .replace(/("version"\s*:\s*")[^"]*(")/, `$1${version}$2`)
-    .replace(/("@jannchie\/icons"\s*:\s*")\^[^"]*(")/, `$1^${version}$2`)
-  if (JSON.parse(out).version !== version)
-    throw new Error(`${file}: could not update the version field`)
-  if (out !== text)
-    writeFileSync(file, out)
-  for (const f of ['LICENSE', 'NOTICE'])
-    copyFileSync(f, `packages/${pkg}/${f}`)
-}
+const { version } = readPackage(CORE)
+const mismatched = PACKAGES.flatMap((dir) => {
+  const pkg = readPackage(dir)
+  const peer = pkg.peerDependencies?.['@jannchie/icons']
+  return [
+    pkg.version !== version && `${dir} is ${pkg.version}`,
+    peer !== undefined && peer !== `^${version}` && `${dir} peer @jannchie/icons is ${peer}`,
+  ].filter(Boolean)
+})
+if (mismatched.length)
+  throw new Error(`package versions differ from ${CORE} (${version}): ${mismatched.join('; ')}. Run node scripts/version.mjs ${version}`)
+copyLegal('packages/vue', 'packages/react', 'packages/svg')
 
 // ---------- 组件包 ----------
-// ESM 和 CJS 各打一份，按模块保留结构；框架和核心包都是 external
+// 框架和核心包都是 external
 // React 主入口用了 hook，加 'use client'（Next.js 的 App Router 需要）；./static 不加，可以在服务端组件里用
-async function buildComponents(pkg, external, { useClient = [] } = {}) {
+async function buildComponents(pkg, external, { useClient = false } = {}) {
   const dir = `packages/${pkg}`
   const entry = { index: `${dir}/src/index.js`, static: `${dir}/src/static.js` }
-  for (const [format, ext] of [['es', 'js'], ['cjs', 'cjs']]) {
-    await build({
-      configFile: false,
-      logLevel: 'warn',
-      publicDir: false,
-      build: {
-        outDir: `${dir}/dist`,
-        emptyOutDir: format === 'es',
-        minify: false,
-        lib: { entry, formats: [format] },
-        rollupOptions: {
-          external: id => external.some(e => id === e || id.startsWith(`${e}/`)),
-          output: { preserveModules: true, preserveModulesRoot: `${dir}/src`, entryFileNames: `[name].${ext}`, exports: 'named' },
-        },
-      },
-    })
-    for (const name of useClient) {
-      const file = `${dir}/dist/${name}.${ext}`
+  await buildLib({ entry, outDir: `${dir}/dist`, root: `${dir}/src`, external })
+  if (useClient) {
+    for (const ext of ['js', 'cjs']) {
+      const file = `${dir}/dist/index.${ext}`
       writeFileSync(file, `'use client';\n${readFileSync(file, 'utf8')}`)
     }
   }
@@ -67,8 +49,10 @@ async function buildComponents(pkg, external, { useClient = [] } = {}) {
     writeFileSync(`${dir}/dist/${name}.d.cts`, dts.replace(/from '\.\/(\w+)\.js'/g, `from './$1.cjs'`))
   }
 }
-await buildComponents('vue', ['vue', '@jannchie/icons'])
-await buildComponents('react', ['react', 'react-dom', '@jannchie/icons'], { useClient: ['index'] })
+await Promise.all([
+  buildComponents('vue', ['vue', '@jannchie/icons']),
+  buildComponents('react', ['react', 'react-dom', '@jannchie/icons'], { useClient: true }),
+])
 
 // ---------- 静态 SVG ----------
 // 直接用核心包产物的 toSvg 生成，和 npm 上的 @jannchie/icons 输出一致
@@ -82,8 +66,12 @@ const VARIANTS = [
   { dir: 'svg-bold', sprite: 'sprite-bold.svg', options: { weight: 'bold' } },
   { dir: 'svg-sharp', sprite: 'sprite-sharp.svg', options: { radius: 'sharp' } },
 ]
-// sprite 里的 <symbol>：去掉 xmlns、宽高、aria-hidden（由引用它的 <svg> 决定），描边属性留在 symbol 上，<use> 展开时继承
-const SYMBOL_ATTRS = { 'xmlns': null, 'width': null, 'height': null, 'aria-hidden': null }
+// sprite 里的 <symbol>：由文件版改写——压成一行，根元素去掉 xmlns、宽高、aria-hidden（由引用它的 <svg> 决定），
+// 描边属性留在 symbol 上，<use> 展开时继承
+const SYMBOL_DROP = / (?:xmlns|width|height|aria-hidden)="[^"]*"/g
+const toSymbol = (name, file) => file.split('\n').map(l => l.trim()).join('')
+  .replace(/^<svg[^>]*>/, root => root.replace(SYMBOL_DROP, '').replace(/^<svg /, `<symbol id="${name}" `))
+  .replace(/<\/svg>$/, '</symbol>')
 const sizes = []
 for (const { dir, sprite, options } of VARIANTS) {
   rmSync(`${SVG}/${dir}`, { recursive: true, force: true })
@@ -94,11 +82,7 @@ for (const { dir, sprite, options } of VARIANTS) {
     const file = toSvg(icons[name], options)
     writeFileSync(`${SVG}/${dir}/${name}.svg`, file)
     bytes += Buffer.byteLength(file)
-    const body = toSvg(icons[name], { ...options, attrs: SYMBOL_ATTRS })
-      .split('\n').map(l => l.trim()).join('')
-      .replace(/^<svg /, `<symbol id="${name}" `)
-      .replace(/<\/svg>$/, '</symbol>')
-    symbols.push(body)
+    symbols.push(toSymbol(name, file))
   }
   const out = `<svg xmlns="http://www.w3.org/2000/svg">\n${symbols.join('\n')}\n</svg>\n`
   writeFileSync(`${SVG}/${sprite}`, out)

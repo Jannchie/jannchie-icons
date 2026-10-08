@@ -1,57 +1,41 @@
 // 构建可发布的包（都从 src/ 生成）：
 // - packages/core：@jannchie/icons，引擎 + 图标定义，ESM + CJS、按模块保留结构，可以 tree-shaking
-//   入口：.（全功能）、./all（按名字查）、./static（预先算好的默认样式，不带渲染引擎）、./meta（分类、标签）、./icons/*（单个图标）
+//   入口：.（全功能）、./all（按名字查）、./static（预先算好的默认样式，不带渲染引擎）、./meta（分类、标签）、./icons/*（单个图标）、
+//   ./runtime（框架组件包共用的纯函数）
 // - packages/iconify-json：@jannchie/iconify-json，Iconify 格式，每种「圆角 × 字重」一个集合（5 × 3 = 15 个）
 // 用法：pnpm build:packages
-import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
-import { build, createServer } from 'vite'
-// 这两个模块没有依赖，直接导入；类型声明里的字重、圆角、角色联合类型从它们生成，不手抄
+import { mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
+// 这几个模块没有依赖，直接导入；类型声明里的字重、圆角、角色联合类型从它们生成，不手抄
+// 改名留下的兼容别名（旧名 → 现名），见 src/aliases.js、docs/naming.md
+import { ALIASES, exportName, resolveName, validateAliases } from '../src/aliases.js'
 import { CORNERS, WEIGHTS } from '../src/options.js'
 import { ROLES } from '../src/tone.js'
-// 改名留下的兼容别名（旧名 → 现名），见 src/aliases.js、docs/naming.md
-import { ALIASES } from '../src/aliases.js'
+import { createSsrServer, load } from './audit-baseline.mjs'
+import { buildLib, copyLegal, readPackage } from './packages.mjs'
 
-const names = readdirSync('src/icons').filter(f => f.endsWith('.js')).map(f => f.slice(0, -3)).sort()
-// 导出名：Icon + PascalCase（加前缀避开 import、2k 这类不能直接当标识符的名字）
-const exportName = name => `Icon${name.split('-').map(s => s[0].toUpperCase() + s.slice(1)).join('')}`
+// 排序都按 UTF-16 码点（和 Array#sort 的默认顺序一致），不随系统语言变
+const byKey = (a, b) => (a < b ? -1 : a > b ? 1 : 0)
+const byFirst = ([a], [b]) => byKey(a, b)
 
-// 别名：[旧名, 现名]，按旧名排序；现名必须存在、旧名不能还有文件、不能链式，导出名也不能和现有图标撞
-const aliasList = Object.entries(ALIASES).sort(([a], [b]) => (a < b ? -1 : 1))
-{
-  const present = new Set(names)
-  const exportNames = new Set(names.map(exportName))
-  for (const [old, name] of aliasList) {
-    if (!present.has(name))
-      throw new Error(`alias ${old} → ${name}: target icon not found`)
-    if (present.has(old))
-      throw new Error(`alias ${old} → ${name}: src/icons/${old}.js still exists`)
-    if (name in ALIASES)
-      throw new Error(`alias ${old} → ${name}: chained alias`)
-    if (exportNames.has(exportName(old)))
-      throw new Error(`alias ${old}: export name ${exportName(old)} clashes with an icon`)
-  }
-}
+const names = readdirSync('src/icons').filter(f => f.endsWith('.js')).map(f => f.slice(0, -3)).sort(byKey)
+// 别名：[旧名, 现名]，按旧名排序；规则见 validateAliases（现名存在、旧名没有文件、不链式、导出名不撞）
+const aliasErrors = validateAliases(names)
+if (aliasErrors.length)
+  throw new Error(`invalid aliases in src/aliases.js:\n${aliasErrors.join('\n')}`)
+const aliasList = Object.entries(ALIASES).sort(byFirst)
 const deprecatedDoc = (old, name, indent = '') => `${indent}/** @deprecated Renamed to '${name}'. Use ${exportName(name)} */`
-const { version } = JSON.parse(readFileSync('packages/core/package.json', 'utf8'))
+const { version } = readPackage('packages/core')
 const json = v => JSON.stringify(v)
 
 // 预计算、Iconify、元数据都要跑 src/ 里的引擎（import.meta.glob、无扩展名导入），借 vite 的 SSR 加载
-const server = await createServer({ server: { middlewareMode: true, ws: false }, appType: 'custom', logLevel: 'error' })
-const { icons } = await server.ssrLoadModule('/src/iconset.js')
-const { pathsOf } = await server.ssrLoadModule('/src/render.js')
-const { iconifyBody, mergedPaths } = await server.ssrLoadModule('/src/export.js')
-const { categorize } = await server.ssrLoadModule('/src/categories.js')
-const { t } = await server.ssrLoadModule('/src/i18n.js')
-// 标签、加入版本、第三方标记（src/meta/meta.js 的 metaOf）；还没有这个模块时跳过
-let metaOf = null
-if (existsSync('src/meta/meta.js')) {
-  try {
-    metaOf = (await server.ssrLoadModule('/src/meta/meta.js')).metaOf ?? null
-  }
-  catch (e) {
-    console.warn(`src/meta/meta.js failed to load, skipping tags: ${e.message}`)
-  }
-}
+const server = await createSsrServer()
+const { icons, byName } = await load(server, '/src/iconset.js')
+const { pathsOf, svgAttrs } = await load(server, '/src/render.js')
+const { iconifyBody, mergedPaths } = await load(server, '/src/export.js')
+const { categorize } = await load(server, '/src/categories.js')
+const { t } = await load(server, '/src/i18n.js')
+// 标签、加入版本、第三方标记、旧名
+const { metaOf } = await load(server, '/src/meta/meta.js')
 
 // 分类：图标名 → 分类 id；分类标题用英文
 const categories = categorize(icons)
@@ -63,26 +47,32 @@ const GEN = 'packages/core/.gen'
 rmSync(GEN, { recursive: true, force: true })
 mkdirSync(`${GEN}/icons`, { recursive: true })
 mkdirSync(`${GEN}/static/icons`, { recursive: true })
+// 改名留下的旧名：深路径 ./icons/<旧名>（./static/icons/<旧名> 同样）转发到新图标
+const writeForwards = (dir) => {
+  for (const [o, n] of aliasList)
+    writeFileSync(`${dir}/${o}.js`, `// 已改名为 ${n}（见 src/aliases.js）\nexport { default } from './${n}.js'\n`)
+}
+// 入口里每个图标一行导出；旧名指向新图标（name 是新名字），带 @deprecated
+const iconExports = () => [
+  ...names.map(n => `export { default as ${exportName(n)} } from './icons/${n}.js'`),
+  ...aliasList.flatMap(([o, n]) => [deprecatedDoc(o, n), `export { default as ${exportName(o)} } from './icons/${n}.js'`]),
+]
+
 // 每个图标一个入口：{ name, draw, animation }；只有动画图标才带 animation
 for (const name of names) {
   const src = `../../../../src/icons/${name}.js`
-  const animated = /export const animation\b/.test(readFileSync(`src/icons/${name}.js`, 'utf8'))
-  writeFileSync(`${GEN}/icons/${name}.js`, animated
+  writeFileSync(`${GEN}/icons/${name}.js`, byName.get(name).animation
     ? `import draw, { animation } from '${src}'\n\nexport default { name: '${name}', draw, animation }\n`
     : `import draw from '${src}'\n\nexport default { name: '${name}', draw }\n`)
 }
+writeForwards(`${GEN}/icons`)
 writeFileSync(`${GEN}/index.js`, [
   `export { resolveColors, toPaths, toSvg } from '../../../src/export.js'`,
   `export { CORNERS, WEIGHTS } from '../../../src/options.js'`,
   `export { ROLES } from '../../../src/tone.js'`,
-  ...names.map(n => `export { default as ${exportName(n)} } from './icons/${n}.js'`),
-  // 改名前的旧名：指向新图标（name 是新名字）
-  ...aliasList.flatMap(([o, n]) => [deprecatedDoc(o, n), `export { default as ${exportName(o)} } from './icons/${n}.js'`]),
+  ...iconExports(),
   '',
 ].join('\n'))
-// 深路径 ./icons/<旧名>：转发到新图标
-for (const [o, n] of aliasList)
-  writeFileSync(`${GEN}/icons/${o}.js`, `// 已改名为 ${n}（见 src/aliases.js）\nexport { default } from './${n}.js'\n`)
 // 按名字查图标（会引入全部图标，不能 tree-shaking）；旧名也能查到
 writeFileSync(`${GEN}/all.js`, [
   ...names.map(n => `import ${exportName(n)} from './icons/${n}.js'`),
@@ -90,61 +80,42 @@ writeFileSync(`${GEN}/all.js`, [
   `export const icons = {\n${[...names.map(n => `  '${n}': ${exportName(n)},`), ...aliasList.map(([o, n]) => `  '${o}': ${exportName(n)},`)].join('\n')}\n}`,
   '',
 ].join('\n'))
+// 框架组件包共用的纯函数（尺寸解析、默认配置合并、设备像素比订阅、根元素属性）
+writeFileSync(`${GEN}/runtime.js`, `export * from '../../../src/runtime.js'\n`)
 
 // 轻量入口 ./static：默认样式（圆角 2、regular、单色）的路径在构建时算好，运行时只拼字符串，不带渲染引擎
+// toSvg / toPaths 的实现在 src/svg-root.js（和核心包的 toSvg 共用转义、序列化），这里只生成默认样式的根属性
 const DEFAULT_CORNER = CORNERS.find(c => !c.sharp && c.radius === 2)
 const DEFAULT_WEIGHT = WEIGHTS.find(w => w.id === 'regular')
-const { svgAttrs } = await server.ssrLoadModule('/src/render.js')
-const STATIC_ROOT = Object.fromEntries(Object.entries(svgAttrs(DEFAULT_WEIGHT.stroke, false)).filter(([, v]) => v !== undefined))
-const byName = new Map(icons.map(i => [i.name, i]))
 for (const name of names) {
   const paths = mergedPaths(pathsOf(byName.get(name), DEFAULT_CORNER, DEFAULT_WEIGHT))
   writeFileSync(`${GEN}/static/icons/${name}.js`, `export default { name: '${name}', paths: ${json(paths)} }\n`)
 }
-writeFileSync(`${GEN}/static/svg.js`, `// 由 scripts/build-packages.mjs 生成：默认样式的根属性和一个不依赖渲染引擎的 toSvg
-export const SVG_ATTRS = ${json(STATIC_ROOT)}
+writeFileSync(`${GEN}/static/svg.js`, `// 由 scripts/build-packages.mjs 生成：默认样式的根属性，和不依赖渲染引擎的 toSvg、toPaths
+import { staticPaths, staticSvg } from '../../../../src/svg-root.js'
 
-const esc = v => String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
-const NAME = /^[^\\s"'<>/=\\x00-\\x1F]+$/
-function attrs(o) {
-  let s = ''
-  for (const k in o) {
-    if (o[k] == null)
-      continue
-    if (!NAME.test(k))
-      throw new TypeError('Invalid attribute name: ' + JSON.stringify(k))
-    s += ' ' + k + '="' + esc(o[k]) + '"'
-  }
-  return s
-}
+export const SVG_ATTRS = ${json(svgAttrs(DEFAULT_WEIGHT.stroke, false))}
 
-export function toSvg(icon, { size = 24, title, attrs: extra } = {}) {
-  if (!icon || !Array.isArray(icon.paths))
-    throw new TypeError('Expected an icon object such as IconHeart from @jannchie/icons/static')
-  let body = title ? '<title>' + esc(title) + '</title>' : ''
-  for (const { animate, ...p } of icon.paths)
-    body += '<path' + attrs(p) + (animate ? '><animate' + attrs(animate) + '/></path>' : '/>')
-  const root = { xmlns: 'http://www.w3.org/2000/svg', width: size, height: size, viewBox: '0 0 24 24', ...SVG_ATTRS, ...(title ? { role: 'img' } : { 'aria-hidden': 'true' }), ...extra }
-  return '<svg' + attrs(root) + '>' + body + '</svg>'
-}
+export const toSvg = (icon, options) => staticSvg(icon, SVG_ATTRS, options)
+export const toPaths = (icon, options) => staticPaths(icon, SVG_ATTRS, options)
 `)
-for (const [o, n] of aliasList)
-  writeFileSync(`${GEN}/static/icons/${o}.js`, `// 已改名为 ${n}（见 src/aliases.js）\nexport { default } from './${n}.js'\n`)
+writeForwards(`${GEN}/static/icons`)
 writeFileSync(`${GEN}/static/index.js`, [
-  `export { SVG_ATTRS, toSvg } from './svg.js'`,
-  ...names.map(n => `export { default as ${exportName(n)} } from './icons/${n}.js'`),
-  ...aliasList.flatMap(([o, n]) => [deprecatedDoc(o, n), `export { default as ${exportName(o)} } from './icons/${n}.js'`]),
+  `export { SVG_ATTRS, toPaths, toSvg } from './svg.js'`,
+  ...iconExports(),
   '',
 ].join('\n'))
 
-// 元数据入口 ./meta：{ 图标名: { category, tags, since?, thirdParty? } }，分类标题另给
+// 元数据入口 ./meta：{ 图标名: { category, tags, since?, thirdParty?, oldNames? } }，分类标题另给
 const metaEntries = names.map((name) => {
-  const m = metaOf?.(name) ?? {}
-  const entry = { category: categoryOf.get(name), tags: Array.isArray(m.tags) ? m.tags : [] }
-  if (m.since !== undefined)
-    entry.since = m.since
-  if (m.thirdParty !== undefined && m.thirdParty !== null && m.thirdParty !== false)
-    entry.thirdParty = m.thirdParty
+  const { tags, since, thirdParty, oldNames } = metaOf(name)
+  const entry = { category: categoryOf.get(name), tags }
+  if (since !== undefined)
+    entry.since = since
+  if (thirdParty)
+    entry.thirdParty = true
+  if (oldNames?.length)
+    entry.oldNames = oldNames
   return [name, entry]
 })
 // 旧名：和新图标同一份元数据，另标 deprecated 和 replacedBy
@@ -152,43 +123,26 @@ const metaByName = Object.fromEntries(metaEntries)
 const metaObj = { ...metaByName, ...Object.fromEntries(aliasList.map(([o, n]) => [o, { ...metaByName[n], deprecated: true, replacedBy: n }])) }
 const categoryTitles = Object.fromEntries(categories.map(c => [c.id, categoryTitle(c.id)]))
 writeFileSync(`${GEN}/meta.js`, `export const categories = ${json(categoryTitles)}\n\nexport const meta = ${json(metaObj)}\n`)
-// thirdParty 的类型按实际数据定
-const tsOf = (vals) => {
-  const kinds = new Set(vals.map(v => (Array.isArray(v) ? 'array' : typeof v)))
-  if (!kinds.size)
-    return 'true | string'
-  return [...kinds].map(k => ({ boolean: 'boolean', string: 'string', number: 'number', array: 'readonly string[]' }[k] ?? 'unknown')).join(' | ')
-}
-const thirdPartyType = tsOf(metaEntries.map(([, e]) => e.thirdParty).filter(v => v !== undefined))
-const sinceType = tsOf(metaEntries.map(([, e]) => e.since).filter(v => v !== undefined))
 
 const entry = {
   'index': `${GEN}/index.js`,
   'all': `${GEN}/all.js`,
   'static/index': `${GEN}/static/index.js`,
   'meta': `${GEN}/meta.js`,
+  'runtime': `${GEN}/runtime.js`,
   // 旧名的深路径文件没有被别的入口引用，单独作为入口
   ...Object.fromEntries(aliasList.flatMap(([o]) => [[`icons/${o}`, `${GEN}/icons/${o}.js`], [`static/icons/${o}`, `${GEN}/static/icons/${o}.js`]])),
 }
-// ESM 和 CJS 各打一份；CJS 统一用具名导出（exports.default），和 .d.cts 里的 export default 对得上
-for (const [format, ext] of [['es', 'js'], ['cjs', 'cjs']]) {
-  await build({
-    configFile: false,
-    logLevel: 'warn',
-    publicDir: false,
-    build: {
-      outDir: 'packages/core/dist',
-      emptyOutDir: format === 'es',
-      minify: false,
-      lib: { entry, formats: [format] },
-      rollupOptions: { output: { preserveModules: true, preserveModulesRoot: GEN, entryFileNames: `[name].${ext}`, exports: 'named' } },
-    },
-  })
-}
+await buildLib({ entry, outDir: 'packages/core/dist', root: GEN })
 rmSync(GEN, { recursive: true, force: true })
 
 // 类型声明：手写的公共接口 + 生成的图标名联合类型和每个图标的导出（Icon<'folder-plus'> 这样带着字面量名字）
 // ESM（.d.ts）和 CJS（.d.cts）各一份，内容相同，只是互相引用时的扩展名不同
+// 每个图标（和旧名）一行声明：type 是 Icon 或 StaticIcon
+const iconDeclarations = type => `${names.map(n => `export declare const ${exportName(n)}: ${type}<'${n}'>`).join('\n')}
+
+${aliasList.map(([o, n]) => `${deprecatedDoc(o, n)}\nexport declare const ${exportName(o)}: ${type}<'${n}'>`).join('\n')}
+`
 const DTS = `// 由 scripts/build-packages.mjs 生成，不要手改
 export type Radius = ${CORNERS.map(c => (c.sharp ? `'sharp'` : c.radius)).join(' | ')}
 export type Weight = ${WEIGHTS.map(w => `'${w.id}'`).join(' | ')}
@@ -300,10 +254,7 @@ ${names.map(n => `  | '${n}'`).join('\n')}
 export type DeprecatedIconName =
 ${aliasList.length ? aliasList.map(([o]) => `  | '${o}'`).join('\n') : '  never'}
 
-${names.map(n => `export declare const ${exportName(n)}: Icon<'${n}'>`).join('\n')}
-
-${aliasList.map(([o, n]) => `${deprecatedDoc(o, n)}\nexport declare const ${exportName(o)}: Icon<'${n}'>`).join('\n')}
-`
+${iconDeclarations('Icon')}`
 const ALL_DTS = ext => `// 由 scripts/build-packages.mjs 生成，不要手改
 import type { Icon, IconName } from './index.${ext}'
 
@@ -320,7 +271,7 @@ declare const icon: Icon<IconName>
 export default icon
 `
 const STATIC_DTS = ext => `// 由 scripts/build-packages.mjs 生成，不要手改
-import type { A11yOptions, IconName, PathAttrs } from '../index.${ext}'
+import type { A11yOptions, IconName, PathAttrs, PathsResult } from '../index.${ext}'
 
 /** An icon with its path data precomputed for the default style (radius 2, regular weight, single color) */
 export interface StaticIcon<N extends string = IconName> {
@@ -340,11 +291,10 @@ export declare const SVG_ATTRS: {
   readonly 'stroke-linejoin': 'round'
 }
 export declare function toSvg(icon: StaticIcon<string>, options?: StaticSvgOptions): string
+/** Root and path attributes for framework components, shaped like toPaths from @jannchie/icons (the root attributes leave out xmlns, size and viewBox) */
+export declare function toPaths(icon: StaticIcon<string>, options?: A11yOptions): PathsResult
 
-${names.map(n => `export declare const ${exportName(n)}: StaticIcon<'${n}'>`).join('\n')}
-
-${aliasList.map(([o, n]) => `${deprecatedDoc(o, n)}\nexport declare const ${exportName(o)}: StaticIcon<'${n}'>`).join('\n')}
-`
+${iconDeclarations('StaticIcon')}`
 const STATIC_ICON_DTS = ext => `// 由 scripts/build-packages.mjs 生成，不要手改
 import type { StaticIcon } from './index.${ext}'
 import type { IconName } from '../index.${ext}'
@@ -360,10 +310,12 @@ export interface IconMeta {
   category: CategoryId
   /** Search keywords */
   tags: readonly string[]
-  /** Version in which the icon was added */
-  since?: ${sinceType}
+  /** Version in which the icon was added ("next" when not released yet) */
+  since?: string
   /** Set when the icon depicts a third-party character or mark (see NOTICE) */
-  thirdParty?: ${thirdPartyType}
+  thirdParty?: true
+  /** Former names of a renamed icon, still accepted as deprecated aliases */
+  oldNames?: readonly string[]
   /** Set on the old name of a renamed icon */
   deprecated?: true
   /** On the old name of a renamed icon: its current name */
@@ -374,12 +326,27 @@ export declare const categories: { readonly [C in CategoryId]: string }
 /** Metadata of every icon; old names of renamed icons are included with deprecated and replacedBy */
 export declare const meta: { readonly [N in IconName]: IconMeta } & { readonly [N in DeprecatedIconName]: IconMeta & { deprecated: true, replacedBy: IconName } }
 `
+const RUNTIME_DTS = `// 由 scripts/build-packages.mjs 生成，不要手改
+// Helpers shared by @jannchie/icons-vue and @jannchie/icons-react; no rendering engine, no framework
+
+/** Pixel size of a size prop: numbers and '20' / '20px' strings; 0 for other CSS lengths such as '1em' */
+export declare function pixelSize(size: number | string | null | undefined): number
+/** Merge component defaults: inner overrides outer, colors are merged role by role */
+export declare function mergeDefaults<T extends { colors?: object }>(outer: T, inner: T): T
+/** Current device pixel ratio (1 on the server) */
+export declare function getDpr(): number
+/** Call back when the device pixel ratio may have changed (zoom, moving to another screen); returns an unsubscribe function */
+export declare function subscribeDpr(callback: () => void): () => void
+/** Root attributes that do not depend on the style: namespace, size and the 24-unit viewBox */
+export declare function rootAttrs<S extends number | string = 24>(size?: S): { xmlns: 'http://www.w3.org/2000/svg', width: S, height: S, viewBox: '0 0 24 24' }
+`
 const D = 'packages/core/dist'
 for (const [ts, ext] of [['d.ts', 'js'], ['d.cts', 'cjs']]) {
   writeFileSync(`${D}/index.${ts}`, DTS)
   writeFileSync(`${D}/all.${ts}`, ALL_DTS(ext))
   writeFileSync(`${D}/icon.${ts}`, ICON_DTS(ext))
   writeFileSync(`${D}/meta.${ts}`, META_DTS(ext))
+  writeFileSync(`${D}/runtime.${ts}`, RUNTIME_DTS)
   writeFileSync(`${D}/static/index.${ts}`, STATIC_DTS(ext))
   writeFileSync(`${D}/static/icon.${ts}`, STATIC_ICON_DTS(ext))
 }
@@ -412,8 +379,13 @@ const categoriesOf = present => Object.fromEntries(categories
 // 前缀：jannchie[-圆角][-字重]，默认的圆角 2、字重 regular 省略——jannchie、jannchie-bold、jannchie-sharp、jannchie-r1-light……
 // 文件名是去掉 jannchie- 的前缀，默认集合叫 icons.json
 const cap = s => s[0].toUpperCase() + s.slice(1)
-const sortKeys = o => Object.fromEntries(Object.entries(o).sort(([a], [b]) => (a < b ? -1 : 1)))
+const sortKeys = o => Object.fromEntries(Object.entries(o).sort(byFirst))
+const hyphens = n => n.split('-').length
+// 所有名字：现名 + 改名留下的旧名
+const allNames = [...names, ...aliasList.map(([o]) => o)]
+// collections.json 的条目；stats：每个集合的主名数、别名数（只用来打印）
 const collections = []
+const stats = []
 let defaultSet = null
 for (const corner of CORNERS) {
   const radiusPart = corner.sharp ? 'sharp' : corner.radius === 2 ? '' : `r${corner.radius}`
@@ -427,18 +399,17 @@ for (const corner of CORNERS) {
       const body = iconifyBody(pathsOf(icon, corner, weight), { stroke: weight.stroke, sharp: !!corner.sharp })
       groups.set(body, [...(groups.get(body) ?? []), icon.name])
     }
-    const hyphens = n => n.split('-').length
     const setIcons = {}
-    const aliases = {}
+    const parentOf = new Map()
     for (const [body, group] of groups) {
-      const [parent, ...rest] = group.sort((a, b) => hyphens(a) - hyphens(b) || (a < b ? -1 : 1))
+      const [parent] = group.sort((a, b) => hyphens(a) - hyphens(b) || byKey(a, b))
       setIcons[parent] = { body }
-      for (const n of rest)
-        aliases[n] = { parent }
+      for (const n of group)
+        parentOf.set(n, parent)
     }
-    // 改名留下的旧名：指向新名（新名本身被去重成别名时，直接指向它的主名，不留链式别名）
-    for (const [o, n] of aliasList)
-      aliases[o] = { parent: setIcons[n] ? n : aliases[n].parent }
+    // 每个名字的主名：改名留下的旧名先解析到现名，再取现名所在那组的主名（不留链式别名）
+    const canonical = name => parentOf.get(resolveName(name))
+    const aliases = Object.fromEntries(allNames.filter(n => canonical(n) !== n).map(n => [n, { parent: canonical(n) }]))
     const present = new Set(Object.keys(setIcons))
     const set = {
       prefix,
@@ -452,19 +423,20 @@ for (const corner of CORNERS) {
     }
     const file = `${parts.length ? parts.join('-') : 'icons'}.json`
     writeFileSync(`${OUT}/${file}`, `${JSON.stringify(set)}\n`)
-    collections.push({ prefix, file, radius: corner.sharp ? 'sharp' : corner.radius, weight: weight.id, total: present.size, aliases: Object.keys(aliases).length })
+    collections.push({ prefix, file, radius: corner.sharp ? 'sharp' : corner.radius, weight: weight.id })
+    stats.push({ prefix, total: present.size, aliases: Object.keys(aliases).length })
     if (!parts.length)
       defaultSet = set
   }
 }
 // 集合清单：前缀、文件、圆角、字重
-writeFileSync(`${OUT}/collections.json`, `${JSON.stringify(collections.map(({ total, aliases, ...c }) => c), null, 2)}\n`)
+writeFileSync(`${OUT}/collections.json`, `${JSON.stringify(collections, null, 2)}\n`)
 // 和 @iconify-json/* 一样：info.json 是默认集合的 info（带前缀），metadata.json 放分类（和标签）
 writeFileSync(`${OUT}/info.json`, `${JSON.stringify({ prefix: defaultSet.prefix, ...info, total: defaultSet.info.total }, null, 2)}\n`)
-const metadata = { categories: defaultSet.categories }
-if (metaOf) {
-  // Iconify 的元数据没有按图标的标签字段，这里沿用 categories 的写法：图标名 → 关键词
-  metadata.tags = Object.fromEntries(metaEntries.filter(([, e]) => e.tags.length).map(([n, e]) => [n, e.tags]))
+// Iconify 的元数据没有按图标的标签字段，这里沿用 categories 的写法：图标名 → 关键词
+const metadata = {
+  categories: defaultSet.categories,
+  tags: Object.fromEntries(metaEntries.filter(([, e]) => e.tags.length).map(([n, e]) => [n, e.tags])),
 }
 writeFileSync(`${OUT}/metadata.json`, `${JSON.stringify(metadata)}\n`)
 writeFileSync(`${OUT}/index.js`, `// 由 scripts/build-packages.mjs 生成，不要手改
@@ -535,11 +507,7 @@ writeFileSync(`${OUT}/index.d.ts`, ICONIFY_DTS)
 writeFileSync(`${OUT}/index.d.cts`, ICONIFY_DTS)
 await server.close()
 
-// 第三方角色与商标的说明放在 NOTICE 里，不混进 LICENSE：混进去 GitHub 就认不出这是 MIT
-for (const pkg of ['packages/core', OUT]) {
-  for (const file of ['LICENSE', 'NOTICE'])
-    copyFileSync(file, `${pkg}/${file}`)
-}
+copyLegal('packages/core', OUT)
 
-const aliasTotal = collections.reduce((n, c) => n + c.aliases, 0)
-console.log(`packages built: ${names.length} icons (core v${version}); iconify: ${collections.map(c => `${c.prefix} ${c.total}+${c.aliases}`).join(', ')} (${aliasTotal} aliases)${metaOf ? '; tags from src/meta/meta.js' : ''}`)
+const aliasTotal = stats.reduce((n, c) => n + c.aliases, 0)
+console.log(`packages built: ${names.length} icons (core v${version}); iconify: ${stats.map(c => `${c.prefix} ${c.total}+${c.aliases}`).join(', ')} (${aliasTotal} aliases)`)

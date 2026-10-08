@@ -1,6 +1,8 @@
-// 两个入口（. 和 ./static）共用：全局默认配置的注入键、设备像素比、尺寸解析
+// 两个入口（. 和 ./static）共用：全局默认配置的注入键、设备像素比、<svg> 的渲染
+// 尺寸解析、默认配置合并、设备像素比订阅这些和框架无关的部分在 @jannchie/icons/runtime（React 包也用）
 // 不在顶层碰 window：服务端渲染时整个模块都能安全导入
-import { computed, inject, provide, shallowRef, toValue } from 'vue'
+import { getDpr, mergeDefaults, rootAttrs, subscribeDpr } from '@jannchie/icons/runtime'
+import { computed, h, inject, provide, shallowRef, toValue } from 'vue'
 
 export const ICON_DEFAULTS = Symbol('jannchie-icons-defaults')
 
@@ -17,13 +19,6 @@ export function provideIconDefaults(defaults) {
   return merged
 }
 
-export function mergeDefaults(outer, inner) {
-  const out = { ...outer, ...inner }
-  if (outer.colors || inner.colors)
-    out.colors = { ...outer.colors, ...inner.colors }
-  return out
-}
-
 // 插件：app.use(JIconPlugin, { radius: 'sharp', weight: 'bold' })；整个应用的默认配置
 export const JIconPlugin = {
   install(app, defaults = {}) {
@@ -32,31 +27,24 @@ export const JIconPlugin = {
 }
 
 // 设备像素比：服务端和第一次渲染都按 1 算（和服务端输出一致，水合时不会对不上），
-// 第一个图标挂载后才读 window.devicePixelRatio，并监听变化（浏览器缩放、拖到另一块屏幕）：
-// 主要靠 resolution 媒体查询的 change；有的环境不发这个事件，再用 resize 兜底（缩放一般也会触发 resize），值没变时不会触发重绘
+// 第一个图标挂载后才读真实值并订阅变化；值没变时 shallowRef 不会触发重绘
 export const dpr = shallowRef(1)
 let watching = false
 export function watchDpr() {
-  if (watching || typeof window === 'undefined')
+  if (watching)
     return
   watching = true
   const read = () => {
-    dpr.value = window.devicePixelRatio || 1
+    dpr.value = getDpr()
   }
-  const arm = () => {
-    read()
-    if (typeof window.matchMedia === 'function')
-      window.matchMedia(`(resolution: ${dpr.value}dppx)`).addEventListener?.('change', arm, { once: true })
-  }
-  arm()
-  window.addEventListener('resize', read, { passive: true })
+  read()
+  subscribeDpr(read)
 }
 
-// size：数字或 '20'、'20px' 这样的纯像素值才能做像素对齐；'1em' 之类的 CSS 长度原样输出，不对齐
-const PX = /^\s*(\d+(?:\.\d+)?)(?:px)?\s*$/
-export function pixelSize(size) {
-  if (typeof size === 'number')
-    return size
-  const m = typeof size === 'string' && PX.exec(size)
-  return m ? Number(m[1]) : 0
+// <svg>：根属性 + 可选的 <title> + 每条路径（动画路径带 <animate>）；shape 是 toPaths 形状的 { svg, paths, title? }
+export function renderSvg(size, { svg, paths, title }) {
+  const children = paths.map(({ animate, ...p }, i) => h('path', { key: i, ...p }, animate ? [h('animate', animate)] : undefined))
+  if (title)
+    children.unshift(h('title', title))
+  return h('svg', { ...rootAttrs(size), ...svg }, children)
 }

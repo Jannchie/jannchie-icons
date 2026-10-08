@@ -404,16 +404,25 @@ function place(name) {
   return p
 }
 
+// 关键词转小写后的副本，按关键词数组缓存（tagsOf 对同一个名字返回同一个数组）
+const loweredCache = new WeakMap()
+function lowered(tags) {
+  let low = loweredCache.get(tags)
+  if (!low)
+    loweredCache.set(tags, low = tags.map(t => t.toLowerCase()))
+  return low
+}
+
 // groupTitleOf(key) 返回小节名（用来搜索）：搜小节名也能搜到小节里的图标
 // tagsOf(name)（可选）返回图标的搜索关键词（见 meta/tags.js）：搜关键词也能搜到图标（love → heart、设置 → settings）；不传时只按名字、分类名、小节名
 // 关键词按词首匹配（cat 不会命中 location），查询以非字母数字开头（中文、日文、符号）时任意位置都算
-export function categorize(icons, query = '', titleOf = id => id, groupTitleOf = () => '', tagsOf = null) {
+export function categorize(icons, query = '', titleOf = id => id, groupTitleOf = () => '', tagsOf = () => []) {
   const q = query.trim().toLowerCase()
   const word = /[a-z0-9]/
-  const tagHit = (tag) => {
-    const t = tag.toLowerCase()
+  const anywhere = !word.test(q[0] ?? '')
+  const tagHit = (t) => {
     for (let i = t.indexOf(q); i >= 0; i = t.indexOf(q, i + 1)) {
-      if (i === 0 || !word.test(t[i - 1]) || !word.test(q[0]))
+      if (i === 0 || anywhere || !word.test(t[i - 1]))
         return true
     }
     return false
@@ -422,7 +431,7 @@ export function categorize(icons, query = '', titleOf = id => id, groupTitleOf =
   for (const icon of icons) {
     const { cat, sec } = place(icon.name)
     if (q && !icon.name.includes(q) && !titleOf(cat.id).includes(q) && !(sec.key && groupTitleOf(sec.key).includes(q))
-      && !(tagsOf && tagsOf(icon.name).some(tagHit)))
+      && !lowered(tagsOf(icon.name)).some(tagHit))
       continue
     const groups = groupsOf.get(cat)
     if (!groups.has(sec.key))

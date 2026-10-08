@@ -35,10 +35,12 @@ jobs:
       - run: npm install -g npm@11.21.0
       - run: pnpm install --frozen-lockfile
 
+      # 包清单：packages/ 下所有带 package.json 的目录（和 scripts/packages.mjs 的 PACKAGES 一致）
       - name: Check tag matches package versions
         run: |
           tag="${GITHUB_REF_NAME#v}"
-          for pkg in packages/core packages/iconify-json packages/vue packages/react packages/svg; do
+          for pkg in packages/*; do
+            [ -f "$pkg/package.json" ] || continue
             version=$(node -p "require('./$pkg/package.json').version")
             if [ "$version" != "$tag" ]; then
               echo "::error::$pkg is $version but the tag is v$tag"
@@ -53,14 +55,16 @@ jobs:
       # 所有包都先 dry-run，全部通过才正式发布，避免只发出去一部分
       - name: Dry run
         run: |
-          for pkg in packages/core packages/iconify-json packages/vue packages/react packages/svg; do
+          for pkg in packages/*; do
+            [ -f "$pkg/package.json" ] || continue
             (cd "$pkg" && npm publish --access public --dry-run)
           done
 
       # 重跑时跳过已经发布过这个版本的包（上次可能只发出去一个）
       - name: Publish
         run: |
-          for pkg in packages/core packages/iconify-json packages/vue packages/react packages/svg; do
+          for pkg in packages/*; do
+            [ -f "$pkg/package.json" ] || continue
             name=$(node -p "require('./$pkg/package.json').name")
             version=$(node -p "require('./$pkg/package.json').version")
             if npm view "$name@$version" version >/dev/null 2>&1; then

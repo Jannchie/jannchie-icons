@@ -2,28 +2,18 @@
 // 列出不在 .5 上的横竖线（缩小的符号 detail、内部细线 thin、点、实心形状不算），按发虚长度占比从高到低排
 // 用法：pnpm audit:grid [名字前缀...] [--json] [--baseline [文件]] [--update-baseline [文件]] [--max <n>]
 // 门禁：--baseline 和 scripts/audit-grid.baseline.json 里的已知问题比，有新问题就以非零码退出（见 audit-baseline.mjs）
-import { readdirSync } from 'node:fs'
-import { createServer } from 'vite'
-import { gate, load, parseArgs } from './audit-baseline.mjs'
+import { gate, load, setup } from './audit-baseline.mjs'
 
-const opts = parseArgs(process.argv.slice(2), 'grid')
-const { json, prefixes } = opts
-// 门禁模式只打印汇总和新问题，不列完整报告
-const quiet = opts.baseline && !json
-// 不做依赖预构建：只在 SSR 里加载 src，三个审计并行跑（audit-icons.mjs）时也不会抢着改写 node_modules/.vite
-const server = await createServer({ server: { middlewareMode: true, ws: false }, appType: 'custom', logLevel: 'error', optimizeDeps: { noDiscovery: true, include: [] } })
+const { opts, quiet, server, names, icons } = await setup('grid')
+const { json } = opts
 const { axisLines, finalize } = await load(server, '/src/svg.js')
 
 const STROKE = 1
 const onGrid = v => Math.abs(((v % 1) + 1) % 1 - 0.5) < 0.01
-const names = readdirSync('src/icons').filter(f => f.endsWith('.js')).map(f => f.slice(0, -3))
-  .filter(n => !prefixes.length || prefixes.some(p => n.startsWith(p))).sort()
-
 const report = []
 // 门禁用：{ 图标名: ['x 12.25', …] }
 const issues = {}
-for (const name of names) {
-  const draw = (await load(server, `/src/icons/${name}.js`)).default
+for (const { name, draw } of icons) {
   const paths = finalize(draw({ radius: 2, stroke: STROKE, weight: 'light' }), STROKE)
     .filter(p => !p.detail && !p.fill && !p.dot && !p.thin)
   let total = 0
@@ -37,7 +27,7 @@ for (const name of names) {
   }
   const blurry = [...off.values()].reduce((a, b) => a + b, 0)
   if (blurry > 0.01) {
-    issues[name] = [...off.keys()]
+    (issues[name] ??= []).push(...off.keys())
     report.push({ name, share: +(blurry / total).toFixed(3), lines: [...off].map(([k, len]) => `${k} (${+len.toFixed(2)})`) })
   }
 }

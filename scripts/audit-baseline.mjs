@@ -4,7 +4,8 @@
 // - --update-baseline [文件]：把当前结果写成基线（带名字前缀时只替换这些图标的条目）
 // - --max <n>：有问题的图标超过 n 个就以 1 退出
 // 都不给时只打印报告、以 0 退出（原来的用法）
-import { existsSync, readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { createServer } from 'vite'
 
 // 解析命令行：名字前缀、--json，以及门禁参数
 export function parseArgs(argv, audit) {
@@ -16,12 +17,9 @@ export function parseArgs(argv, audit) {
     if (a === '--json') {
       opts.json = true
     }
-    else if (a === '--baseline' || a.startsWith('--baseline=')) {
+    else if (/^--(?:update-)?baseline(?:=|$)/.test(a)) {
       opts.baseline = a.includes('=') ? a.split('=')[1] : value() ?? defaultFile
-    }
-    else if (a === '--update-baseline' || a.startsWith('--update-baseline=')) {
-      opts.baseline = a.includes('=') ? a.split('=')[1] : value() ?? defaultFile
-      opts.update = true
+      opts.update ||= a.startsWith('--update-')
     }
     else if (a === '--max' || a.startsWith('--max=')) {
       const n = Number(a.includes('=') ? a.split('=')[1] : value())
@@ -109,4 +107,31 @@ export async function load(server, id, tries = 3) {
       console.error(`[audit] loading ${id} timed out, retrying (${i}/${tries - 1})`)
     }
   }
+}
+
+// 只在 SSR 里加载 src 的 vite 服务器（审计、品牌素材、构建包的脚本共用）：
+// 不做依赖预构建，几个脚本并行跑时也不会抢着改写 node_modules/.vite
+export const createSsrServer = () => createServer({ server: { middlewareMode: true, ws: false }, appType: 'custom', logLevel: 'error', optimizeDeps: { noDiscovery: true, include: [] } })
+
+// 审计脚本的启动样板：解析命令行、起服务器、加载图标，按名字前缀筛选
+// 不带前缀时一次加载全部图标（src/iconset.js）；带前缀时只加载匹配的几个模块，不用等全部图标转换完
+// 返回 { opts, quiet（门禁模式只打印汇总和新问题，不列完整报告）, server, names, icons（{ name, draw, animation }，和 names 同序）}
+export async function setup(audit) {
+  const opts = parseArgs(process.argv.slice(2), audit)
+  const server = await createSsrServer()
+  const names = readdirSync('src/icons').filter(f => f.endsWith('.js')).map(f => f.slice(0, -3))
+    .filter(n => !opts.prefixes.length || opts.prefixes.some(p => n.startsWith(p))).sort()
+  let icons
+  if (opts.prefixes.length) {
+    icons = []
+    for (const name of names) {
+      const mod = await load(server, `/src/icons/${name}.js`)
+      icons.push({ name, draw: mod.default, animation: mod.animation })
+    }
+  }
+  else {
+    const { byName } = await load(server, '/src/iconset.js')
+    icons = names.map(n => byName.get(n))
+  }
+  return { opts, quiet: !!opts.baseline && !opts.json, server, names, icons }
 }
