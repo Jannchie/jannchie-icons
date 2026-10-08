@@ -6,7 +6,7 @@ import { categorize } from './categories'
 import { categoryIcon } from './category-icons'
 import { LOCALES, locale, searchGroupTitle, searchTitle, t } from './i18n'
 import { metaOf, tagsOf } from './meta/meta.js'
-import { oldNamesOf, resolveName } from './aliases.js'
+import { resolveName } from './aliases.js'
 import Examples from './Examples.vue'
 import Icon from './Icon.vue'
 import IconSvg from './IconSvg.vue'
@@ -196,7 +196,6 @@ watch(selected, (name) => {
     url.searchParams.delete('icon')
   history.replaceState(null, '', url)
 })
-const selectedOldNames = computed(() => (selected.value ? oldNamesOf(selected.value) : []))
 const selectedIcon = computed(() => {
   const icon = selected.value && byName.get(selected.value)
   if (!icon)
@@ -239,6 +238,8 @@ const styleGrid = computed(() => {
 const selectedAnimated = computed(() => !!(selected.value && byName.get(selected.value)?.animation))
 // 元数据（meta/meta.js）：搜索关键词、首次发布的版本（"next" = 还没发布）
 const selectedMeta = computed(() => selected.value && metaOf(selected.value))
+// 详情栏显示的关键词：旧名也是关键词（搜旧名能找到新图标），但不在界面上列出来
+const shownTags = computed(() => selectedMeta.value ? selectedMeta.value.tags.filter(t => !selectedMeta.value.oldNames.includes(t)) : [])
 
 const selectedCategory = computed(() => selected.value && sections.value.find(c => c.groups.some(g => g.icons.some(i => i.name === selected.value)))?.id)
 
@@ -518,7 +519,6 @@ onUnmounted(() => {
           <div>
             <p class="label">{{ t(`cat.${selectedCategory}`) }}<template v-if="selectedAnimated"> · {{ t('ui.animated') }}</template></p>
             <h3 class="mono">{{ selectedIcon.name }}</h3>
-            <p v-if="selectedOldNames.length" class="old-names">{{ t('ui.oldNames', { names: selectedOldNames.join(', ') }) }}</p>
           </div>
           <button class="close" :aria-label="t('ui.close')" @click="selected = null">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 7L17 17M17 7L7 17" /></svg>
@@ -562,8 +562,8 @@ onUnmounted(() => {
             <p class="label">{{ t('ui.tags') }}</p>
             <small class="mono since">{{ selectedMeta.since === 'next' ? t('ui.unreleased') : t('ui.since', { v: selectedMeta.since }) }}</small>
           </div>
-          <div v-if="selectedMeta.tags.length" class="tags">
-            <button v-for="tag in selectedMeta.tags" :key="tag" :title="t('ui.searchTag', { tag })" @click="query = tag">
+          <div v-if="shownTags.length" class="tags">
+            <button v-for="tag in shownTags" :key="tag" :title="t('ui.searchTag', { tag })" @click="query = tag">
               {{ tag }}
             </button>
           </div>
@@ -825,7 +825,6 @@ main { min-width: 0; padding-bottom: 80px; }
 .detail > * { border-bottom: 1px solid var(--line); }
 .detail-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 20px; }
 .detail-head h3 { margin: 6px 0 0; font-size: 16px; font-weight: 600; word-break: break-all; }
-.detail-head .old-names { margin: 4px 0 0; font-size: 12px; color: var(--muted); word-break: break-all; }
 .close { display: grid; place-items: center; width: 28px; height: 28px; flex: none; padding: 0; border: 0; border-radius: 6px; background: none; color: var(--muted); cursor: pointer; }
 .close svg { width: 16px; height: 16px; }
 .close:hover { color: var(--text); background: var(--sunken); }
