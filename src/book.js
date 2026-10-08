@@ -3,7 +3,7 @@
 // 页线在封面底边上方 5（线宽 1 时落在 16.5 上）；封面左上角是半径 2.5 的书脊圆弧，左下角圆角 1.5
 // 页线从书脊处顺着竖边起笔（起点切线朝上，比左下圆角的起点高 1），线头落在竖边的直段里，尖角模式下不会从左下圆角外侧冒出来
 import { blocked, place } from './clearance'
-import { cornerCenter } from './corner'
+import { cornerCenter, fitBadge, roomOnRight } from './corner'
 import { cornerScale, outlines } from './symbols'
 
 function frame(stroke) {
@@ -33,9 +33,7 @@ export const centerScale = 1
 // 角标：符号墨迹的右缘、下缘贴到封面右下角的外缘（20, 22）；右边、底边、页线在离符号 GAP 处断开（碰不到就画满）
 export function withBadge(name, draw, tone, radius, stroke) {
   const f = frame(stroke)
-  const k = cornerScale[name]
-  const at = cornerCenter(draw, k, radius, stroke, { right: 20, bottom: 22 })
-  const shape = place(outlines[name], at, k)
+  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 20, bottom: 22 }, roomOnRight(stroke, f.r, f.t))
   const right = blocked(shape, 'y', f.r, stroke)
   const bottom = blocked(shape, 'x', f.b, stroke)
   const cut = blocked(shape, 'x', f.page, stroke)

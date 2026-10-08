@@ -53,10 +53,16 @@
   "monitor-arrow-down": [
     "x 12"
   ],
+  "monitor-arrow-down-badge": [
+    "x 12"
+  ],
   "monitor-arrow-down-badge-top": [
     "x 12"
   ],
   "monitor-arrow-left": [
+    "x 12"
+  ],
+  "monitor-arrow-left-badge": [
     "x 12"
   ],
   "monitor-arrow-left-badge-top": [
@@ -65,10 +71,16 @@
   "monitor-arrow-right": [
     "x 12"
   ],
+  "monitor-arrow-right-badge": [
+    "x 12"
+  ],
   "monitor-arrow-right-badge-top": [
     "x 12"
   ],
   "monitor-arrow-up": [
+    "x 12"
+  ],
+  "monitor-arrow-up-badge": [
     "x 12"
   ],
   "monitor-arrow-up-badge-top": [
@@ -77,10 +89,16 @@
   "monitor-assets": [
     "x 12"
   ],
+  "monitor-assets-badge": [
+    "x 12"
+  ],
   "monitor-assets-badge-top": [
     "x 12"
   ],
   "monitor-ban": [
+    "x 12"
+  ],
+  "monitor-ban-badge": [
     "x 12"
   ],
   "monitor-ban-badge-top": [
@@ -98,10 +116,16 @@
   "monitor-check": [
     "x 12"
   ],
+  "monitor-check-badge": [
+    "x 12"
+  ],
   "monitor-check-badge-top": [
     "x 12"
   ],
   "monitor-circle": [
+    "x 12"
+  ],
+  "monitor-circle-badge": [
     "x 12"
   ],
   "monitor-circle-badge-top": [
@@ -110,10 +134,16 @@
   "monitor-clock": [
     "x 12"
   ],
+  "monitor-clock-badge": [
+    "x 12"
+  ],
   "monitor-clock-badge-top": [
     "x 12"
   ],
   "monitor-cloud": [
+    "x 12"
+  ],
+  "monitor-cloud-badge": [
     "x 12"
   ],
   "monitor-cloud-badge-top": [
@@ -122,10 +152,16 @@
   "monitor-code": [
     "x 12"
   ],
+  "monitor-code-badge": [
+    "x 12"
+  ],
   "monitor-code-badge-top": [
     "x 12"
   ],
   "monitor-ellipsis": [
+    "x 12"
+  ],
+  "monitor-ellipsis-badge": [
     "x 12"
   ],
   "monitor-ellipsis-badge-top": [
@@ -143,16 +179,25 @@
   "monitor-gauge": [
     "x 12"
   ],
+  "monitor-gauge-badge": [
+    "x 12"
+  ],
   "monitor-gauge-badge-top": [
     "x 12"
   ],
   "monitor-heart": [
     "x 12"
   ],
+  "monitor-heart-badge": [
+    "x 12"
+  ],
   "monitor-heart-badge-top": [
     "x 12"
   ],
   "monitor-image": [
+    "x 12"
+  ],
+  "monitor-image-badge": [
     "x 12"
   ],
   "monitor-image-badge-top": [
@@ -167,10 +212,16 @@
   "monitor-minus": [
     "x 12"
   ],
+  "monitor-minus-badge": [
+    "x 12"
+  ],
   "monitor-minus-badge-top": [
     "x 12"
   ],
   "monitor-music": [
+    "x 12"
+  ],
+  "monitor-music-badge": [
     "x 12"
   ],
   "monitor-music-badge-top": [
@@ -182,10 +233,16 @@
   "monitor-plug": [
     "x 12"
   ],
+  "monitor-plug-badge": [
+    "x 12"
+  ],
   "monitor-plug-badge-top": [
     "x 12"
   ],
   "monitor-plus": [
+    "x 12"
+  ],
+  "monitor-plus-badge": [
     "x 12"
   ],
   "monitor-plus-badge-top": [
@@ -194,13 +251,22 @@
   "monitor-puzzle": [
     "x 12"
   ],
+  "monitor-puzzle-badge": [
+    "x 12"
+  ],
   "monitor-puzzle-badge-top": [
     "x 12"
   ],
   "monitor-question": [
     "x 12"
   ],
+  "monitor-question-badge": [
+    "x 12"
+  ],
   "monitor-question-badge-top": [
+    "x 12"
+  ],
+  "monitor-search-badge": [
     "x 12"
   ],
   "monitor-search-badge-top": [
@@ -209,10 +275,16 @@
   "monitor-shield": [
     "x 12"
   ],
+  "monitor-shield-badge": [
+    "x 12"
+  ],
   "monitor-shield-badge-top": [
     "x 12"
   ],
   "monitor-sparkle": [
+    "x 12"
+  ],
+  "monitor-sparkle-badge": [
     "x 12"
   ],
   "monitor-sparkle-badge-top": [
@@ -221,10 +293,16 @@
   "monitor-star": [
     "x 12"
   ],
+  "monitor-star-badge": [
+    "x 12"
+  ],
   "monitor-star-badge-top": [
     "x 12"
   ],
   "monitor-video": [
+    "x 12"
+  ],
+  "monitor-video-badge": [
     "x 12"
   ],
   "monitor-video-badge-top": [

@@ -4,7 +4,7 @@
 // 立杆是一条居中的竖线，放在 x 12：居中优先，线宽 1 时它落在整数上、1 倍屏略虚，可以接受；
 // 底座墨迹 8–16，以立杆为中心；立杆露出来的长度是 4 − 线宽（常规 2.5）
 import { blocked, place, rectAroundTop } from './clearance'
-import { cornerCenter } from './corner'
+import { cornerCenter, fitBadge, roomOnRight } from './corner'
 import { rounded } from './geometry'
 import { cornerScale, outlines } from './symbols'
 
@@ -29,31 +29,23 @@ export const plain = (radius, stroke) => {
 
 // 角标：符号墨迹的右缘贴到 22，下缘贴到屏幕底边的外缘 17；屏幕右边和底边在离符号 GAP 处断开
 // 底座不用断：符号墨迹下缘固定在 17，底座墨迹上缘在 21 − 线宽（≥ 19），永远隔着 2 以上
-// 底边的断口落到立杆附近（不到立杆右边 2.5）时，立杆并进屏幕轮廓：从底座沿立杆上来、在立杆顶硬拐到底边往左——
-// 否则立杆顶和底边断口是两个挨着的线头，尖角模式下方头互相冒出来（立杆顶这个拐角不随全局圆角）。
-// 这时立杆和底座整体往左挪半格到 11.5（例外，不居中）：符号墨迹左缘离 x 12 只有一个线宽多一点，
-// 立杆留在 12 的话仪表、图片、云在粗字重下几乎贴上立杆顶（可见空隙 < 0.1）；挪半格后空隙回到 0.5 左右
+// 立杆和底座始终在正中 x 12，立杆要接在一段完整的底边上：底边断口离立杆不到 MIN_SHOULDER 时（宽符号），
+// 或者右边断口太靠近右上圆角时（高符号），把符号缩小一点再摆（corner.js 的 fitBadge）
+const MIN_SHOULDER = 1
 export function withBadge(name, draw, tone, radius, stroke) {
-  const { h, l, t, r, b, foot } = frame(stroke)
-  const k = cornerScale[name]
-  const at = cornerCenter(draw, k, radius, stroke, { right: 22, bottom: 17 })
-  const shape = place(outlines[name], at, k)
+  const f = frame(stroke)
+  const { l, t, r, b } = f
+  const roomRight = roomOnRight(stroke, r, t)
+  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, bottom: 17 }, (s) => {
+    const bottom = blocked(s, 'x', b, stroke)
+    return roomRight(s) && (!bottom || bottom[0] >= pole + MIN_SHOULDER)
+  })
   const right = blocked(shape, 'y', r, stroke)
   const bottom = blocked(shape, 'x', b, stroke)
-  const symbol = tone(draw(at, k, radius))
-  const rr = Math.min(radius, 2.5)
-  if (bottom && bottom[0] < pole + 2.5) {
-    const p = pole - 0.5
-    return [
-      rounded([[p, foot], [p, b, 0], [l, b], [l, t], [r, t], [r, right ? right[0] : b]], rr, false),
-      `M${p - 4 + h} ${foot}H${p + 4 - h}`,
-      ...symbol,
-    ]
-  }
   return [
-    rounded([[bottom ? bottom[0] : r, b], [l, b], [l, t], [r, t], [r, right ? right[0] : b]], rr, false),
-    ...standOf(frame(stroke)),
-    ...symbol,
+    rounded([[bottom ? bottom[0] : r, b], [l, b], [l, t], [r, t], [r, right ? right[0] : b]], Math.min(radius, 2.5), false),
+    ...standOf(f),
+    ...tone(draw(at, k, radius)),
   ]
 }
 

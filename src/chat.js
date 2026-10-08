@@ -3,7 +3,7 @@
 // 线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽。线宽 1 时主体四边都落在 .5 上
 // 尾巴：主体底边往下 4、45° 斜下，尾尖在 x 6，斜边在底边上的起点（尾巴根部）x 10，给右下角标留出底边（尾尖、底边都随线宽各收半个线宽，落差不变）
 import { blocked, place } from './clearance'
-import { cornerCenter } from './corner'
+import { cornerCenter, fitBadge, roomOnRight } from './corner'
 import { rounded } from './geometry'
 import { cornerScale, outlines } from './symbols'
 
@@ -26,9 +26,7 @@ export const center = [12, 10]
 // 尾巴左侧的底边 → 左下 → 左上 → 右上 → 右边断口；底边断口 → 尾巴斜边到尾尖
 export function withBadge(name, draw, tone, radius, stroke) {
   const { l, t, r, b, tip, root } = frame(stroke)
-  const k = cornerScale[name]
-  const at = cornerCenter(draw, k, radius, stroke, { right: 22, bottom: 17 })
-  const shape = place(outlines[name], at, k)
+  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, bottom: 17 }, roomOnRight(stroke, r, t))
   const right = blocked(shape, 'y', r, stroke)
   const bottom = blocked(shape, 'x', b, stroke)
   // 宽的符号（云、拼图、左右箭头等，粗字重下更明显）断口会一直延伸到尾巴根部附近：底边剩下的不到 1 就不画，

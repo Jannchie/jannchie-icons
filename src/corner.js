@@ -1,6 +1,8 @@
 // 把角标符号贴到某个角：按符号实际画出来的墨迹定位，而不是 symbols.js 里近似的外形框
 // （对勾又宽又矮、锁比外形框大，按外形框定位会让角标离边忽远忽近）
+import { blocked, place } from './clearance'
 import { samples, segments } from './clip'
+import { cornerScale, outlines } from './symbols'
 
 // 符号在 center、size 下的几何范围（中心线，不含线宽）：[x0, y0, x1, y1]
 export function extentOf(draw, center, size, radius) {
@@ -39,4 +41,27 @@ export function cornerCenter(draw, size, radius, stroke, { right, bottom, top })
     }
   }
   return center
+}
+
+// 摆一个角标：先按普通角标大小（cornerScale）用 cornerCenter 贴角；ok(shape) 不满足时（比如断口太靠近外框的拐角），
+// 每次缩小 0.05 倍再摆，最小缩到 MIN_FIT 倍。返回 { k, at, shape }：画符号用 k、at，断开轮廓用 shape
+const MIN_FIT = 0.75
+export function fitBadge(name, draw, radius, stroke, anchor, ok = () => true) {
+  let fit
+  for (let s = 1; s >= MIN_FIT - 1e-6; s -= 0.05) {
+    const k = cornerScale[name] * s
+    const at = cornerCenter(draw, k, radius, stroke, anchor)
+    fit = { k, at, shape: place(outlines[name], at, k) }
+    if (ok(fit.shape))
+      break
+  }
+  return fit
+}
+
+// 常用的 ok 条件：外框右边（中心线 x = r）从 top（右边直线段的起点，圆角之前）往下，到角标断口之间至少留 MIN_EDGE——
+// 太高的符号（音符、插头）会让右边在圆角刚拐过来就断掉，只剩一截像没收好的拐角
+const MIN_EDGE = 3
+export const roomOnRight = (stroke, r, top) => (shape) => {
+  const right = blocked(shape, 'y', r, stroke)
+  return !right || right[0] - top >= MIN_EDGE
 }

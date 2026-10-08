@@ -4,7 +4,7 @@
 // 折角：翻折线（竖线 x FOLD_X、横线 y FOLD_Y）是固定的中心线，不随线宽动；纸张的斜边从 (FOLD_X, 顶边) 连到 (右边, FOLD_Y)，
 // 两端各随线宽收半个线宽，所以始终是 45°（线宽 1 时折角 5）
 import { blocked, place } from './clearance'
-import { cornerCenter } from './corner'
+import { cornerCenter, fitBadge, roomOnRight } from './corner'
 import { crisp, rounded } from './geometry'
 import { cornerScale, outlines } from './symbols'
 
@@ -41,9 +41,7 @@ export const center = [12, 13.5]
 // 角标：符号墨迹的右缘贴到纸张外缘 20、下缘贴到 22；右边和底边在离符号 GAP 处断开，轮廓从底边的断口出发绕一圈到右边的断口
 export function withBadge(name, draw, tone, radius, stroke) {
   const { l, t, r, b } = frame(stroke)
-  const k = cornerScale[name]
-  const at = cornerCenter(draw, k, radius, stroke, { right: 20, bottom: 22 })
-  const shape = place(outlines[name], at, k)
+  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 20, bottom: 22 }, roomOnRight(stroke, r, FOLD_Y))
   const right = blocked(shape, 'y', r, stroke)
   const bottom = blocked(shape, 'x', b, stroke)
   const outline = [[bottom ? bottom[0] : r, b], [l, b], [l, t], ...corner(stroke, radius), [r, right ? right[0] : b]]

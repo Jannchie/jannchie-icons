@@ -225,14 +225,10 @@
     "regular @(11.5, 13.5)"
   ],
   "briefcase-clock-badge": [
-    "bold @(16.5, 15.9)",
     "regular @(17, 16)"
   ],
   "briefcase-image": [
     "regular @(12, 14)"
-  ],
-  "briefcase-image-badge": [
-    "regular @(16.5, 16)"
   ],
   "briefcase-lock": [
     "bold @(12, 15.5)",
@@ -358,7 +354,6 @@
     "regular @(12, 6.5)"
   ],
   "chat-clock-badge": [
-    "bold @(16.5, 11.9)",
     "regular @(17, 12)"
   ],
   "chat-clock-badge-top": [
@@ -380,11 +375,11 @@
   "chat-exclaim": [
     "bold @(12, 8.4)"
   ],
+  "chat-exclaim-badge": [
+    "bold @(21, 11.8)"
+  ],
   "chat-image": [
     "regular @(12, 10)"
-  ],
-  "chat-image-badge": [
-    "regular @(16.5, 12)"
   ],
   "chat-image-badge-top": [
     "regular @(16.5, 8)"
@@ -405,7 +400,7 @@
     "bold @(12, 8.6)"
   ],
   "chat-question-badge": [
-    "bold @(19, 11.1)"
+    "bold @(19.5, 11.9)"
   ],
   "chat-question-badge-top": [
     "bold @(19, 6.6)"
@@ -705,7 +700,7 @@
     "regular @(12, 13.5)"
   ],
   "folder-image-badge": [
-    "regular @(16.5, 16)"
+    "regular @(17, 16.5)"
   ],
   "folder-image-badge-top": [
     "regular @(16.5, 8)"
@@ -1155,24 +1150,21 @@
     "bold @(14.8, 17.5)",
     "bold @(14.8, 20.5)"
   ],
-  "monitor-clock-badge": [
-    "bold @(16.5, 11.9)",
-    "regular @(17, 12)"
-  ],
   "monitor-clock-badge-top": [
     "bold @(16.5, 8.4)",
     "regular @(17, 8)"
   ],
-  "monitor-cloud-badge": [
-    "regular @(12, 12)"
+  "monitor-code-badge": [
+    "bold @(16.3, 13.9)",
+    "regular @(16.6, 14.1)"
   ],
   "monitor-ellipsis": [
     "bold @(12, 10)",
     "bold @(9.3, 10)"
   ],
   "monitor-ellipsis-badge": [
-    "bold @(14.6, 16)",
-    "bold @(17.8, 16)"
+    "bold @(16.1, 16)",
+    "bold @(18.5, 16)"
   ],
   "monitor-ellipsis-badge-top": [
     "bold @(14.6, 4)",
@@ -1181,15 +1173,11 @@
   "monitor-exclaim": [
     "bold @(12, 8.4)"
   ],
-  "monitor-gauge-badge": [
-    "bold @(12, 12)"
+  "monitor-exclaim-badge": [
+    "bold @(21, 11.8)"
   ],
   "monitor-image": [
     "regular @(12, 10)"
-  ],
-  "monitor-image-badge": [
-    "bold @(12, 12)",
-    "regular @(16.5, 12)"
   ],
   "monitor-image-badge-top": [
     "regular @(16.5, 8)"
@@ -1210,7 +1198,7 @@
     "bold @(12, 8.6)"
   ],
   "monitor-question-badge": [
-    "bold @(19, 11.1)"
+    "bold @(19.5, 11.9)"
   ],
   "monitor-question-badge-top": [
     "bold @(19, 6.6)"
