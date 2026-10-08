@@ -6,6 +6,6 @@ import { success } from '../tone'
 const k = cornerScale.check
 
 export default ({ radius, stroke }) => {
-  const { center, size, lines } = listBadge(outlines.check, k, stroke)
+  const { center, size, lines } = listBadge(outlines.check, k, stroke, check, radius)
   return [...lines, ...success(check(center, size, radius))]
 }

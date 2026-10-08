@@ -6,6 +6,6 @@ import { info } from '../tone'
 const k = cornerScale.search
 
 export default ({ radius, stroke }) => {
-  const { center, size, lines } = listBadge(outlines.search, k, stroke)
+  const { center, size, lines } = listBadge(outlines.search, k, stroke, search, radius)
   return [...lines, ...info(search(center, size, radius))]
 }

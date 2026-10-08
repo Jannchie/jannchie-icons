@@ -1028,13 +1028,17 @@
     "bold @(12, 8)",
     "regular @(12, 15)"
   ],
-  "list-code": [
-    "bold @(18.9, 15)",
-    "regular @(18.9, 15)"
+  "list-clock": [
+    "bold @(15.5, 15.5)",
+    "regular @(15.5, 15.5)"
   ],
   "list-gauge": [
-    "bold @(15, 15)",
-    "regular @(15, 15)"
+    "bold @(15.5, 16)",
+    "regular @(15.5, 16)"
+  ],
+  "list-lock": [
+    "bold @(17, 17.5)",
+    "regular @(17, 17.5)"
   ],
   "lock-list": [
     "bold @(14.8, 14.5)",

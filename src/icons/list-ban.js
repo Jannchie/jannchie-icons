@@ -6,6 +6,6 @@ import { danger } from '../tone'
 const k = cornerScale.ban
 
 export default ({ radius, stroke }) => {
-  const { center, size, lines } = listBadge(outlines.ban, k, stroke)
+  const { center, size, lines } = listBadge(outlines.ban, k, stroke, ban, radius)
   return [...lines, ...danger(ban(center, size, radius))]
 }

@@ -1,10 +1,8 @@
-import { rounded } from '../geometry'
 import { cross } from '../symbols'
+import { trash } from '../trash'
 
-// 彻底删除：垃圾桶 + 桶里一个叉
-export default ({ radius }) => [
-  'M4 6.5H20',
-  rounded([[9.5, 6.5], [9.5, 3.5], [14.5, 3.5], [14.5, 6.5]], Math.min(radius, 1), false),
-  rounded([[6.5, 6.5], [6.5, 20.5], [17.5, 20.5], [17.5, 6.5]], Math.min(radius, 2.5), false),
-  ...cross([12, 13.5], 1.1, radius),
+// 彻底删除：垃圾桶 + 桶里一个叉（中心在桶身内部的中点 (12, 14)）
+export default ({ radius, stroke }) => [
+  ...trash(radius, stroke),
+  ...cross([12, 14], 1.1, radius),
 ]

@@ -7,6 +7,26 @@
     "x 18",
     "x 6"
   ],
+  "list": [
+    "y 12",
+    "y 18",
+    "y 6"
+  ],
+  "list-filter": [
+    "y 12",
+    "y 18",
+    "y 6"
+  ],
+  "list-off": [
+    "y 12",
+    "y 18",
+    "y 6"
+  ],
+  "list-ordered": [
+    "y 12",
+    "y 18",
+    "y 6"
+  ],
   "loading-cube": [
     "x 18.91",
     "x 5.09"
@@ -24,7 +44,16 @@
   "scooter": [
     "y 14"
   ],
+  "trash": [
+    "x 10",
+    "x 14",
+    "y 6"
+  ],
   "trash-restore": [
-    "x 12"
+    "x 12",
+    "y 6"
+  ],
+  "trash-x": [
+    "y 6"
   ]
 }

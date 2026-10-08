@@ -6,6 +6,6 @@ import { accent } from '../tone'
 const k = cornerScale.video
 
 export default ({ radius, stroke }) => {
-  const { center, size, lines } = listBadge(outlines.video, k, stroke)
+  const { center, size, lines } = listBadge(outlines.video, k, stroke, video, radius)
   return [...lines, ...accent(video(center, size, radius))]
 }
