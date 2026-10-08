@@ -3,7 +3,8 @@
 import { computed, inject } from 'vue'
 import IconSvg from './IconSvg.vue'
 import { byName } from './iconset'
-import { devicePx, pathsOf } from './render'
+import { pathsOf } from './render'
+import { devicePx } from './site/preview'
 
 const props = defineProps({
   name: { type: String, required: true },

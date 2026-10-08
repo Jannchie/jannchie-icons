@@ -5,6 +5,9 @@
   "license": "MIT",
   "author": "Jianqi Pan",
   "homepage": "https://icons.jannchie.com",
+  "bugs": {
+    "url": "https://github.com/Jannchie/jannchie-icons/issues"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Jannchie/jannchie-icons.git",
@@ -16,11 +19,32 @@
     "icons"
   ],
   "type": "module",
+  "main": "./index.cjs",
+  "module": "./index.js",
+  "types": "./index.d.ts",
   "exports": {
-    "./*.json": "./*.json"
+    ".": {
+      "import": {
+        "types": "./index.d.ts",
+        "default": "./index.js"
+      },
+      "require": {
+        "types": "./index.d.cts",
+        "default": "./index.cjs"
+      }
+    },
+    "./*.json": "./*.json",
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": ">=18.20"
   },
   "files": [
     "*.json",
+    "index.js",
+    "index.cjs",
+    "index.d.ts",
+    "index.d.cts",
     "NOTICE"
   ]
 }

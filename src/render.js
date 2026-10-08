@@ -1,7 +1,7 @@
 // 图标路径的懒计算 + 缓存：finalize（裁切、合并）开销不小，上千个图标不能一打开页面就全算
 // 按「图标名 + 圆角 + 字重 + 对齐用的显示像素数」缓存，切回之前的设置不用重算
+// 发布包也打这个模块：不要在顶层碰 DOM、全局对象（只给预览站用的东西放 site/preview.js）
 import { axisLines, finalize, minify } from './svg'
-import { ROLES } from './tone'
 import { affine, mapPath } from './transform'
 
 // 像素对齐：按图标实际显示的设备像素数 px，把图标整体对齐到像素网格。图形本身不变形，只做两件事：
@@ -73,9 +73,6 @@ export const animateAttrs = p => p.frames
   ? { attributeName: 'd', dur: `${p.dur}ms`, repeatCount: 'indefinite', values: p.frames.join(';') }
   : null
 
-// CSS 像素 → 设备像素
-export const devicePx = css => css * (globalThis.devicePixelRatio || 1)
-
 // px：显示大小（设备像素），用于像素对齐；0 表示不对齐（导出、大图）
 // 两级缓存：finalize 的结果只和「图标 + 圆角（尖角单独一份：方头线帽要缩线头，见 fitSquareCaps）+ 线宽」有关，像素对齐再按 px 缓存——拖大小滑块时只重算对齐，不重跑 finalize
 const finalized = new Map()
@@ -102,32 +99,12 @@ export function pathsOf(icon, corner, weight, px = 0) {
   return out
 }
 
-// 所有格子共用一个 IntersectionObserver：进入、离开视口上下 600px 范围时都通知（一直观察，直到格子卸载）
-const callbacks = new WeakMap()
-const observer = typeof IntersectionObserver === 'undefined'
-  ? null
-  : new IntersectionObserver((entries) => {
-    for (const e of entries)
-      callbacks.get(e.target)?.(e.isIntersecting)
-  }, { rootMargin: '600px 0px' })
-
-export function observeVisibility(el, fn) {
-  if (!observer)
-    return fn(true)
-  callbacks.set(el, fn)
-  observer.observe(el)
-}
-export function forget(el) {
-  observer?.unobserve(el)
-  callbacks.delete(el)
-}
-
 // 整个 SVG 的描边属性：预览（IconSvg）和导出（App 的 toSvg）共用
 // 尖角用方头（square）而不是平头（butt）：方头和圆头一样把线端往外延伸半个线宽，所以两种样式的几何完全一致——
 // 图标都是按圆头的范围设计的，平头会让每个开放线端缩短半个线宽：加号、短横缩成点，两段线拼成的直角外侧缺一块，
 // 接到别的线上的线头也会露出缝。斜接上限 2：夹角小于 60° 的锐角（A、V、M 的尖）自动切平，不会拉出长尖刺戳出外框
 // colors：双色变体的颜色 { primary, danger, success, … }（角色见 tone.js）；不传就是单色（全部 currentColor）
-// 预览用 CSS 变量（PREVIEW_COLORS，切换颜色不用重算路径），导出时传具体颜色值
+// 预览用 CSS 变量（site/preview.js 的 PREVIEW_COLORS，切换颜色不用重算路径），导出时传具体颜色值
 export const svgAttrs = (stroke, sharp, colors) => ({
   'fill': 'none',
   'stroke': colors?.primary ?? 'currentColor',
@@ -150,5 +127,3 @@ export const pathAttrs = (p, colors) => {
     'stroke-linejoin': p.round ? 'round' : undefined,
   }
 }
-// 预览：各角色用页面上的 CSS 变量（--icon-danger 等），单色模式下都是 currentColor
-export const PREVIEW_COLORS = Object.fromEntries(Object.keys(ROLES).map(r => [r, `var(--icon-${r}, currentColor)`]))

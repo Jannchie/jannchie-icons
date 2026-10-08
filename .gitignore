@@ -7,3 +7,14 @@ packages/iconify-json/*.json
 !packages/iconify-json/package.json
 packages/*/LICENSE
 packages/*/NOTICE
+packages/iconify-json/index.js
+packages/iconify-json/index.cjs
+packages/iconify-json/index.d.ts
+packages/iconify-json/index.d.cts
+packages/vue/dist
+packages/react/dist
+packages/svg/svg
+packages/svg/svg-bold
+packages/svg/svg-sharp
+packages/svg/sprite*.svg
+packages/svg/names.json

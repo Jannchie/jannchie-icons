@@ -3,7 +3,8 @@
 // 抽成组件后，props 不变时 Vue 直接跳过重绘——页面上上千个图标，点选、提示等无关更新不会全部重算
 // snap：路径做过像素对齐时，把图标框本身也挪到整数设备像素上（见 snap.js）
 import { onBeforeUnmount, onMounted, ref } from 'vue'
-import { animateAttrs, pathAttrs, PREVIEW_COLORS, svgAttrs } from './render'
+import { animateAttrs, pathAttrs, svgAttrs } from './render'
+import { PREVIEW_COLORS } from './site/preview'
 import { snapToPixels, unsnap } from './snap'
 
 const props = defineProps({

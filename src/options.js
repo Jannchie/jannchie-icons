@@ -19,8 +19,8 @@ export function resolveOptions({ radius = 2, weight = 'regular' } = {}) {
   const corner = CORNERS.find(c => (radius === 'sharp' ? c.sharp : !c.sharp && c.radius === radius))
   const w = WEIGHTS.find(x => x.id === weight)
   if (!corner)
-    throw new Error(`unknown radius: ${radius}（可选 'sharp'、0、1、2、3）`)
+    throw new RangeError(`Unknown radius: ${JSON.stringify(radius)}. Expected 'sharp', 0, 1, 2 or 3.`)
   if (!w)
-    throw new Error(`unknown weight: ${weight}（可选 ${WEIGHTS.map(x => x.id).join('、')}）`)
+    throw new RangeError(`Unknown weight: ${JSON.stringify(weight)}. Expected ${WEIGHTS.map(x => `'${x.id}'`).join(', ')}.`)
   return { corner, weight: w }
 }

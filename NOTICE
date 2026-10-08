@@ -1,14 +1,32 @@
 Jannchie Icons
 Copyright (c) 2026 Jianqi Pan
 
-Third-party marks
+What the MIT license covers
 
-Some icons depict characters, logos or marks owned by third parties, including
-the Chiikawa characters (chiikawa, hachiware, usagi), content rating marks
-(MPA, ESRB, PEGI, BBFC, ACB, Eirin, CERO, KMRB, USK, CADPA), Creative Commons
-symbols, game controller buttons, and currency and license names. These
-drawings are original line art, but the underlying characters, trademarks and
-logos remain the property of their respective owners. The MIT license in LICENSE
-covers this project's code and drawings; it does not grant any right to the
-third-party characters, trademarks or logos themselves. Check the owners'
-guidelines before using such icons.
+The MIT license in LICENSE covers this project's code, including the drawing
+code of every icon, and the original icons designed for this project.
+
+Third-party characters and marks
+
+Some icons refer to or depict characters, logos and marks that belong to third
+parties. They are included as fan art or for nominative reference only, for
+example to label a link, a file type or a rating. All rights in these
+characters, trademarks and logos remain with their respective owners. The MIT
+license does not grant any right to them, and including them here does not
+imply any affiliation with or endorsement by their owners. Check the owners'
+guidelines before using these icons. They include:
+
+- Chiikawa characters: chiikawa, hachiware, usagi
+- Content rating marks: MPA, ESRB, PEGI, BBFC, ACB, Eirin, CERO, KMRB, USK,
+  CADPA (the rating-* icons, except the original rating-sensitivity-* set)
+- Creative Commons symbols (cc and the cc-* icons)
+- Company and project logos: GitHub (github), Model Context Protocol (mcp)
+  and programming language logos
+  (python, javascript, typescript, java, c, csharp, cpp, golang, rust, php,
+  kotlin, swift, ruby, lua, haskell, html)
+- Game controller buttons: PlayStation (playstation-*) and Xbox (xbox-*)
+- License names (the license-* icons)
+
+These icons are still exported from the main entry of @jannchie/icons so that
+existing imports keep working. They are planned to move to a separate entry in
+version 1.0.

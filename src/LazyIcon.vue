@@ -3,7 +3,8 @@
 // 切换圆角、字重时只有视口附近的图标跟着重算，屏幕外的等滚回来再算
 import { onMounted, onUnmounted, ref, shallowRef, watchEffect } from 'vue'
 import IconSvg from './IconSvg.vue'
-import { forget, observeVisibility, pathsOf } from './render'
+import { pathsOf } from './render'
+import { forget, observeVisibility } from './site/preview'
 
 const props = defineProps({
   icon: { type: Object, required: true },

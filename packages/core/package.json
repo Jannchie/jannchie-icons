@@ -5,14 +5,93 @@
   "license": "MIT",
   "author": "Jianqi Pan",
   "homepage": "https://icons.jannchie.com",
-  "repository": { "type": "git", "url": "git+https://github.com/Jannchie/jannchie-icons.git", "directory": "packages/core" },
-  "keywords": ["icons", "svg", "line-icons", "duotone"],
+  "bugs": {
+    "url": "https://github.com/Jannchie/jannchie-icons/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jannchie/jannchie-icons.git",
+    "directory": "packages/core"
+  },
+  "keywords": [
+    "icons",
+    "svg",
+    "line-icons",
+    "duotone"
+  ],
   "type": "module",
   "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
-    "./all": { "types": "./dist/all.d.ts", "default": "./dist/all.js" }
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./all": {
+      "import": {
+        "types": "./dist/all.d.ts",
+        "default": "./dist/all.js"
+      },
+      "require": {
+        "types": "./dist/all.d.cts",
+        "default": "./dist/all.cjs"
+      }
+    },
+    "./static": {
+      "import": {
+        "types": "./dist/static/index.d.ts",
+        "default": "./dist/static/index.js"
+      },
+      "require": {
+        "types": "./dist/static/index.d.cts",
+        "default": "./dist/static/index.cjs"
+      }
+    },
+    "./meta": {
+      "import": {
+        "types": "./dist/meta.d.ts",
+        "default": "./dist/meta.js"
+      },
+      "require": {
+        "types": "./dist/meta.d.cts",
+        "default": "./dist/meta.cjs"
+      }
+    },
+    "./icons/*": {
+      "import": {
+        "types": "./dist/icon.d.ts",
+        "default": "./dist/icons/*.js"
+      },
+      "require": {
+        "types": "./dist/icon.d.cts",
+        "default": "./dist/icons/*.cjs"
+      }
+    },
+    "./static/icons/*": {
+      "import": {
+        "types": "./dist/static/icon.d.ts",
+        "default": "./dist/static/icons/*.js"
+      },
+      "require": {
+        "types": "./dist/static/icon.d.cts",
+        "default": "./dist/static/icons/*.cjs"
+      }
+    },
+    "./package.json": "./package.json"
   },
-  "files": ["dist", "NOTICE"]
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "dist",
+    "NOTICE"
+  ]
 }
