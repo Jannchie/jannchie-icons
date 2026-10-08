@@ -83,10 +83,50 @@ function iconTimes() {
   }
 }
 
+// 合并热更新：iconset.js 用 import.meta.glob 一次性导入全部图标，任何一个图标或系列模块改动都会让 App.vue 整个重渲染。
+// 一次批量改动（脚本改几百个图标、切分支、git stash）会逐个文件触发，页面连着刷新几百次、卡住。
+// 这里把 src/ 下 .js 的改动攒 BATCH_MS：只有一个文件就照常热更新，多个就只整页刷新一次
+const BATCH_MS = 200
+function batchHotUpdates() {
+  const SRC = `${normalizePath(resolve('src'))}/`
+  let pending = new Map()
+  let timer
+  let replaying = false
+  return {
+    name: 'batch-hot-updates',
+    apply: 'serve',
+    hotUpdate({ file, modules }) {
+      if (replaying || this.environment.name !== 'client' || !normalizePath(file).startsWith(SRC) || !file.endsWith('.js'))
+        return
+      for (const m of modules)
+        pending.set(m.id ?? m.url, m)
+      const env = this.environment
+      clearTimeout(timer)
+      timer = setTimeout(async () => {
+        const batch = [...pending.values()]
+        pending = new Map()
+        if (batch.length > 1) {
+          env.hot.send({ type: 'full-reload' })
+          return
+        }
+        replaying = true
+        try {
+          for (const m of batch)
+            await env.reloadModule(m)
+        }
+        finally {
+          replaying = false
+        }
+      }, BATCH_MS)
+      return []
+    },
+  }
+}
+
 export default defineConfig({
   // 部署在自定义域名 icons.jannchie.com 的根路径
   base: '/',
-  plugins: [vue(), iconTimes()],
+  plugins: [vue(), iconTimes(), batchHotUpdates()],
   server: {
     // 构建产物、快照、草稿不需要监听：一次 build:packages 会在 packages/ 下生成、删除几万个文件，
     // 全部进入监听和 HMR 插件链，长时间运行的开发服务器会因此占满内存
