@@ -125,14 +125,14 @@ export function minify(d, { packArcs = false } = {}) {
   return out
 }
 
-// 各类线条的实际线宽：detail（缩小的符号）封顶 DETAIL_STROKE，thin（内部细线）是外框的 THIN 倍
-export const DETAIL_STROKE = 1.5
+// 各类线条的实际线宽：thin（内部细线）是外框的 THIN 倍
 export const THIN = 0.7
-// badge（系列图标的角标）比外框细：外框线宽的 BADGE_RATIO 倍，封顶 BADGE_STROKE——主体和角标一粗一细，角标细节在小尺寸下更清楚
-export const BADGE_RATIO = 0.8
-export const BADGE_STROKE = 1.25
+// detail（缩小放进外框里的符号：系列的居中符号、列表符号）和 badge（系列图标的角标）比外框细：
+// 外框线宽的 DETAIL_RATIO 倍，封顶 DETAIL_STROKE——外框和里面的符号一粗一细，符号细节在小尺寸下更清楚
+export const DETAIL_RATIO = 0.8
+export const DETAIL_STROKE = 1.25
 // relief 是拥挤检测（见 relieve）给出的退让线宽，只会让线变细
-const widthOf = (item, stroke) => Math.min(item.thin ? stroke * THIN : item.badge ? Math.min(stroke * BADGE_RATIO, BADGE_STROKE) : item.detail ? Math.min(stroke, DETAIL_STROKE) : stroke, item.relief ?? Infinity)
+const widthOf = (item, stroke) => Math.min(item.thin ? stroke * THIN : item.badge || item.detail ? Math.min(stroke * DETAIL_RATIO, DETAIL_STROKE) : stroke, item.relief ?? Infinity)
 // 点：显式给了 dot 直径，或者是字符串写的零长度路径（M x y h0，按默认直径 DOT）
 const dotSize = item => item.dot ?? (/^(?:M[^MLHVCSQTAZ]+h0)+$/i.test(item.d.replace(/\s+/g, '')) ? DOT : 0)
 // 点的直径是按线宽 DOT_STROKE 设计的，实际按字重等比缩放：点和线的粗细比例在任何字重下都一样
@@ -691,7 +691,7 @@ function fitSquareCaps(items, stroke) {
 // - round：尖角模式下也用圆头线帽和圆角转角（军衔里的小星这类，尖角斜接会被斜接上限切成圆点，干脆画成圆角）
 // - cut 是「刀」：其余路径在离它 gap（默认 GAP）+ 线宽以内的部分被真正裁掉；
 //   occlude 的刀还会把落在它闭合区域内部的线整段删掉（前后叠放、镜片内部之类）；hidden 的刀只裁不画
-// - detail 是缩小的符号（线宽封顶 DETAIL_STROKE），badge 是系列图标的角标（外框线宽的 BADGE_RATIO 倍、封顶 BADGE_STROKE），thin 是内部细线（线宽取外框的 THIN 倍），dot 是点在线宽 DOT_STROKE 下的直径（随字重等比缩放）
+// - detail 是缩小的符号（外框线宽的 DETAIL_RATIO 倍、封顶 DETAIL_STROKE），badge 是系列图标的角标（和 detail 一样细），thin 是内部细线（线宽取外框的 THIN 倍），dot 是点在线宽 DOT_STROKE 下的直径（随字重等比缩放）
 // 裁切后做端点吸附（见 snapEnds）和拥挤检测（见 relieve），再按（细节、实心、点、细线）分组合并、压缩；每组带上实际线宽 width（和外框相同时为 undefined）
 // 动画帧（animated）：不做拥挤检测（逐帧判断会让各帧的路径结构不一致），也不压缩——
 // 输出统一的绝对坐标写法，同一图标各帧的命令序列一致，SMIL 才能逐个数字插值

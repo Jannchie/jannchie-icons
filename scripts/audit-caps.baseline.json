@@ -54,6 +54,9 @@
   "book-clock-badge": [
     "bold (15.54, 6.74)"
   ],
+  "book-music": [
+    "regular (12.5, 12.03)"
+  ],
   "book-search-badge": [
     "light (15.98, 10.98)",
     "regular (15.73, 10.23)"
@@ -97,18 +100,16 @@
     "light (17.98, 17.98)",
     "regular (17.73, 17.73)"
   ],
-  "calendar-ban": [
-    "bold (14.05, 17.55)",
-    "bold (9.95, 13.45)",
-    "regular (14.05, 17.55)",
-    "regular (9.95, 13.45)"
-  ],
   "calendar-ban-badge-top": [
     "regular (14.37, 3.87)",
     "regular (19.13, 8.63)"
   ],
   "calendar-clock-badge-top": [
     "bold (16.54, 3.24)"
+  ],
+  "calendar-gauge": [
+    "bold (14.17, 13.71)",
+    "regular (14.17, 13.71)"
   ],
   "calendar-search-badge": [
     "light (16.98, 17.98)",
@@ -277,6 +278,9 @@
     "bold (9.34, 7.08)",
     "bold (9.44, 7.56)"
   ],
+  "ghs-environment": [
+    "bold (9.06, 8.56)"
+  ],
   "glasses": [
     "bold (14.08, 13.27)",
     "light (13.87, 13.68)",
@@ -331,6 +335,10 @@
     "light (12.13, 8.19)",
     "regular (11.8, 8.28)",
     "regular (12.2, 8.28)"
+  ],
+  "hazard-biohazard": [
+    "light (11.37, 14.67)",
+    "light (11.5, 15.05)"
   ],
   "heart-organ": [
     "bold (12.5, 8.2)",

@@ -112,7 +112,10 @@ export function centerBadge(name, draw, radius, stroke, center, limit, grow = 1)
   return fit
 }
 
-// 标记成角标：渲染时线宽比外框细（见 svg.js 的 BADGE_RATIO）
+// 标记成角标：渲染时线宽比外框细（见 svg.js 的 DETAIL_RATIO）
 // 加号、减号、叉只有一两笔、没有内部细节，变细后 16px 下发虚、看不清，保持外框线宽（name 是 cornerScale 里的符号名）
 const FULL_WEIGHT = new Set(['plus', 'minus', 'cross'])
-export const asBadge = (paths, name) => (FULL_WEIGHT.has(name) ? paths : paths.map(p => (typeof p === 'string' ? { d: p, badge: true } : { ...p, badge: true })))
+export const asBadge = (paths, name) => paths.map((p) => {
+  const item = typeof p === 'string' ? { d: p } : p
+  return FULL_WEIGHT.has(name) ? { ...item, detail: false } : { ...item, badge: true }
+})

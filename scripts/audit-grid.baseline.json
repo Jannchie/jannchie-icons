@@ -2,12 +2,40 @@
   "book-open": [
     "x 12"
   ],
+  "book-plus-badge-top": [
+    "x 15",
+    "y 7"
+  ],
+  "briefcase-plus-badge": [
+    "x 17",
+    "y 17"
+  ],
+  "calendar-plus-badge": [
+    "x 16",
+    "y 17"
+  ],
   "cc-nc-jp": [
     "x 12",
     "y 15"
   ],
+  "chat-plus-badge": [
+    "x 17",
+    "y 12"
+  ],
+  "chat-plus-badge-top": [
+    "x 17",
+    "y 8"
+  ],
+  "file-plus-badge": [
+    "x 15",
+    "y 17"
+  ],
   "folder-open": [
     "y 10.75"
+  ],
+  "folder-plus-badge": [
+    "x 17",
+    "y 17"
   ],
   "json": [
     "x 18",
@@ -46,6 +74,10 @@
   "loading-spokes": [
     "x 12",
     "y 12"
+  ],
+  "map-pin-plus": [
+    "x 17",
+    "y 17"
   ],
   "monitor": [
     "x 12"
@@ -246,10 +278,14 @@
     "x 12"
   ],
   "monitor-plus-badge": [
-    "x 12"
+    "x 12",
+    "x 17",
+    "y 12"
   ],
   "monitor-plus-badge-top": [
-    "x 12"
+    "x 12",
+    "x 17",
+    "y 8"
   ],
   "monitor-puzzle": [
     "x 12"
@@ -325,6 +361,13 @@
   ],
   "shield-alert": [
     "x 12"
+  ],
+  "shield-minus-badge": [
+    "y 17"
+  ],
+  "shield-plus-badge": [
+    "x 17",
+    "y 17"
   ],
   "trash": [
     "x 10",

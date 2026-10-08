@@ -369,7 +369,9 @@ const drawSparkle = (c, k = 1) => {
   const p = at(c, k)
   const pt = q => p(q).join(' ')
   const R = 3.5 // 长半轴
-  const b = 1.2 // 短半轴：越小越扁、越尖细
+  // 短半轴：越小越扁、越尖细。画得小（角标、居中符号、AI 图标右上的小星芒）时中间的空心太窄，16px 下糊成一团，
+  // 所以缩放越小越饱满：k ≥ 2 时 1.2，往下每小 0.1 加 0.05，k = 1 时 1.7
+  const b = 1.2 + Math.min(0.5, Math.max(0, (2 - k) * 0.5))
   const fillet = 0.6 // 交点圆角在两条弧上各让出的弧长
   // 第一象限（右上）的交点：x = |y| = s
   const s = 1 / Math.sqrt(1 / (b * b) + 1 / (R * R))

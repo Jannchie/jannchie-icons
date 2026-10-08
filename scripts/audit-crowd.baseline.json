@@ -179,8 +179,16 @@
     "regular @(12, 12)",
     "regular @(12, 17.5)"
   ],
+  "book-clock": [
+    "bold @(12, 9.5)",
+    "regular @(12, 9.5)"
+  ],
   "book-clock-badge-top": [
     "regular @(16, 6)"
+  ],
+  "book-gauge": [
+    "bold @(12, 9.5)",
+    "regular @(12, 9.5)"
   ],
   "book-image": [
     "regular @(12, 9.5)"
@@ -196,12 +204,6 @@
   "book-lock-badge-top": [
     "bold @(16, 8.5)",
     "regular @(16, 8.5)"
-  ],
-  "book-music": [
-    "bold @(12, 17.3)"
-  ],
-  "book-plug": [
-    "bold @(12, 17.3)"
   ],
   "book-plus-badge": [
     "bold @(12, 12)",
@@ -239,14 +241,15 @@
     "bold @(11.5, 13.5)",
     "regular @(11.5, 13.5)"
   ],
-  "briefcase-arrow-down": [
-    "bold @(12, 14)"
-  ],
-  "briefcase-arrow-up": [
-    "bold @(12, 14)"
+  "briefcase-clock": [
+    "bold @(12, 14)",
+    "regular @(12, 14)"
   ],
   "briefcase-clock-badge": [
     "bold @(16.5, 16.8)"
+  ],
+  "briefcase-gauge": [
+    "regular @(12, 14)"
   ],
   "briefcase-gauge-badge": [
     "bold @(16.5, 17)",
@@ -270,17 +273,10 @@
     "bold @(12, 14)"
   ],
   "briefcase-plug": [
-    "bold @(12, 14)",
     "bold @(12, 6)",
     "regular @(12, 14)"
   ],
   "briefcase-shield": [
-    "bold @(12, 14)"
-  ],
-  "briefcase-sparkle": [
-    "bold @(12, 14)"
-  ],
-  "briefcase-star": [
     "bold @(12, 14)"
   ],
   "broom": [
@@ -300,12 +296,6 @@
     "bold @(12.5, 10.5)",
     "bold @(16.5, 10.5)",
     "bold @(8.5, 10.5)"
-  ],
-  "calendar-arrow-down": [
-    "bold @(12, 10)"
-  ],
-  "calendar-arrow-up": [
-    "bold @(12, 13)"
   ],
   "calendar-clock-badge": [
     "regular @(16.5, 17.5)"
@@ -338,20 +328,14 @@
     "bold @(12, 13)"
   ],
   "calendar-plug": [
-    "bold @(12, 13)",
-    "regular @(12, 9.8)"
+    "bold @(12, 10)",
+    "bold @(12, 13)"
   ],
   "calendar-plus-badge": [
     "bold @(12, 10)"
   ],
   "calendar-puzzle": [
     "bold @(12, 10)"
-  ],
-  "calendar-sparkle": [
-    "bold @(12, 13)"
-  ],
-  "calendar-star": [
-    "bold @(12, 13)"
   ],
   "camera-action": [
     "bold @(12, 11)"
@@ -402,6 +386,10 @@
     "bold @(12, 6.5)",
     "regular @(12, 6.5)"
   ],
+  "chat-clock": [
+    "bold @(12, 10)",
+    "regular @(12, 10)"
+  ],
   "chat-clock-badge": [
     "bold @(17, 12.3)"
   ],
@@ -415,9 +403,6 @@
   "chat-ellipsis-badge-top": [
     "bold @(15.2, 4)",
     "bold @(18, 4)"
-  ],
-  "chat-exclaim": [
-    "bold @(12, 12)"
   ],
   "chat-exclaim-badge": [
     "bold @(21, 11.8)"
@@ -458,10 +443,6 @@
   ],
   "chat-plug": [
     "regular @(12, 12)"
-  ],
-  "chat-question": [
-    "bold @(12, 12)",
-    "bold @(12, 8.3)"
   ],
   "chat-question-badge": [
     "bold @(19, 11.8)"
@@ -707,11 +688,16 @@
   "file-assets": [
     "bold @(12, 12)"
   ],
+  "file-clock": [
+    "bold @(12, 13.5)",
+    "regular @(12, 13.5)"
+  ],
   "file-clock-badge": [
     "bold @(15, 17)"
   ],
-  "file-cloud": [
-    "bold @(12, 12)"
+  "file-gauge": [
+    "bold @(12, 13.5)",
+    "regular @(12, 13.5)"
   ],
   "file-gauge-badge": [
     "bold @(15.3, 17.8)",
@@ -756,11 +742,19 @@
   "folder-bookmark": [
     "regular @(12, 12)"
   ],
+  "folder-clock": [
+    "bold @(12, 13.5)",
+    "regular @(12, 13.5)"
+  ],
   "folder-clock-badge": [
     "bold @(16.5, 16.8)"
   ],
   "folder-clock-badge-top": [
     "regular @(18, 7)"
+  ],
+  "folder-gauge": [
+    "bold @(12, 13.5)",
+    "regular @(12, 13.5)"
   ],
   "folder-gauge-badge": [
     "bold @(16.5, 17)",
@@ -792,8 +786,7 @@
     "bold @(12, 12)"
   ],
   "folder-plug": [
-    "bold @(12, 12)",
-    "regular @(12, 12)"
+    "bold @(12, 12)"
   ],
   "fuel": [
     "bold @(9.5, 12)"
@@ -837,29 +830,22 @@
     "bold @(12, 12)",
     "bold @(12.8, 16.5)",
     "regular @(12, 12)",
-    "regular @(12.8, 16.5)"
+    "regular @(12.3, 16)"
   ],
   "ghs-environment": [
-    "bold @(11.3, 15.5)",
-    "bold @(12, 12)",
-    "regular @(11.3, 15.5)"
-  ],
-  "ghs-explosive": [
     "bold @(12, 12)",
     "regular @(12, 12)"
   ],
-  "ghs-flammable": [
+  "ghs-explosive": [
     "bold @(12, 12)"
+  ],
+  "ghs-flammable": [
+    "bold @(12, 12)",
+    "regular @(12, 12)"
   ],
   "ghs-gas-cylinder": [
     "bold @(12, 12)",
     "regular @(12, 12)"
-  ],
-  "ghs-health-hazard": [
-    "bold @(12, 14.4)",
-    "bold @(12, 7.5)",
-    "regular @(12, 14.4)",
-    "regular @(12, 7.5)"
   ],
   "ghs-toxic": [
     "bold @(12, 9.8)",
@@ -924,14 +910,10 @@
     "bold @(12, 12.1)",
     "bold @(12, 13.5)",
     "bold @(9.5, 13.5)",
-    "regular @(12, 12.1)",
-    "regular @(12, 13.5)",
-    "regular @(9.5, 13.5)"
-  ],
-  "hazard-laser": [
-    "bold @(12, 12.1)"
+    "regular @(12, 12.1)"
   ],
   "hazard-magnetic": [
+    "bold @(12, 12.1)",
     "regular @(12, 12.1)"
   ],
   "hazard-radiation": [
@@ -1147,12 +1129,14 @@
     "regular @(12, 15)"
   ],
   "list-clock": [
-    "bold @(15.5, 15.5)",
-    "regular @(15.5, 15.5)"
+    "bold @(15.5, 15.5)"
   ],
   "list-gauge": [
     "bold @(15.5, 16)",
     "regular @(15.5, 16)"
+  ],
+  "list-image": [
+    "bold @(15.5, 16)"
   ],
   "list-lock": [
     "bold @(17, 17.5)",
@@ -1237,6 +1221,10 @@
     "bold @(14.8, 17.5)",
     "bold @(14.8, 20.5)"
   ],
+  "monitor-clock": [
+    "bold @(12, 10)",
+    "regular @(12, 10)"
+  ],
   "monitor-clock-badge": [
     "regular @(18, 13)"
   ],
@@ -1254,9 +1242,6 @@
   "monitor-ellipsis-badge-top": [
     "bold @(15.2, 4)",
     "bold @(18, 4)"
-  ],
-  "monitor-exclaim": [
-    "bold @(12, 10)"
   ],
   "monitor-exclaim-badge": [
     "bold @(21, 11.8)"
@@ -1291,10 +1276,6 @@
   "monitor-plug": [
     "regular @(12, 10)"
   ],
-  "monitor-question": [
-    "bold @(12, 10)",
-    "bold @(12, 8.3)"
-  ],
   "monitor-question-badge": [
     "bold @(19, 11.8)"
   ],
@@ -1302,8 +1283,7 @@
     "bold @(19, 6.3)"
   ],
   "monitor-shield": [
-    "bold @(12, 10)",
-    "bold @(12, 18)"
+    "bold @(12, 10)"
   ],
   "mosque": [
     "bold @(19.5, 13.2)",
@@ -1435,26 +1415,17 @@
     "bold @(12, 6)"
   ],
   "rank-colonel": [
-    "bold @(12, 12.3)",
-    "bold @(12, 6)",
-    "bold @(15, 15.3)",
-    "bold @(9, 15.3)"
+    "bold @(12, 12.3)"
   ],
   "rank-first-lieutenant": [
     "bold @(12, 12.3)",
     "bold @(12, 6)"
   ],
   "rank-lieutenant-colonel": [
-    "bold @(12, 12.3)",
-    "bold @(12, 6)",
-    "bold @(15, 15.3)",
-    "bold @(9, 15.3)"
+    "bold @(12, 12.3)"
   ],
   "rank-major": [
-    "bold @(12, 12.3)",
-    "bold @(12, 6)",
-    "bold @(15, 15.3)",
-    "bold @(9, 15.3)"
+    "bold @(12, 12.3)"
   ],
   "rank-second-lieutenant": [
     "bold @(12, 12.3)",
@@ -1599,16 +1570,20 @@
   "sentence-similarity": [
     "regular @(6, 13.5)"
   ],
-  "server-cog": [
-    "bold @(18, 17.5)",
-    "regular @(18, 17.5)"
-  ],
   "shield-assets": [
     "bold @(12, 12)"
+  ],
+  "shield-clock": [
+    "bold @(12, 11)",
+    "regular @(12, 11)"
   ],
   "shield-clock-badge": [
     "bold @(17, 17)",
     "regular @(17, 17)"
+  ],
+  "shield-gauge": [
+    "bold @(12, 11)",
+    "regular @(12, 11)"
   ],
   "shield-gauge-badge": [
     "bold @(17, 17)",
@@ -1746,8 +1721,7 @@
   ],
   "sunglasses": [
     "bold @(7, 13.3)",
-    "regular @(12, 9.5)",
-    "regular @(7, 13.3)"
+    "regular @(12, 9.5)"
   ],
   "sunrise": [
     "bold @(11.5, 16)"
@@ -1853,6 +1827,7 @@
   ],
   "train-station": [
     "bold @(12, 11.5)",
+    "bold @(12, 8)",
     "regular @(12, 11.5)",
     "regular @(12, 8)"
   ],
@@ -1916,15 +1891,15 @@
     "bold @(10.8, 6)",
     "bold @(12, 6)"
   ],
-  "user-cog": [
-    "bold @(18, 16.5)",
-    "regular @(18, 16.5)"
-  ],
   "user-contractor": [
     "bold @(18, 17)"
   ],
   "user-freelancer": [
     "regular @(18, 16.4)"
+  ],
+  "user-full-time": [
+    "bold @(18, 17)",
+    "regular @(18, 17)"
   ],
   "user-guest": [
     "bold @(18, 17)",
