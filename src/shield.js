@@ -5,7 +5,7 @@
 // 线宽变粗时外缘不动、往里长（h 是半个线宽）
 // 右下角标：盾的右下是一段收向底尖的曲线，没有横平竖直的边可以按区间断开（各系列用的 blocked 只处理轴对齐的边），
 // 所以改用一个隐藏的遮挡框：角标外形外扩一圈，框里的盾线删掉、框边附近的线断开（clip 按 GAP + 线宽留缝）
-import { fitBadge } from './corner'
+import { centerBadge } from './corner'
 
 const fmt = v => +v.toFixed(3)
 
@@ -40,15 +40,13 @@ export const center = [12, 11]
 export const centerScale = 1
 export const plain = stroke => [outline(stroke)]
 
-// 角标外框的右下角：右缘贴到 22（画布留白 2），下缘贴到底尖的外缘 22
-// （盾的外框右缘只到 21，但角标在盾外的空角里，贴到 21 会让遮挡框切进盾身太多）
-export const badgeCorner = { right: 22, bottom: 22 }
-
-// 角标版：盾 + 遮挡框 + 角标符号（符号本身也是刀，不会被遮挡框删掉）
-// 角标比普通角标大 GROW 倍，和文件夹等系列一样（16px 下也认得出符号）
-const GROW = 1.3
+// 角标：中心固定在 BADGE_CENTER，各符号落在同一个位置（盾的右下是曲线，贴墨迹边缘的话圆的、方的、扁的符号中心各不相同，
+// 一排看下来位置不统一）；比普通角标大 GROW 倍，墨迹超出 22（画布留白 2）就缩小
+// 不像文件夹等系列放大到 1.3：盾的下半收成尖，大角标会把盾的右半边整个吃掉
+const BADGE_CENTER = [17, 17]
+const GROW = 1.1
 export function withBadge(name, draw, tone, radius, stroke) {
-  const { k, at, shape } = fitBadge(name, draw, radius, stroke, badgeCorner, undefined, GROW)
+  const { k, at, shape } = centerBadge(name, draw, radius, stroke, BADGE_CENTER, 22, GROW)
   // 遮挡框取符号实际墨迹（中心线）的外接框：按 outlines 的近似外形会比墨迹大（对勾、云），线断得太早
   const xs = shape.pts.map(q => q[0])
   const ys = shape.pts.map(q => q[1])

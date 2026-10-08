@@ -96,3 +96,18 @@ export const roomBelow = (stroke, r, bottom) => (shape) => {
   const right = blocked(shape, 'y', r, stroke)
   return !right || bottom - right[1] >= MIN_EDGE
 }
+
+// 按固定中心摆角标（盾牌、定位针这类没有横平竖直外框角的系列）：贴墨迹边缘的话，圆的、方的、扁的符号中心各不相同，
+// 一排看下来位置忽左忽右；固定中心后各符号落在同一个位置。从 grow 倍开始，墨迹（含半个线宽）超出 limit（右、下）就缩小 0.05 倍再试
+export function centerBadge(name, draw, radius, stroke, center, limit, grow = 1) {
+  const h = stroke / 2
+  let fit
+  for (let s = grow; s >= MIN_FIT - 1e-6; s -= 0.05) {
+    const k = cornerScale[name] * s
+    const [, , x1, y1] = extentOf(draw, center, k, radius)
+    fit = { k, at: center, shape: { ...place(outlines[name], center, k), pts: inkOf(draw, center, k, radius) } }
+    if (x1 + h <= limit + 1e-6 && y1 + h <= limit + 1e-6)
+      break
+  }
+  return fit
+}
