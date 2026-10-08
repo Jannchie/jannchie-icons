@@ -1,6 +1,6 @@
 {
   "name": "@jannchie/icons-react",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "React component for Jannchie Icons: one <JIcon> for every icon, with context defaults for radius and weight, pixel hinting and duo-tone colors",
   "license": "MIT",
   "author": "Jianqi Pan",
@@ -48,7 +48,7 @@
     "./package.json": "./package.json"
   },
   "peerDependencies": {
-    "@jannchie/icons": "^0.6.0",
+    "@jannchie/icons": "^0.7.0",
     "react": ">=18.0.0"
   },
   "devDependencies": {
