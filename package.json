@@ -9,14 +9,20 @@
     "audit:grid": "node scripts/audit-grid.mjs",
     "audit:caps": "node scripts/audit-caps.mjs",
     "audit:crowd": "node scripts/audit-crowd.mjs",
+    "audit:icons": "node scripts/audit-icons.mjs",
     "brand": "node scripts/brand.mjs",
-    "build:packages": "node scripts/build-packages.mjs"
+    "build:packages": "node scripts/build-packages.mjs && pnpm build:components",
+    "build:components": "node scripts/build-components.mjs",
+    "test": "vitest run",
+    "release-notes": "node scripts/release-notes.mjs",
+    "version:set": "node scripts/version.mjs"
   },
   "dependencies": {
     "vue": "^3.5.43"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.9",
-    "vite": "^8.3.2"
+    "vite": "^8.3.2",
+    "vitest": "^5.0.3"
   }
 }

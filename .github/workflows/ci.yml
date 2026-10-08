@@ -1,0 +1,33 @@
+name: CI
+
+# 每次推送分支和每个 PR：构建两个包、跑测试（渲染冒烟、输出快照、命名与分类）、跑审计门禁（和 scripts/audit-*.baseline.json 比，出现新问题就失败）
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+        with:
+          version: 10.11.1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build:packages
+      # 快照（tests/__snapshots__/icons.json）在 CI 里不会自动写入：输出变了就失败，本地确认后用 pnpm test -u 更新并提交
+      - run: pnpm test
+      - run: pnpm audit:icons

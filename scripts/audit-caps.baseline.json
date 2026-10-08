@@ -1,0 +1,742 @@
+{
+  "alchemy-lead": [
+    "bold (9.5, 12.84)"
+  ],
+  "alchemy-salt": [
+    "bold (3.55, 11.1)",
+    "light (3.51, 11.5)",
+    "regular (3.52, 11.35)"
+  ],
+  "aperture": [
+    "bold (3.06, 11)"
+  ],
+  "arrow-down-list": [
+    "bold (11.5, 18.44)",
+    "regular (11.5, 18.58)"
+  ],
+  "astro-earth": [
+    "bold (3.55, 11.1)",
+    "light (3.51, 11.5)",
+    "regular (3.52, 11.35)"
+  ],
+  "astro-saturn": [
+    "bold (9.5, 12.84)"
+  ],
+  "axe": [
+    "bold (5.94, 7.04)",
+    "bold (6.44, 7.13)",
+    "regular (6.01, 7.01)",
+    "regular (6.38, 7.07)"
+  ],
+  "bacon": [
+    "bold (16.41, 13.62)"
+  ],
+  "badminton": [
+    "bold (10.59, 2.81)",
+    "bold (2.81, 10.59)"
+  ],
+  "ban": [
+    "bold (17.52, 17.52)",
+    "bold (6.48, 6.48)"
+  ],
+  "basketball": [
+    "bold (3.02, 12.66)",
+    "light (3.01, 12.5)",
+    "regular (12.5, 20.94)",
+    "regular (18.31, 18.31)",
+    "regular (3.02, 12.53)"
+  ],
+  "biohazard": [
+    "bold (10.83, 13.94)"
+  ],
+  "books": [
+    "bold (8.5, 20.5)"
+  ],
+  "bow": [
+    "bold (7.5, 21.05)",
+    "bold (7.5, 3.95)",
+    "bold (7.88, 21.26)",
+    "bold (7.88, 3.74)",
+    "light (7.5, 21.29)",
+    "light (7.5, 3.71)",
+    "light (7.68, 21.39)",
+    "light (7.68, 3.61)",
+    "regular (7.5, 21.17)",
+    "regular (7.5, 3.83)",
+    "regular (7.78, 21.33)",
+    "regular (7.78, 3.67)"
+  ],
+  "brain-circuit": [
+    "bold (15.15, 15.9)",
+    "bold (15.38, 15.18)",
+    "bold (9.62, 15.18)",
+    "bold (9.85, 15.9)"
+  ],
+  "brain-cyborg": [
+    "bold (15.38, 15.18)"
+  ],
+  "branch-mao": [
+    "bold (9.32, 4.24)",
+    "regular (9.5, 4.06)"
+  ],
+  "calendar-off": [
+    "regular (7.78, 3.79)",
+    "regular (8.07, 3.99)"
+  ],
+  "camera-rotate": [
+    "bold (14.32, 10.98)",
+    "bold (14.52, 11.68)",
+    "bold (9.48, 14.83)",
+    "bold (9.67, 15.53)"
+  ],
+  "candy": [
+    "bold (9.41, 8.95)"
+  ],
+  "cap": [
+    "bold (14.5, 15.5)"
+  ],
+  "cc-sa": [
+    "bold (9.81, 8.29)",
+    "regular (9.3, 8.64)"
+  ],
+  "chinese-zodiac-dragon": [
+    "bold (14.62, 7.06)",
+    "bold (9.38, 7.06)"
+  ],
+  "chinese-zodiac-goat": [
+    "bold (15.4, 6.98)",
+    "bold (16.8, 9.86)",
+    "bold (7.2, 9.86)",
+    "bold (8.6, 6.98)"
+  ],
+  "chinese-zodiac-monkey": [
+    "bold (2.25, 12.5)",
+    "bold (2.26, 12.28)",
+    "light (2.26, 12.25)",
+    "light (2.26, 12.72)"
+  ],
+  "chinese-zodiac-rat": [
+    "light (14.01, 6.74)",
+    "light (3, 7)",
+    "light (3.01, 6.73)"
+  ],
+  "chinese-zodiac-snake": [
+    "bold (11.27, 13.27)",
+    "bold (11.73, 13.27)"
+  ],
+  "clock-off": [
+    "regular (3.46, 12.41)"
+  ],
+  "cloud-sun": [
+    "bold (13.25, 8.5)",
+    "bold (13.38, 7.76)"
+  ],
+  "coin-bitcoin": [
+    "bold (13.26, 11.62)",
+    "regular (13.02, 11.55)"
+  ],
+  "coins": [
+    "bold (19.17, 10.73)",
+    "bold (19.17, 14.73)",
+    "bold (4.5, 6.16)",
+    "bold (4.83, 10.73)",
+    "bold (4.83, 14.73)",
+    "bold (4.83, 5.27)",
+    "bold (4.83, 6.73)",
+    "light (19.43, 10.34)",
+    "light (19.43, 14.34)",
+    "light (4.57, 10.34)",
+    "light (4.57, 14.34)",
+    "light (4.57, 5.66)",
+    "light (4.57, 6.34)",
+    "regular (19.32, 10.55)",
+    "regular (19.32, 14.55)",
+    "regular (4.68, 10.55)",
+    "regular (4.68, 14.55)",
+    "regular (4.68, 5.46)",
+    "regular (4.68, 6.55)"
+  ],
+  "currency-bitcoin": [
+    "bold (13.3, 11.57)",
+    "regular (13.06, 11.53)"
+  ],
+  "darts": [
+    "bold (6.5, 13)"
+  ],
+  "database": [
+    "bold (19.21, 12.75)",
+    "bold (4.79, 12.75)",
+    "bold (4.79, 5.25)",
+    "bold (4.79, 6.75)",
+    "light (19.44, 12.34)",
+    "light (4.56, 12.34)",
+    "light (4.56, 5.66)",
+    "light (4.56, 6.34)",
+    "regular (19.35, 12.55)",
+    "regular (4.65, 12.55)",
+    "regular (4.65, 5.45)",
+    "regular (4.65, 6.55)"
+  ],
+  "database-arrow-down": [
+    "bold (4.74, 12.69)",
+    "bold (4.79, 5.25)",
+    "bold (4.79, 6.75)",
+    "light (4.56, 5.66)",
+    "light (4.56, 6.34)",
+    "regular (4.62, 12.48)",
+    "regular (4.65, 5.45)",
+    "regular (4.65, 6.55)"
+  ],
+  "database-arrow-up": [
+    "bold (4.74, 12.69)",
+    "bold (4.79, 5.25)",
+    "bold (4.79, 6.75)",
+    "light (4.56, 5.66)",
+    "light (4.56, 6.34)",
+    "regular (4.62, 12.48)",
+    "regular (4.65, 5.45)",
+    "regular (4.65, 6.55)"
+  ],
+  "depth-estimation": [
+    "regular (15.15, 12.87)",
+    "regular (20.85, 12.87)"
+  ],
+  "dress": [
+    "bold (15.5, 5.5)",
+    "bold (8.5, 5.5)",
+    "regular (15.5, 5.75)",
+    "regular (8.5, 5.75)"
+  ],
+  "eye-off": [
+    "light (9, 12)",
+    "light (9.01, 12.2)"
+  ],
+  "game-card-reverse": [
+    "bold (14.41, 13.5)",
+    "bold (9.59, 10.5)"
+  ],
+  "gender-transgender": [
+    "bold (7.08, 9.34)",
+    "bold (7.56, 9.44)",
+    "bold (9.34, 7.08)",
+    "bold (9.44, 7.56)"
+  ],
+  "glasses": [
+    "bold (14.08, 13.27)",
+    "light (13.87, 13.68)",
+    "light (14.02, 13.66)",
+    "regular (13.77, 13.51)",
+    "regular (14.04, 13.46)"
+  ],
+  "globe": [
+    "bold (11.21, 2.64)",
+    "bold (12.79, 2.64)",
+    "bold (3.02, 10.84)",
+    "bold (3.02, 12.16)",
+    "light (3, 11.32)",
+    "light (3, 11.68)",
+    "regular (11.43, 2.57)",
+    "regular (12.57, 2.57)",
+    "regular (3.01, 11.08)",
+    "regular (3.01, 11.92)"
+  ],
+  "globe-search": [
+    "bold (11.21, 2.64)",
+    "bold (12.7, 20.48)",
+    "bold (12.78, 2.64)",
+    "bold (3.02, 10.84)",
+    "bold (3.02, 12.04)",
+    "light (3, 11.32)",
+    "light (5.02, 16.5)",
+    "regular (11.43, 2.57)",
+    "regular (12.55, 2.57)",
+    "regular (3.01, 11.08)",
+    "regular (3.02, 11.92)"
+  ],
+  "golf": [
+    "bold (10.05, 3.22)",
+    "bold (9.5, 3.59)",
+    "light (9.5, 3.3)",
+    "light (9.78, 3.11)",
+    "regular (9.5, 3.45)",
+    "regular (9.91, 3.17)"
+  ],
+  "grapes": [
+    "bold (12.91, 4.97)",
+    "bold (13.09, 4.03)",
+    "regular (13.09, 4.03)"
+  ],
+  "greek-xi": [
+    "bold (14.5, 4)"
+  ],
+  "hachiware": [
+    "light (11.87, 8.19)",
+    "light (12.13, 8.19)",
+    "regular (11.8, 8.28)",
+    "regular (12.2, 8.28)"
+  ],
+  "heart-organ": [
+    "bold (12.5, 8.2)",
+    "bold (13.29, 8.9)",
+    "bold (6.5, 9.85)",
+    "bold (8.5, 8.76)",
+    "bold (8.91, 9.06)",
+    "bold (9.5, 9)",
+    "light (12.5, 8.66)",
+    "light (12.83, 8.95)",
+    "light (8.5, 8.91)",
+    "light (8.78, 9.1)",
+    "regular (12.5, 8.43)",
+    "regular (13.06, 8.92)",
+    "regular (8.5, 8.76)",
+    "regular (8.93, 9.06)"
+  ],
+  "hiragana-ki": [
+    "bold (14.77, 15.14)",
+    "bold (15.18, 14.33)",
+    "light (15.15, 15.07)",
+    "light (15.34, 14.68)",
+    "regular (14.95, 15.11)",
+    "regular (15.26, 14.5)"
+  ],
+  "hiragana-sa": [
+    "bold (14.44, 14.51)",
+    "bold (14.77, 13.99)",
+    "light (14.72, 14.5)",
+    "light (14.88, 14.24)",
+    "regular (14.58, 14.51)",
+    "regular (14.83, 14.12)"
+  ],
+  "histogram": [
+    "bold (20.66, 20.5)",
+    "bold (20.7, 19.9)",
+    "bold (3.75, 20.3)",
+    "bold (3.77, 20.5)",
+    "light (20.76, 20.5)",
+    "light (20.8, 20.26)",
+    "light (3.3, 20.47)",
+    "light (3.31, 20.5)",
+    "regular (20.7, 20.5)",
+    "regular (20.74, 20.08)",
+    "regular (3.53, 20.4)",
+    "regular (3.54, 20.5)"
+  ],
+  "home-off": [
+    "bold (5.64, 11.25)",
+    "bold (5.94, 11.12)",
+    "light (17.5, 20.33)",
+    "regular (5.97, 10.47)",
+    "regular (6.25, 10.52)"
+  ],
+  "keypoint-detection": [
+    "bold (16.39, 10.05)",
+    "bold (17.06, 14.67)",
+    "bold (19.95, 14.67)",
+    "bold (20.61, 10.05)",
+    "regular (16.17, 10.16)",
+    "regular (16.92, 14.88)",
+    "regular (20.08, 14.88)",
+    "regular (20.83, 10.16)"
+  ],
+  "languages": [
+    "bold (10.18, 7.27)",
+    "bold (4.82, 7.27)",
+    "bold (5.05, 7)",
+    "bold (9.95, 7)"
+  ],
+  "laundry-wash-hand": [
+    "bold (20.32, 8.63)",
+    "bold (20.45, 8.91)"
+  ],
+  "laundry-wash-off": [
+    "bold (19.79, 4.21)",
+    "bold (4.21, 4.21)"
+  ],
+  "led": [
+    "bold (20.21, 5.79)",
+    "regular (20.21, 5.79)"
+  ],
+  "letter-b": [
+    "bold (13.18, 11.57)",
+    "regular (12.94, 11.53)"
+  ],
+  "letter-b-circle": [
+    "bold (13.37, 11.6)"
+  ],
+  "letter-b-square": [
+    "bold (12.79, 11.6)",
+    "regular (12.55, 11.54)"
+  ],
+  "list-ban": [
+    "bold (11.76, 11.77)",
+    "bold (19.24, 19.23)",
+    "light (11.76, 11.77)",
+    "light (19.24, 19.23)",
+    "regular (11.76, 11.77)",
+    "regular (19.24, 19.23)"
+  ],
+  "list-ordered": [
+    "bold (3.6, 17.5)"
+  ],
+  "map-pin-clock": [
+    "bold (12.04, 11.14)",
+    "bold (12.14, 11.04)"
+  ],
+  "map-pin-star": [
+    "bold (11.95, 11.22)",
+    "bold (12.22, 10.95)"
+  ],
+  "mask-generation": [
+    "bold (17.53, 13.13)",
+    "regular (17.52, 13.24)"
+  ],
+  "mcp": [
+    "bold (15.85, 7.25)"
+  ],
+  "mic-handheld": [
+    "bold (4.22, 10.44)",
+    "bold (4.78, 10.92)",
+    "light (11.85, 8.12)",
+    "light (8.13, 11.85)",
+    "regular (11.93, 8.24)",
+    "regular (8.24, 11.93)"
+  ],
+  "moon-phase-first-quarter": [
+    "bold (3.03, 11.22)",
+    "bold (3.03, 12.78)",
+    "regular (3.02, 11.45)",
+    "regular (3.02, 12.55)"
+  ],
+  "moon-phase-waxing-crescent": [
+    "bold (3.03, 11.22)",
+    "bold (3.03, 12.78)",
+    "regular (3.02, 11.45)",
+    "regular (3.02, 12.55)"
+  ],
+  "moon-phase-waxing-gibbous": [
+    "bold (3.03, 11.22)",
+    "bold (3.03, 12.78)",
+    "regular (3.02, 11.45)",
+    "regular (3.02, 12.55)"
+  ],
+  "music-list": [
+    "bold (6.5, 16.5)",
+    "regular (12.37, 15.63)",
+    "regular (12.44, 16.98)"
+  ],
+  "music-off": [
+    "bold (12.49, 16.74)",
+    "regular (12.5, 16.04)"
+  ],
+  "neural-network": [
+    "bold (10.39, 12.69)",
+    "bold (10.54, 11.04)",
+    "bold (10.54, 18.79)",
+    "bold (10.54, 5.21)",
+    "bold (18.9, 15.29)",
+    "bold (18.9, 8.71)",
+    "bold (19.04, 16.96)",
+    "bold (19.04, 7.04)"
+  ],
+  "notation-alto-clef": [
+    "bold (13.31, 19.45)",
+    "bold (13.31, 4.55)",
+    "regular (13.18, 19.23)",
+    "regular (13.18, 4.77)"
+  ],
+  "notation-beamed-eighth-notes": [
+    "bold (10.5, 16.54)",
+    "bold (18.5, 15.04)",
+    "light (10.5, 17.04)",
+    "light (18.5, 15.54)",
+    "regular (10.5, 16.79)",
+    "regular (18.5, 15.29)"
+  ],
+  "notation-eighth-note": [
+    "bold (12.5, 16.54)",
+    "light (12.5, 17.04)",
+    "regular (12.5, 16.79)"
+  ],
+  "notation-quarter-note": [
+    "bold (14.5, 16.54)",
+    "light (14.5, 17.04)",
+    "regular (14.5, 16.79)"
+  ],
+  "notation-sixteenth-note": [
+    "bold (12.5, 17.04)",
+    "light (12.5, 17.54)",
+    "regular (12.5, 17.29)"
+  ],
+  "notation-staff": [
+    "bold (13.5, 14.04)",
+    "light (13.5, 14.54)",
+    "regular (13.5, 14.29)"
+  ],
+  "okta-5": [
+    "bold (2.52, 10.84)",
+    "bold (2.52, 12.16)",
+    "light (2.5, 11.32)",
+    "light (2.5, 11.68)",
+    "regular (2.51, 11.08)",
+    "regular (2.51, 11.92)"
+  ],
+  "okta-6": [
+    "bold (2.54, 10.7)",
+    "regular (2.52, 10.93)"
+  ],
+  "okta-7": [
+    "regular (2.52, 10.96)",
+    "regular (2.52, 12.05)"
+  ],
+  "ping-pong": [
+    "bold (5.82, 8.75)",
+    "regular (5.79, 9)"
+  ],
+  "playstation-create": [
+    "bold (10.77, 11.32)"
+  ],
+  "plug-list": [
+    "bold (11.92, 16.5)"
+  ],
+  "plug-off": [
+    "bold (12.26, 16.5)"
+  ],
+  "poker-chip": [
+    "bold (3.02, 11.34)",
+    "light (3.01, 11.5)",
+    "regular (11.5, 3.06)",
+    "regular (3.02, 11.47)"
+  ],
+  "public-domain": [
+    "bold (14.33, 14.41)"
+  ],
+  "rating-eirin-r15": [
+    "bold (11.5, 8.5)"
+  ],
+  "rating-eirin-r18": [
+    "bold (11.5, 8.5)"
+  ],
+  "religion-buddhism": [
+    "bold (10.25, 11.03)",
+    "bold (10.25, 12.97)"
+  ],
+  "religion-sikhism": [
+    "bold (7.51, 11.17)",
+    "bold (7.51, 11.84)",
+    "regular (7.51, 11.15)",
+    "regular (7.51, 11.85)"
+  ],
+  "roman-10": [
+    "bold (15.36, 18.19)",
+    "bold (15.36, 5.81)",
+    "bold (15.5, 18.5)",
+    "bold (15.5, 5.5)",
+    "bold (9.5, 18.5)",
+    "bold (9.5, 5.5)",
+    "bold (9.64, 18.19)",
+    "bold (9.64, 5.81)"
+  ],
+  "roman-11": [
+    "bold (7.5, 18.5)",
+    "bold (7.5, 5.5)",
+    "bold (7.64, 18.19)",
+    "bold (7.64, 5.81)"
+  ],
+  "roman-12": [
+    "bold (6.5, 18.5)",
+    "bold (6.5, 5.5)",
+    "bold (6.64, 18.19)",
+    "bold (6.64, 5.81)"
+  ],
+  "roman-4": [
+    "bold (16.46, 5.68)",
+    "bold (16.5, 5.5)"
+  ],
+  "roman-5": [
+    "bold (15.46, 5.68)",
+    "bold (15.5, 5.5)",
+    "bold (9.5, 5.5)",
+    "bold (9.54, 5.68)"
+  ],
+  "roman-6": [
+    "bold (7.5, 5.5)",
+    "bold (7.54, 5.68)"
+  ],
+  "roman-7": [
+    "bold (6.5, 5.5)",
+    "bold (6.54, 5.68)"
+  ],
+  "roman-8": [
+    "bold (4.5, 5.5)",
+    "bold (4.54, 5.68)"
+  ],
+  "roman-9": [
+    "bold (16.36, 18.19)",
+    "bold (16.36, 5.81)",
+    "bold (16.5, 18.5)",
+    "bold (16.5, 5.5)"
+  ],
+  "rune-raidho": [
+    "bold (8.13, 11.64)",
+    "light (7.81, 11.82)",
+    "regular (7.97, 11.73)"
+  ],
+  "scale-balance": [
+    "bold (17.4, 6.73)",
+    "bold (17.6, 6.73)",
+    "bold (5.4, 6.73)",
+    "bold (5.6, 6.73)"
+  ],
+  "screen-share-off": [
+    "light (11.5, 8.09)",
+    "regular (11.5, 7.5)",
+    "regular (11.5, 7.73)"
+  ],
+  "search-off": [
+    "regular (4.01, 10.06)"
+  ],
+  "shoe-formal": [
+    "bold (21.44, 18.18)",
+    "regular (21.48, 17.93)"
+  ],
+  "shoe-heel": [
+    "bold (5.5, 19.5)",
+    "bold (5.77, 19.5)"
+  ],
+  "shoe-sandal": [
+    "bold (11.91, 5.59)",
+    "bold (12.09, 5.59)"
+  ],
+  "shogi-fu": [
+    "bold (14.97, 15.75)"
+  ],
+  "shogi-gin": [
+    "bold (10.19, 9.74)",
+    "bold (9.54, 9.93)"
+  ],
+  "shogi-hisha": [
+    "bold (14.38, 12.75)",
+    "bold (14.56, 12.35)"
+  ],
+  "shogi-kaku": [
+    "bold (11.21, 10.27)",
+    "regular (11.03, 10.26)"
+  ],
+  "shogi-keima": [
+    "bold (11.55, 11.7)"
+  ],
+  "shogi-kyousha": [
+    "bold (11.96, 10.61)"
+  ],
+  "shrine": [
+    "bold (11.73, 6.96)",
+    "bold (12.27, 6.96)"
+  ],
+  "snail": [
+    "bold (4.14, 12.32)",
+    "bold (4.51, 13.2)"
+  ],
+  "soccer": [
+    "regular (11.5, 3.01)"
+  ],
+  "soda": [
+    "bold (17.99, 8.6)",
+    "bold (18, 8.5)",
+    "bold (6, 8.5)",
+    "bold (6.01, 8.6)"
+  ],
+  "stadium": [
+    "bold (3.5, 10)",
+    "bold (3.95, 9.35)",
+    "light (20.38, 13.84)",
+    "light (3.62, 10.34)",
+    "light (3.62, 13.84)",
+    "light (3.62, 9.66)",
+    "regular (15.5, 8.18)",
+    "regular (3.5, 10)",
+    "regular (3.77, 9.5)"
+  ],
+  "stem-gui": [
+    "bold (13.55, 5.06)",
+    "bold (14, 5.68)",
+    "light (13.59, 4.97)",
+    "light (13.67, 5.3)",
+    "regular (13.63, 4.88)",
+    "regular (13.83, 5.49)"
+  ],
+  "strawberry": [
+    "bold (15.85, 7.52)",
+    "bold (8.15, 7.52)"
+  ],
+  "tent": [
+    "bold (20.31, 20.16)",
+    "bold (20.5, 20.5)",
+    "bold (3.5, 20.5)",
+    "bold (3.69, 20.16)"
+  ],
+  "token-classification": [
+    "bold (10.1, 9.95)",
+    "bold (10.43, 10.28)"
+  ],
+  "transistor": [
+    "bold (3.06, 11)",
+    "light (3.01, 11.5)",
+    "regular (3.02, 11.43)"
+  ],
+  "truck": [
+    "light (2.75, 17.5)"
+  ],
+  "turntable": [
+    "bold (14.81, 14.98)"
+  ],
+  "typhoon": [
+    "bold (8.53, 12.48)",
+    "bold (8.58, 11.27)",
+    "regular (8.51, 12.24)",
+    "regular (8.54, 11.5)"
+  ],
+  "usagi": [
+    "bold (11.63, 18.12)",
+    "bold (11.79, 17.18)"
+  ],
+  "user-circle": [
+    "light (19.31, 17.25)",
+    "light (4.69, 17.25)",
+    "regular (19.45, 17.05)",
+    "regular (4.55, 17.05)"
+  ],
+  "video-off": [
+    "bold (14.5, 9.57)",
+    "bold (14.85, 9.8)"
+  ],
+  "violin": [
+    "bold (6.48, 5.07)"
+  ],
+  "webcam-off": [
+    "bold (11.5, 16.5)",
+    "bold (4.5, 9.5)",
+    "bold (4.53, 10.12)",
+    "regular (4.51, 9.89)"
+  ],
+  "xiangqi-jiang": [
+    "bold (12.15, 13.71)",
+    "bold (12.72, 9)",
+    "bold (12.86, 9.25)",
+    "bold (14.41, 16.56)",
+    "bold (14.48, 16.74)",
+    "regular (11.45, 14.2)",
+    "regular (11.97, 13.7)"
+  ],
+  "xiangqi-shi-ren": [
+    "bold (8.59, 9.88)"
+  ],
+  "xiangqi-xiang": [
+    "bold (10.7, 7.87)"
+  ],
+  "zodiac-cancer": [
+    "bold (4.5, 9.36)",
+    "bold (4.62, 10.26)",
+    "light (4.52, 9.79)",
+    "regular (4.56, 10.02)"
+  ]
+}

@@ -1,38 +1,44 @@
 name: Publish to npm
 
-# 推送 v* 标签时发布 @jannchie/icons 和 @jannchie/iconify-json
+# 只在推送 v* 标签时发布 @jannchie/icons 和 @jannchie/iconify-json（不提供手动触发）
 # 用 npm Trusted Publishing（OIDC）认证，不需要 NPM_TOKEN；需要先在 npmjs.com 的包设置里把本仓库的这个 workflow 加为 trusted publisher
+# 顺序：校验版本 → 测试 + 审计门禁 → 构建 → 所有包都 dry-run 通过 → 正式发布 → 创建 GitHub Release（正文由 scripts/release-notes.mjs 生成）
 on:
   push:
     tags: ['v*']
-  workflow_dispatch:
 
 permissions:
   contents: read
-  id-token: write
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      id-token: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
         with:
-          version: 10
-      - uses: actions/setup-node@v4
+          version: 10.11.1
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 24
           cache: pnpm
           registry-url: https://registry.npmjs.org
-      # Trusted Publishing 需要 npm 11.5.1 以上
-      - run: npm install -g npm@latest
+      # Trusted Publishing 需要 npm 11.5.1 以上；锁定具体版本，不用 npm@latest
+      - run: npm install -g npm@11.21.0
       - run: pnpm install --frozen-lockfile
 
       - name: Check tag matches package versions
-        if: github.ref_type == 'tag'
         run: |
           tag="${GITHUB_REF_NAME#v}"
-          for pkg in packages/core packages/iconify-json; do
+          for pkg in packages/core packages/iconify-json packages/vue packages/react packages/svg; do
             version=$(node -p "require('./$pkg/package.json').version")
             if [ "$version" != "$tag" ]; then
               echo "::error::$pkg is $version but the tag is v$tag"
@@ -40,10 +46,54 @@ jobs:
             fi
           done
 
+      - run: pnpm test
+      - run: pnpm audit:icons
       - run: pnpm build:packages
 
+      # 所有包都先 dry-run，全部通过才正式发布，避免只发出去一部分
+      - name: Dry run
+        run: |
+          for pkg in packages/core packages/iconify-json packages/vue packages/react packages/svg; do
+            (cd "$pkg" && npm publish --access public --dry-run)
+          done
+
+      # 重跑时跳过已经发布过这个版本的包（上次可能只发出去一个）
       - name: Publish
         run: |
-          for pkg in packages/core packages/iconify-json; do
+          for pkg in packages/core packages/iconify-json packages/vue packages/react packages/svg; do
+            name=$(node -p "require('./$pkg/package.json').name")
+            version=$(node -p "require('./$pkg/package.json').version")
+            if npm view "$name@$version" version >/dev/null 2>&1; then
+              echo "$name@$version is already on npm, skipping"
+              continue
+            fi
             (cd "$pkg" && npm publish --access public)
           done
+
+  release:
+    needs: publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      # 完整历史和所有 tag：release-notes.mjs 要找上一个 tag 并做 diff
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 24
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          node scripts/release-notes.mjs "$GITHUB_REF_NAME" --body > release-notes.md
+          cat release-notes.md
+          prerelease=""
+          case "$GITHUB_REF_NAME" in *-*) prerelease="--prerelease" ;; esac
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release edit "$GITHUB_REF_NAME" --notes-file release-notes.md
+          else
+            gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes-file release-notes.md --verify-tag $prerelease
+          fi
