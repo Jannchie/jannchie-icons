@@ -312,8 +312,10 @@ file-type-dng: raw, digital negative, adobe, photo
 file-type-doc: word, microsoft word, document, office
 file-type-docx: word, microsoft word, document, office
 file-type-gif: animation, image, animated, picture
+file-type-html: web page, website, markup, browser
 file-type-indd: indesign, adobe, layout, publishing
 file-type-jpg: jpeg, image, photo, picture
+file-type-md: markdown, readme, text, document, notes
 file-type-mp3: audio, music, sound, song
 file-type-mp4: video, movie, media
 file-type-nef: nikon raw, raw, camera, photo
