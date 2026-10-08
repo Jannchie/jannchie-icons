@@ -1,6 +1,6 @@
 // 列表类图标共用：三个圆点 + 三行线
 import { blocked, GAP, place } from './clearance'
-import { samples, segments } from './clip'
+import { cornerCenter } from './corner'
 import { dot } from './scene'
 import { accent } from './tone'
 
@@ -21,41 +21,11 @@ export const list = stroke => [
 const BADGE_SCALE = 1.4
 // 被符号截短的行至少要有这么长（中心线长度）
 const MIN_ROW = 4
-// 符号的实际几何范围（中心线，不含线宽）：先在原点画一次量出来——outlines 只是近似的外形框，
-// 对勾这种又宽又矮、锁这种比外形框大的符号，按外形框定位会让右下的留白忽大忽小
-function extentOf(draw, center, size, radius) {
-  let [x0, y0, x1, y1] = [Infinity, Infinity, -Infinity, -Infinity]
-  for (const p of draw(center, size, radius)) {
-    for (const s of segments(typeof p === 'string' ? p : p.d)) {
-      for (const g of s.segs) {
-        for (const [x, y] of samples(g, 8))
-          [x0, y0, x1, y1] = [Math.min(x0, x), Math.min(y0, y), Math.max(x1, x), Math.max(y1, y)]
-      }
-    }
-  }
-  return [x1, y1]
-}
-
-// 在 scale 倍下摆放符号：符号墨迹（中心线 + 半个线宽）的右缘、下缘贴到 21。符号画的时候会把自己吸到网格上，步长不一，
-// 所以先按原点量出的范围估一个位置，再在附近按 0.25 试几个候选，取墨迹不越过 21、又最贴近 21 的那个
+// 在 scale 倍下摆放符号：符号墨迹（中心线 + 半个线宽）的右缘、下缘贴到 21（见 corner.js）
 // 返回符号的 center、size，以及截好的三行线和其中最短一行的长度
 function layout(outline, size, stroke, draw, radius) {
   const h = stroke / 2
-  const snap = v => Math.floor(v * 4 + 1e-6) / 4
-  const [ex, ey] = extentOf(draw, [0, 0], size, radius)
-  const [cx, cy] = [snap(right - h - ex), snap(right - h - ey)]
-  const offsets = [-1, -0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75, 1]
-  let center = [cx, cy]
-  let best = Infinity
-  for (const dx of offsets) {
-    for (const dy of offsets) {
-      const [ax, ay] = extentOf(draw, [cx + dx, cy + dy], size, radius)
-      const [mx, my] = [right - h - ax, right - h - ay]
-      const miss = mx < -1e-6 || my < -1e-6 ? Infinity : mx + my
-      if (miss < best - 1e-6)
-        [best, center] = [miss, [cx + dx, cy + dy]]
-    }
-  }
+  const center = cornerCenter(draw, size, radius, stroke, { right, bottom: right })
   const shape = place(outline, center, size)
   const [from, end] = [left + h, right - h]
   const rows = [0, 6, 12].map((dy) => {

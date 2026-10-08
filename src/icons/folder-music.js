@@ -4,7 +4,7 @@ import { music } from '../symbols'
 import { accent } from '../tone'
 
 // 音乐文件夹
-export default ({ radius }) => [
-  rounded(folder, radius),
+export default ({ radius, stroke }) => [
+  rounded(folder(stroke), radius),
   ...accent(music(center, 1, radius)),
 ]

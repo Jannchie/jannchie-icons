@@ -1,13 +1,6 @@
-import { place } from '../clearance'
-import { rounded } from '../geometry'
-import { badge, folderAround } from '../folder'
-import { cornerScale, outlines, minus } from '../symbols'
+import { withBadge } from '../folder'
+import { minus } from '../symbols'
 import { danger } from '../tone'
 
 // 文件夹 + 右下角减号
-const k = cornerScale.minus
-
-export default ({ radius, stroke }) => [
-  rounded(folderAround(place(outlines.minus, badge, k), stroke), radius, false),
-  ...danger(minus(badge, k, radius)),
-]
+export default ({ radius, stroke }) => withBadge('minus', minus, danger, radius, stroke)

@@ -1,12 +1,6 @@
-import { place } from '../clearance'
-import { aroundTop, badgeTop } from '../folder'
-import { cornerScale, outlines, search } from '../symbols'
+import { withBadgeTop } from '../folder'
+import { search } from '../symbols'
 import { info } from '../tone'
 
 // 文件夹 + 右上角搜索
-const k = cornerScale.search
-
-export default ({ radius, stroke }) => [
-  ...aroundTop(place(outlines.search, badgeTop, k), radius, stroke),
-  ...info(search(badgeTop, k, radius)),
-]
+export default ({ radius, stroke }) => withBadgeTop('search', search, info, radius, stroke)

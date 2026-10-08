@@ -4,7 +4,7 @@ import { ban } from '../symbols'
 import { danger } from '../tone'
 
 // 文件夹 + 禁止
-export default ({ radius }) => [
-  rounded(folder, radius),
+export default ({ radius, stroke }) => [
+  rounded(folder(stroke), radius),
   ...danger(ban(center, 1, radius)),
 ]

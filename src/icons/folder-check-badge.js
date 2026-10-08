@@ -1,13 +1,6 @@
-import { place } from '../clearance'
-import { rounded } from '../geometry'
-import { badge, folderAround } from '../folder'
-import { cornerScale, outlines, check } from '../symbols'
+import { withBadge } from '../folder'
+import { check } from '../symbols'
 import { success } from '../tone'
 
 // 文件夹 + 右下角勾
-const k = cornerScale.check
-
-export default ({ radius, stroke }) => [
-  rounded(folderAround(place(outlines.check, badge, k), stroke), radius, false),
-  ...success(check(badge, k, radius)),
-]
+export default ({ radius, stroke }) => withBadge('check', check, success, radius, stroke)

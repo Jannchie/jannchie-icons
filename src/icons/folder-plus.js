@@ -4,7 +4,7 @@ import { plus } from '../symbols'
 import { success } from '../tone'
 
 // 文件夹 + 加号
-export default ({ radius }) => [
-  rounded(folder, radius),
+export default ({ radius, stroke }) => [
+  rounded(folder(stroke), radius),
   ...success(plus(center)),
 ]

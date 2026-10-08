@@ -4,7 +4,7 @@ import { heart } from '../symbols'
 import { danger } from '../tone'
 
 // 文件夹 + 爱心
-export default ({ radius }) => [
-  rounded(folder, radius),
+export default ({ radius, stroke }) => [
+  rounded(folder(stroke), radius),
   ...danger(heart(center, 1, radius)),
 ]

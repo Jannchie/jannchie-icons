@@ -4,7 +4,7 @@ import { gauge } from '../symbols'
 import { info } from '../tone'
 
 // 文件夹 + 计速器
-export default ({ radius }) => [
-  rounded(folder, radius),
+export default ({ radius, stroke }) => [
+  rounded(folder(stroke), radius),
   ...info(gauge(center, 1, radius)),
 ]

@@ -4,7 +4,7 @@ import { cross } from '../symbols'
 import { danger } from '../tone'
 
 // 文件夹 + 叉
-export default ({ radius }) => [
-  rounded(folder, radius),
+export default ({ radius, stroke }) => [
+  rounded(folder(stroke), radius),
   ...danger(cross(center)),
 ]

@@ -1,6 +1,6 @@
 // 文件夹、列表等系列共用的符号；c 为中心，k 为缩放（1 = 文件夹里的尺寸）
 import { align, DETAIL_SCALE, snap } from './clearance'
-import { inset } from './folder'
+import { inset } from './inset'
 import { dot } from './scene'
 import { circle, crisp, rounded } from './geometry'
 import { triangle, triangleWidth } from './media'

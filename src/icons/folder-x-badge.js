@@ -1,13 +1,6 @@
-import { place } from '../clearance'
-import { rounded } from '../geometry'
-import { badge, folderAround } from '../folder'
-import { cornerScale, cross, outlines } from '../symbols'
+import { withBadge } from '../folder'
+import { cross } from '../symbols'
 import { danger } from '../tone'
 
 // 文件夹 + 右下角叉
-const k = cornerScale.cross
-
-export default ({ radius, stroke }) => [
-  rounded(folderAround(place(outlines.cross, badge, k), stroke), radius, false),
-  ...danger(cross(badge, k, radius)),
-]
+export default ({ radius, stroke }) => withBadge('cross', cross, danger, radius, stroke)

@@ -1,47 +1,56 @@
 // 文件夹类图标共用：45° 斜边的标签页 + 本体
-// 横竖边都落在 .5 上（线宽 1 时天生清晰）：左右 3.5 / 20.5，上下 4.5 / 19.5，本体顶边 6.5
-import { blocked } from './clearance'
+// 墨迹框左右 2–22、上下 3–21，以画布中线对称；线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽
+// 标签页右端在 x 9，45° 斜边往下 3 接到本体顶边（线宽 1 时本体顶边落在 6.5 上，横线清晰）
+import { blocked, place } from './clearance'
+import { cornerCenter } from './corner'
 import { rounded } from './geometry'
+import { inset } from './inset'
+import { cornerScale, outlines } from './symbols'
 
-const [l, t, tabEnd, tabSlope, body, r, b] = [3.5, 4.5, 9, 11, 6.5, 20.5, 19.5]
-export const folder = [[l, t], [tabEnd, t], [tabSlope, body], [r, body], [r, b], [l, b]]
-
-// 本体中心，放符号用
-export const center = [12, 13]
-
-// 角标变体：本体与普通文件夹完全一致，符号中心从右下角往内收 inset
-export const inset = 2.5
-export const badge = [r - inset, b - inset]
-
-// 右上角标变体（-badge-top）：符号中心从本体右上角（本体顶边 6.5，不是标签页）往内收 inset；
-// 本体顶边和右边在离符号 GAP 处断开，轮廓从右边的断口出发，经右下、左下、标签页，回到顶边的断口
-export const badgeTop = [r - inset, body + inset]
-export function folderAroundTop(shape, stroke) {
-  const right = blocked(shape, 'y', r, stroke)
-  const top = blocked(shape, 'x', body, stroke)
-  return [
-    [r, right ? right[1] : body],
-    [r, b],
-    [l, b],
-    [l, t],
-    [tabEnd, t],
-    [tabSlope, body],
-    [top ? top[0] : r, body],
-  ]
+function frame(stroke) {
+  const h = stroke / 2
+  const [l, t, r, b] = [2 + h, 3 + h, 22 - h, 21 - h]
+  const tabEnd = 9
+  const body = t + 3
+  return { h, l, t, r, b, tabEnd, tabSlope: tabEnd + 3, body }
 }
 
-// 右边和底边在离符号 GAP 处断开
-export function folderAround(shape, stroke) {
+// 完整的文件夹轮廓
+export function folder(stroke) {
+  const { l, t, r, b, tabEnd, tabSlope, body } = frame(stroke)
+  return [[l, t], [tabEnd, t], [tabSlope, body], [r, body], [r, b], [l, b]]
+}
+
+// 本体中心，放居中符号用：本体顶边和底边都随线宽各收半个线宽，中点不变（13.5）
+export const center = [12, 13.5]
+
+// 角标：符号墨迹的右缘贴到 22，下缘贴到本体底边的外缘 21；右边和底边在离符号 GAP 处断开，轮廓从底边的断口出发绕一圈到右边的断口
+export function withBadge(name, draw, tone, radius, stroke) {
+  const { l, t, r, b, tabEnd, tabSlope, body } = frame(stroke)
+  const k = cornerScale[name]
+  const at = cornerCenter(draw, k, radius, stroke, { right: 22, bottom: 21 })
+  const shape = place(outlines[name], at, k)
   const right = blocked(shape, 'y', r, stroke)
   const bottom = blocked(shape, 'x', b, stroke)
-  return [
-    [bottom ? bottom[0] : r, b],
-    [l, b],
-    [l, t],
-    [tabEnd, t],
-    [tabSlope, body],
-    [r, body],
-    [r, right ? right[0] : b],
-  ]
+  const outline = [[bottom ? bottom[0] : r, b], [l, b], [l, t], [tabEnd, t], [tabSlope, body], [r, body], [r, right ? right[0] : b]]
+  return [rounded(outline, radius, false), ...tone(draw(at, k, radius))]
 }
-export const aroundTop = (shape, radius, stroke) => [rounded(folderAroundTop(shape, stroke), radius, false)]
+
+// 右上角标（-badge-top）：符号墨迹的右缘贴到 22，上缘和标签页顶边的外缘（3）齐平，骑在本体的右上角上；
+// 本体顶边和右边在离符号 GAP 处断开，轮廓从右边的断口出发，经右下、左下、标签页，回到顶边的断口
+export function withBadgeTop(name, draw, tone, radius, stroke) {
+  const { h, l, t, r, b, tabEnd, tabSlope, body } = frame(stroke)
+  const k = cornerScale[name]
+  const at = cornerCenter(draw, k, radius, stroke, { right: 22, top: t - h })
+  const shape = place(outlines[name], at, k)
+  const right = blocked(shape, 'y', r, stroke)
+  const top = blocked(shape, 'x', body, stroke)
+  // 大符号的断口会一直延伸到标签页斜边下端附近：剩下的顶边不到 1.5 就不画，轮廓停在斜边下端
+  const topEnd = top ? top[0] : r
+  const outline = [[r, right ? right[1] : body], [r, b], [l, b], [l, t], [tabEnd, t], [tabSlope, body], ...(topEnd - tabSlope >= 1.5 ? [[topEnd, body]] : [])]
+  return [rounded(outline, radius, false), ...tone(draw(at, k, radius))]
+}
+
+// 以下是旧版几何（中心线固定在 .5 上），文件、对话框、盾牌等系列还在用它们的角标位置；那些系列按新规则重画时再换掉
+export { inset }
+export const badge = [20.5 - inset, 19.5 - inset]

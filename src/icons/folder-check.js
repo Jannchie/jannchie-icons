@@ -4,7 +4,7 @@ import { check } from '../symbols'
 import { success } from '../tone'
 
 // 文件夹 + 勾
-export default ({ radius }) => [
-  rounded(folder, radius),
+export default ({ radius, stroke }) => [
+  rounded(folder(stroke), radius),
   ...success(check(center)),
 ]

@@ -1,12 +1,6 @@
-import { place } from '../clearance'
-import { aroundTop, badgeTop } from '../folder'
-import { cornerScale, outlines, video } from '../symbols'
+import { withBadgeTop } from '../folder'
+import { video } from '../symbols'
 import { accent } from '../tone'
 
 // 文件夹 + 右上角视频
-const k = cornerScale.video
-
-export default ({ radius, stroke }) => [
-  ...aroundTop(place(outlines.video, badgeTop, k), radius, stroke),
-  ...accent(video(badgeTop, k, radius)),
-]
+export default ({ radius, stroke }) => withBadgeTop('video', video, accent, radius, stroke)
