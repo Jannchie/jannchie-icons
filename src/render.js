@@ -5,7 +5,8 @@ import { axisLines, finalize, minify } from './svg'
 import { affine, mapPath } from './transform'
 
 // 像素对齐：按图标实际显示的设备像素数 px，把图标整体对齐到像素网格。图形本身不变形，只做两件事：
-// - 线宽不取整（只保证至少 1 个设备像素）：取整会让三档字重在小尺寸下变成一样粗（16px 下全是 1 像素），
+// - 线宽不取整（只保证至少 MIN_LINE 个设备像素）：取整会让三档字重在小尺寸下变成一样粗（16px 下全是 1 像素），
+//   下限也不能是 1：16px 下细体是 0.67、常规正好 1，抬到 1 就又一样了；不到 1 像素的线抗锯齿后是一条更浅的线，看起来就是更轻
 //   24px 的常规 1.5 也会被取成 2 像素、和粗体一样。保留实际线宽，字重层次在各尺寸都看得出来
 // - 整体平移不到半个像素，让横竖线的一条边（外缘）落在像素边界上：线宽是小数时两条边不可能同时对齐，
 //   对齐一条边、另一条边留半个像素的灰，比两条边都发虚清楚得多。图标按「外缘落在整数上」设计时（线宽变粗只往里长），
@@ -13,6 +14,8 @@ import { affine, mapPath } from './transform'
 //   不逐点吸附——逐点取整会把一两个像素大的小字挤成一团
 // 每个网格单位有 HINT_MAX_SCALE 个设备像素以上时虚边已经不明显，不处理；只用于屏幕显示，导出的 SVG 不做（不知道会用在多大）
 const HINT_MAX_SCALE = 3
+// 对齐后线宽的下限（设备像素）：再细抗锯齿后淡到几乎看不见
+const MIN_LINE = 0.5
 // 图标里的横竖线段：[轴向, 坐标, 长度, 线宽]
 const axisLinesOf = (paths, widthOf) => paths.flatMap(p => axisLines(p.d).map(l => [...l, widthOf(p)]))
 // 在 [-0.5, 0.5) 设备像素里挑平移量：候选是让某一条线正好对齐的平移，得分是所有线到网格的距离（按长度加权）之和
@@ -20,12 +23,19 @@ function bestShift(lines, k) {
   if (!lines.length)
     return 0
   const frac = v => v - Math.round(v)
-  // 一条线的两条边（设备像素）：中心 ± 半个线宽；离网格的偏差取两条边里较近的那条
-  const edges = ([, v, , n]) => [v * k - n / 2, v * k + n / 2]
-  const miss = (l, dx) => Math.min(...edges(l).map(e => Math.abs(frac(e + dx))))
-  const cost = dx => lines.reduce((s, l) => s + l[2] * miss(l, dx), 0)
+  // 每条线的两条边（设备像素）：中心 ± 半个线宽，和长度一起预先算好；离网格的偏差取两条边里较近的那条
+  const lo = lines.map(([, v, , n]) => v * k - n / 2)
+  const hi = lines.map(([, v, , n]) => v * k + n / 2)
+  const cost = (dx) => {
+    let s = 0
+    for (let i = 0; i < lines.length; i++)
+      s += lines[i][2] * Math.min(Math.abs(frac(lo[i] + dx)), Math.abs(frac(hi[i] + dx)))
+    return s
+  }
+  // 候选平移：让某一条边正好落在网格上；很多线坐标相同，去重后再逐个算
+  const candidates = new Set([...lo, ...hi].map(e => Math.round(-frac(e) * 1e6) / 1e6))
   let best = [0, cost(0)]
-  for (const dx of lines.flatMap(l => edges(l).map(e => -frac(e)))) {
+  for (const dx of candidates) {
     const c = cost(dx)
     if (c < best[1] - 1e-9 || (Math.abs(c - best[1]) < 1e-9 && Math.abs(dx) < Math.abs(best[0])))
       best = [dx, c]
@@ -34,11 +44,11 @@ function bestShift(lines, k) {
 }
 function hint(paths, stroke, px) {
   const k = px / 24
-  // 线宽（设备像素）：不取整，只保证至少 1 像素；点向下取整到整像素（点要吸到像素中心才实），但不小于主线宽
-  const line = Math.max(1, stroke * k)
+  // 线宽（设备像素）：不取整，只保证至少 MIN_LINE；点向下取整到整像素（点要吸到像素中心才实），但至少 1 像素、不小于主线宽
+  const line = Math.max(MIN_LINE, stroke * k)
   const pxWidth = p => p.detail
     ? (p.width ?? stroke) * k
-    : p.dot ? Math.max(Math.ceil(line - 1e-9), Math.floor(p.width * k)) : Math.max(1, (p.width ?? stroke) * k)
+    : p.dot ? Math.max(1, Math.ceil(line - 1e-9), Math.floor(p.width * k)) : Math.max(MIN_LINE, (p.width ?? stroke) * k)
   const lines = axisLinesOf(paths.filter(p => !p.detail && !p.fill), pxWidth)
   const dx = bestShift(lines.filter(l => l[0] === 'x'), k) / k
   const dy = bestShift(lines.filter(l => l[0] === 'y'), k) / k
@@ -80,6 +90,7 @@ export const animateAttrs = p => p.frames
 // 两级缓存：finalize 的结果只和「图标 + 圆角（尖角单独一份：方头线帽要缩线头，见 fitSquareCaps）+ 线宽」有关，像素对齐再按 px 缓存——拖大小滑块时只重算对齐，不重跑 finalize
 const finalized = new Map()
 const hinted = new Map()
+const HINTED_LIMIT = 20000
 export function pathsOf(icon, corner, weight, px = 0) {
   // 尖角单独一份（finalize 要缩方头线帽）；动画图标不走 fitSquareCaps，和 0 圆角共用
   const base = `${icon.name}|${corner.sharp && !icon.animation ? 'sharp' : corner.radius}|${weight.stroke}`
@@ -96,6 +107,9 @@ export function pathsOf(icon, corner, weight, px = 0) {
   const key = `${base}|${px}`
   let out = hinted.get(key)
   if (!out) {
+    // 对齐结果按 px 缓存，拖大小滑块会不断产生新的 px：超过上限就整个清空，免得长时间使用后无限增长
+    if (hinted.size >= HINTED_LIMIT)
+      hinted.clear()
     out = hint(paths, weight.stroke, px)
     hinted.set(key, out)
   }
