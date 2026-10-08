@@ -2,9 +2,8 @@
 // 墨迹框左右 4–20、上下 2–22，以画布中线对称；线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽
 // 页线在封面底边上方 5（线宽 1 时落在 16.5 上）；封面左上角是半径 2.5 的书脊圆弧，左下角圆角 1.5
 // 页线从书脊处顺着竖边起笔（起点切线朝上，比左下圆角的起点高 1），线头落在竖边的直段里，尖角模式下不会从左下圆角外侧冒出来
-import { blocked, place } from './clearance'
-import { cornerCenter, fitBadge, roomOnRight } from './corner'
-import { cornerScale, outlines } from './symbols'
+import { blocked } from './clearance'
+import { fitBadge, roomOnBottom, roomOnRight } from './corner'
 
 function frame(stroke) {
   const h = stroke / 2
@@ -31,9 +30,12 @@ export const center = [12, 9.5]
 export const centerScale = 1
 
 // 角标：符号墨迹的右缘、下缘贴到封面右下角的外缘（20, 22）；右边、底边、页线在离符号 GAP 处断开（碰不到就画满）
+// 角标比普通角标大 GROW 倍，和文件夹一样（16px 下也认得出符号）；放不下时 fitBadge 再缩回去
+const GROW = 1.3
+
 export function withBadge(name, draw, tone, radius, stroke) {
   const f = frame(stroke)
-  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 20, bottom: 22 }, roomOnRight(stroke, f.r, f.t))
+  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 20, bottom: 22 }, s => roomOnRight(stroke, f.r, f.t)(s) && roomOnBottom(stroke, f.page, f.l + 2.5)(s) && roomOnBottom(stroke, f.b, f.l + 1.5)(s), GROW)
   const right = blocked(shape, 'y', f.r, stroke)
   const bottom = blocked(shape, 'x', f.b, stroke)
   const cut = blocked(shape, 'x', f.page, stroke)
@@ -47,9 +49,7 @@ export function withBadge(name, draw, tone, radius, stroke) {
 // 右上角标（-badge-top）：符号墨迹的右缘贴到封面右边的外缘 20，上缘贴到封面顶边的外缘 2；顶边、右边在离符号 GAP 处断开，页线不受影响
 export function withBadgeTop(name, draw, tone, radius, stroke) {
   const f = frame(stroke)
-  const k = cornerScale[name]
-  const at = cornerCenter(draw, k, radius, stroke, { right: 20, top: 2 })
-  const shape = place(outlines[name], at, k)
+  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 20, top: 2 }, roomOnBottom(stroke, f.t, f.l + 2.5), GROW)
   const right = blocked(shape, 'y', f.r, stroke)
   const top = blocked(shape, 'x', f.t, stroke)
   return [

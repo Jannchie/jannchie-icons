@@ -1,10 +1,9 @@
 // 公文包类图标共用：箱体 + 提手；基础款有一道腰线，带符号的变体去掉腰线给符号让位
 // 墨迹框左右 2–22、上下 3–21，以画布中线对称：箱体外缘 2–22 × 7–21，提手外缘 8–16 × 3–7
 // 线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽；线宽 1 时箱体四边、提手三边都落在 .5 上
-import { blocked, place, rectAround } from './clearance'
-import { cornerCenter, fitBadge, roomOnRight } from './corner'
+import { blocked, rectAround } from './clearance'
+import { fitBadge, roomOnRight } from './corner'
 import { rounded } from './geometry'
-import { cornerScale, outlines } from './symbols'
 
 function frame(stroke) {
   const h = stroke / 2
@@ -39,9 +38,12 @@ export const center = [12, 14]
 export const centerScale = 1
 
 // 右下角标：符号墨迹的右缘贴到箱体右缘 22，下缘贴到箱体底缘 21；右边和底边在离符号 GAP 处断开，腰线碰到符号时也截断
+// 角标比普通角标大 GROW 倍，和文件夹一样（16px 下也认得出符号）；放不下时 fitBadge 再缩回去
+const GROW = 1.3
+
 export function withBadge(name, draw, tone, radius, stroke) {
   const { l, t, r, b } = frame(stroke)
-  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, bottom: 21 }, roomOnRight(stroke, r, t))
+  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, bottom: 21 }, roomOnRight(stroke, r, t), GROW)
   const w = blocked(shape, 'x', WAIST, stroke)
   return [
     rounded(rectAround(shape, stroke, [l, t, r, b]), bodyRadius(radius), false),

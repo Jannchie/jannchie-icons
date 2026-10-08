@@ -51,6 +51,19 @@
   "biohazard": [
     "bold (10.83, 13.94)"
   ],
+  "book-clock-badge": [
+    "bold (15.54, 14.74)",
+    "regular (16.04, 14.99)"
+  ],
+  "book-clock-badge-top": [
+    "bold (15.54, 3.24)"
+  ],
+  "book-search-badge": [
+    "regular (17.1, 19.1)"
+  ],
+  "book-search-badge-top": [
+    "regular (17.1, 6.1)"
+  ],
   "books": [
     "bold (8.5, 20.5)"
   ],
@@ -83,10 +96,32 @@
   ],
   "briefcase-ban-badge": [
     "bold (15.12, 14.12)",
-    "bold (19.88, 18.88)"
+    "bold (19.88, 18.88)",
+    "regular (14.09, 13.09)",
+    "regular (19.91, 18.91)"
   ],
   "briefcase-search-badge": [
     "bold (18.64, 17.64)"
+  ],
+  "calendar-ban-badge": [
+    "regular (13.99, 14.99)",
+    "regular (19.01, 20.01)"
+  ],
+  "calendar-ban-badge-top": [
+    "regular (14.37, 3.87)",
+    "regular (19.13, 8.63)"
+  ],
+  "calendar-clock-badge": [
+    "bold (16.54, 14.74)"
+  ],
+  "calendar-clock-badge-top": [
+    "bold (16.54, 3.24)"
+  ],
+  "calendar-search-badge": [
+    "regular (17.89, 18.89)"
+  ],
+  "calendar-search-badge-top": [
+    "regular (17.89, 6.39)"
   ],
   "camera-rotate": [
     "bold (14.32, 10.98)",
@@ -106,10 +141,20 @@
   ],
   "chat-ban-badge": [
     "bold (15.12, 10.12)",
-    "bold (19.88, 14.88)"
+    "bold (19.88, 14.88)",
+    "regular (14.09, 9.09)",
+    "regular (19.91, 14.91)"
+  ],
+  "chat-ban-badge-top": [
+    "bold (15.12, 5.12)",
+    "bold (19.88, 9.88)"
   ],
   "chat-search-badge": [
     "bold (18.64, 13.64)"
+  ],
+  "chat-search-badge-top": [
+    "bold (18.64, 7.64)",
+    "light (18.54, 8.04)"
   ],
   "chinese-zodiac-dragon": [
     "bold (14.62, 7.06)",
@@ -222,6 +267,13 @@
   "eye-off": [
     "light (9, 12)",
     "light (9.01, 12.2)"
+  ],
+  "file-ban-badge": [
+    "bold (11.84, 13.84)",
+    "bold (17.66, 19.66)"
+  ],
+  "file-search-badge": [
+    "light (15.98, 17.98)"
   ],
   "folder-ban-badge": [
     "bold (13.84, 12.84)",
@@ -396,6 +448,13 @@
   "list-search": [
     "bold (16.48, 16.48)"
   ],
+  "mail-assets-badge": [
+    "light (21.1, 6.23)",
+    "light (21.3, 5.91)"
+  ],
+  "mail-search-badge": [
+    "light (18.54, 17.54)"
+  ],
   "mask-generation": [
     "bold (17.53, 13.13)",
     "regular (17.52, 13.24)"
@@ -411,18 +470,20 @@
     "regular (11.93, 8.24)",
     "regular (8.24, 11.93)"
   ],
-  "monitor-ban-badge": [
-    "regular (15.37, 10.37)",
-    "regular (20.13, 15.13)"
-  ],
-  "monitor-clock-badge": [
-    "bold (17.54, 9.74)"
+  "monitor-ban-badge-top": [
+    "bold (15.12, 5.12)",
+    "bold (19.88, 9.88)"
   ],
   "monitor-off": [
     "bold (12, 16.24)"
   ],
   "monitor-search-badge": [
-    "regular (19.1, 14.1)"
+    "bold (19.2, 14.2)",
+    "light (19.35, 14.35)"
+  ],
+  "monitor-search-badge-top": [
+    "bold (18.64, 7.64)",
+    "light (18.54, 8.04)"
   ],
   "moon-phase-first-quarter": [
     "bold (3.03, 11.22)",

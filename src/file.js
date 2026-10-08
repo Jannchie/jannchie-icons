@@ -3,10 +3,9 @@
 // 线宽 1 时纸张四边的中心线是 4.5 / 19.5 / 2.5 / 21.5，都落在 .5 上
 // 折角：翻折线（竖线 x FOLD_X、横线 y FOLD_Y）是固定的中心线，不随线宽动；纸张的斜边从 (FOLD_X, 顶边) 连到 (右边, FOLD_Y)，
 // 两端各随线宽收半个线宽，所以始终是 45°（线宽 1 时折角 5）
-import { blocked, place } from './clearance'
-import { cornerCenter, fitBadge, roomOnRight } from './corner'
+import { blocked } from './clearance'
+import { fitBadge, roomOnBottom, roomOnRight } from './corner'
 import { crisp, rounded } from './geometry'
-import { cornerScale, outlines } from './symbols'
 
 const FOLD_X = 14.5
 const FOLD_Y = 7.5
@@ -39,9 +38,12 @@ export function flap(stroke) {
 export const center = [12, 13.5]
 
 // 角标：符号墨迹的右缘贴到纸张外缘 20、下缘贴到 22；右边和底边在离符号 GAP 处断开，轮廓从底边的断口出发绕一圈到右边的断口
+// 角标比普通角标大 GROW 倍，和文件夹一样（16px 下也认得出符号）；放不下时 fitBadge 再缩回去
+const GROW = 1.3
+
 export function withBadge(name, draw, tone, radius, stroke) {
   const { l, t, r, b } = frame(stroke)
-  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 20, bottom: 22 }, roomOnRight(stroke, r, FOLD_Y))
+  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 20, bottom: 22 }, s => roomOnRight(stroke, r, FOLD_Y)(s) && roomOnBottom(stroke, b, l)(s), GROW)
   const right = blocked(shape, 'y', r, stroke)
   const bottom = blocked(shape, 'x', b, stroke)
   const outline = [[bottom ? bottom[0] : r, b], [l, b], [l, t], ...corner(stroke, radius), [r, right ? right[0] : b]]

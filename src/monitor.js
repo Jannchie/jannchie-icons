@@ -3,10 +3,9 @@
 // 线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽。线宽 1 时屏幕四边和底座都落在 .5 上
 // 立杆是一条居中的竖线，放在 x 12：居中优先，线宽 1 时它落在整数上、1 倍屏略虚，可以接受；
 // 底座墨迹 8–16，以立杆为中心；立杆露出来的长度是 4 − 线宽（常规 2.5）
-import { blocked, place, rectAroundTop } from './clearance'
-import { cornerCenter, fitBadge, roomOnRight } from './corner'
+import { blocked, rectAroundTop } from './clearance'
+import { fitBadge, roomBelow, roomOnRight } from './corner'
 import { rounded } from './geometry'
-import { cornerScale, outlines } from './symbols'
 
 const pole = 12
 
@@ -30,8 +29,11 @@ export const plain = (radius, stroke) => {
 // 角标：符号墨迹的右缘贴到 22，下缘贴到屏幕底边的外缘 17；屏幕右边和底边在离符号 GAP 处断开
 // 底座不用断：符号墨迹下缘固定在 17，底座墨迹上缘在 21 − 线宽（≥ 19），永远隔着 2 以上
 // 立杆和底座始终在正中 x 12，立杆要接在一段完整的底边上：底边断口离立杆不到 MIN_SHOULDER 时（宽符号），
-// 或者右边断口太靠近右上圆角时（高符号），把符号缩小一点再摆（corner.js 的 fitBadge）
-const MIN_SHOULDER = 1
+// 或者右边断口太靠近右上圆角时（高符号），把符号缩小一点再摆（corner.js 的 fitBadge）；
+// 拼图这类缩放吸在网格上、缩不下去的宽符号允许缩到普通大小的 0.6 倍，否则底边够不到立杆、立杆会被端点吸附拽歪
+const MIN_SHOULDER = 2
+// 角标比普通角标大 GROW 倍，和文件夹一样（16px 下也认得出符号）；放不下时 fitBadge 再缩回去
+const GROW = 1.3
 export function withBadge(name, draw, tone, radius, stroke) {
   const f = frame(stroke)
   const { l, t, r, b } = f
@@ -39,7 +41,7 @@ export function withBadge(name, draw, tone, radius, stroke) {
   const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, bottom: 17 }, (s) => {
     const bottom = blocked(s, 'x', b, stroke)
     return roomRight(s) && (!bottom || bottom[0] >= pole + MIN_SHOULDER)
-  })
+  }, GROW, 0.6)
   const right = blocked(shape, 'y', r, stroke)
   const bottom = blocked(shape, 'x', b, stroke)
   return [
@@ -52,9 +54,11 @@ export function withBadge(name, draw, tone, radius, stroke) {
 // 右上角标（-badge-top）：符号墨迹的右缘贴到 22，上缘贴到屏幕顶边的外缘 3；顶边、右边在离符号 GAP 处断开，立杆和底座不变
 export function withBadgeTop(name, draw, tone, radius, stroke) {
   const f = frame(stroke)
-  const k = cornerScale[name]
-  const at = cornerCenter(draw, k, radius, stroke, { right: 22, top: f.t - f.h })
-  const shape = place(outlines[name], at, k)
+  // 顶边至少伸到画布中线 12，免得屏幕只剩左上一个小角
+  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, top: f.t - f.h }, (s) => {
+    const c = blocked(s, 'x', f.t, stroke)
+    return (!c || c[0] >= 12) && roomBelow(stroke, f.r, f.b)(s)
+  }, GROW)
   return [
     rounded(rectAroundTop(shape, stroke, [f.l, f.t, f.r, f.b]), Math.min(radius, 2.5), false),
     ...standOf(f),

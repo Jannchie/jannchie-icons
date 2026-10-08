@@ -44,11 +44,12 @@ export function cornerCenter(draw, size, radius, stroke, { right, bottom, top })
 }
 
 // 摆一个角标：先按普通角标大小（cornerScale）乘上系列自己定的 grow（主体留给角标的空间各系列不同，见各系列模块）用 cornerCenter 贴角；
-// ok(shape) 不满足时（比如断口太靠近外框的拐角），每次缩小 0.05 倍再摆，最小缩到普通大小的 MIN_FIT 倍。返回 { k, at, shape }：画符号用 k、at，断开轮廓用 shape
+// ok(shape) 不满足时（比如断口太靠近外框的拐角），每次缩小 0.05 倍再摆，最小缩到普通大小的 minFit 倍（默认 MIN_FIT）。返回 { k, at, shape }：画符号用 k、at，断开轮廓用 shape
+// 符号会把缩放吸到网格上（见 clearance.js 的 snap），相邻几档可能画出来一样大，所以缩不下去的符号要靠更低的 minFit
 const MIN_FIT = 0.75
-export function fitBadge(name, draw, radius, stroke, anchor, ok = () => true, grow = 1) {
+export function fitBadge(name, draw, radius, stroke, anchor, ok = () => true, grow = 1, minFit = MIN_FIT) {
   let fit
-  for (let s = grow; s >= MIN_FIT - 1e-6; s -= 0.05) {
+  for (let s = grow; s >= minFit - 1e-6; s -= 0.05) {
     const k = cornerScale[name] * s
     const at = cornerCenter(draw, k, radius, stroke, anchor)
     fit = { k, at, shape: place(outlines[name], at, k) }
@@ -64,4 +65,17 @@ const MIN_EDGE = 3
 export const roomOnRight = (stroke, r, top) => (shape) => {
   const right = blocked(shape, 'y', r, stroke)
   return !right || right[0] - top >= MIN_EDGE
+}
+
+// 底边（中心线 y = b）从 left（底边直线段的起点）往右，到角标断口之间至少留 min：断口太靠左，底边只剩一截像没画完
+export const roomOnBottom = (stroke, b, left, min = 4) => (shape) => {
+  const bottom = blocked(shape, 'x', b, stroke)
+  return !bottom || bottom[0] - left >= min
+}
+
+// 右上角标下方：外框右边（中心线 x = r）从角标断口往下到 bottom（右边直线段的终点，圆角之前）至少留 MIN_EDGE——
+// 太高的符号（插头）会让右边只剩底角上面一小截
+export const roomBelow = (stroke, r, bottom) => (shape) => {
+  const right = blocked(shape, 'y', r, stroke)
+  return !right || bottom - right[1] >= MIN_EDGE
 }

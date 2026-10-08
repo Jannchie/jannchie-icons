@@ -169,22 +169,8 @@
     "bold @(10.5, 14)",
     "regular @(10.5, 14)"
   ],
-  "book-clock-badge": [
-    "bold @(14.5, 16.8)",
-    "regular @(15, 17)"
-  ],
-  "book-clock-badge-top": [
-    "bold @(14.5, 7.3)",
-    "regular @(15, 7)"
-  ],
   "book-image": [
     "regular @(12, 9.5)"
-  ],
-  "book-image-badge": [
-    "regular @(14.5, 17)"
-  ],
-  "book-image-badge-top": [
-    "regular @(14.5, 7)"
   ],
   "book-lock": [
     "bold @(12, 11)",
@@ -256,26 +242,12 @@
     "bold @(16.5, 10.5)",
     "bold @(8.5, 10.5)"
   ],
-  "calendar-clock-badge": [
-    "bold @(15.5, 16.8)",
-    "regular @(16, 17)"
-  ],
-  "calendar-clock-badge-top": [
-    "bold @(15.5, 7.3)",
-    "regular @(16, 7)"
-  ],
   "calendar-heart": [
     "bold @(12, 13)"
   ],
   "calendar-image": [
     "bold @(12, 13)",
     "regular @(12, 15.5)"
-  ],
-  "calendar-image-badge": [
-    "regular @(15.5, 17)"
-  ],
-  "calendar-image-badge-top": [
-    "regular @(15.5, 7)"
   ],
   "calendar-lock": [
     "bold @(12, 10)",
@@ -353,7 +325,6 @@
     "regular @(17, 12)"
   ],
   "chat-clock-badge-top": [
-    "bold @(16.5, 8.4)",
     "regular @(17, 8)"
   ],
   "chat-ellipsis": [
@@ -361,12 +332,12 @@
     "bold @(9.3, 10)"
   ],
   "chat-ellipsis-badge": [
-    "bold @(14.6, 16)",
-    "bold @(17.8, 16)"
+    "bold @(15.2, 16)",
+    "bold @(18, 16)"
   ],
   "chat-ellipsis-badge-top": [
-    "bold @(14.6, 4)",
-    "bold @(17.8, 4)"
+    "bold @(16.1, 4)",
+    "bold @(18.5, 4)"
   ],
   "chat-exclaim": [
     "bold @(12, 8.4)"
@@ -374,11 +345,11 @@
   "chat-exclaim-badge": [
     "bold @(21, 11.8)"
   ],
+  "chat-exclaim-badge-top": [
+    "bold @(21, 5.9)"
+  ],
   "chat-image": [
     "regular @(12, 10)"
-  ],
-  "chat-image-badge-top": [
-    "regular @(16.5, 8)"
   ],
   "chat-lock": [
     "bold @(12, 11.5)",
@@ -399,7 +370,8 @@
     "bold @(19.5, 11.9)"
   ],
   "chat-question-badge-top": [
-    "bold @(19, 6.6)"
+    "bold @(19.5, 6)",
+    "regular @(19.5, 5.8)"
   ],
   "chats": [
     "bold @(6, 13)",
@@ -637,22 +609,21 @@
     "regular @(19.8, 12)"
   ],
   "file-clock-badge": [
-    "bold @(14.5, 16.8)",
-    "regular @(15, 17)"
+    "regular @(14.5, 16.5)"
   ],
   "file-image": [
     "regular @(12, 13.5)"
   ],
   "file-image-badge": [
-    "regular @(14.5, 17)"
+    "regular @(15, 17.5)"
   ],
   "file-lock": [
     "bold @(12, 15)",
     "regular @(12, 15)"
   ],
   "file-lock-badge": [
-    "bold @(16, 19)",
-    "regular @(16, 19)"
+    "bold @(16, 18.5)",
+    "regular @(16, 18.5)"
   ],
   "fill-mask": [
     "bold @(6, 11.5)",
@@ -1051,15 +1022,11 @@
     "regular @(12, 12)"
   ],
   "mail-clock-badge": [
-    "bold @(16.5, 15.9)",
     "regular @(17, 16)"
-  ],
-  "mail-image-badge": [
-    "regular @(16.5, 16)"
   ],
   "mail-lock-badge": [
     "bold @(18, 18)",
-    "regular @(18, 18)"
+    "regular @(18, 17.5)"
   ],
   "manga-bubble-interrobang": [
     "bold @(12, 11.9)"
@@ -1118,7 +1085,6 @@
     "bold @(14.8, 20.5)"
   ],
   "monitor-clock-badge-top": [
-    "bold @(16.5, 8.4)",
     "regular @(17, 8)"
   ],
   "monitor-ellipsis": [
@@ -1126,12 +1092,12 @@
     "bold @(9.3, 10)"
   ],
   "monitor-ellipsis-badge": [
-    "bold @(16.1, 16)",
-    "bold @(18.5, 16)"
+    "bold @(17.1, 16)",
+    "bold @(19, 16)"
   ],
   "monitor-ellipsis-badge-top": [
-    "bold @(14.6, 4)",
-    "bold @(17.8, 4)"
+    "bold @(16.1, 4)",
+    "bold @(18.5, 4)"
   ],
   "monitor-exclaim": [
     "bold @(12, 8.4)"
@@ -1139,11 +1105,14 @@
   "monitor-exclaim-badge": [
     "bold @(21, 11.8)"
   ],
+  "monitor-exclaim-badge-top": [
+    "bold @(21, 5.9)"
+  ],
   "monitor-image": [
     "regular @(12, 10)"
   ],
-  "monitor-image-badge-top": [
-    "regular @(16.5, 8)"
+  "monitor-image-badge": [
+    "bold @(17.5, 14.9)"
   ],
   "monitor-lock": [
     "bold @(12, 11.5)",
@@ -1161,10 +1130,11 @@
     "bold @(12, 8.6)"
   ],
   "monitor-question-badge": [
-    "bold @(19.5, 11.9)"
+    "bold @(19.5, 12.3)"
   ],
   "monitor-question-badge-top": [
-    "bold @(19, 6.6)"
+    "bold @(19.5, 6)",
+    "regular @(19.5, 5.8)"
   ],
   "mosque": [
     "bold @(19.5, 13.2)",

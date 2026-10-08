@@ -2,10 +2,9 @@
 // 墨迹框左右 3–21（方形主体收到 3）、上下 2–22（挂环顶在 2、外框底在 22），以画布中线对称；
 // 线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽
 // 外框墨迹 3–21 × 4–22；表头线在外框顶边下 5（线宽 1 时落在 9.5 上）；挂环 x 7.5 / 16.5，从 2 往下穿过顶边，停在离表头线 2.5 处
-import { blocked, place, rectAround, rectAroundTop } from './clearance'
-import { cornerCenter, fitBadge, roomOnRight } from './corner'
+import { blocked, rectAround, rectAroundTop } from './clearance'
+import { fitBadge, roomOnBottom, roomOnRight } from './corner'
 import { rounded } from './geometry'
-import { cornerScale, outlines } from './symbols'
 
 const RINGS = [7.5, 16.5]
 const R = 2.5 // 外框圆角上限
@@ -30,9 +29,12 @@ export const center = [12, 15.5]
 export const centerScale = 0.9
 
 // 角标：符号墨迹的右缘、下缘贴到外框右下角的外缘（21, 22）；右边和底边在离符号 GAP 处断开
+// 角标比普通角标大 GROW 倍，和文件夹一样（16px 下也认得出符号）；放不下时 fitBadge 再缩回去
+const GROW = 1.3
+
 export function withBadge(name, draw, tone, radius, stroke) {
   const { l, t, r, b, head } = frame(stroke)
-  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 21, bottom: 22 }, roomOnRight(stroke, r, t))
+  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 21, bottom: 22 }, s => roomOnRight(stroke, r, head)(s) && roomOnBottom(stroke, b, l)(s), GROW)
   const outline = rectAround(shape, stroke, [l, t, r, b])
   // 高的符号（插头、拼图）让右边断到表头线下面不远处：剩下不到 1.5 的一小截像表头线下挂的毛刺，
   // 右边就停在表头线上，并和表头线连成一笔拐过去（分开画的话，尖角模式下表头线的方头会从右边外侧冒出来）
@@ -51,9 +53,11 @@ export function withBadge(name, draw, tone, radius, stroke) {
 // 外框顶边、右边、表头线在离符号 GAP 处断开。右边那根挂环正好在角标里，不画（只剩左边一根挂环 + 表头，仍然认得出是日历）
 export function withBadgeTop(name, draw, tone, radius, stroke) {
   const { l, t, r, b, head } = frame(stroke)
-  const k = cornerScale[name]
-  const at = cornerCenter(draw, k, radius, stroke, { right: 21, top: 2 })
-  const shape = place(outlines[name], at, k)
+  // 表头线至少伸到画布中线 12：只剩左挂环那一截的话，挂环和短横线读成一个「+」
+  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 21, top: 2 }, (s) => {
+    const c = blocked(s, 'x', head, stroke)
+    return !c || c[0] >= 12
+  }, GROW)
   const cut = blocked(shape, 'x', head, stroke)
   return [
     rounded(rectAroundTop(shape, stroke, [l, t, r, b]), Math.min(radius, R), false),
