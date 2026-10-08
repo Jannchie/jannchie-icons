@@ -6,35 +6,38 @@ import { circle, crisp, rounded } from './geometry'
 import { triangle, triangleWidth } from './media'
 
 // 放进角位（文件夹角标、列表右下）时各符号的缩放：先按视觉大小逐个调，再整体放大 BADGE_GROW
+// 以开放的线形符号（加号、对勾、搜索，墨迹约 7 见方）为准；封闭的形状看起来更重、更大，缩小一些：
+// 整圈（圆圈 0.9、禁止 0.85、仪表 0.85、时钟 0.8——时钟外框 7×7 比圆圈大）、实心或成块的（图片、星、心、四角星、盾 0.9，拼图 0.95）；
+// 箭头长边 7 比别的符号长，缩到 0.9
 const BADGE_GROW = 1.15
 const baseCornerScale = {
   plus: 1.2,
   minus: 1.2,
   cross: 1, // 实际取值见下方，按 inset 定
   check: 1,
-  image: 1,
+  image: 0.9,
   music: 0.9,
   video: 1,
   assets: 1,
-  ring: 1,
-  star: 1,
+  ring: 0.9,
+  star: 0.9,
   cloud: 1,
-  shield: 1,
-  ban: 1,
-  arrowUp: 1,
-  arrowDown: 1,
-  arrowLeft: 1,
-  arrowRight: 1,
+  shield: 0.9,
+  ban: 0.85,
+  arrowUp: 0.9,
+  arrowDown: 0.9,
+  arrowLeft: 0.9,
+  arrowRight: 0.9,
   bookmark: 1,
-  sparkle: 1,
-  puzzle: 1,
+  sparkle: 0.9,
+  puzzle: 0.95,
   plug: 1,
-  clock: 1,
-  gauge: 1,
+  clock: 0.8,
+  gauge: 0.85,
   lock: 1,
   code: 1,
   search: 0.85, // 外框 7×7 比别的符号大：缩到 0.85，角标外缘才不越过离画布边 2 的安全边距
-  heart: 1,
+  heart: 0.9,
   question: 1,
   exclaim: 1,
   ellipsis: 1,

@@ -231,7 +231,8 @@
     "bold @(16.5, 16.8)"
   ],
   "briefcase-gauge-badge": [
-    "bold @(16.3, 16.7)"
+    "bold @(16.5, 17)",
+    "regular @(16.8, 17.2)"
   ],
   "briefcase-image": [
     "regular @(12, 14)"
@@ -265,11 +266,8 @@
     "bold @(16.5, 10.5)",
     "bold @(8.5, 10.5)"
   ],
-  "calendar-arrow-left-badge": [
-    "bold @(12, 10)"
-  ],
   "calendar-clock-badge": [
-    "regular @(16.5, 17.8)"
+    "regular @(16.5, 17.5)"
   ],
   "calendar-gauge-badge": [
     "regular @(16, 17.5)"
@@ -357,7 +355,7 @@
     "regular @(12, 6.5)"
   ],
   "chat-clock-badge": [
-    "bold @(17.5, 12.5)"
+    "bold @(17, 12.3)"
   ],
   "chat-clock-badge-top": [
     "bold @(17.5, 7.5)"
@@ -380,10 +378,11 @@
     "bold @(21, 5.8)"
   ],
   "chat-gauge-badge": [
+    "bold @(17.3, 12.8)",
     "regular @(17, 12.5)"
   ],
   "chat-gauge-badge-top": [
-    "regular @(17.3, 7.3)"
+    "regular @(17, 7.5)"
   ],
   "chat-image": [
     "regular @(12, 10)"
@@ -651,6 +650,7 @@
     "bold @(15, 17)"
   ],
   "file-gauge-badge": [
+    "bold @(15.3, 17.8)",
     "regular @(15, 17.5)"
   ],
   "file-image": [
@@ -684,8 +684,15 @@
   "flute": [
     "bold @(12, 12)"
   ],
+  "folder-clock-badge": [
+    "bold @(16.5, 16.8)"
+  ],
   "folder-clock-badge-top": [
     "regular @(18, 7)"
+  ],
+  "folder-gauge-badge": [
+    "bold @(16.5, 17)",
+    "regular @(16.8, 17.2)"
   ],
   "folder-image": [
     "regular @(12, 13.5)"
@@ -1081,6 +1088,7 @@
     "bold @(16.5, 16.9)"
   ],
   "mail-gauge-badge": [
+    "bold @(17.3, 17.8)",
     "regular @(17.3, 17.8)"
   ],
   "mail-image-badge": [
@@ -1174,7 +1182,7 @@
     "bold @(21, 5.8)"
   ],
   "monitor-gauge-badge-top": [
-    "regular @(17.3, 7.3)"
+    "regular @(17, 7.5)"
   ],
   "monitor-image": [
     "regular @(12, 10)"
@@ -1502,7 +1510,8 @@
     "regular @(18, 17.5)"
   ],
   "shield-clock-badge": [
-    "bold @(17, 17)"
+    "bold @(17, 17)",
+    "regular @(17, 17)"
   ],
   "shield-gauge-badge": [
     "bold @(17, 17)",
@@ -1819,10 +1828,6 @@
   ],
   "user-freelancer": [
     "regular @(18, 16.4)"
-  ],
-  "user-full-time": [
-    "bold @(18, 17.1)",
-    "regular @(18, 17)"
   ],
   "user-guest": [
     "bold @(18, 17)",

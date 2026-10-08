@@ -54,9 +54,6 @@
   "book-clock-badge": [
     "bold (15.54, 6.74)"
   ],
-  "book-clock-badge-top": [
-    "bold (13.3, 8.37)"
-  ],
   "book-search-badge": [
     "light (15.98, 10.98)",
     "regular (15.73, 10.23)"
@@ -103,9 +100,6 @@
   "calendar-ban-badge-top": [
     "regular (14.37, 3.87)",
     "regular (19.13, 8.63)"
-  ],
-  "calendar-clock-badge": [
-    "bold (14.3, 19.87)"
   ],
   "calendar-clock-badge-top": [
     "bold (16.54, 3.24)"
@@ -258,9 +252,6 @@
     "light (15.98, 17.98)",
     "regular (15.73, 17.73)"
   ],
-  "folder-clock-badge-top": [
-    "bold (15.3, 9.37)"
-  ],
   "folder-search-badge": [
     "bold (17.48, 17.48)",
     "light (17.98, 17.98)",
@@ -412,10 +403,6 @@
     "bold (13.18, 11.57)",
     "regular (12.94, 11.53)"
   ],
-  "list-ban": [
-    "light (11.51, 11.27)",
-    "light (18.99, 18.73)"
-  ],
   "list-ordered": [
     "bold (4.1, 18)"
   ],
@@ -440,9 +427,6 @@
     "light (8.13, 11.85)",
     "regular (11.93, 8.24)",
     "regular (8.24, 11.93)"
-  ],
-  "monitor-gauge-badge": [
-    "bold (20.24, 12.43)"
   ],
   "monitor-off": [
     "bold (12, 16.24)"
