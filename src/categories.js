@@ -33,21 +33,21 @@ const any = (...rules) => name => rules.some(rule => rule(name))
 
 // 零散图标直接指定分类（优先于下面的规则）；带 -off 的划掉版本跟着原图标走
 const EXTRA = {
-  basic: ['circle', 'square', 'triangle', 'checkbox', 'radio', 'radio-checked', 'dashed-circle', 'arrows-horizontal', 'hexagon', 'pentagon'],
-  action: ['clock-edit', 'share-arrow', 'import', 'export', 'archive', 'reset', 'replace', 'recycle', 'up-to-top', 'down-to-bottom', 'upgrade', 'inbox', 'clock-refresh', 'task', 'broom', 'dustpan', 'printer', 'qr-code'],
-  status: ['heart', 'heart-pulse', 'heart-crack', 'heart-organ', 'thumbs-up', 'thumbs-down', 'tags', 'octagon-x'],
-  editor: ['bring-to-front', 'send-to-back', 'bring-forward', 'send-backward', 'corner-radius', 'line-height', 'letter-spacing', 'fold-vertical', 'group', 'ungroup', 'distribute-horizontal', 'distribute-vertical', 'fit-to-screen', 'typography', 'compare'],
+  basic: ['circle', 'square', 'triangle', 'checkbox', 'radio', 'radio-checked', 'dashed-circle', 'arrows-left-right', 'hexagon', 'pentagon', 'rectangle-horizontal', 'rectangle-vertical'],
+  action: ['clock-edit', 'share-arrow', 'import', 'export', 'archive', 'reset', 'replace', 'recycle', 'arrow-up-to-line', 'arrow-down-to-line', 'upgrade', 'inbox', 'clock-refresh', 'task', 'broom', 'dustpan', 'printer', 'qr-code', 'reply', 'reply-all', 'forward'],
+  status: ['heart', 'heart-pulse', 'heart-crack', 'heart-organ', 'thumbs-up', 'thumbs-down', 'tags', 'octagon-x', 'bell-ring', 'star-half', 'badge-check', 'eye-closed'],
+  editor: ['arrange-bring-to-front', 'arrange-send-to-back', 'arrange-bring-forward', 'arrange-send-backward', 'corner-radius', 'line-height', 'letter-spacing', 'fold-vertical', 'group', 'ungroup', 'distribute-horizontal', 'distribute-vertical', 'fit-to-screen', 'typography', 'compare'],
   screen: ['window-minimize', 'window-maximize', 'window-restore', 'window-close', 'presentation', 'timeline', 'tree-view'],
-  dev: ['json', 'html', 'code-block', 'bug'],
+  dev: ['json', 'html', 'code-block', 'bug', 'regex', 'workflow'],
   // 品牌标志不进本库（直接用 Simple Icons），只留预览站自己要用的 GitHub
   git: ['github'],
-  photo: ['camera-compact', 'camera-body', 'camera-dslr', 'camera-mirrorless', 'camera-film', 'camera-instant', 'camera-action', 'camera-lens', 'camera-lens-zoom', 'camera-lens-telephoto', 'camera-lens-pancake', 'aspect-ratio', 'perspective', 'live-photo', 'movie', 'photo-edit', 'camera-rotate', 'color-filter', 'flip-vertical', 'rotate-ccw'],
+  photo: ['camera-compact', 'camera-body', 'camera-dslr', 'camera-mirrorless', 'camera-film', 'camera-instant', 'camera-action', 'camera-lens', 'camera-lens-zoom', 'camera-lens-telephoto', 'camera-lens-pancake', 'aspect-ratio', 'perspective', 'live-photo', 'movie', 'image-edit', 'camera-rotate', 'color-filter', 'flip-vertical', 'rotate-ccw'],
   chart: ['candlestick-chart', 'radar'],
-  media: ['speaker', 'headphones', 'earbuds', 'music', 'play-circle', 'disc', 'vinyl', 'turntable', 'wave-sine', 'podcast'],
+  media: ['speaker', 'headphones', 'earbuds', 'music', 'play-circle', 'disc', 'vinyl', 'turntable', 'wave-sine', 'podcast', 'audio-lines', 'eject'],
   weather: ['moon-star'],
-  meeting: ['webcam', 'webcam-off', 'cctv', 'chats', 'collaborate', 'mic-handheld', 'mic-vintage', 'mic-studio'],
+  meeting: ['webcam', 'webcam-off', 'cctv', 'chats', 'collaborate', 'mic-handheld', 'mic-vintage', 'mic-studio', 'megaphone', 'handshake'],
   search: ['map-search', 'globe-search'],
-  object: ['stopwatch', 'toolbox', 'tools', 'graduation-cap', 'glasses', 'glasses-square', 'sunglasses', 'vr-headset', 'goggles', 'ghost', 'gift', 'package', 'receipt', 'map', 'rocket', 'ruler', 'books', 'diamond', 'notebook-pen', 'scale-balance', 'language-hiragana', 'calculator', 'backpack', 'library', 'region', 'hologram'],
+  object: ['stopwatch', 'toolbox', 'tools', 'graduation-cap', 'glasses', 'glasses-square', 'sunglasses', 'vr-headset', 'goggles', 'ghost', 'gift', 'package', 'receipt', 'map', 'rocket', 'ruler', 'books', 'diamond', 'notebook-pen', 'scale-balance', 'language-hiragana', 'calculator', 'backpack', 'library', 'region', 'hologram', 'sticky-note', 'newspaper', 'watch'],
   // 制图：地形编辑（抬升、压低、抹平）、沙盘、陆块，和山、波浪放在一起
   nature: ['terrain-raise', 'terrain-lower', 'terrain-smooth', 'diorama', 'continent'],
 }
@@ -60,7 +60,7 @@ const HOUSEHOLD = ['sofa', 'armchair', 'bed', 'door', 'lamp-desk', 'bathtub', 's
 const TOOLS = ['wrench', 'screwdriver', 'drill', 'saw', 'shovel', 'paint-bucket', 'flashlight']
 const LANGUAGES = ['python', 'javascript', 'typescript', 'java', 'csharp', 'cpp', 'c', 'golang', 'rust', 'php', 'kotlin', 'swift', 'ruby', 'lua', 'haskell']
 const USER_BASE = ['user', 'users', 'user-circle', 'id-card']
-const USER_STATUS = ['user-plus', 'user-minus', 'user-check', 'user-x', 'user-cog']
+const USER_STATUS = ['user-plus', 'user-minus', 'user-check', 'user-x', 'user-search', 'user-cog']
 const USER_EMPLOYMENT = ['user-full-time', 'user-part-time', 'user-contractor', 'user-intern', 'user-freelancer', 'user-remote', 'user-temp', 'label-fte', 'label-pt', 'label-ctr', 'label-int']
 const USER_ROLE = ['user-owner', 'user-admin', 'user-editor', 'user-viewer', 'user-commenter', 'user-guest']
 const GOJUON = Object.keys(HIRAGANA)
@@ -69,9 +69,9 @@ const EXTRA_OF = Object.fromEntries(Object.entries(EXTRA).flatMap(([id, names]) 
 export const CATEGORIES = [
   // ---------- 系列 ----------
   { id: 'folder', match: family('folder'), series: true, base: ['folder-open'] },
-  { id: 'file', match: family('file'), series: true },
+  { id: 'file', match: any(family('file'), oneOf('files')), series: true, base: ['files'] },
   { id: 'list', match: any(family('list'), name => name.endsWith('-list')), series: true, base: ['list-ordered'] },
-  { id: 'mail', match: family('mail'), series: true },
+  { id: 'mail', match: family('mail'), series: true, base: ['mail-open'] },
   { id: 'chat', match: family('chat'), series: true },
   { id: 'monitor', match: family('monitor'), series: true },
   { id: 'calendar', match: family('calendar'), series: true, base: ['calendar-days', 'calendar-range', 'calendar-heart'] },
@@ -89,9 +89,9 @@ export const CATEGORIES = [
   // ---------- 单个图标 ----------
   {
     id: 'basic',
-    match: oneOf('dot', 'slash', 'line-segment', 'separator-vertical', 'separator-horizontal', 'plus', 'minus', 'plus-circle', 'minus-circle', 'menu', 'menu-left', 'menu-close', 'dots', 'dots-vertical', 'grip-vertical', 'caret-up', 'caret-down', 'chevrons-up-down', 'arrows-up-down', 'arrows-up-down-half', 'sort-ascending', 'sort-descending'),
+    match: oneOf('dot', 'slash', 'line-segment', 'separator-vertical', 'separator-horizontal', 'plus', 'minus', 'plus-circle', 'minus-circle', 'menu', 'menu-left', 'menu-close', 'dots', 'dots-vertical', 'grip', 'grip-vertical', 'grip-horizontal', 'caret-up', 'caret-down', 'chevrons-up-down', 'chevrons-down-up', 'arrows-up-down', 'arrows-up-down-half', 'sort-ascending', 'sort-descending'),
   },
-  { id: 'arrow', match: any(prefixed('arrow-', 'chevron-'), name => /^corner-(?:up|down|left|right)-/.test(name)) },
+  { id: 'arrow', match: any(prefixed('arrow-', 'chevron-', 'chevrons-'), name => /^corner-(?:up|down|left|right)-/.test(name)) },
   {
     id: 'status',
     match: any(
@@ -109,8 +109,8 @@ export const CATEGORIES = [
   {
     id: 'editor',
     match: any(
-      prefixed('align-', 'paperclip'),
-      oneOf('edit', 'copy', 'clipboard', 'scissors', 'text', 'link', 'unlink', 'send', 'send-diagonal', 'send-right', 'send-up', 'pen', 'brush', 'highlighter', 'eraser', 'wand', 'smile', 'at', 'hash', 'image', 'image-plus', 'bold', 'italic', 'underline', 'strikethrough', 'heading', 'quote', 'indent', 'outdent', 'subscript', 'superscript', 'pilcrow', 'undo', 'redo', 'table', 'shapes'),
+      prefixed('align-', 'paperclip', 'heading-'),
+      oneOf('edit', 'copy', 'clipboard', 'scissors', 'text', 'link', 'unlink', 'send', 'send-diagonal', 'send-right', 'send-up', 'pen', 'brush', 'highlighter', 'eraser', 'wand', 'smile', 'at', 'hash', 'image', 'image-plus', 'bold', 'italic', 'underline', 'strikethrough', 'heading', 'quote', 'indent', 'outdent', 'subscript', 'superscript', 'pilcrow', 'undo', 'redo', 'table', 'shapes', 'clipboard-paste', 'clipboard-check', 'copy-check', 'smile-plus', 'remove-formatting', 'pipette', 'pen-tool', 'grid-3x3'),
     ),
   },
   { id: 'search', match: family('search') },
@@ -220,7 +220,7 @@ export const CATEGORIES = [
     ),
   },
   { id: 'git', match: prefixed('git-') },
-  { id: 'keyboard', match: prefixed('kbd-'), rank: name => ['enter', 'shift', 'caps-lock', 'tab', 'backspace', 'delete', 'escape', 'space', 'command', 'option', 'control'].indexOf(name.slice(4)) },
+  { id: 'keyboard', match: prefixed('keyboard-'), rank: name => ['enter', 'shift', 'caps-lock', 'tab', 'backspace', 'delete', 'escape', 'space', 'command', 'option', 'control'].indexOf(name.slice(9)) },
   // 开发：通用的开发、数据图标一节，编程语言一节（按名单顺序，大致按常用程度）
   {
     id: 'dev',
@@ -335,7 +335,7 @@ export const CATEGORIES = [
   { id: 'animal', match: oneOf('paw', 'cat', 'dog', 'pig', 'cow', 'horse', 'bird', 'turtle', 'bee', 'butterfly') },
   // 民用交通：车（侧视、车头朝右）、飞机、船，以及加油、充电、停车、路锥、红绿灯这些路上的设施
   { id: 'transport', match: oneOf('car', 'taxi', 'bus', 'truck', 'bike', 'motorcycle', 'scooter', 'plane', 'plane-takeoff', 'plane-landing', 'ship', 'sailboat', 'fuel', 'ev-charger', 'parking', 'traffic-light', 'traffic-cone') },
-  { id: 'hardware', match: oneOf('usb', 'usb-c', 'usb-a', 'usb-drive', 'hdmi', 'ethernet', 'sd-card', 'cpu', 'gpu', 'memory', 'hard-drive', 'ssd', 'fan') },
+  { id: 'hardware', match: oneOf('usb', 'usb-c', 'usb-a', 'usb-drive', 'hdmi', 'ethernet', 'sd-card', 'cpu', 'gpu', 'memory', 'hard-drive', 'ssd', 'fan', 'mouse') },
   {
     id: 'notation',
     match: prefixed('notation-'),
@@ -350,13 +350,13 @@ export const CATEGORIES = [
   { id: 'clothing', match: any(prefixed('shoe'), oneOf('t-shirt', 'dress', 'pants', 'cap', 'hat', 'sock', 'hanger')) },
   {
     id: 'controller',
-    match: prefixed('xbox-', 'ps-', 'dpad', 'controller-'),
-    section: name => name.startsWith('xbox-') ? { order: 0, key: 'xbox' } : name.startsWith('ps-') ? { order: 1, key: 'ps' } : { order: 2, key: 'generic' },
+    match: prefixed('xbox-', 'playstation-', 'dpad', 'controller-'),
+    section: name => name.startsWith('xbox-') ? { order: 0, key: 'xbox' } : name.startsWith('playstation-') ? { order: 1, key: 'ps' } : { order: 2, key: 'generic' },
   },
-  { id: 'tabletop', match: any(prefixed('chess', 'suit-', 'xiangqi-', 'shogi-', 'card-'), oneOf('sudoku', 'tic-tac-toe', 'crossword', 'minesweeper', 'tetromino', 'puzzle-cube', 'four-in-a-row', 'bingo', 'darts', 'billiards'), oneOf('go-board', 'playing-card', 'cards', 'poker-chip', 'domino', 'mahjong')) },
+  { id: 'tabletop', match: any(prefixed('chess', 'suit-', 'xiangqi-', 'shogi-', 'game-card-'), oneOf('sudoku', 'tic-tac-toe', 'crossword', 'minesweeper', 'tetromino', 'puzzle-cube', 'four-in-a-row', 'bingo', 'darts', 'billiards'), oneOf('go-board', 'playing-card', 'playing-cards', 'poker-chip', 'domino', 'mahjong')) },
   { id: 'award', match: oneOf('trophy', 'medal', 'medal-1', 'medal-2', 'medal-3', 'award', 'crown', 'podium') },
   { id: 'sport', match: oneOf('basketball', 'soccer', 'volleyball', 'rugby', 'baseball', 'tennis', 'golf', 'ping-pong', 'badminton', 'bowling', 'dumbbell', 'run', 'swim', 'ski', 'surf') },
-  { id: 'medical', match: oneOf('pill', 'syringe', 'ambulance', 'stethoscope', 'bandage', 'first-aid', 'tooth', 'bone') },
+  { id: 'medical', match: oneOf('pill', 'syringe', 'ambulance', 'stethoscope', 'bandage', 'first-aid', 'tooth', 'bone', 'virus') },
   // 表情：mood-* 一组（圆脸 + 眼睛 + 嘴，见 mood-empty）
   { id: 'mood', match: prefixed('mood-') },
   { id: 'game', match: any(prefixed('dice'), oneOf('gamepad', 'game-handheld', 'joystick')) },
@@ -368,8 +368,8 @@ export const CATEGORIES = [
     id: 'object',
     match: oneOf('key', 'palette', 'pin', 'pin-diagonal', 'hourglass', 'alarm-clock', 'timer', 'flag', 'flag-plain', 'flag-pennant', 'flag-wave', 'flag-checkered', 'flag-banner', 'target', 'compass', 'keyboard', 'globe', 'languages', 'lightbulb', 'tada', 'zap', 'rabbit', 'snail', 'magnet'),
   },
-  // 电源与开关：oneOf 会先去掉名字末尾的 -off，所以 power-off、toggle-off、label-off 分别按 power、toggle、label 匹配
-  { id: 'ui', match: any(prefixed('cursor', 'battery'), oneOf('settings', 'theme', 'wifi', 'signal', 'bluetooth', 'power', 'power-on', 'power-toggle', 'toggle', 'toggle-on', 'label', 'label-on')) },
+  // 电源与开关：oneOf 会先去掉名字末尾的 -off，所以 toggle-off、label-off 分别按 toggle、label 匹配（power-state-off 直接列出）
+  { id: 'ui', match: any(prefixed('cursor', 'battery'), oneOf('hand-grab', 'settings', 'theme', 'wifi', 'signal', 'bluetooth', 'power', 'power-state-on', 'power-state-off', 'power-toggle', 'toggle', 'toggle-on', 'label', 'label-on')) },
   { id: 'other', match: () => true },
 ]
 
@@ -405,12 +405,24 @@ function place(name) {
 }
 
 // groupTitleOf(key) 返回小节名（用来搜索）：搜小节名也能搜到小节里的图标
-export function categorize(icons, query = '', titleOf = id => id, groupTitleOf = () => '') {
+// tagsOf(name)（可选）返回图标的搜索关键词（见 meta/tags.js）：搜关键词也能搜到图标（love → heart、设置 → settings）；不传时只按名字、分类名、小节名
+// 关键词按词首匹配（cat 不会命中 location），查询以非字母数字开头（中文、日文、符号）时任意位置都算
+export function categorize(icons, query = '', titleOf = id => id, groupTitleOf = () => '', tagsOf = null) {
   const q = query.trim().toLowerCase()
+  const word = /[a-z0-9]/
+  const tagHit = (tag) => {
+    const t = tag.toLowerCase()
+    for (let i = t.indexOf(q); i >= 0; i = t.indexOf(q, i + 1)) {
+      if (i === 0 || !word.test(t[i - 1]) || !word.test(q[0]))
+        return true
+    }
+    return false
+  }
   const groupsOf = new Map(CATEGORIES.map(c => [c, new Map()]))
   for (const icon of icons) {
     const { cat, sec } = place(icon.name)
-    if (q && !icon.name.includes(q) && !titleOf(cat.id).includes(q) && !(sec.key && groupTitleOf(sec.key).includes(q)))
+    if (q && !icon.name.includes(q) && !titleOf(cat.id).includes(q) && !(sec.key && groupTitleOf(sec.key).includes(q))
+      && !(tagsOf && tagsOf(icon.name).some(tagHit)))
       continue
     const groups = groupsOf.get(cat)
     if (!groups.has(sec.key))

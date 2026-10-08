@@ -46,7 +46,7 @@ const PICKS = {
   'money': 'wallet',
   'building': 'home',
   'git': 'git-branch',
-  'keyboard': 'kbd-command',
+  'keyboard': 'keyboard-command',
   'dev': 'code',
   'rating': 'rating-mpa-pg13',
   'quality': '4k',

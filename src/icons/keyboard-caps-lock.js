@@ -1,5 +1,5 @@
 import { rounded } from '../geometry'
-import { shiftArrow } from './kbd-shift'
+import { shiftArrow } from './keyboard-shift'
 
 // 大写锁定 ⇪：缩短的 Shift 箭头，下面一块横条
 export default ({ radius }) => [
