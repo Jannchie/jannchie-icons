@@ -6,7 +6,7 @@ register('data:text/javascript,' + encodeURIComponent(`
 export async function resolve(spec, ctx, next) {
   try { return await next(spec, ctx) }
   catch (e) {
-    if ((spec.startsWith('./') || spec.startsWith('../')) && !/\.\w+$/.test(spec))
+    if ((spec.startsWith('./') || spec.startsWith('../')) && !spec.endsWith('.js') && !spec.endsWith('.json'))
       return next(spec + '.js', ctx)
     throw e
   }
