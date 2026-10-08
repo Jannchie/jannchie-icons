@@ -1,7 +1,7 @@
 <script setup>
 // 版本号取发布包的 package.json（发版时两处一起改），header 上显示当前是哪一版
 import { version } from '../packages/core/package.json'
-import { computed, nextTick, onMounted, onUnmounted, provide, ref, shallowRef, watch, watchEffect } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, provide, ref, shallowReactive, shallowRef, watch, watchEffect } from 'vue'
 import { categorize } from './categories'
 import { categoryIcon } from './category-icons'
 import { LOCALES, locale, searchGroupTitle, searchTitle, t } from './i18n'
@@ -13,7 +13,7 @@ import IconSvg from './IconSvg.vue'
 import { byName, icons } from './iconset'
 import LazyIcon from './LazyIcon.vue'
 import { svgString } from './export'
-import iconTimes from 'virtual:icon-times'
+import initialTimes from 'virtual:icon-times'
 import { CORNERS, WEIGHTS } from './options'
 import { pathsOf } from './render'
 import { devicePx } from './site/preview'
@@ -58,8 +58,10 @@ const duo = ref(saved.duo === true)
 const primary = ref(HEX.test(saved.primary) ? saved.primary : '')
 const overrides = ref(Object.fromEntries(Object.entries(saved.overrides ?? {}).filter(([r, c]) => r in ROLES && HEX.test(c))))
 // 当前是否暗色：主题选「自动」时跟随系统
-const systemDark = ref(matchMedia('(prefers-color-scheme: dark)').matches)
-matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => (systemDark.value = e.matches))
+const darkQuery = matchMedia('(prefers-color-scheme: dark)')
+const systemDark = ref(darkQuery.matches)
+const onSchemeChange = e => (systemDark.value = e.matches)
+darkQuery.addEventListener('change', onSchemeChange)
 const isDark = computed(() => theme.value === 'dark' || (theme.value === 'auto' && systemDark.value))
 const recommended = role => ROLES[role][isDark.value ? 'dark' : 'light']
 const roleColors = computed(() => Object.fromEntries(Object.keys(ROLES).map(r => [r, overrides.value[r] ?? recommended(r)])))
@@ -126,10 +128,18 @@ watchEffect(() => {
 // 搜索：按名字或分类名过滤；按 / 聚焦，Esc 清空
 const query = ref('')
 const searchInput = ref(null)
-// 搜索关键词（meta/tags.js：同义词、用途、中日文叫法）也参与匹配：love → heart、设置 → settings
-// 改名前的旧名（aliases.js）也算关键词：搜 volume-mute 能找到 volume-x
-const searchTags = name => (oldNamesOf(name).length ? [...tagsOf(name), ...oldNamesOf(name)] : tagsOf(name))
-const categorized = computed(() => categorize(icons, query.value, searchTitle, searchGroupTitle, searchTags))
+// 搜索关键词（meta/tags.js：同义词、用途、中日文叫法、改名前的旧名）也参与匹配：love → heart、设置 → settings、volume-mute → volume-x
+const categorized = computed(() => categorize(icons, query.value, searchTitle, searchGroupTitle, tagsOf))
+// 每个图标的最后修改时间：开发时改动、新增图标由 vite.config.js 的插件通过 HMR 事件推过来，只更新那一条
+const iconTimes = shallowReactive({ ...initialTimes })
+if (import.meta.hot) {
+  import.meta.hot.on('icon-times', ({ name, t }) => {
+    if (t == null)
+      delete iconTimes[name]
+    else
+      iconTimes[name] = t
+  })
+}
 // 「最近修改」：搜索结果（或全部图标）平铺成一节，最后修改的排最前；没有时间的（刚新建、时间表还没刷新）当作最新
 const sections = computed(() => {
   if (sortBy.value !== 'recent')
@@ -153,12 +163,9 @@ watch(query, (q, old) => {
 // 侧栏自己的筛选：只过滤侧栏里的分类列表（顶部搜索过滤的是图标），分类多时快速跳到想看的分类。
 // 和顶部搜索同一套匹配规则（categorize）：分类名（各语言）、小节名、或者分类里任何一个图标的名字对得上，这个分类就留下
 const catFilter = ref('')
-const sideSections = computed(() => {
-  if (!catFilter.value.trim())
-    return sections.value
-  const keep = new Set(categorize(icons, catFilter.value, searchTitle, searchGroupTitle, searchTags).map(c => c.id))
-  return sections.value.filter(c => keep.has(c.id))
-})
+// 侧栏筛选命中的分类只跟 catFilter 有关：拆成单独的 computed，顶部搜索每按一次键不用再跑一遍完整的分类
+const keptCategories = computed(() => catFilter.value.trim() ? new Set(categorize(icons, catFilter.value, searchTitle, searchGroupTitle, tagsOf).map(c => c.id)) : null)
+const sideSections = computed(() => keptCategories.value ? sections.value.filter(c => keptCategories.value.has(c.id)) : sections.value)
 const searchPaths = finalize(searchIcon(), 1.5)
 // 按名字取图标的 Icon 组件（页头标志、详情的多尺寸预览、示例页）用同一套设置
 provide('iconStyle', computed(() => ({ corner: corner.value, weight: weight.value })))
@@ -189,6 +196,7 @@ watch(selected, (name) => {
     url.searchParams.delete('icon')
   history.replaceState(null, '', url)
 })
+const selectedOldNames = computed(() => (selected.value ? oldNamesOf(selected.value) : []))
 const selectedIcon = computed(() => {
   const icon = selected.value && byName.get(selected.value)
   if (!icon)
@@ -199,7 +207,9 @@ const selectedIcon = computed(() => {
 // 变体：去掉 -badge-top / -badge / -off 后缀得到「本体」，本体和所有以「本体-」开头的图标算一族（folder-search → folder-search-badge、-badge-top……）；
 // 一族只有自己时，退而显示它所在分组里的其他图标（tag-a → tag-b、tag-c……）
 const VARIANT_SUFFIX = /-(?:badge-top|badge|off)$/
-const MAX_RELATED = 48
+// 每行 RELATED_COLS 个、最多 4 行
+const RELATED_COLS = 8
+const MAX_RELATED = RELATED_COLS * 4
 const related = computed(() => {
   const name = selected.value
   if (!name)
@@ -300,7 +310,9 @@ function collectSections() {
   sectionEls = [...document.querySelectorAll('main section[id]')]
   updateActive()
 }
-watch(() => sections.value.map(c => c.id).join(), () => nextTick(collectSections))
+// 当前显示的分类（顺序）：分类列表变了才需要重新收集区块、重新量列数
+const sectionKey = computed(() => sections.value.map(c => c.id).join())
+watch(sectionKey, () => nextTick(collectSections))
 
 // 网格列数：auto-fill 排出来的实际列数，用来在每组最后一行补空格子，让没填满的行也画出完整的格线
 // 所有网格同宽、同一个格子尺寸，读第一个就够；内容区宽度、图标大小、分类变化时重新读
@@ -314,7 +326,7 @@ function measureCols() {
     cols.value = getComputedStyle(grid).gridTemplateColumns.split(' ').length || 1
 }
 const fillers = n => (cols.value - n % cols.value) % cols.value
-watch([size, () => sections.value.map(c => c.id).join()], () => nextTick(measureCols))
+watch([size, sectionKey], () => nextTick(measureCols))
 
 // 侧栏里高亮的分类始终滚到可见范围：只改侧栏自己的 scrollTop，不用 scrollIntoView（它会连带滚动整页）
 const sidebar = ref(null)
@@ -362,6 +374,7 @@ function observeGrid(el) {
 }
 watch(mainEl, observeGrid)
 onUnmounted(() => {
+  darkQuery.removeEventListener('change', onSchemeChange)
   window.removeEventListener('keydown', onKey)
   window.removeEventListener('pointerdown', closePalette)
   window.removeEventListener('scroll', onScroll)
@@ -505,7 +518,7 @@ onUnmounted(() => {
           <div>
             <p class="label">{{ t(`cat.${selectedCategory}`) }}<template v-if="selectedAnimated"> · {{ t('ui.animated') }}</template></p>
             <h3 class="mono">{{ selectedIcon.name }}</h3>
-            <p v-if="oldNamesOf(selectedIcon.name).length" class="old-names">{{ t('ui.oldNames', { names: oldNamesOf(selectedIcon.name).join(', ') }) }}</p>
+            <p v-if="selectedOldNames.length" class="old-names">{{ t('ui.oldNames', { names: selectedOldNames.join(', ') }) }}</p>
           </div>
           <button class="close" :aria-label="t('ui.close')" @click="selected = null">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 7L17 17M17 7L7 17" /></svg>
@@ -516,6 +529,8 @@ onUnmounted(() => {
                四个角上的角标区（圆心对准系列角标：右下 (18, 17) 同文件夹，右上 (18, 7) 同对话框、日历，左边两个镜像；
                半径 5 盖住角标符号和它让出的空隙）；整体以画布中心左右对称；比背景网格明显，1px 不随预览放大变粗 -->
           <svg class="guides" viewBox="0 0 24 24" aria-hidden="true">
+            <!-- 24×24 画布本身的边界（svg 设了 overflow: visible，1px 的边线不会被裁掉一半） -->
+            <rect x="0" y="0" width="24" height="24" />
             <path d="M12 0V24M0 12H24M0 0L24 24M24 0L0 24" />
             <circle cx="12" cy="12" r="10" />
             <circle cx="12" cy="12" r="4" />
@@ -822,7 +837,7 @@ main { min-width: 0; padding-bottom: 80px; }
 .hero svg { width: 100%; height: 100%; }
 /* 辅助线和图标叠在同一格里：辅助线在下，用 40% 的次要文字色，比背景网格明显、又不抢图标 */
 .hero:not(.placeholder) > * { grid-area: 1 / 1; }
-.guides { fill: none; stroke: color-mix(in srgb, var(--muted) 40%, transparent); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.guides { overflow: visible; fill: none; stroke: color-mix(in srgb, var(--muted) 40%, transparent); stroke-width: 1; vector-effect: non-scaling-stroke; }
 .guides * { vector-effect: non-scaling-stroke; }
 .scales { display: grid; grid-template-columns: repeat(5, 1fr); }
 .scales div { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 8px; padding: 16px 0 12px; border-right: 1px solid var(--line); }
@@ -846,7 +861,7 @@ main { min-width: 0; padding-bottom: 80px; }
   font-size: 12px; line-height: 18px; color: var(--text-2);
 }
 .tags button:hover { color: var(--text); background: var(--sunken); border-color: var(--muted); }
-.related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(36px, 1fr)); gap: 2px; }
+.related-grid { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 2px; }
 .related-grid button, .style-grid button {
   display: grid; place-items: center; aspect-ratio: 1; padding: 0; border: 0; border-radius: 6px; background: none; color: var(--text); cursor: pointer;
 }
