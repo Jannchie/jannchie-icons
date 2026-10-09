@@ -91,6 +91,9 @@ export function minify(d, { packArcs = false } = {}) {
       candidates.push(['M', a], ['m', [a[0] - cx, a[1] - cy]])
     }
     else if (type === 'L') {
+      // 路径中间的零长度直线（残段）丢掉；紧跟在 M 后面的要留着，那是圆点（M x y h0）
+      if (a[0] === cx && a[1] === cy && !/m/i.test(last))
+        continue
       if (a[1] === cy)
         candidates.push(['H', [a[0]]], ['h', [a[0] - cx]])
       else if (a[0] === cx)
@@ -102,6 +105,9 @@ export function minify(d, { packArcs = false } = {}) {
       candidates.push([type, a], [type.toLowerCase(), a.map((v, j) => v - (j % 2 ? cy : cx))])
     }
     else if (type === 'A') {
+      // 起止点重合的圆弧（裁切、圆角后的残段）按 SVG 规范整段不画，直接丢掉
+      if (a[5] === cx && a[6] === cy)
+        continue
       candidates.push(['A', a], ['a', [...a.slice(0, 5), a[5] - cx, a[6] - cy]])
     }
     else {
