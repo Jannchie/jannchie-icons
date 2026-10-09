@@ -1,6 +1,6 @@
 {
   "name": "@jannchie/icons-vue",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "Vue 3 component for Jannchie Icons: one <JIcon> for every icon, with app-wide radius and weight defaults, pixel hinting and duo-tone colors",
   "license": "MIT",
   "author": "Jianqi Pan",
@@ -48,7 +48,7 @@
     "./package.json": "./package.json"
   },
   "peerDependencies": {
-    "@jannchie/icons": "^0.7.0",
+    "@jannchie/icons": "^0.8.0",
     "vue": ">=3.3.0"
   },
   "devDependencies": {
