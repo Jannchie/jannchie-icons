@@ -106,12 +106,14 @@ writeFileSync(`${GEN}/static/index.js`, [
   '',
 ].join('\n'))
 
-// 元数据入口 ./meta：{ 图标名: { category, tags, since?, thirdParty?, oldNames? } }，分类标题另给
+// 元数据入口 ./meta：{ 图标名: { category, tags, since?, updated?, thirdParty?, oldNames? } }，分类标题另给
 const metaEntries = names.map((name) => {
-  const { tags, since, thirdParty, oldNames } = metaOf(name)
+  const { tags, since, updated, thirdParty, oldNames } = metaOf(name)
   const entry = { category: categoryOf.get(name), tags }
   if (since !== undefined)
     entry.since = since
+  if (updated)
+    entry.updated = updated
   if (thirdParty)
     entry.thirdParty = true
   if (oldNames?.length)
@@ -312,6 +314,8 @@ export interface IconMeta {
   tags: readonly string[]
   /** Version in which the icon was added ("next" when not released yet) */
   since?: string
+  /** Version of the latest change after the icon was added ("next" when not released yet); absent if unchanged since then */
+  updated?: string
   /** Set when the icon depicts a third-party character or mark (see NOTICE) */
   thirdParty?: true
   /** Former names of a renamed icon, still accepted as deprecated aliases */

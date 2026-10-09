@@ -528,6 +528,13 @@ onUnmounted(() => {
           <div>
             <p class="label">{{ t(`cat.${selectedCategory}`) }}<template v-if="selectedAnimated"> · {{ t('ui.animated') }}</template></p>
             <h3 class="mono">{{ selectedIcon.name }}</h3>
+            <!-- 版本：加入的版本 · 最近一次更新的版本（加入后没改过就不显示） -->
+            <p v-if="selectedMeta" class="versions mono">
+              {{ selectedMeta.since === 'next' ? t('ui.unreleased') : t('ui.since', { v: selectedMeta.since }) }}
+              <template v-if="selectedMeta.updated">
+                · {{ selectedMeta.updated === 'next' ? t('ui.updatedNext') : t('ui.updated', { v: selectedMeta.updated }) }}
+              </template>
+            </p>
           </div>
           <button class="close" :aria-label="t('ui.close')" @click="selected = null">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M7 7L17 17M17 7L7 17" /></svg>
@@ -565,12 +572,9 @@ onUnmounted(() => {
           <button @click="copy(svgText, 'ui.copiedSvg')">{{ t('ui.copySvg') }}</button>
           <button @click="download(selectedIcon)">{{ t('ui.download') }}</button>
         </div>
-        <!-- 关键词：点一下就拿它搜索；右上角是首次发布的版本 -->
+        <!-- 关键词：点一下就拿它搜索 -->
         <section v-if="selectedMeta" class="meta">
-          <div class="meta-head">
-            <p class="label">{{ t('ui.tags') }}</p>
-            <small class="mono since">{{ selectedMeta.since === 'next' ? t('ui.unreleased') : t('ui.since', { v: selectedMeta.since }) }}</small>
-          </div>
+          <p class="label">{{ t('ui.tags') }}</p>
           <div v-if="shownTags.length" class="tags">
             <button v-for="tag in shownTags" :key="tag" :title="t('ui.searchTag', { tag })" @click="query = tag">
               {{ tag }}
@@ -834,6 +838,7 @@ main { min-width: 0; padding-bottom: 80px; }
 .detail > * { border-bottom: 1px solid var(--line); }
 .detail-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 20px; }
 .detail-head h3 { margin: 6px 0 0; font-size: 16px; font-weight: 600; word-break: break-all; }
+.detail-head .versions { margin: 4px 0 0; font-size: 12px; color: var(--muted); }
 .close { display: grid; place-items: center; width: 28px; height: 28px; flex: none; padding: 0; border: 0; border-radius: 6px; background: none; color: var(--muted); cursor: pointer; }
 .close svg { width: 16px; height: 16px; }
 .close:hover { color: var(--text); background: var(--sunken); }
@@ -861,8 +866,6 @@ main { min-width: 0; padding-bottom: 80px; }
 /* 变体 / 同组图标：小格子平铺，当前这个描一圈强调色 */
 .related, .styles, .meta { display: flex; flex-direction: column; gap: 10px; padding: 16px 20px; }
 /* 关键词：小标签，点了就搜这个词 */
-.meta-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-.meta-head .since { font-size: 12px; }
 .tags { display: flex; flex-wrap: wrap; gap: 4px; }
 .tags button {
   padding: 1px 7px; border: 1px solid var(--line-strong); border-radius: 999px; background: none; cursor: pointer;
