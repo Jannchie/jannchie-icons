@@ -18,9 +18,8 @@
     "bold @(12, 12)"
   ],
   "any-to-any": [
-    "bold @(18, 12)",
-    "bold @(6, 12)",
-    "regular @(11.9, 12)"
+    "bold @(17, 11)",
+    "regular @(8.3, 14.3)"
   ],
   "apartment": [
     "bold @(10, 8.5)",
@@ -151,9 +150,9 @@
     "bold @(11, 12)"
   ],
   "bee": [
-    "bold @(12, 12.5)",
-    "bold @(12, 4.5)",
-    "regular @(12, 12.5)"
+    "bold @(12, 13.5)",
+    "regular @(12, 13.5)",
+    "regular @(12, 6)"
   ],
   "bike": [
     "bold @(18.5, 16.5)",
@@ -289,10 +288,14 @@
     "bold @(14, 10.5)",
     "bold @(14, 7.5)"
   ],
+  "butterfly-small": [
+    "regular @(15.7, 12.5)",
+    "regular @(8.3, 12.5)"
+  ],
   "cake": [
-    "bold @(12, 10.5)",
-    "bold @(16, 10.5)",
-    "bold @(8, 10.5)"
+    "bold @(12, 9.5)",
+    "bold @(16, 9.5)",
+    "bold @(8, 9.5)"
   ],
   "calendar-assets": [
     "bold @(12, 13)"
@@ -333,6 +336,9 @@
   "calendar-puzzle": [
     "bold @(12, 10)"
   ],
+  "calendar-sparkle-badge": [
+    "bold @(12, 10)"
+  ],
   "camera-action": [
     "bold @(12, 11)"
   ],
@@ -356,9 +362,6 @@
   ],
   "camera-mirrorless": [
     "bold @(12, 12.5)"
-  ],
-  "camera-rotate": [
-    "bold @(11.8, 11.6)"
   ],
   "cart-plus": [
     "regular @(11.3, 9.5)"
@@ -396,15 +399,19 @@
     "bold @(12, 10)",
     "bold @(8.8, 10)"
   ],
+  "chat-ellipsis-badge": [
+    "bold @(14.1, 15.5)",
+    "bold @(17.3, 15.5)"
+  ],
   "chat-ellipsis-badge-top": [
-    "bold @(15.2, 4)",
-    "bold @(18, 4)"
+    "bold @(15.3, 4.3)",
+    "bold @(18, 4.3)"
   ],
   "chat-exclaim-badge": [
-    "bold @(21, 11.8)"
+    "bold @(20.5, 11.8)"
   ],
   "chat-exclaim-badge-top": [
-    "bold @(21, 5.8)"
+    "bold @(20.5, 5.8)"
   ],
   "chat-gauge-badge": [
     "bold @(17.3, 12.8)",
@@ -441,7 +448,7 @@
     "regular @(12, 12)"
   ],
   "chat-question-badge": [
-    "bold @(19, 11.8)"
+    "bold @(19, 11.6)"
   ],
   "chat-question-badge-top": [
     "bold @(19, 6.3)"
@@ -511,10 +518,10 @@
     "regular @(6.5, 5.3)"
   ],
   "chinese-zodiac-rooster": [
-    "bold @(12, 18.4)",
-    "regular @(12, 18.4)",
-    "regular @(15, 10.5)",
-    "regular @(9, 10.5)"
+    "bold @(12, 13.2)",
+    "bold @(15.5, 11)",
+    "bold @(8.5, 11)",
+    "regular @(12, 18.6)"
   ],
   "chinese-zodiac-snake": [
     "bold @(12, 7.1)",
@@ -603,9 +610,6 @@
   "currency-yen": [
     "regular @(12, 8.3)"
   ],
-  "cursor-click": [
-    "regular @(14.5, 13.5)"
-  ],
   "dagger": [
     "regular @(9.7, 9.7)"
   ],
@@ -642,16 +646,16 @@
     "regular @(12, 12)"
   ],
   "dpad-down": [
-    "regular @(12, 12)"
+    "bold @(12, 12)"
   ],
   "dpad-left": [
-    "regular @(12, 12)"
+    "bold @(12, 12)"
   ],
   "dpad-right": [
-    "regular @(12, 12)"
+    "bold @(12, 12)"
   ],
   "dpad-up": [
-    "regular @(12, 12)"
+    "bold @(12, 12)"
   ],
   "element": [
     "bold @(12, 12)",
@@ -798,10 +802,6 @@
     "bold @(14.8, 15)",
     "bold @(14.8, 18)",
     "bold @(14.8, 21)"
-  ],
-  "gender-transgender": [
-    "bold @(12, 12.5)",
-    "regular @(7, 7.5)"
   ],
   "ghs-corrosive": [
     "bold @(12, 12)",
@@ -1032,8 +1032,7 @@
   ],
   "laundry-wash-40": [
     "bold @(12, 11.5)",
-    "bold @(12, 8)",
-    "regular @(9.8, 13)"
+    "bold @(12, 8)"
   ],
   "laundry-wash-60": [
     "bold @(12, 11.5)",
@@ -1045,55 +1044,24 @@
     "bold @(12, 8)",
     "regular @(12, 8)"
   ],
-  "letter-a-square": [
-    "bold @(12, 12)"
-  ],
   "letter-l-circle": [
     "bold @(12, 12)"
   ],
-  "letter-l-square": [
-    "bold @(12, 12)"
-  ],
-  "letter-t-square": [
-    "bold @(12, 12)"
-  ],
-  "license": [
-    "regular @(15.4, 21.1)",
-    "regular @(18.6, 21.1)"
-  ],
   "license-agpl": [
-    "regular @(15.4, 21.1)",
-    "regular @(18.6, 21.1)"
-  ],
-  "license-apache": [
-    "regular @(15.4, 21.1)",
-    "regular @(18.6, 21.1)"
-  ],
-  "license-bsd": [
-    "regular @(15.4, 21.1)",
-    "regular @(18.6, 21.1)"
-  ],
-  "license-gpl": [
-    "regular @(15.4, 21.1)",
-    "regular @(18.6, 21.1)"
+    "bold @(10.1, 8)",
+    "bold @(13.9, 8)",
+    "bold @(6.3, 8)"
   ],
   "license-isc": [
-    "bold @(7.5, 10.5)",
-    "regular @(15.4, 21.1)",
-    "regular @(18.6, 21.1)"
+    "bold @(7.4, 10.5)",
+    "bold @(7.4, 5.5)"
   ],
   "license-lgpl": [
-    "regular @(15.4, 21.1)",
-    "regular @(18.6, 21.1)"
+    "bold @(10.1, 8)",
+    "bold @(13.9, 8)"
   ],
   "license-mit": [
-    "bold @(7.5, 8)",
-    "regular @(15.4, 21.1)",
-    "regular @(18.6, 21.1)"
-  ],
-  "license-mpl": [
-    "regular @(15.4, 21.1)",
-    "regular @(18.6, 21.1)"
+    "bold @(7, 8)"
   ],
   "lighthouse": [
     "bold @(12, 8)",
@@ -1140,13 +1108,13 @@
     "bold @(12, 11.9)"
   ],
   "manga-shout-exclaim": [
-    "bold @(12, 11.4)"
+    "bold @(12, 12)"
   ],
   "manga-shout-interrobang": [
-    "regular @(12, 11.4)"
+    "regular @(12, 11.9)"
   ],
   "manga-shout-question": [
-    "bold @(12, 11.4)"
+    "bold @(12, 12)"
   ],
   "map-pin-clock": [
     "bold @(17, 17)"
@@ -1158,6 +1126,21 @@
   "map-pin-lock": [
     "bold @(18, 18.5)",
     "regular @(18, 18.5)"
+  ],
+  "mark-you": [
+    "bold @(9.3, 12)"
+  ],
+  "mark-yue": [
+    "bold @(12, 13.3)"
+  ],
+  "mark-yue-circle": [
+    "bold @(12, 12)"
+  ],
+  "mark-zhun": [
+    "bold @(12, 12)"
+  ],
+  "mark-zhun-circle": [
+    "bold @(12, 12)"
   ],
   "mask-generation": [
     "bold @(11.1, 12)",
@@ -1210,18 +1193,18 @@
     "bold @(8.8, 10)"
   ],
   "monitor-ellipsis-badge": [
-    "bold @(16.1, 16)",
-    "bold @(18.5, 16)"
+    "bold @(16.1, 15.8)",
+    "bold @(18.5, 15.8)"
   ],
   "monitor-ellipsis-badge-top": [
-    "bold @(15.2, 4)",
-    "bold @(18, 4)"
+    "bold @(15.3, 4.3)",
+    "bold @(18, 4.3)"
   ],
   "monitor-exclaim-badge": [
-    "bold @(21, 11.8)"
+    "bold @(20.5, 11.8)"
   ],
   "monitor-exclaim-badge-top": [
-    "bold @(21, 5.8)"
+    "bold @(20.5, 5.8)"
   ],
   "monitor-gauge-badge-top": [
     "regular @(17, 7.5)"
@@ -1251,13 +1234,17 @@
     "regular @(12, 10)"
   ],
   "monitor-question-badge": [
-    "bold @(19, 11.8)"
+    "bold @(19, 11.6)"
   ],
   "monitor-question-badge-top": [
     "bold @(19, 6.3)"
   ],
   "monitor-shield": [
     "bold @(12, 10)"
+  ],
+  "moon-star": [
+    "bold @(17.8, 4.3)",
+    "regular @(17.8, 4.3)"
   ],
   "mosque": [
     "bold @(19.5, 13.2)",
@@ -1273,29 +1260,26 @@
     "bold @(14.8, 21)"
   ],
   "neural-network": [
-    "bold @(16.3, 10)",
-    "bold @(7.8, 10)",
-    "regular @(16.3, 10)",
-    "regular @(7.8, 10)"
+    "bold @(15.8, 10)",
+    "bold @(15.8, 14)",
+    "bold @(15.8, 6.1)",
+    "bold @(8.3, 10)",
+    "bold @(8.3, 10.1)",
+    "bold @(8.3, 13.9)",
+    "bold @(8.3, 14)",
+    "bold @(8.3, 6.1)",
+    "regular @(15.8, 10)",
+    "regular @(15.8, 14)",
+    "regular @(15.8, 6.1)",
+    "regular @(8.3, 10)",
+    "regular @(8.3, 10.1)",
+    "regular @(8.3, 13.9)",
+    "regular @(8.3, 14)",
+    "regular @(8.3, 6.1)"
   ],
   "notebook-pen": [
     "bold @(10, 11.5)",
     "bold @(10, 8.5)"
-  ],
-  "number-2-square": [
-    "bold @(12, 12)"
-  ],
-  "number-4-square": [
-    "bold @(12, 12)"
-  ],
-  "number-6-square": [
-    "bold @(12, 12)"
-  ],
-  "number-7-square": [
-    "bold @(12, 12)"
-  ],
-  "number-9-square": [
-    "bold @(12, 12)"
   ],
   "object-detection": [
     "bold @(15.5, 14.5)",
@@ -1314,7 +1298,7 @@
     "regular @(12, 12)"
   ],
   "pen": [
-    "bold @(18.5, 9.2)"
+    "bold @(16.6, 10.1)"
   ],
   "pizza": [
     "bold @(12, 12.6)",
@@ -1395,36 +1379,8 @@
     "bold @(12, 12.3)",
     "bold @(12, 6)"
   ],
-  "rate-x0-5": [
-    "bold @(19.5, 12)",
-    "regular @(4.7, 12)"
-  ],
-  "rate-x0-75": [
-    "bold @(21, 12)",
-    "bold @(9, 12)",
-    "regular @(3.6, 12)"
-  ],
-  "rate-x1": [
-    "bold @(14.8, 12)"
-  ],
   "rate-x1-25": [
-    "bold @(7.9, 12)"
-  ],
-  "rate-x1-5": [
-    "bold @(18.5, 12)"
-  ],
-  "rate-x2": [
-    "regular @(9.7, 12)"
-  ],
-  "rate-x3": [
-    "bold @(8.8, 12)"
-  ],
-  "rate-x4": [
-    "bold @(8.9, 12)"
-  ],
-  "rate-x8": [
-    "bold @(10.5, 12)",
-    "regular @(9.7, 12)"
+    "regular @(8.5, 12)"
   ],
   "rating-acb-ma15": [
     "bold @(12, 12)"
@@ -1504,14 +1460,9 @@
   "rotate-ccw": [
     "bold @(15.5, 14.5)"
   ],
-  "sailboat": [
-    "bold @(11.5, 10)",
-    "bold @(12, 18.5)",
-    "regular @(11.5, 10)"
-  ],
   "saxophone": [
-    "bold @(9.5, 11.3)",
-    "bold @(9.5, 8.5)"
+    "bold @(8, 12.3)",
+    "bold @(8, 9.5)"
   ],
   "school": [
     "bold @(12, 13.2)",
@@ -1561,9 +1512,9 @@
     "regular @(17, 17)"
   ],
   "shield-list": [
-    "bold @(14.3, 15)",
-    "bold @(14.3, 18)",
-    "bold @(14.3, 21)"
+    "bold @(14.8, 15)",
+    "bold @(14.8, 18)",
+    "bold @(14.8, 21)"
   ],
   "shield-lock": [
     "bold @(12, 12.5)",
@@ -1731,8 +1682,8 @@
     "regular @(11.9, 12)"
   ],
   "text-generation": [
-    "bold @(6, 12)",
-    "regular @(11.9, 12)"
+    "regular @(11.9, 12)",
+    "regular @(8.3, 14.3)"
   ],
   "text-ranking": [
     "bold @(6, 9)",
@@ -1799,16 +1750,6 @@
   "translation": [
     "bold @(6, 9)"
   ],
-  "tree": [
-    "bold @(12, 10)",
-    "regular @(12, 10)"
-  ],
-  "trumpet": [
-    "bold @(6.5, 7.5)",
-    "bold @(9.5, 7.5)",
-    "regular @(6.5, 7.5)",
-    "regular @(9.5, 7.5)"
-  ],
   "tulip": [
     "bold @(12, 9.1)",
     "regular @(12, 9.1)"
@@ -1817,10 +1758,13 @@
     "bold @(12, 12)"
   ],
   "unconditional-image-generation": [
-    "bold @(11.9, 12)",
-    "bold @(6, 12)",
+    "bold @(11.1, 12.3)",
     "regular @(11.9, 12)",
-    "regular @(18, 12)"
+    "regular @(18, 12)",
+    "regular @(8.3, 14.3)"
+  ],
+  "unit-airborne": [
+    "bold @(12, 12)"
   ],
   "unit-electronic-warfare": [
     "bold @(9.1, 11.5)"

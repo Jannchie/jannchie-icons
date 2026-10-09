@@ -12,6 +12,9 @@
     "regular (3.51, 11.58)",
     "regular (3.51, 12.42)"
   ],
+  "any-to-any": [
+    "bold (10.11, 13.92)"
+  ],
   "aperture": [
     "bold (3.06, 11)"
   ],
@@ -133,12 +136,6 @@
   ],
   "calendar-search-badge-top": [
     "regular (17.29, 7.29)"
-  ],
-  "camera-rotate": [
-    "bold (14.32, 10.98)",
-    "bold (14.52, 11.68)",
-    "bold (9.48, 14.83)",
-    "bold (9.67, 15.53)"
   ],
   "candy": [
     "bold (9.41, 8.95)"
@@ -286,21 +283,15 @@
     "bold (14.41, 13.5)",
     "bold (9.59, 10.5)"
   ],
-  "gender-transgender": [
-    "bold (6.58, 9.34)",
-    "bold (7.06, 9.44)",
-    "bold (8.84, 7.08)",
-    "bold (8.94, 7.56)"
-  ],
   "ghs-environment": [
     "bold (9.06, 8.56)"
   ],
   "glasses": [
-    "bold (14.08, 13.27)",
-    "light (13.87, 13.68)",
-    "light (14.02, 13.66)",
-    "regular (13.77, 13.51)",
-    "regular (14.04, 13.46)"
+    "bold (14.08, 12.02)",
+    "light (13.87, 12.43)",
+    "light (14.02, 12.41)",
+    "regular (13.77, 12.26)",
+    "regular (14.04, 12.21)"
   ],
   "globe": [
     "bold (11.21, 3.14)",
@@ -422,6 +413,12 @@
     "bold (5.05, 7)",
     "bold (9.95, 7)"
   ],
+  "languages-sparkle": [
+    "bold (10.18, 7.27)",
+    "bold (4.82, 7.27)",
+    "bold (5.05, 7)",
+    "bold (9.95, 7)"
+  ],
   "laundry-wash-off": [
     "bold (19.79, 4.21)",
     "bold (4.21, 4.21)"
@@ -433,6 +430,9 @@
   "letter-b": [
     "bold (13.16, 12.06)"
   ],
+  "letter-b-square": [
+    "bold (12.95, 12.07)"
+  ],
   "list-ordered": [
     "bold (4.1, 18)"
   ],
@@ -442,6 +442,25 @@
   "map-pin-search": [
     "light (17.98, 17.98)",
     "regular (17.69, 17.69)"
+  ],
+  "mark-yue": [
+    "bold (14.51, 17.15)",
+    "light (14.76, 17.1)",
+    "regular (14.51, 17.15)"
+  ],
+  "mark-zhun": [
+    "bold (11.25, 16.25)",
+    "bold (11.25, 17)"
+  ],
+  "mark-zhun-circle": [
+    "bold (11.5, 16.25)",
+    "bold (11.5, 17)",
+    "bold (11.5, 9.43)"
+  ],
+  "mark-zhun-square": [
+    "bold (11.5, 16.25)",
+    "bold (11.5, 17)",
+    "bold (11.5, 9.43)"
   ],
   "mask-generation": [
     "bold (17.53, 13.13)",
@@ -498,16 +517,6 @@
     "light (12.5, 15.83)",
     "regular (12.48, 16.58)",
     "regular (12.5, 16.04)"
-  ],
-  "neural-network": [
-    "bold (10.39, 12.69)",
-    "bold (10.54, 11.04)",
-    "bold (10.54, 18.79)",
-    "bold (10.54, 5.21)",
-    "bold (18.9, 15.29)",
-    "bold (18.9, 8.71)",
-    "bold (19.04, 16.96)",
-    "bold (19.04, 7.04)"
   ],
   "notation-alto-clef": [
     "bold (13.31, 19.45)",
@@ -586,9 +595,6 @@
   ],
   "public-domain": [
     "bold (14.33, 14.41)"
-  ],
-  "rate-x2": [
-    "bold (12.63, 9.43)"
   ],
   "religion-buddhism": [
     "bold (10.25, 11.03)",
@@ -767,6 +773,10 @@
     "regular (3.02, 11.43)",
     "regular (3.02, 12.57)"
   ],
+  "tree": [
+    "bold (12, 13.5)",
+    "regular (12, 13.5)"
+  ],
   "truck": [
     "light (2.75, 17.5)"
   ],
@@ -778,6 +788,9 @@
     "bold (8.58, 11.27)",
     "regular (8.51, 12.24)",
     "regular (8.54, 11.5)"
+  ],
+  "unconditional-image-generation": [
+    "bold (10.11, 13.92)"
   ],
   "usagi": [
     "bold (11.63, 18.12)",
@@ -794,9 +807,6 @@
   ],
   "video-text-to-text": [
     "bold (10.14, 13.61)"
-  ],
-  "violin": [
-    "bold (6.48, 5.07)"
   ],
   "webcam-off": [
     "bold (5, 9.5)",
