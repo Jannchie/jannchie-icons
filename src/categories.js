@@ -97,6 +97,10 @@ export const CATEGORIES = [
     match: any(
       name => /^(?:check|x|alert)(?:-|$)/.test(name),
       oneOf('info', 'help', 'loader', 'bell', 'eye', 'lock', 'lock-open', 'fingerprint', 'scan-face', 'ban', 'star', 'bookmark', 'sparkle', 'clock', 'gauge', 'puzzle', 'plug'),
+      // 日式评分记号：二重丸（◎）、はなまる、桜スタンプ
+      oneOf('double-circle', 'hanamaru', 'hanamaru-stem', 'sakura-stamp'),
+      // 中文批阅记号：圈里 / 方框里的阅、优、准
+      oneOf('mark-yue-circle', 'mark-yue-square', 'mark-you-circle', 'mark-you-square', 'mark-zhun-circle', 'mark-zhun-square'),
     ),
   },
   {
@@ -332,7 +336,7 @@ export const CATEGORIES = [
   { id: 'food', match: oneOf('meat', 'steak', 'bacon', 'fish', 'egg', 'egg-fried', 'milk', 'wine', 'beer', 'cocktail', 'sake', 'coffee', 'apple', 'carrot', 'bread', 'cheese', 'rice', 'utensils', 'cake', 'cookie', 'cupcake', 'donut', 'ice-cream', 'candy', 'lollipop', 'pizza', 'burger', 'cherry', 'grapes', 'banana', 'lemon', 'watermelon', 'strawberry', 'popcorn', 'onigiri', 'soda', 'teapot') },
   { id: 'nature', match: oneOf('tree', 'tree-pine', 'tree-palm', 'sprout', 'leaf', 'flower', 'tulip', 'clover', 'cactus', 'mushroom', 'feather', 'mountain', 'waves', 'flame') },
   // 动物：正面头像（猫、狗、猪、牛）、侧面剪影（马、鸟、龟，朝左，和兔子、蜗牛同向）、俯视（蜜蜂、蝴蝶）、爪印
-  { id: 'animal', match: oneOf('paw', 'cat', 'dog', 'pig', 'cow', 'horse', 'bird', 'turtle', 'bee', 'butterfly') },
+  { id: 'animal', match: oneOf('paw', 'cat', 'dog', 'pig', 'cow', 'horse', 'bird', 'turtle', 'bee', 'butterfly', 'butterfly-small', 'butterfly-swallowtail') },
   // 民用交通：车（侧视、车头朝右）、飞机、船，以及加油、充电、停车、路锥、红绿灯这些路上的设施
   { id: 'transport', match: oneOf('car', 'taxi', 'bus', 'truck', 'bike', 'motorcycle', 'scooter', 'plane', 'plane-takeoff', 'plane-landing', 'ship', 'sailboat', 'fuel', 'ev-charger', 'parking', 'traffic-light', 'traffic-cone') },
   { id: 'hardware', match: oneOf('usb', 'usb-c', 'usb-a', 'usb-drive', 'hdmi', 'ethernet', 'sd-card', 'cpu', 'gpu', 'memory', 'hard-drive', 'ssd', 'fan', 'mouse') },
@@ -366,7 +370,7 @@ export const CATEGORIES = [
   { id: 'tool', match: oneOf(...TOOLS), rank: name => TOOLS.indexOf(name) },
   {
     id: 'object',
-    match: oneOf('key', 'palette', 'pin', 'pin-diagonal', 'hourglass', 'alarm-clock', 'timer', 'flag', 'flag-plain', 'flag-pennant', 'flag-wave', 'flag-checkered', 'flag-banner', 'target', 'compass', 'keyboard', 'globe', 'languages', 'lightbulb', 'tada', 'zap', 'rabbit', 'snail', 'magnet'),
+    match: oneOf('key', 'palette', 'pin', 'pin-diagonal', 'hourglass', 'alarm-clock', 'timer', 'flag', 'flag-plain', 'flag-pennant', 'flag-wave', 'flag-checkered', 'flag-banner', 'target', 'compass', 'keyboard', 'globe', 'languages', 'languages-sparkle', 'lightbulb', 'tada', 'zap', 'rabbit', 'snail', 'magnet'),
   },
   // 电源与开关：oneOf 会先去掉名字末尾的 -off，所以 toggle-off、label-off 分别按 toggle、label 匹配（power-state-off 直接列出）
   { id: 'ui', match: any(prefixed('cursor', 'battery'), oneOf('hand-grab', 'settings', 'theme', 'wifi', 'signal', 'bluetooth', 'power', 'power-state-on', 'power-state-off', 'power-toggle', 'toggle', 'toggle-on', 'label', 'label-on')) },

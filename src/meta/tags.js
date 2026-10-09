@@ -123,6 +123,8 @@ building: office, company, city, architecture, organization, 建筑, ビル
 burger: hamburger, fast food, food, sandwich, 汉堡, ハンバーガー
 bus: transport, transit, public transport, travel, 公交, バス
 butterfly: insect, nature, wings, moth, 蝴蝶, 蝶
+butterfly-small: insect, nature, wings, moth, small, tiny, 小蝴蝶, 蝴蝶, 蝶, ちょう
+butterfly-swallowtail: insect, nature, wings, swallowtail, papilio, 凤蝶, 燕尾蝶, 蝴蝶, アゲハチョウ
 c: c language, programming, code
 cactus: plant, desert, succulent, 仙人掌, サボテン
 cake: birthday, celebration, party, dessert, 蛋糕, ケーキ
@@ -267,6 +269,7 @@ door: entrance, exit, room, enter, 门, ドア
 dot: point, bullet, period, record, 点
 dots: more, ellipsis, menu, options, overflow, meatballs, 更多
 dots-vertical: more, kebab, menu, options, overflow, 更多
+double-circle: very good, grade, mark, concentric, ◎, 二重丸, 双圆圈, 非常好
 arrow-down-to-line: scroll to bottom, end, last, bottom, 到底部
 download: save, get, import, arrow down, 下载, ダウンロード
 dpad: d-pad, directional pad, controller, gamepad, cross key, 十字键
@@ -384,6 +387,8 @@ group: grouping, collection, objects, layers, combine, 编组
 guitar: music, instrument, acoustic, band, 吉他, ギター
 hachiware: character, anime, kawaii, cute, cat, ハチワレ, 小八
 hammer: tool, build, construction, repair, diy, 锤子, ハンマー
+hanamaru: 花丸, はなまる, great job, well done, excellent, grade, stamp, spiral, 很棒
+hanamaru-stem: 花丸, はなまる, great job, well done, excellent, grade, flower, leaves, 很棒
 hand: wave, stop, palm, grab, hello, raise hand, 手
 hanger: clothes, wardrobe, closet, fashion, 衣架, ハンガー
 hard-drive: hdd, disk, storage, hardware, 硬盘, ハードディスク
@@ -449,6 +454,7 @@ lamp: light, desk lamp, bulb, furniture, 灯
 lamp-desk: desk lamp, light, study, office, 台灯
 language-hiragana: japanese, translate, i18n, kana, 日语
 languages: translate, translation, i18n, localization, language, 翻译, 多语言, 翻訳
+languages-sparkle: ai translate, ai translation, machine translation, translate, ai, AI 翻译, 机器翻译, AI翻訳
 laptop: computer, notebook, device, macbook, 笔记本电脑, ノートPC
 layers: stack, layer, arrange, levels, 图层, レイヤー
 leaf: nature, plant, eco, green, environment, 叶子, 葉
@@ -481,6 +487,12 @@ mail: email, envelope, message, letter, inbox, 邮件, 邮箱, メール
 map: navigation, location, atlas, geography, travel, 地图, 地図
 map-pin: location, marker, place, gps, poi, destination, 定位, 位置, ピン
 map-search: find location, search map, explore
+mark-you-circle: 优, excellent, grade, a plus, teacher, stamp, 优秀
+mark-you-square: 优, excellent, grade, a plus, teacher, stamp, 优秀
+mark-yue-circle: 阅, 批阅, 已阅, reviewed, read, grade, stamp, 审阅
+mark-yue-square: 阅, 批阅, 已阅, reviewed, read, grade, stamp, 审阅
+mark-zhun-circle: 准, approved, approval, permit, stamp, 批准, 同意
+mark-zhun-square: 准, approved, approval, permit, stamp, 批准, 同意
 mcp: model context protocol, ai, agent, llm, protocol
 meat: food, beef, bbq, protein, meat on bone, 肉
 medal: award, prize, achievement, winner, 奖牌, メダル
@@ -629,6 +641,7 @@ run: running, jog, exercise, sport, fitness, 跑步, ランニング
 rust: programming, crab, ferris, code
 sailboat: boat, sailing, yacht, sea, 帆船, ヨット
 sake: japanese, alcohol, tokkuri, drink, 清酒, 日本酒
+sakura-stamp: cherry blossom, よくできました, well done, great job, grade, seal, 樱花, 桜, 很棒
 sam: surface to air missile, air defense, military vehicle, 防空导弹
 satellite: space, orbit, gps, communication, 卫星, 衛星
 save: floppy disk, disk, store, 保存
