@@ -1,9 +1,9 @@
 import { star } from '../symbols'
 
-// 伊斯兰教：开口朝右的新月 + 开口里一颗五角星
+// 伊斯兰教：开口朝右的新月 + 开口里一颗五角星；新月左缘和星的右尖离画布一样远（常规约 2.3），整体左右居中
 // 新月：大圆减去往右偏的小圆，和 moon 一样两段圆弧围成；尖角受圆角控制
-const [c1, r1] = [[10.5, 12], 8.5]
-const [c2, r2] = [[14.25, 12], 7]
+const [c1, r1] = [[12, 12], 9]
+const [c2, r2] = [[16, 12], 7.4]
 const d = Math.hypot(c2[0] - c1[0], c2[1] - c1[1])
 const a = (r1 * r1 - r2 * r2 + d * d) / (2 * d)
 const h = Math.sqrt(r1 * r1 - a * a)
@@ -26,5 +26,5 @@ function crescent(radius) {
 
 export default ({ radius }) => [
   crescent(radius),
-  ...star([16.75, 12], 0.9, radius),
+  ...star([18.5, 12], 0.95, radius),
 ]

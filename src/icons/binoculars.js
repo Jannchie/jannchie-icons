@@ -11,6 +11,8 @@ const half = radius => [
 
 export default ({ radius }) => {
   const left = half(radius)
-  // 铰链：闭合的小块，左右两边（9.5 / 14.5，落在 .5 上）压进镜筒斜边的描边里（横线的两端会斜接在斜边上，尖角时线头冒出去）
-  return [...left, ...left.map(d => mirror(d)), rounded([[9.5, 11.5], [14.5, 11.5], [14.5, 13.5], [9.5, 13.5]], 0)]
+  // 铰链：两根横杆（y 11 / 14），两端接在两侧镜筒斜边上（斜边在 y 11 处 x ≈ 9.71、y 14 处 ≈ 9.96），
+  // 不画闭合小块：小块的竖边贴着斜边，粗字重下糊成一团、尖角模式下角还会冒出去
+  const edge = y => +(9.5 + (y - 8.5) / 12).toFixed(3)
+  return [...left, ...left.map(d => mirror(d)), ...[11, 14].map(y => `M${edge(y)} ${y}H${24 - edge(y)}`)]
 }

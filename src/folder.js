@@ -5,6 +5,7 @@ import { blocked } from './clearance'
 import { asBadge, fitBadge, roomOnRight } from './corner'
 import { rounded } from './geometry'
 import { inset } from './inset'
+import { plus } from './symbols'
 
 function frame(stroke) {
   const h = stroke / 2
@@ -43,10 +44,13 @@ export function withBadge(name, draw, tone, radius, stroke) {
 export function withBadgeTop(name, draw, tone, radius, stroke) {
   const { h, l, t, r, b, tabEnd, tabSlope, body } = frame(stroke)
   // 顶边的断口不越过标签页斜边下端（再往左就把标签页也吃掉了）
-  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, top: 2 }, (s) => {
+  const fit = (n, d) => fitBadge(n, d, radius, stroke, { right: 22, top: 2 }, (s) => {
     const top = blocked(s, 'x', body, stroke)
     return !top || top[0] >= tabSlope
   }, GROW)
+  // 减号只有一横：按自己的墨迹把上缘贴到 2 会浮在本体顶边上方 4 格、读成多出来的一条线；
+  // 改用加号的位置、大小和让位（两者 cornerScale 相同；减号就是加号的那一横，在本体顶边上方 0.75，顶边和右边照样在它附近断开）
+  const { k, at, shape } = name === 'minus' ? fit('plus', plus) : fit(name, draw)
   const right = blocked(shape, 'y', r, stroke)
   const top = blocked(shape, 'x', body, stroke)
   // 大符号的断口会一直延伸到标签页斜边下端附近：剩下的顶边不到 1.5 就不画，轮廓停在斜边下端

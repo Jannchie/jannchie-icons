@@ -366,34 +366,26 @@ const drawBookmark = (c, k = 1, radius = 0) => {
 }
 
 // 星芒：一竖一横两个椭圆交叉取外轮廓，尖端是椭圆两头（自然圆钝），四个交点处做圆角，外框 7×7
+// AI 星芒：一大一小两颗四角星，斜着排（大的在左上、小的在右下），整组占 7 × 7（和其他符号一样大）
+// 每颗星：四个尖，相邻两尖之间一条往中心收的二次曲线（控制点在对角线上、离中心 a·R），a 越小边越凹、尖越细长；
+// 大星描边，越小越饱满（画得小时中间的空心太窄会糊）；小星画得大时描边、小时实心（见下）
+const starPath = (pt, [cx, cy], R, a) => {
+  const tips = [[0, -R], [R, 0], [0, R], [-R, 0]]
+  const ctrl = [[a, -a], [a, a], [-a, a], [-a, -a]].map(([x, y]) => [x * R, y * R])
+  const at0 = ([x, y]) => pt([cx + x, cy + y])
+  return `M${at0(tips[0])}${tips.map((_, i) => `Q${at0(ctrl[i])} ${at0(tips[(i + 1) % 4])}`).join('')}Z`
+}
 const drawSparkle = (c, k = 1) => {
   const p = at(c, k)
   const pt = q => p(q).join(' ')
-  const R = 3.5 // 长半轴
-  // 短半轴：越小越扁、越尖细。画得小（角标、居中符号、AI 图标右上的小星芒）时中间的空心太窄，16px 下糊成一团，
-  // 所以缩放越小越饱满：k ≥ 2 时 1.2，往下每小 0.1 加 0.05，k = 1 时 1.7
-  const b = 1.2 + Math.min(0.5, Math.max(0, (2 - k) * 0.5))
-  const fillet = 0.6 // 交点圆角在两条弧上各让出的弧长
-  // 第一象限（右上）的交点：x = |y| = s
-  const s = 1 / Math.sqrt(1 / (b * b) + 1 / (R * R))
-  // 竖椭圆 (b cosθ, -R sinθ) 上从交点往顶端走；横椭圆 (R cosφ, -b sinφ) 上从交点往右端走
-  const tp = Math.acos(s / b)
-  const fp = Math.acos(s / R)
-  const t = tp + fillet / Math.hypot(b * Math.sin(tp), R * Math.cos(tp))
-  const f = fp - fillet / Math.hypot(R * Math.sin(fp), b * Math.cos(fp))
-  // 右上象限的两个切点（取正值），其他象限按符号翻转；sy = -1 是上半
-  const v = [b * Math.cos(t), R * Math.sin(t)] // 竖椭圆上
-  const h = [R * Math.cos(f), b * Math.sin(f)] // 横椭圆上
-  const q = ([x, y], sx, sy) => pt([x * sx, y * sy])
-  const arc = (rx, ry, sx, sy, to) => `A${rx * k} ${ry * k} 0 0 1 ${q(to, sx, sy)}`
-  const corner = (sx, sy, to) => `Q${q([s, s], sx, sy)} ${q(to, sx, sy)}`
-  // 顺时针：顶端 → 右上交点 → 右端 → 右下交点 → 底端 → 左下交点 → 左端 → 左上交点
+  // 大星：中心 (-1, -1)、尖到中心 2.5；小星：中心 (2.35, 2.35)、尖到中心 1.15（整组外框正好 -3.5…3.5）；
+  // 两颗星最近的尖之间隔 2.36：缩到角标大小（k ≈ 0.9）也还隔得开
+  const a = 0.16 + Math.min(0.1, Math.max(0, (2 - k) * 0.1))
   return [
-    `M${q(v, -1, -1)}`
-    + `${arc(b, R, 1, -1, v)}${corner(1, -1, h)}`
-    + `${arc(R, b, 1, 1, h)}${corner(1, 1, v)}`
-    + `${arc(b, R, -1, 1, v)}${corner(-1, 1, h)}`
-    + `${arc(R, b, -1, -1, h)}${corner(-1, -1, v)}Z`,
+    starPath(pt, [-1, -1], 2.5, a),
+    // 小星：画得大（k ≥ 2：单独的 sparkle 图标、sparkle-list）时描边；缩到角标、居中符号时中间只剩针眼、看着像一团墨，改成实心。
+    // 两种都用圆角连接：尖角模式的斜接上限会把它的四个尖切平
+    k >= 2 ? { d: starPath(pt, [2.35, 2.35], 1.15, 0.3), round: true } : { d: starPath(pt, [2.35, 2.35], 1.15, 0.2), fill: true, round: true },
   ]
 }
 

@@ -12,17 +12,35 @@ export const bubble = radius => rounded(BUBBLE.map(([x, y, tip]) => (tip ? [x, y
 export const BUBBLE_CENTER = [12.5, 9.75]
 
 // 喊叫气泡：椭圆上交替取外点、内点；第 TAIL 个外点换成伸向左下的长尖刺
+// 外点是尖角，墨迹会冲出尖点：圆角模式下是 h 减去小圆角（crisp）把尖点削进去的那段，尖角模式下是斜接 h / sin(半角)（60° 时 2h）。
+// 所以外点按这段冲出量往圆心收：尖角的墨迹都落在同一个椭圆上（离画布上 1.5、左右 1.5 左右），字重、圆角模式不同也一样大
 const [CX, CY] = [12, 10]
 const SPIKES = 11
-const TAIL = 7
-const shoutPoints = () => Array.from({ length: SPIKES * 2 }, (_, i) => {
-  const a = -Math.PI / 2 + i * Math.PI / SPIKES
-  if (i === TAIL * 2)
-    return [3.5, 21.5, 'tip']
-  const [rx, ry] = i % 2 ? [7.75, 6.25] : [10.25, 8.5]
-  return [+(CX + Math.cos(a) * rx).toFixed(3), +(CY + Math.sin(a) * ry).toFixed(3), i % 2 ? '' : 'tip']
-})
-export const shout = radius => rounded(shoutPoints().map(([x, y, tip]) => (tip ? [x, y, crisp(radius)] : [x, y])), Math.min(radius, 0.75))
+const TAIL = 6
+const OUTER = [10.25, 8.4] // 外点墨迹大致所在的椭圆（圆弧尖角的墨迹横向还会多出一点，左右实际约 1.5）
+const INNER = [7.75, 6.25] // 内点（凹角）
+const shoutPoints = (radius, h) => {
+  const at = (i, [rx, ry]) => {
+    const a = -Math.PI / 2 + i * Math.PI / SPIKES
+    return [CX + Math.cos(a) * rx, CY + Math.sin(a) * ry]
+  }
+  const r = radius ? crisp(radius) : 0
+  return Array.from({ length: SPIKES * 2 }, (_, i) => {
+    if (i === TAIL * 2)
+      return [3.5, 21.75, 'tip']
+    if (i % 2)
+      return [...at(i, INNER), '']
+    // 尖角的半角：从尖点看两侧凹角
+    const [p, q, n] = [at(i, OUTER), at(i - 1, INNER), at(i + 1, INNER)]
+    const [u, v] = [[q[0] - p[0], q[1] - p[1]], [n[0] - p[0], n[1] - p[1]]]
+    const half = Math.acos((u[0] * v[0] + u[1] * v[1]) / Math.hypot(...u) / Math.hypot(...v)) / 2
+    const out = r ? h - r * (1 / Math.sin(half) - 1) : h / Math.sin(half)
+    const [dx, dy] = [p[0] - CX, p[1] - CY]
+    const k = 1 - out / Math.hypot(dx, dy)
+    return [+(CX + dx * k).toFixed(3), +(CY + dy * k).toFixed(3), 'tip']
+  })
+}
+export const shout = (radius, stroke = 1.5) => rounded(shoutPoints(radius, stroke / 2).map(([x, y, tip]) => (tip ? [x, y, crisp(radius)] : [x, y])), Math.min(radius, 0.75))
 export const SHOUT_CENTER = [CX, CY] // 内容放在锯齿圆心上
 
 // 内容符号：画在中心 (cx, cy) 附近，s 缩放（1 = 普通气泡里的大小）；竖笔和下面的点之间留 2.75，粗字重下也分得开

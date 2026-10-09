@@ -4,15 +4,19 @@ import { blocked, place } from './clearance'
 import { samples, segments } from './clip'
 import * as symbols from './symbols'
 import { cornerScale, outlines } from './symbols'
+import { DOT_STROKE } from './svg'
 
 // 符号在 center、size 下的几何范围（中心线，不含线宽）：[x0, y0, x1, y1]
-export function extentOf(draw, center, size, radius) {
+// 传了 stroke 时，圆点按实际画出来的半径算：圆点直径 = dot × stroke / DOT_STROKE（见 svg.js），往往比线宽粗，
+// 把多出半个线宽的部分算进范围，调用方再加 h 就是真实墨迹（省略号的末点不会伸出贴边的位置）
+export function extentOf(draw, center, size, radius, stroke) {
   let [x0, y0, x1, y1] = [Infinity, Infinity, -Infinity, -Infinity]
   for (const p of draw(center, size, radius)) {
+    const pad = stroke != null && p.dot ? Math.max(0, p.dot * (p.eye ? Math.min(stroke, DOT_STROKE) : stroke) / DOT_STROKE / 2 - stroke / 2) : 0
     for (const s of segments(typeof p === 'string' ? p : p.d)) {
       for (const g of s.segs) {
         for (const [x, y] of samples(g, 8))
-          [x0, y0, x1, y1] = [Math.min(x0, x), Math.min(y0, y), Math.max(x1, x), Math.max(y1, y)]
+          [x0, y0, x1, y1] = [Math.min(x0, x - pad), Math.min(y0, y - pad), Math.max(x1, x + pad), Math.max(y1, y + pad)]
       }
     }
   }
@@ -42,7 +46,7 @@ function inkOf(draw, at, k, radius) {
 export function cornerCenter(draw, size, radius, stroke, { right, bottom, top }) {
   const h = stroke / 2
   const snap = v => Math.floor(v * 4 + 1e-6) / 4
-  const [ox0, oy0, ox1, oy1] = extentOf(draw, [0, 0], size, radius)
+  const [ox0, oy0, ox1, oy1] = extentOf(draw, [0, 0], size, radius, stroke)
   const cx = snap(right - h - ox1)
   const cy = bottom != null ? snap(bottom - h - oy1) : snap(top + h - oy0) + 0.25
   const offsets = [-1, -0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75, 1]
@@ -50,7 +54,7 @@ export function cornerCenter(draw, size, radius, stroke, { right, bottom, top })
   let best = Infinity
   for (const dx of offsets) {
     for (const dy of offsets) {
-      const [, ay0, ax1, ay1] = extentOf(draw, [cx + dx, cy + dy], size, radius)
+      const [, ay0, ax1, ay1] = extentOf(draw, [cx + dx, cy + dy], size, radius, stroke)
       const mx = right - h - ax1
       const my = bottom != null ? bottom - h - ay1 : ay0 - h - top
       const miss = mx < -1e-6 || my < -1e-6 ? Infinity : mx + my
@@ -126,7 +130,7 @@ export function centerBadge(name, draw, radius, stroke, center, limit, grow = 1)
   let fit
   for (let s = grow; s >= MIN_FIT - 1e-6; s -= 0.05) {
     const k = cornerScale[name] * s
-    const [, , x1, y1] = extentOf(draw, center, k, radius)
+    const [, , x1, y1] = extentOf(draw, center, k, radius, stroke)
     fit = { k, at: center, shape: { ...place(outlines[name], center, k), pts: inkOf(draw, center, k, radius) } }
     if (x1 + h <= limit + 1e-6 && y1 + h <= limit + 1e-6)
       break

@@ -29,12 +29,13 @@ export const ALCHEMY = {
   tin: { section: 'metal', zh: '♃ 锡' },
   lead: { section: 'metal', zh: '♄ 铅' },
   // 化圆为方：外圆 ⊃ 内接正方 ⊃ 底边贴方框的三角 ⊃ 三角内切圆
-  'philosophers-stone': { section: 'other', zh: '贤者之石', paths: r => [
+  'philosophers-stone': { section: 'other', zh: '贤者之石', paths: (r, stroke = 1.5) => [
     circle(12, 12, 6.5 * Math.SQRT2),
     rounded([[5.5, 5.5], [18.5, 5.5], [18.5, 18.5], [5.5, 18.5]], crisp(r)),
     rounded([[12, 5.5], [18.5, 18.5], [5.5, 18.5]], crisp(r)),
-    // 内切圆按严格相切会在粗字重下糊成一团，半径收小一圈留出缝
-    circle(12, 18.5 - incircle, incircle - 1),
+    // 内切圆与三角同心，半径 = 内切圆半径 − 1.5 − 半个线宽：和三角三边墨迹的缝在细 / 常规 / 粗下是 1 / 0.75 / 0.5
+    // （常规下半径约 1.75）
+    circle(12, 18.5 - incircle, incircle - 1.5 - stroke / 2),
   ] },
   // 锑 ♁：圆上立十字（倒过来的 ♀），居中于 x = 12
   antimony: { section: 'other', zh: '♁ 锑', paths: () => [circle(12, 14.5, 6), 'M12 2.5V8.5', 'M8.5 5.5H15.5'] },

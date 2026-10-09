@@ -54,11 +54,12 @@ export function listBadge(outline, k, stroke, draw, radius) {
   return result
 }
 
-// 主次反过来：符号为主时右下角的小列表（圆点 + 三行线，约 7 × 7），作为 cut 让主符号在附近断开
-// 行距 3，三行以 cy 为中
+// 主次反过来：符号为主时右下角的小列表（圆点 + 三行线，约 8 × 8），作为 cut 让主符号在附近断开
+// 行距 3，三行以 cy 为中；圆点直径 1.5、圆心 cx - 3.25（墨迹左缘 cx - 4）
+// 长行墨迹右缘固定在 cx + 4（线宽变粗时往里收），整块墨迹左右以 cx 对称：cx = 18 时墨迹 14–22；末行短一截
 const markRows = [-3, 0, 3]
 // 它是角标，双色变体里是 accent
-export const listMark = ([cx, cy]) => accent([
+export const listMark = ([cx, cy], stroke = 1.5) => accent([
   ...markRows.map(y => dot(cx - 3.25, cy + y, 1.5)),
-  ...markRows.map((y, i) => `M${cx - 1.25} ${cy + y}H${cx + (i === 2 ? 1.5 : 3.5)}`),
+  ...markRows.map((y, i) => `M${cx - 1.25} ${cy + y}H${cx + (i === 2 ? 1.5 : 4 - stroke / 2)}`),
 ])

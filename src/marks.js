@@ -5,9 +5,9 @@ export const ring = () => circle(12, 12, 9)
 export const square = radius => rounded([[3.5, 3.5], [20.5, 3.5], [20.5, 20.5], [3.5, 20.5]], radius)
 
 // 带框字母、数字（letter-*-square / -circle、number-*-*）的框：按外缘固定、线宽变粗往里长（见 docs/design.md）
-// 方框外缘 3–21（方形主体收到 3），圆圈外缘半径 10（墨迹 2–22）；和预览里 3–21 的圆角方框、半径 10 的大圆两条辅助线对齐
+// 方框外缘 2.5–21.5（比圆圈小一圈：方形看着比同宽的圆大，但收到 3 又显得小一号），圆圈外缘半径 10（墨迹 2–22）
 export function glyphSquare(radius, stroke) {
-  const [a, b] = [3 + stroke / 2, 21 - stroke / 2]
+  const [a, b] = [2.5 + stroke / 2, 21.5 - stroke / 2]
   return rounded([[a, a], [b, a], [b, b], [a, b]], radius)
 }
 export const glyphRing = stroke => circle(12, 12, 10 - stroke / 2)
