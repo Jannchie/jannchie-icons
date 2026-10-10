@@ -1,6 +1,6 @@
 {
   "name": "@jannchie/icons",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "Line icons on a 24-unit grid, redrawn for every corner radius and stroke weight, with pixel hinting and duo-tone colors",
   "license": "MIT",
   "author": "Jianqi Pan",
