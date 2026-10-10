@@ -145,3 +145,8 @@ export const asBadge = (paths, name) => paths.map((p) => {
   const item = typeof p === 'string' ? { d: p } : p
   return FULL_WEIGHT.has(name) ? { ...item, detail: false } : { ...item, badge: true }
 })
+
+// 给任意底图叠一个右上角标：底图不动，角标按 cornerScale 的大小放在右上角（中心 (18, 6)）；
+// 角标本身是刀，底图只在贴着角标墨迹的地方断开
+export const overlayTopRight = (name, draw, tone, radius) =>
+  asBadge(tone(draw([18, 6], cornerScale[name], radius)), name).map(p => ({ ...p, cut: true }))

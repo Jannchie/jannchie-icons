@@ -210,6 +210,7 @@ cloud-sync: sync, synchronize, backup, refresh, 同步
 clover: luck, lucky, four leaf, shamrock, plant, 四叶草
 cocktail: drink, alcohol, bar, martini, glass, 鸡尾酒, カクテル
 code: programming, developer, html, brackets, source, embed, 代码, コード
+code-sparkle: ai coding, code generation, copilot, ai assistant, ai, AI 编程, 代码生成, AIコーディング
 code-block: code snippet, pre, programming, markdown, 代码块
 code-braces: curly braces, json, object, programming, {}
 coffee: drink, cup, cafe, espresso, tea, hot, 咖啡, コーヒー
@@ -241,6 +242,7 @@ crossword: puzzle, word game, grid, 填字游戏
 crown: king, queen, royal, premium, vip, winner, 皇冠, 王冠
 csharp: c#, dotnet, .net, programming, code
 cube: 3d, box, object, block, geometry, 立方体
+cube-sparkle: ai 3d, 3d generation, generative model, text to 3d, ai, AI 3D, 3D 生成, AI 3D生成
 cupcake: dessert, muffin, sweet, bakery, 纸杯蛋糕
 cursor: pointer, mouse, arrow, click, select, 光标, 鼠标, カーソル
 cursor-click: click, mouse, tap, select, 点击
@@ -428,6 +430,7 @@ ice-cream: dessert, gelato, sweet, summer, cone, 冰淇淋, アイス
 id-card: identity, badge, license, profile, credentials, 身份证, 名札
 identical: ≡, equivalent, congruent, math, 恒等于
 image: picture, photo, gallery, img, media, 图片, 画像
+image-sparkle: ai image, image generation, generative image, text to image, ai art, ai, AI 绘图, 图片生成, AI画像生成
 import: inbox, download, load, input, 导入, インポート
 inbox: mail, email, messages, tray, received, 收件箱, 受信箱
 indent: increase indent, text, paragraph, tab, 缩进
@@ -848,6 +851,7 @@ user-x: remove user, block, ban user
 users: people, group, team, members, community, 团队, ユーザー
 utensils: fork, knife, restaurant, food, dining, 餐具, カトラリー
 video: camera, movie, film, record, media, 视频, 動画
+video-sparkle: ai video, video generation, generative video, text to video, ai, AI 视频, 视频生成, AI動画生成
 vignette: photo editing, darkening, effect, filter, 暗角
 vinyl: record, lp, music, album, 黑胶, レコード
 violin: music, instrument, strings, fiddle, 小提琴, バイオリン

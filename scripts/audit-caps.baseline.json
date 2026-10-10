@@ -805,6 +805,11 @@
   "video-off": [
     "bold (15, 9.76)"
   ],
+  "video-sparkle": [
+    "bold (15, 10)",
+    "bold (15.13, 9.93)",
+    "regular (15.61, 9.65)"
+  ],
   "video-text-to-text": [
     "bold (10.14, 13.61)"
   ],

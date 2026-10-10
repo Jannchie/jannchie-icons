@@ -114,7 +114,7 @@ export const CATEGORIES = [
     id: 'editor',
     match: any(
       prefixed('align-', 'paperclip', 'heading-'),
-      oneOf('edit', 'copy', 'clipboard', 'scissors', 'text', 'link', 'unlink', 'send', 'send-diagonal', 'send-right', 'send-up', 'pen', 'brush', 'highlighter', 'eraser', 'wand', 'smile', 'at', 'hash', 'image', 'image-plus', 'bold', 'italic', 'underline', 'strikethrough', 'heading', 'quote', 'indent', 'outdent', 'subscript', 'superscript', 'pilcrow', 'undo', 'redo', 'table', 'shapes', 'clipboard-paste', 'clipboard-check', 'copy-check', 'smile-plus', 'remove-formatting', 'pipette', 'pen-tool', 'grid-3x3'),
+      oneOf('edit', 'copy', 'clipboard', 'scissors', 'text', 'link', 'unlink', 'send', 'send-diagonal', 'send-right', 'send-up', 'pen', 'brush', 'highlighter', 'eraser', 'wand', 'smile', 'at', 'hash', 'image', 'image-plus', 'image-sparkle', 'bold', 'italic', 'underline', 'strikethrough', 'heading', 'quote', 'indent', 'outdent', 'subscript', 'superscript', 'pilcrow', 'undo', 'redo', 'table', 'shapes', 'clipboard-paste', 'clipboard-check', 'copy-check', 'smile-plus', 'remove-formatting', 'pipette', 'pen-tool', 'grid-3x3'),
     ),
   },
   { id: 'search', match: family('search') },
@@ -198,7 +198,7 @@ export const CATEGORIES = [
       : USER_ROLE.includes(name) ? { order: 3, key: 'user-role' } : USER_STATUS.includes(name) ? { order: 1, key: 'user-status' } : { order: 0, key: 'base' },
     rank: name => [...USER_BASE, ...USER_STATUS, ...USER_EMPLOYMENT, ...USER_ROLE].indexOf(name),
   },
-  { id: 'meeting', match: oneOf('mic', 'video', 'phone', 'screen-share', 'phone-call', 'phone-incoming', 'phone-outgoing', 'phone-missed', 'voicemail', 'address-book', 'fax') },
+  { id: 'meeting', match: oneOf('mic', 'video', 'video-sparkle', 'phone', 'screen-share', 'phone-call', 'phone-incoming', 'phone-outgoing', 'phone-missed', 'voicemail', 'address-book', 'fax') },
   {
     id: 'photo',
     match: any(
@@ -229,7 +229,7 @@ export const CATEGORIES = [
   {
     id: 'dev',
     match: any(
-      oneOf('code', 'code-braces', 'terminal', 'database', 'database-arrow-down', 'database-arrow-up', 'server', 'server-cog', 'layers', 'cube', 'chip', 'flask', 'activity', 'robot', 'brain', 'brain-circuit', 'brain-cyborg', 'neural-network', 'mcp', 'api', 'webhook', 'container'),
+      oneOf('code', 'code-braces', 'code-sparkle', 'terminal', 'database', 'database-arrow-down', 'database-arrow-up', 'server', 'server-cog', 'layers', 'cube', 'cube-sparkle', 'chip', 'flask', 'activity', 'robot', 'brain', 'brain-circuit', 'brain-cyborg', 'neural-network', 'mcp', 'api', 'webhook', 'container'),
       oneOf(...LANGUAGES),
     ),
     section: name => LANGUAGES.includes(name) ? { order: 1, key: 'language' } : { order: 0, key: '' },

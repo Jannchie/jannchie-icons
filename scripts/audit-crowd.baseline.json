@@ -578,6 +578,9 @@
     "bold @(14.8, 18)",
     "bold @(14.8, 21)"
   ],
+  "code-sparkle": [
+    "bold @(6.1, 12)"
+  ],
   "compass-rose": [
     "bold @(12, 11.8)",
     "bold @(17.1, 7.5)"
