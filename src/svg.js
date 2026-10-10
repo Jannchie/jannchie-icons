@@ -267,6 +267,9 @@ function cornersOf(d) {
       const den = u[0] * v[1] - u[1] * v[0]
       const s = ((q[0] - p[0]) * v[1] - (q[1] - p[1]) * v[0]) / den
       const vtx = [p[0] + u[0] * s, p[1] + u[1] * s]
+      // 两条线平行（被刀切剩的极短线段方向不准）：求不出顶点，NaN 顶点会和任何线头都「挨着」，不算尖角
+      if (!Number.isFinite(vtx[0]) || !Number.isFinite(vtx[1]))
+        continue
       const b = [v[0] - u[0], v[1] - u[1]]
       const bl = Math.hypot(b[0], b[1])
       out.push({ vtx, bisector: [b[0] / bl, b[1] / bl], half: (Math.PI - turn) / 2 })
