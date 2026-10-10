@@ -104,6 +104,7 @@ bone: skeleton, dog, pet, anatomy, 骨头, 骨
 book: reading, library, read, novel, ebook, 书, 本
 book-open: reading, read, pages, library, 阅读, 読書
 bookmark: save, favorite, read later, ribbon, 书签, ブックマーク
+bookmark-plus: add bookmark, save preset, save, favorite, 添加书签, 存为预设, ブックマークに追加
 books: library, reading, bookshelf, study, 书籍, 本棚
 bow: archery, arrow, weapon, hunting, 弓
 bowling: pins, strike, sport, game, 保龄球, ボウリング
@@ -235,6 +236,7 @@ cpp: c++, cplusplus, programming, code
 cpu: processor, chip, hardware, computer, 处理器
 credit-card: payment, card, bank, debit, purchase, checkout, 信用卡, クレジットカード
 crop: cut, trim, resize, image, edit, 裁剪, トリミング
+mask: masking, selection, layer mask, local adjustment, photo editing, 蒙版, 遮罩, マスク
 crossword: puzzle, word game, grid, 填字游戏
 crown: king, queen, royal, premium, vip, winner, 皇冠, 王冠
 csharp: c#, dotnet, .net, programming, code
@@ -288,6 +290,7 @@ element-of: ∈, set, member, math, belongs to, 属于
 empty-set: ∅, null set, set, math, 空集
 equal: =, equals, math, same, 等于
 eraser: rubber, delete, clear, erase, 橡皮, 消しゴム
+eraser-sparkle: ai, generative remove, object removal, inpaint, cleanup, magic eraser, 去除杂物, AI 消除, 消しゴムマジック
 ethernet: rj45, network, lan, cable, port, 网线, 网口
 ev-charger: electric vehicle, charging station, electric car, 充电桩
 exists: ∃, there exists, logic, math, quantifier, 存在
@@ -713,6 +716,7 @@ sort-ascending: a-z, ascending order, sort, 升序
 sort-descending: z-a, descending order, sort, 降序
 spaag: self-propelled anti-aircraft gun, air defense, military vehicle, 自行高炮
 sparkle: ai, magic, shine, new, stars, effect, 闪光, キラキラ
+spirit-level: straighten, horizon, level, bubble level, leveling tool, 水平仪, 拉直, 水準器
 speaker: audio, sound, loudspeaker, music, 音箱, スピーカー
 spear: lance, weapon, javelin, 长矛, 槍
 sprout: plant, seedling, grow, growth, eco, 发芽, 芽

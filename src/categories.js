@@ -96,7 +96,7 @@ export const CATEGORIES = [
     id: 'status',
     match: any(
       name => /^(?:check|x|alert)(?:-|$)/.test(name),
-      oneOf('info', 'help', 'loader', 'bell', 'eye', 'lock', 'lock-open', 'fingerprint', 'scan-face', 'ban', 'star', 'bookmark', 'sparkle', 'clock', 'gauge', 'puzzle', 'plug'),
+      oneOf('info', 'help', 'loader', 'bell', 'eye', 'lock', 'lock-open', 'fingerprint', 'scan-face', 'ban', 'star', 'bookmark', 'bookmark-plus', 'sparkle', 'clock', 'gauge', 'puzzle', 'plug'),
       // 日式评分记号：二重丸（◎）、はなまる、桜スタンプ
       oneOf('double-circle', 'hanamaru', 'hanamaru-stem', 'sakura-stamp'),
       // 中文批阅记号：圈里 / 方框里的阅、优、准
@@ -203,7 +203,7 @@ export const CATEGORIES = [
     id: 'photo',
     match: any(
       prefixed('camera-mode-'),
-      oneOf('contrast', 'brightness', 'camera', 'aperture', 'f-stop', 'shutter-speed', 'iso', 'exposure', 'crop', 'rotate', 'flip', 'histogram', 'curves', 'droplet', 'thermometer', 'vignette', 'focus', 'sliders', 'telescope', 'binoculars'),
+      oneOf('contrast', 'brightness', 'camera', 'aperture', 'f-stop', 'shutter-speed', 'iso', 'exposure', 'crop', 'rotate', 'flip', 'histogram', 'curves', 'droplet', 'thermometer', 'vignette', 'focus', 'sliders', 'telescope', 'binoculars', 'spirit-level', 'mask', 'eraser-sparkle'),
     ),
   },
   {
