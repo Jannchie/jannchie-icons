@@ -553,6 +553,11 @@
     "bold @(14.8, 18)",
     "bold @(14.8, 21)"
   ],
+  "cloud-co2": [
+    "bold @(11.9, 8.8)",
+    "bold @(13, 17.8)",
+    "regular @(11.9, 8.8)"
+  ],
   "cloud-drizzle": [
     "bold @(11.9, 10.8)",
     "regular @(11.9, 10.8)"
@@ -664,6 +669,15 @@
     "bold @(12, 12)",
     "regular @(12, 12)"
   ],
+  "escalator": [
+    "bold @(8.5, 13.3)"
+  ],
+  "escalator-down": [
+    "bold @(8.5, 13.3)"
+  ],
+  "escalator-up": [
+    "bold @(8.5, 13.3)"
+  ],
   "exposure": [
     "regular @(12, 12)"
   ],
@@ -771,6 +785,9 @@
   ],
   "folder-plug": [
     "bold @(12, 12)"
+  ],
+  "footprint": [
+    "bold @(9.5, 3.8)"
   ],
   "fuel": [
     "bold @(9.5, 12)"

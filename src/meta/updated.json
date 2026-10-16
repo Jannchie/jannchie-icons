@@ -802,6 +802,8 @@
   "list-star": "0.6.0",
   "list-video": "0.6.0",
   "list-x": "0.6.0",
+  "loading-infinity": "0.10.0",
+  "loading-lissajous": "0.10.0",
   "locate": "0.8.0",
   "lock": "0.7.0",
   "lock-list": "0.8.0",

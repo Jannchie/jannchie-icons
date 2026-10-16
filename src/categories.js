@@ -56,7 +56,14 @@ const ARMY = ['tank-heavy', 'tank-medium', 'tank-light', 'tank-destroyer', 'tank
 const AIRCRAFT = ['fighter', 'attack', 'bomber', 'stealth-bomber', 'transport', 'awacs', 'helicopter', 'drone']
 const ENLISTED = ['private', 'corporal', 'sergeant', 'staff-sergeant', 'master-sergeant', 'sergeant-major']
 const OFFICER = ['second-lieutenant', 'first-lieutenant', 'captain', 'major', 'lieutenant-colonel', 'colonel', 'major-general', 'lieutenant-general', 'general']
-const HOUSEHOLD = ['sofa', 'armchair', 'bed', 'door', 'lamp-desk', 'bathtub', 'shower', 'toilet', 'refrigerator', 'washing-machine', 'microwave', 'air-conditioner']
+// 家居：家具 → 卫浴 → 厨房 → 家电 → 装饰小物 → 室内装修（榻榻米、墙纸、边饰、窗帘）
+const HOUSEHOLD = [
+  'sofa', 'sofa-sparkle', 'armchair', 'chair', 'desk', 'bed', 'wardrobe', 'lamp-desk', 'lamp-floor', 'door',
+  'bathtub', 'shower', 'toilet', 'washbasin', 'pump-bottle',
+  'stove', 'cooking-pot', 'refrigerator', 'washing-machine', 'microwave', 'air-conditioner', 'air-conditioner-outdoor',
+  'potted-plant', 'vase', 'picture-frame', 'teddy-bear',
+  'tatami', 'wallpaper', 'wall-trim', 'curtain',
+]
 const TOOLS = ['wrench', 'screwdriver', 'drill', 'saw', 'shovel', 'paint-bucket', 'flashlight']
 const LANGUAGES = ['python', 'javascript', 'typescript', 'java', 'csharp', 'cpp', 'c', 'golang', 'rust', 'php', 'kotlin', 'swift', 'ruby', 'lua', 'haskell']
 const USER_BASE = ['user', 'users', 'user-circle', 'id-card']
@@ -168,7 +175,7 @@ export const CATEGORIES = [
   },
   { id: 'character', match: oneOf('chiikawa', 'hachiware', 'usagi') },
   { id: 'gender', match: prefixed('gender-') },
-  { id: 'accessibility', match: oneOf('accessibility', 'wheelchair', 'braille', 'hearing', 'hand', 'captions') },
+  { id: 'accessibility', match: oneOf('accessibility', 'wheelchair', 'braille', 'hearing', 'hand', 'captions', 'elevator', 'escalator', 'escalator-up', 'escalator-down', 'stairs', 'stairs-up', 'stairs-down', 'restroom', 'stroller', 'pacifier') },
   {
     id: 'kana',
     match: prefixed('hiragana-', 'katakana-'),
@@ -221,6 +228,8 @@ export const CATEGORIES = [
       'hospital', 'school', 'bank', 'hotel', 'police-station', 'fire-station', 'post-office', 'train-station',
       'torii', 'shrine', 'temple', 'pagoda', 'japanese-castle',
       'castle', 'church', 'mosque', 'lighthouse', 'stadium', 'windmill', 'tent',
+      // 建筑构件：户型图、墙体（完整 / 半墙 / 压低 / 透明）、窗、阳台、走廊、管道
+      'floor-plan', 'floor-plan-sparkle', 'wall', 'wall-half', 'wall-lowered', 'walls-lowered', 'wall-transparent', 'window-pane', 'balcony', 'hallway', 'pipe',
     ),
   },
   { id: 'git', match: prefixed('git-') },
@@ -334,7 +343,7 @@ export const CATEGORIES = [
   { id: 'okta', match: prefixed('okta-'), rank: name => Object.keys(OKTA).indexOf(name.slice(5)) },
   { id: 'shopping', match: any(prefixed('cart'), oneOf('shopping-bag', 'basket', 'ticket', 'discount', 'barcode')) },
   { id: 'food', match: oneOf('meat', 'steak', 'bacon', 'fish', 'egg', 'egg-fried', 'milk', 'wine', 'beer', 'cocktail', 'sake', 'coffee', 'apple', 'carrot', 'bread', 'cheese', 'rice', 'utensils', 'cake', 'cookie', 'cupcake', 'donut', 'ice-cream', 'candy', 'lollipop', 'pizza', 'burger', 'cherry', 'grapes', 'banana', 'lemon', 'watermelon', 'strawberry', 'popcorn', 'onigiri', 'soda', 'teapot') },
-  { id: 'nature', match: oneOf('tree', 'tree-pine', 'tree-palm', 'sprout', 'leaf', 'flower', 'tulip', 'clover', 'cactus', 'mushroom', 'feather', 'mountain', 'waves', 'flame') },
+  { id: 'nature', match: oneOf('tree', 'tree-pine', 'tree-palm', 'sprout', 'leaf', 'leaves', 'flower', 'tulip', 'clover', 'cactus', 'mushroom', 'feather', 'mountain', 'waves', 'flame') },
   // 动物：正面头像（猫、狗、猪、牛）、侧面剪影（马、鸟、龟，朝左，和兔子、蜗牛同向）、俯视（蜜蜂、蝴蝶）、爪印
   { id: 'animal', match: oneOf('paw', 'cat', 'dog', 'pig', 'cow', 'horse', 'bird', 'turtle', 'bee', 'butterfly', 'butterfly-small', 'butterfly-swallowtail') },
   // 民用交通：车（侧视、车头朝右）、飞机、船，以及加油、充电、停车、路锥、红绿灯这些路上的设施
@@ -370,7 +379,7 @@ export const CATEGORIES = [
   { id: 'tool', match: oneOf(...TOOLS), rank: name => TOOLS.indexOf(name) },
   {
     id: 'object',
-    match: oneOf('key', 'palette', 'pin', 'pin-diagonal', 'hourglass', 'alarm-clock', 'timer', 'flag', 'flag-plain', 'flag-pennant', 'flag-wave', 'flag-checkered', 'flag-banner', 'target', 'compass', 'keyboard', 'globe', 'languages', 'languages-sparkle', 'lightbulb', 'tada', 'zap', 'rabbit', 'snail', 'magnet'),
+    match: oneOf('key', 'palette', 'pin', 'pin-diagonal', 'hourglass', 'alarm-clock', 'timer', 'flag', 'flag-plain', 'flag-pennant', 'flag-wave', 'flag-checkered', 'flag-banner', 'target', 'compass', 'keyboard', 'globe', 'languages', 'languages-sparkle', 'lightbulb', 'tada', 'zap', 'rabbit', 'snail', 'magnet', 'footprint'),
   },
   // 电源与开关：oneOf 会先去掉名字末尾的 -off，所以 toggle-off、label-off 分别按 toggle、label 匹配（power-state-off 直接列出）
   { id: 'ui', match: any(prefixed('cursor', 'battery'), oneOf('hand-grab', 'settings', 'theme', 'wifi', 'signal', 'bluetooth', 'power', 'power-state-on', 'power-state-off', 'power-toggle', 'toggle', 'toggle-on', 'label', 'label-on')) },

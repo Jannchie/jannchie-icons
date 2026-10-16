@@ -27,6 +27,7 @@ accessibility: a11y, disability, wheelchair, inclusive, 无障碍, アクセシ�
 activity: pulse, heartbeat, vitals, ecg, health, waveform, 心电图
 address-book: contacts, phonebook, directory, people, 通讯录, 連絡先
 air-conditioner: ac, aircon, cooling, climate, hvac, 空调, エアコン
+air-conditioner-outdoor: ac, outdoor unit, condenser, compressor, hvac, 空调外机, 室外机
 airplay: cast, stream, mirroring, screen, apple tv
 alarm-clock: alarm, wake up, timer, reminder, morning, 闹钟, 目覚まし
 alert-circle: warning, error, exclamation, attention, caution, notice, 警告, 注意
@@ -67,6 +68,7 @@ backpack: bag, school, travel, hiking, rucksack, 背包, リュック
 bacon: food, breakfast, meat, pork, 培根, ベーコン
 badminton: shuttlecock, sport, racket, 羽毛球, バドミントン
 bagua: eight trigrams, taoism, yin yang, i ching, feng shui, 八卦
+balcony: veranda, terrace, railing, patio, outdoor, 阳台, バルコニー, ベランダ
 ban: forbidden, prohibited, block, no, cancel, not allowed, 禁止
 banana: fruit, food, 香蕉, バナナ
 bandage: band-aid, plaster, first aid, wound, injury, 创可贴, 絆創膏
@@ -152,6 +154,24 @@ candy: sweet, sugar, dessert, treat, 糖果, キャンディ
 cap: baseball cap, hat, headwear, clothing, 帽子
 capacitor: circuit, electronics, component, 电容
 car: vehicle, automobile, drive, transport, 汽车, 車
+chair: seat, dining chair, furniture, stool, 椅子, 餐椅, いす
+cloud-co2: carbon, carbon dioxide, emission, footprint, greenhouse gas, climate, pollution, 碳排放, 二氧化碳, 温室气体, 炭素排出
+cooking-pot: pot, saucepan, stew, soup, cookware, kitchen, 锅, 汤锅, 鍋
+curtain: drapes, window, blinds, interior, 窗帘, カーテン
+desk: table, workspace, study, office, drawer, furniture, 书桌, 机
+elevator: lift, floor, up, down, building, accessibility, 电梯, エレベーター
+escalator: moving stairs, mall, station, floor, 自动扶梯, エスカレーター
+escalator-down: moving stairs, descend, going down, downstairs, 下行扶梯, 下りエスカレーター
+escalator-up: moving stairs, ascend, going up, upstairs, 上行扶梯, 上りエスカレーター
+floor-plan: layout, blueprint, rooms, apartment, architecture, 户型图, 平面图, 間取り
+floor-plan-sparkle: generate layout, random floor plan, ai, auto, 生成户型, 間取り生成
+footprint: foot, step, walk, trace, track, barefoot, 脚印, 足迹, 足跡
+hallway: corridor, passage, perspective, interior, 走廊, 廊下
+lamp-floor: floor lamp, standing lamp, light, shade, 落地灯, フロアランプ
+leaves: leaf, eco, energy saver, power saving, green, nature, plant, 节能, 树叶, 葉っぱ, 省エネ
+pacifier: baby, dummy, soother, infant, nursery, 奶嘴, 安抚奶嘴, おしゃぶり
+picture-frame: painting, artwork, photo, wall art, decor, 画框, 相框, 額縁
+pipe: plumbing, elbow, duct, water, pipe shaft, 管道, 水管, 配管
 playing-cards: playing cards, deck, poker, card game, 扑克, トランプ
 caret-down: triangle, dropdown, expand, arrow
 caret-up: triangle, collapse, arrow
@@ -597,6 +617,7 @@ poker-chip: casino, gambling, token, bet, 筹码
 police-station: police, law, building, security, 警察局, 警察署
 popcorn: movie, cinema, snack, 爆米花, ポップコーン
 post-office: mail, postal, building, letter, 邮局, 郵便局
+potted-plant: houseplant, plant pot, greenery, indoor plant, 盆栽, 绿植, 観葉植物
 power: on off, shutdown, switch, button, 电源, 電源
 power-state-off: power off, shutdown, turn off, iec o, 关机
 power-state-on: power on, switch on, turn on, iec i, 开机
@@ -606,6 +627,7 @@ printer: print, office, paper, device, 打印机, プリンター
 product: ∏, product, math, multiplication, 连乘
 proportional: ∝, proportional to, math, 正比
 public-domain: pd, cc0, copyright free, no rights, 公有领域
+pump-bottle: soap dispenser, shampoo, lotion, toiletries, 洗手液, 按压瓶, ポンプボトル
 puzzle: jigsaw, plugin, extension, addon, piece, 拼图, パズル
 puzzle-cube: rubik's cube, cube, toy, 魔方
 python: programming, code, snake, py
@@ -631,6 +653,7 @@ repeat-one: loop one, repeat single, 单曲循环
 replace: find and replace, substitute, swap, 替换
 reset: restore, undo, refresh, revert, 重置
 resistor: circuit, electronics, component, ohm, 电阻
+restroom: toilet, wc, bathroom, lavatory, men, women, 洗手间, 厕所, トイレ
 rewind: back, media, player, 快退, 巻き戻し
 rice: bowl, food, asian, meal, 米饭, ご飯
 robot: bot, ai, android, automation, machine, 机器人, ロボット
@@ -715,6 +738,7 @@ soccer: football, ball, sport, 足球, サッカー
 sock: socks, clothing, 袜子, 靴下
 soda: drink, cup, straw, soft drink, cola, 饮料, ジュース
 sofa: couch, furniture, living room, 沙发, ソファ
+sofa-sparkle: auto furnish, arrange furniture, interior ai, smart layout, 一键布置, 自动摆放, 家具配置
 sort-ascending: a-z, ascending order, sort, 升序
 sort-descending: z-a, descending order, sort, 降序
 spaag: self-propelled anti-aircraft gun, air defense, military vehicle, 自行高炮
@@ -727,6 +751,9 @@ sqrt: square root, √, radical, math, 根号
 square: shape, box, rectangle, stop, 方形, 四角
 ssd: solid state drive, m.2, nvme, storage, 固态硬盘
 stadium: arena, sports, venue, 体育场, スタジアム
+stairs: staircase, steps, floor, building, 楼梯, 階段
+stairs-down: staircase, downstairs, descend, steps, 下楼, 下り階段
+stairs-up: staircase, upstairs, ascend, steps, 上楼, 上り階段
 stamp: seal, approved, mark, 印章, ハンコ
 stamp-approved: seal, certified, ok, 批准, 承認
 star: favorite, rating, bookmark, like, featured, 星, 收藏, お気に入り
@@ -735,8 +762,10 @@ stethoscope: doctor, medical, health, diagnosis, 听诊器
 stop: media, square, halt, end, 停止
 stopwatch: timer, time, chronometer, lap, 秒表, ストップウォッチ
 store: shop, market, retail, storefront, 商店, 店
+stove: range, oven, cooker, kitchen, cooktop, 灶台, 炉灶, コンロ
 strawberry: fruit, berry, food, 草莓, いちご
 strikethrough: strike, cross out, text, format, 删除线
+stroller: baby carriage, pram, pushchair, buggy, baby, 婴儿车, ベビーカー
 subscript: text, typography, index, math, 下标
 subset: ⊂, set, math, contained in, 子集
 sudoku: puzzle, number, game, grid, 数独
@@ -761,8 +790,10 @@ tag-horizontal: label, price, tagging, 标签
 tags: labels, categories, tagging, 标签
 target: goal, aim, bullseye, focus, objective, 目标, ターゲット
 task: todo, clipboard, checklist, done, assignment, 任务, タスク
+tatami: japanese room, mat, washitsu, floor, 榻榻米, 和室, 畳
 taxi: cab, car, transport, ride, 出租车, タクシー
 teapot: tea, kettle, kitchen, drink, 茶壶, 急須
+teddy-bear: toy, plush, stuffed animal, kids, bear, 玩具熊, 泰迪熊, くま
 telescope: astronomy, space, observe, star, 望远镜, 望遠鏡
 temple: buddhist temple, building, religion, japan, 寺庙, 寺
 tennis: ball, sport, racket, 网球, テニス
@@ -850,6 +881,7 @@ user-viewer: read only, role, person, watcher
 user-x: remove user, block, ban user
 users: people, group, team, members, community, 团队, ユーザー
 utensils: fork, knife, restaurant, food, dining, 餐具, カトラリー
+vase: flower vase, pottery, decor, jar, 花瓶
 video: camera, movie, film, record, media, 视频, 動画
 video-sparkle: ai video, video generation, generative video, text to video, ai, AI 视频, 视频生成, AI動画生成
 vignette: photo editing, darkening, effect, filter, 暗角
@@ -861,9 +893,18 @@ volume: sound, audio, speaker, loud, 音量
 volume-low: quiet, sound, speaker
 volume-x: mute, silent, no sound, speaker, 静音, ミュート
 vr-headset: virtual reality, vr, oculus, headset, 3d, 虚拟现实
+wall: brick, masonry, construction, partition, 墙, 砖墙, 壁
+wall-half: low wall, half height, partition, brick, 半墙, 腰壁
+wall-lowered: cutaway, lower wall, sims, cut wall, 压低墙体, 壁を下げる
+wall-transparent: see through, glass wall, fade wall, cutaway, 透明墙, 透明な壁
+wall-trim: baseboard, skirting, crown molding, wainscot, 踢脚线, 边饰, 幅木
 wallet: money, payment, purse, finance, 钱包, 財布
+wallpaper: wall covering, pattern, decor, peel, 墙纸, 壁纸
+walls-lowered: all walls down, cutaway, sims, floor view, 全部压低, 壁を全部下げる
 wand: magic, wizard, effect, auto, 魔杖, 魔法
+wardrobe: closet, cabinet, cupboard, storage, armoire, 衣柜, 收纳, クローゼット
 warehouse: storage, inventory, logistics, building, 仓库, 倉庫
+washbasin: sink, lavatory, basin, faucet, bathroom, 洗面台, 洗手池
 washing-machine: laundry, washer, appliance, 洗衣机, 洗濯機
 watermelon: fruit, summer, food, 西瓜, スイカ
 wave-sine: sine wave, oscillation, signal, frequency, 正弦波
@@ -875,6 +916,7 @@ wifi: wireless, internet, network, connection, signal, 无线网络, ワイフ�
 wind: weather, air, breeze, windy, 风, 風
 windmill: wind turbine, energy, farm, 风车, 風車
 window: browser, app, ui, frame, 窗口, ウィンドウ
+window-pane: window frame, casement, glass, house window, sill, 窗户, 窓
 wine: alcohol, glass, drink, bar, 红酒, ワイン
 wrench: tool, settings, repair, fix, spanner, 扳手, レンチ
 arrow-down-a-z: sort ascending, alphabetical, a-z, 升序
