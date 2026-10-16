@@ -128,6 +128,9 @@ export default defineConfig({
   base: '/',
   plugins: [vue(), iconTimes(), batchHotUpdates()],
   server: {
+    // 固定独立端口，不和其他 Vite 项目抢 5173；被占用时直接报错而不是换端口
+    port: 5317,
+    strictPort: true,
     // 构建产物、快照、草稿不需要监听：一次 build:packages 会在 packages/ 下生成、删除几万个文件，
     // 全部进入监听和 HMR 插件链，长时间运行的开发服务器会因此占满内存
     watch: { ignored: ['**/packages/**', '**/dist/**', '**/tests/__snapshots__/**', '**/scripts/*.baseline.json', '**/src/_drafts/**'] },
