@@ -398,7 +398,7 @@ onUnmounted(() => {
         <!-- 标志就是库里的十面骰，跟着当前的圆角、字重一起变 -->
         <Icon class="mark" name="dice-d10" :size="20" />
         <span>Jannchie Icons</span>
-        <span class="version mono">v{{ version }}</span>
+        <span class="version num">v{{ version }}</span>
       </div>
       <nav class="views">
         <button :aria-pressed="view === 'icons'" @click="view = 'icons'">{{ t('ui.viewIcons') }}</button>
@@ -412,7 +412,7 @@ onUnmounted(() => {
           <input ref="searchInput" v-model="query" type="search" :placeholder="t('ui.search')" @keydown.esc="clearSearch">
           <kbd v-if="!query">/</kbd>
           <template v-else>
-            <small class="mono">{{ matched }}</small>
+            <small class="num">{{ matched }}</small>
             <button class="clear" :title="t('ui.clearSearch')" :aria-label="t('ui.clearSearch')" @click.prevent="clearSearch">
               <Icon name="x" :size="14" />
             </button>
@@ -437,7 +437,7 @@ onUnmounted(() => {
             v-model.number="size" class="slider" type="range" :min="SIZE.min" :max="SIZE.max" :step="SIZE.step" :aria-label="t('ui.size')"
             :style="{ '--p': `${(size - SIZE.min) / (SIZE.max - SIZE.min) * 100}%` }"
           >
-          <output class="size-value mono">{{ size }}</output>
+          <output class="size-value num">{{ size }}</output>
         </div>
         <div class="opt" role="group" :aria-label="t('ui.color')">
           <button :aria-pressed="!duo" @click="duo = false">{{ t('ui.mono') }}</button>
@@ -486,7 +486,7 @@ onUnmounted(() => {
         </div>
         <a v-for="c in sideSections" :key="c.id" :href="`#${c.id}`" :class="{ active: active === c.id }">
           <Icon v-if="categoryIcon(c.id)" :name="categoryIcon(c.id)" :size="16" class="cat-icon" />
-          <span>{{ t(`cat.${c.id}`) }}</span><small class="mono">{{ c.count }}</small>
+          <span>{{ t(`cat.${c.id}`) }}</span><small class="num">{{ c.count }}</small>
         </a>
       </aside>
 
@@ -494,12 +494,12 @@ onUnmounted(() => {
         <!-- 窄屏没有侧栏：分类改成可横向滚动的标签 -->
         <nav class="pills">
           <a v-for="c in sections" :key="c.id" :href="`#${c.id}`" :class="{ active: active === c.id }">
-            <Icon v-if="categoryIcon(c.id)" :name="categoryIcon(c.id)" :size="14" class="cat-icon" />{{ t(`cat.${c.id}`) }}<small class="mono">{{ c.count }}</small>
+            <Icon v-if="categoryIcon(c.id)" :name="categoryIcon(c.id)" :size="14" class="cat-icon" />{{ t(`cat.${c.id}`) }}<small class="num">{{ c.count }}</small>
           </a>
         </nav>
 
         <section v-for="c in sections" :id="c.id" :key="c.id" class="category">
-          <h2 class="category-head">{{ t(`cat.${c.id}`) }}<small class="mono">{{ c.count }}</small></h2>
+          <h2 class="category-head">{{ t(`cat.${c.id}`) }}<small class="num">{{ c.count }}</small></h2>
           <template v-for="g in c.groups" :key="g.key">
             <p v-if="g.key" class="group label">{{ t(`group.${g.key}`) }} · {{ g.icons.length }}</p>
             <div class="grid">
@@ -529,7 +529,7 @@ onUnmounted(() => {
             <p class="label">{{ t(`cat.${selectedCategory}`) }}<template v-if="selectedAnimated"> · {{ t('ui.animated') }}</template></p>
             <h3 class="mono">{{ selectedIcon.name }}</h3>
             <!-- 版本：加入的版本 · 最近一次更新的版本（加入后没改过就不显示） -->
-            <p v-if="selectedMeta" class="versions mono">
+            <p v-if="selectedMeta" class="versions num">
               {{ selectedMeta.since === 'next' ? t('ui.unreleased') : t('ui.since', { v: selectedMeta.since }) }}
               <template v-if="selectedMeta.updated">
                 · {{ selectedMeta.updated === 'next' ? t('ui.updatedNext') : t('ui.updated', { v: selectedMeta.updated }) }}
@@ -564,7 +564,7 @@ onUnmounted(() => {
         <div class="scales">
           <div v-for="px in [16, 20, 24, 32, 48]" :key="px">
             <Icon :name="selectedIcon.name" :size="px" />
-            <small class="mono">{{ px }}</small>
+            <small class="num">{{ px }}</small>
           </div>
         </div>
         <div class="actions">
@@ -590,16 +590,16 @@ onUnmounted(() => {
             >
               <Icon :name="i.name" :size="20" />
             </button>
-            <span v-if="related.more" class="more mono">+{{ related.more }}</span>
+            <span v-if="related.more" class="more num">+{{ related.more }}</span>
           </div>
         </section>
         <section class="styles">
           <p class="label">{{ t('ui.styles') }}</p>
           <div class="style-grid" :style="{ '--cols': corners.length }">
             <span />
-            <small v-for="c in corners" :key="c.label" class="mono">{{ cornerLabel(c) }}</small>
+            <small v-for="c in corners" :key="c.label" class="num">{{ cornerLabel(c) }}</small>
             <template v-for="row in styleGrid" :key="row.w.id">
-              <small class="mono row-head">{{ t(`ui.${row.w.id}`) }}</small>
+              <small class="row-head">{{ t(`ui.${row.w.id}`) }}</small>
               <button
                 v-for="cell in row.cells" :key="cell.c.label" :class="{ current: cell.c === corner && row.w === weight }"
                 :aria-label="`${cornerLabel(cell.c)} · ${t(`ui.${row.w.id}`)}`" @click="corner = cell.c; weight = row.w"
@@ -668,7 +668,8 @@ body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.6 var(
 button { font: inherit; color: inherit; }
 small { color: var(--muted); }
 .mono { font-family: var(--mono); }
-.label { margin: 0; font: 12px/1.4 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.num { font-variant-numeric: tabular-nums; }
+.label { margin: 0; font: 12px/1.4 var(--sans); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 
 /* 内部滚动条：细、圆角、颜色跟随主题 */
 .sidebar, .detail { scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
@@ -721,7 +722,7 @@ kbd { font: 12px var(--mono); color: var(--muted); padding: 1px 6px; border: 1px
 .opt { display: flex; align-items: center; gap: 2px; padding: 0 12px; border-left: 1px solid var(--line); white-space: nowrap; }
 .opt button {
   height: 26px; min-width: 26px; padding: 0 7px; border: 0; border-radius: 6px; background: none; cursor: pointer;
-  font: 12.5px var(--mono); color: var(--text-2);
+  font: 12.5px var(--sans); font-variant-numeric: tabular-nums; color: var(--text-2);
 }
 .opt button:hover { color: var(--text); }
 /* 大小滑块：一条细轨道，已选部分用正文色；把手是一个实心小圆点，不描边、不放大 */

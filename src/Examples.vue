@@ -132,7 +132,7 @@ const checks = [
         <div v-for="f in files" :key="f.name" class="ex-file">
           <Icon :name="f.icon" :size="20" />
           <span class="ex-grow">{{ f.name }}</span>
-          <small class="ex-dim mono">{{ f.meta }}</small>
+          <small class="ex-dim num">{{ f.meta }}</small>
           <button class="ex-tool"><Icon name="dots-vertical" :size="16" /></button>
         </div>
       </div>
@@ -150,7 +150,7 @@ const checks = [
           <button class="ex-tool" :class="{ on: liked }" @click="liked = !liked"><Icon name="heart" :size="18" /></button>
         </div>
         <div class="ex-progress"><i style="width: 38%" /></div>
-        <div class="ex-times mono"><small>1:24</small><small>3:41</small></div>
+        <div class="ex-times num"><small>1:24</small><small>3:41</small></div>
         <div class="ex-controls">
           <button class="ex-tool"><Icon name="shuffle" :size="18" /></button>
           <button class="ex-tool"><Icon name="skip-back" :size="20" /></button>
@@ -210,7 +210,7 @@ const checks = [
           <div v-for="d in forecast" :key="d.day">
             <small>{{ d.day }}</small>
             <Icon :name="d.icon" :size="24" />
-            <small class="mono">{{ d.hi }}° <span class="ex-dim">{{ d.lo }}°</span></small>
+            <small class="num">{{ d.hi }}° <span class="ex-dim">{{ d.lo }}°</span></small>
           </div>
         </div>
       </div>
@@ -224,7 +224,7 @@ const checks = [
             <strong>Merino Crew Sweater</strong>
             <small>100% merino wool · Made in Portugal</small>
           </div>
-          <strong class="mono">¥12,800</strong>
+          <strong class="num">¥12,800</strong>
         </div>
         <div class="ex-care">
           <Icon v-for="c in care" :key="c" :name="c" :size="28" />
@@ -349,7 +349,7 @@ const checks = [
 .ex-nav-item span { flex: 1; text-align: left; }
 .ex-nav-item:hover { background: var(--sunken); color: var(--text) !important; }
 .ex-nav-item.on { background: var(--surface); color: var(--text) !important; box-shadow: inset 0 0 0 1px var(--line-strong); }
-.ex-count { padding: 0 6px; border-radius: 999px; background: var(--text); color: var(--bg) !important; font: 11px/18px var(--mono) !important; }
+.ex-count { padding: 0 6px; border-radius: 999px; background: var(--text); color: var(--bg) !important; font: 11px/18px var(--sans) !important; font-variant-numeric: tabular-nums; }
 .ex-nav-foot { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--line); }
 
 /* 编辑器 */
@@ -413,12 +413,12 @@ const checks = [
 .ex-product-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
 .ex-care { display: flex; gap: 14px; padding: 12px 14px; border-radius: 8px; background: var(--sunken); }
 .ex-actions { display: flex; gap: 8px; }
-.ex-chip { padding: 2px 8px; border: 1px solid var(--line-strong); border-radius: 999px; font: 12px var(--mono); color: var(--text-2); }
+.ex-chip { padding: 2px 8px; border: 1px solid var(--line-strong); border-radius: 999px; font: 12px var(--sans); font-variant-numeric: tabular-nums; color: var(--text-2); }
 
 /* 代码评审 */
 .ex-pr { padding: 16px; display: flex; flex-direction: column; gap: 14px; font-size: 13.5px; }
 .ex-pr-head { display: flex; gap: 12px; }
-.ex-checks { display: flex; gap: 14px; padding: 10px 12px; border-radius: 8px; background: var(--sunken); font: 12.5px var(--mono); color: var(--text-2); }
+.ex-checks { display: flex; gap: 14px; padding: 10px 12px; border-radius: 8px; background: var(--sunken); font: 12.5px var(--sans); color: var(--text-2); }
 .ex-pr-foot { display: flex; align-items: center; gap: 14px; color: var(--text-2); font-size: 13px; }
 .ex-pr-foot .ex-btn { flex: none; }
 
@@ -437,7 +437,7 @@ const checks = [
 .ex-stat { display: flex; flex-direction: column; gap: 6px; padding: 14px; }
 .ex-stat-head { display: flex; align-items: center; justify-content: space-between; color: var(--muted); }
 .ex-stat-value { font-size: 22px; line-height: 1.2; letter-spacing: -.02em; }
-.ex-delta { display: inline-flex !important; align-items: center; gap: 4px; font: 12px var(--mono) !important; }
+.ex-delta { display: inline-flex !important; align-items: center; gap: 4px; font: 12px var(--sans) !important; font-variant-numeric: tabular-nums; }
 
 @media (max-width: 760px) {
   .examples { grid-template-columns: minmax(0, 1fr); }
