@@ -1524,6 +1524,12 @@ rupee: ₹, inr, 卢比
 won: ₩, krw, 韩元
 yen: ¥, jpy, 日元, 円
 `)
+const PRICE_LEVEL = table(`
+1: cheap, inexpensive, budget, 便宜, 安い
+2: moderate, affordable, 中等, 实惠
+3: pricey, expensive, 偏贵, 高い
+4: very expensive, luxury, premium, 昂贵, 高级
+`)
 const CARD = table(`
 plus-four: draw four, wild draw four, +4
 plus-two: draw two, +2
@@ -1666,6 +1672,10 @@ const FAMILIES = [
   [prefix('suit'), ['playing card suit', 'poker', 'cards', '花色', 'トランプ'], from(SUIT)],
   [prefix('coin'), ['money', 'currency', 'cash', 'finance', '硬币'], from(CURRENCY)],
   [prefix('currency'), ['money', 'currency symbol', 'cash', 'finance', '货币'], from(CURRENCY)],
+  [prefix('price'), ['price level', 'price range', 'cost', 'budget', '价位', '価格帯'], (rest) => {
+    const [, coins, currency, level] = rest.match(/^(coins-)?([a-z]+)-(\d)$/) ?? []
+    return [...(coins ? ['coin stack'] : []), ...from(CURRENCY)(currency), ...(PRICE_LEVEL[level] ?? [])]
+  }],
   [prefix('game-card'), ['uno', 'card game', 'action card', '功能牌'], from(CARD)],
   [name => (name.startsWith('manga-') ? name : null), ['manga', 'comic', 'speech bubble', '漫画', 'マンガ', '吹き出し'], name => [
     ...(name.includes('shout') ? ['shout', 'yell', '喊叫'] : []),

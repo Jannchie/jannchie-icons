@@ -593,6 +593,51 @@
     "regular (3.01, 11.58)",
     "regular (3.01, 12.42)"
   ],
+  "price-coins-rupee-1": [
+    "regular (9.86, 4.5)"
+  ],
+  "price-coins-rupee-2": [
+    "regular (9.86, 4.5)"
+  ],
+  "price-coins-rupee-3": [
+    "regular (9.86, 4.5)"
+  ],
+  "price-coins-rupee-4": [
+    "regular (9.86, 4.5)"
+  ],
+  "price-rupee-1": [
+    "bold (4.69, 6.73)"
+  ],
+  "price-rupee-2": [
+    "bold (3.5, 6.65)",
+    "bold (8.5, 6.65)"
+  ],
+  "price-rupee-3": [
+    "bold (13.5, 6.65)",
+    "bold (3.5, 6.65)",
+    "bold (8.5, 6.65)"
+  ],
+  "price-rupee-4": [
+    "bold (13.5, 6.65)",
+    "bold (18.5, 6.65)",
+    "bold (3.5, 6.65)",
+    "bold (8.5, 6.65)"
+  ],
+  "price-yen-2": [
+    "bold (4.5, 12)",
+    "bold (9.5, 12)"
+  ],
+  "price-yen-3": [
+    "bold (14.5, 12)",
+    "bold (4.5, 12)",
+    "bold (9.5, 12)"
+  ],
+  "price-yen-4": [
+    "bold (14.5, 12)",
+    "bold (19.5, 12)",
+    "bold (4.5, 12)",
+    "bold (9.5, 12)"
+  ],
   "public-domain": [
     "bold (14.33, 14.41)"
   ],

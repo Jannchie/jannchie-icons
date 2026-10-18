@@ -220,7 +220,7 @@ export const CATEGORIES = [
       oneOf('laptop', 'smartphone', 'tablet', 'tv', 'devices', 'screenshot', 'screen-record', 'picture-in-picture', 'cast', 'airplay', 'kanban', 'window', 'scale'),
     ),
   },
-  { id: 'money', match: any(prefixed('currency-', 'coin-'), oneOf('wallet', 'coins', 'banknote', 'credit-card', 'piggy-bank')) },
+  { id: 'money', match: any(prefixed('currency-', 'coin-', 'price-'), oneOf('wallet', 'coins', 'banknote', 'credit-card', 'piggy-bank')) },
   {
     id: 'building',
     match: oneOf(

@@ -1357,6 +1357,193 @@
   "post-office": [
     "bold @(12, 11)"
   ],
+  "price-coins-bitcoin-1": [
+    "bold @(20, 10.5)",
+    "bold @(20, 13.5)",
+    "bold @(4, 10.5)",
+    "bold @(4, 13.5)",
+    "regular @(12, 7.5)"
+  ],
+  "price-coins-bitcoin-2": [
+    "bold @(20, 10.5)",
+    "bold @(4, 10.5)",
+    "regular @(12, 7.5)"
+  ],
+  "price-coins-bitcoin-3": [
+    "regular @(12, 7.5)"
+  ],
+  "price-coins-bitcoin-4": [
+    "regular @(12, 7.5)"
+  ],
+  "price-coins-dollar-1": [
+    "bold @(20, 10.5)",
+    "bold @(20, 13.5)",
+    "bold @(4, 10.5)",
+    "bold @(4, 13.5)",
+    "regular @(12, 7.5)"
+  ],
+  "price-coins-dollar-2": [
+    "bold @(20, 10.5)",
+    "bold @(4, 10.5)",
+    "regular @(12, 7.5)"
+  ],
+  "price-coins-dollar-3": [
+    "regular @(12, 7.5)"
+  ],
+  "price-coins-dollar-4": [
+    "regular @(12, 7.5)"
+  ],
+  "price-coins-euro-1": [
+    "bold @(12, 7.5)",
+    "bold @(20, 10.5)",
+    "bold @(20, 13.5)",
+    "bold @(4, 10.5)",
+    "bold @(4, 13.5)",
+    "regular @(12, 7.5)"
+  ],
+  "price-coins-euro-2": [
+    "bold @(12, 7.5)",
+    "bold @(20, 10.5)",
+    "bold @(4, 10.5)",
+    "regular @(12, 7.5)"
+  ],
+  "price-coins-euro-3": [
+    "bold @(12, 7.5)",
+    "regular @(12, 7.5)"
+  ],
+  "price-coins-euro-4": [
+    "bold @(12, 7.5)",
+    "regular @(12, 7.5)"
+  ],
+  "price-coins-pound-1": [
+    "bold @(20, 10.5)",
+    "bold @(20, 13.5)",
+    "bold @(4, 10.5)",
+    "bold @(4, 13.5)"
+  ],
+  "price-coins-pound-2": [
+    "bold @(20, 10.5)",
+    "bold @(4, 10.5)"
+  ],
+  "price-coins-ruble-1": [
+    "bold @(20, 10.5)",
+    "bold @(20, 13.5)",
+    "bold @(4, 10.5)",
+    "bold @(4, 13.5)",
+    "regular @(12, 7.5)"
+  ],
+  "price-coins-ruble-2": [
+    "bold @(20, 10.5)",
+    "bold @(4, 10.5)",
+    "regular @(12, 7.5)"
+  ],
+  "price-coins-ruble-3": [
+    "regular @(12, 7.5)"
+  ],
+  "price-coins-ruble-4": [
+    "regular @(12, 7.5)"
+  ],
+  "price-coins-rupee-1": [
+    "bold @(12, 7.5)",
+    "bold @(20, 10.5)",
+    "bold @(20, 13.5)",
+    "bold @(4, 10.5)",
+    "bold @(4, 13.5)"
+  ],
+  "price-coins-rupee-2": [
+    "bold @(12, 7.5)",
+    "bold @(20, 10.5)",
+    "bold @(4, 10.5)"
+  ],
+  "price-coins-rupee-3": [
+    "bold @(12, 7.5)"
+  ],
+  "price-coins-rupee-4": [
+    "bold @(12, 7.5)"
+  ],
+  "price-coins-won-1": [
+    "bold @(12, 7.5)",
+    "bold @(20, 10.5)",
+    "bold @(20, 13.5)",
+    "bold @(4, 10.5)",
+    "bold @(4, 13.5)",
+    "regular @(12, 7.5)"
+  ],
+  "price-coins-won-2": [
+    "bold @(12, 7.5)",
+    "bold @(20, 10.5)",
+    "bold @(4, 10.5)",
+    "regular @(12, 7.5)"
+  ],
+  "price-coins-won-3": [
+    "bold @(12, 7.5)",
+    "regular @(12, 7.5)"
+  ],
+  "price-coins-won-4": [
+    "bold @(12, 7.5)",
+    "regular @(12, 7.5)"
+  ],
+  "price-coins-yen-1": [
+    "bold @(12, 7.5)",
+    "bold @(20, 10.5)",
+    "bold @(20, 13.5)",
+    "bold @(4, 10.5)",
+    "bold @(4, 13.5)",
+    "regular @(12, 7.5)"
+  ],
+  "price-coins-yen-2": [
+    "bold @(12, 7.5)",
+    "bold @(20, 10.5)",
+    "bold @(4, 10.5)",
+    "regular @(12, 7.5)"
+  ],
+  "price-coins-yen-3": [
+    "bold @(12, 7.5)",
+    "regular @(12, 7.5)"
+  ],
+  "price-coins-yen-4": [
+    "bold @(12, 7.5)",
+    "regular @(12, 7.5)"
+  ],
+  "price-rupee-2": [
+    "bold @(9.5, 9.5)"
+  ],
+  "price-rupee-3": [
+    "bold @(14.5, 9.5)",
+    "bold @(9.5, 9.5)"
+  ],
+  "price-rupee-4": [
+    "bold @(14.5, 9.5)",
+    "bold @(19.5, 9.5)",
+    "bold @(9.5, 9.5)"
+  ],
+  "price-yen-1": [
+    "regular @(4.5, 8.8)"
+  ],
+  "price-yen-2": [
+    "bold @(4.5, 8.8)",
+    "bold @(9.5, 8.8)",
+    "regular @(4.5, 8.8)",
+    "regular @(9.5, 8.8)"
+  ],
+  "price-yen-3": [
+    "bold @(14.5, 8.8)",
+    "bold @(4.5, 8.8)",
+    "bold @(9.5, 8.8)",
+    "regular @(14.5, 8.8)",
+    "regular @(4.5, 8.8)",
+    "regular @(9.5, 8.8)"
+  ],
+  "price-yen-4": [
+    "bold @(14.5, 8.8)",
+    "bold @(19.5, 8.8)",
+    "bold @(4.5, 8.8)",
+    "bold @(9.5, 8.8)",
+    "regular @(14.5, 8.8)",
+    "regular @(19.5, 8.8)",
+    "regular @(4.5, 8.8)",
+    "regular @(9.5, 8.8)"
+  ],
   "printer": [
     "bold @(11, 18.5)",
     "bold @(12, 12.5)",
