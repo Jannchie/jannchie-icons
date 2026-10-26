@@ -135,6 +135,7 @@ calculator: math, calculate, arithmetic, accounting, 计算器, 電卓
 calendar: date, schedule, event, month, day, planner, 日历, 日程, カレンダー
 calendar-days: date, schedule, month, days, event, 日历
 calendar-range: date range, period, schedule, event, 日期范围
+candle: memorial, mourning, light, wax, flame, 蜡烛, 悼念, ろうそく
 captions: subtitles, closed captions, transcription, accessibility, 字幕
 camera: photo, photography, capture, picture, lens, 相机, 拍照, カメラ
 camera-action: gopro, action cam, sports camera, 运动相机
@@ -159,10 +160,12 @@ cloud-co2: carbon, carbon dioxide, emission, footprint, greenhouse gas, climate,
 cooking-pot: pot, saucepan, stew, soup, cookware, kitchen, 锅, 汤锅, 鍋
 curtain: drapes, window, blinds, interior, 窗帘, カーテン
 desk: table, workspace, study, office, drawer, furniture, 书桌, 机
+elder: senior, old, elderly, grandparent, cane, 老人, 祖辈, お年寄り
 elevator: lift, floor, up, down, building, accessibility, 电梯, エレベーター
 escalator: moving stairs, mall, station, floor, 自动扶梯, エスカレーター
 escalator-down: moving stairs, descend, going down, downstairs, 下行扶梯, 下りエスカレーター
 escalator-up: moving stairs, ascend, going up, upstairs, 上行扶梯, 上りエスカレーター
+family-tree: genealogy, ancestry, pedigree, parents, children, 族谱, 家谱, 家系図
 floor-plan: layout, blueprint, rooms, apartment, architecture, 户型图, 平面图, 間取り
 floor-plan-sparkle: generate layout, random floor plan, ai, auto, 生成户型, 間取り生成
 footprint: foot, step, walk, trace, track, barefoot, 脚印, 足迹, 足跡
@@ -656,6 +659,7 @@ resistor: circuit, electronics, component, ohm, 电阻
 restroom: toilet, wc, bathroom, lavatory, men, women, 洗手间, 厕所, トイレ
 rewind: back, media, player, 快退, 巻き戻し
 rice: bowl, food, asian, meal, 米饭, ご飯
+rings: wedding, marriage, engagement, couple, spouse, 婚戒, 结婚, 結婚指輪
 robot: bot, ai, android, automation, machine, 机器人, ロボット
 rocket: launch, space, startup, deploy, fast, 火箭, ロケット
 rotate: rotation, turn, clockwise, spin, 旋转, 回転
@@ -973,6 +977,7 @@ workflow: flow, process, automation, pipeline, diagram, 工作流
 x: close, cancel, delete, remove, clear, exit, 关闭, 取消, 閉じる
 x-circle: close, cancel, error, remove
 x-square: close, cancel, remove
+x-twitter: x, twitter, tweet, social, logo, 推特, ツイッター
 yin-yang: taoism, balance, harmony, tai chi, 阴阳, 太极
 zap: lightning, bolt, electric, flash, power, fast, 闪电, 雷
 `)

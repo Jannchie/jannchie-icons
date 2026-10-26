@@ -9,13 +9,14 @@ import { tagsOf } from './tags.js'
 export { tagsOf }
 
 // 第三方的角色、商标、标志（见仓库根的 NOTICE）：
-// ちいかわ角色、内容分级标志、Creative Commons 标志、GitHub 与编程语言标志、PlayStation / Xbox 手柄按键、开源许可证名
+// ちいかわ角色、内容分级标志、Creative Commons 标志、GitHub、X 与编程语言标志、PlayStation / Xbox 手柄按键、开源许可证名
 const THIRD_PARTY_NAMES = new Set([
   'chiikawa',
   'hachiware',
   'usagi',
   'cc',
   'github',
+  'x-twitter',
   'mcp',
   'python',
   'javascript',
