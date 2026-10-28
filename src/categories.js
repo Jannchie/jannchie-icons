@@ -49,8 +49,8 @@ const EXTRA = {
   search: ['map-search', 'globe-search'],
   object: ['stopwatch', 'toolbox', 'tools', 'graduation-cap', 'glasses', 'glasses-square', 'sunglasses', 'vr-headset', 'goggles', 'ghost', 'gift', 'package', 'receipt', 'map', 'rocket', 'ruler', 'books', 'diamond', 'notebook-pen', 'scale-balance', 'language-hiragana', 'calculator', 'backpack', 'library', 'region', 'hologram', 'sticky-note', 'newspaper', 'watch', 'candle', 'rings'],
   // 制图：地形编辑（抬升、压低、抹平）、沙盘、陆块，和山、波浪放在一起
-  // 人物关系：老人（祖辈）、家族树
-  user: ['elder', 'family-tree'],
+  // 人物关系：老人（祖辈）、家族树、兄弟姐妹
+  user: ['elder', 'family-tree', 'siblings'],
   nature: ['terrain-raise', 'terrain-lower', 'terrain-smooth', 'diorama', 'continent'],
 }
 const NAVY = ['battleship', 'cruiser', 'destroyer', 'frigate', 'carrier', 'submarine']

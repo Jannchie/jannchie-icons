@@ -721,6 +721,7 @@ shower: bath, bathroom, wash, water, 淋浴, シャワー
 shrine: shinto, jinja, japan, 神社
 shuffle: random, mix, shuffle play, 随机播放, シャッフル
 shutter-speed: exposure time, stopwatch, camera, photography, 快门速度
+siblings: brother, sister, brothers and sisters, family, kids, 兄弟姐妹, 手足, きょうだい
 sidebar: panel, layout, navigation, drawer, 侧边栏, サイドバー
 sidebar-right: panel, layout, inspector, drawer, 右侧栏
 sigma: Σ, sum, summation, math, 求和
