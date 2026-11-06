@@ -76,6 +76,7 @@ bank: finance, money, building, institution, 银行, 銀行
 banknote: money, cash, bill, currency, payment, 钞票, お札
 barcode: scan, product, retail, checkout, upc, ean, 条形码, バーコード
 barn: farm, agriculture, building, rural, 谷仓, 農場
+barrel: keg, cask, wine, beer, tavern, storage, 木桶, 酒桶, 樽
 baseball: ball, sport, mlb, 棒球, 野球
 basket: shopping, ecommerce, cart, buy, store, 购物篮, かご
 basketball: ball, sport, nba, hoop, 篮球, バスケ
@@ -135,6 +136,7 @@ calculator: math, calculate, arithmetic, accounting, 计算器, 電卓
 calendar: date, schedule, event, month, day, planner, 日历, 日程, カレンダー
 calendar-days: date, schedule, month, days, event, 日历
 calendar-range: date range, period, schedule, event, 日期范围
+campfire: bonfire, fire, camp, rest, tavern, outdoors, 篝火, 营火, キャンプファイヤー, 焚き火
 candle: memorial, mourning, light, wax, flame, 蜡烛, 悼念, ろうそく
 captions: subtitles, closed captions, transcription, accessibility, 字幕
 camera: photo, photography, capture, picture, lens, 相机, 拍照, カメラ
@@ -156,8 +158,10 @@ cap: baseball cap, hat, headwear, clothing, 帽子
 capacitor: circuit, electronics, component, 电容
 car: vehicle, automobile, drive, transport, 汽车, 車
 chair: seat, dining chair, furniture, stool, 椅子, 餐椅, いす
+chess-clock: game clock, byo-yomi, timer, time control, go, chess, 棋钟, 读秒, 对局计时, 対局時計
 cloud-co2: carbon, carbon dioxide, emission, footprint, greenhouse gas, climate, pollution, 碳排放, 二氧化碳, 温室气体, 炭素排出
 cooking-pot: pot, saucepan, stew, soup, cookware, kitchen, 锅, 汤锅, 鍋
+crystal-ball: fortune, magic, prediction, oracle, fantasy, 水晶球, 占卜, 水晶玉
 curtain: drapes, window, blinds, interior, 窗帘, カーテン
 desk: table, workspace, study, office, drawer, furniture, 书桌, 机
 elder: senior, old, elderly, grandparent, cane, 老人, 祖辈, お年寄り
@@ -166,13 +170,19 @@ escalator: moving stairs, mall, station, floor, 自动扶梯, エスカレータ
 escalator-down: moving stairs, descend, going down, downstairs, 下行扶梯, 下りエスカレーター
 escalator-up: moving stairs, ascend, going up, upstairs, 上行扶梯, 上りエスカレーター
 family-tree: genealogy, ancestry, pedigree, parents, children, 族谱, 家谱, 家系図
+file-type-sgf: sgf, smart game format, go, baduk, weiqi, game record, kifu, 棋谱, 围棋, 棋譜
 floor-plan: layout, blueprint, rooms, apartment, architecture, 户型图, 平面图, 間取り
 floor-plan-sparkle: generate layout, random floor plan, ai, auto, 生成户型, 間取り生成
 footprint: foot, step, walk, trace, track, barefoot, 脚印, 足迹, 足跡
+go-stones: go, baduk, weiqi, stone, black, white, board game, katago, 围棋, 棋子, 黑白子, 碁石
 hallway: corridor, passage, perspective, interior, 走廊, 廊下
+hanging-sign: signboard, tavern, inn, shop sign, store, 招牌, 挂牌, 酒馆, 看板
 lamp-floor: floor lamp, standing lamp, light, shade, 落地灯, フロアランプ
+lantern: lamp, light, camping, tavern, fantasy, 提灯, 灯笼, ランタン
 leaves: leaf, eco, energy saver, power saving, green, nature, plant, 节能, 树叶, 葉っぱ, 省エネ
+lute: bard, music, instrument, medieval, tavern, 鲁特琴, 吟游诗人, リュート
 pacifier: baby, dummy, soother, infant, nursery, 奶嘴, 安抚奶嘴, おしゃぶり
+pause-circle: pause, media, player, hold, 暂停
 picture-frame: painting, artwork, photo, wall art, decor, 画框, 相框, 額縁
 pipe: plumbing, elbow, duct, water, pipe shaft, 管道, 水管, 配管
 playing-cards: playing cards, deck, poker, card game, 扑克, トランプ
@@ -620,6 +630,7 @@ poker-chip: casino, gambling, token, bet, 筹码
 police-station: police, law, building, security, 警察局, 警察署
 popcorn: movie, cinema, snack, 爆米花, ポップコーン
 post-office: mail, postal, building, letter, 邮局, 郵便局
+potion: flask, magic, elixir, alchemy, fantasy, health, 药水, 魔药, ポーション
 potted-plant: houseplant, plant pot, greenery, indoor plant, 盆栽, 绿植, 観葉植物
 power: on off, shutdown, switch, button, 电源, 電源
 power-state-off: power off, shutdown, turn off, iec o, 关机
@@ -635,6 +646,7 @@ puzzle: jigsaw, plugin, extension, addon, piece, 拼图, パズル
 puzzle-cube: rubik's cube, cube, toy, 魔方
 python: programming, code, snake, py
 qr-code: qr, barcode, scan, link, 二维码, QRコード
+quill: feather pen, write, author, note, writing, 羽毛笔, 作者注释, 写作, 羽ペン
 quote: quotation, blockquote, citation, 引用
 rabbit: bunny, animal, fast, speed, hare, 兔子, うさぎ
 radar: scan, detect, sonar, search, 雷达, レーダー
@@ -690,6 +702,7 @@ screen-record: record, screencast, capture, 录屏
 screen-share: share screen, cast, present, meeting, 共享屏幕, 画面共有
 screenshot: capture, snapshot, screen capture, print screen, 截图, スクショ
 screwdriver: tool, repair, fix, diy, 螺丝刀, ドライバー
+scroll: lore, lorebook, world info, parchment, document, fantasy, 卷轴, 世界书, 设定集, 巻物
 sd: standard definition, video quality, 480p, 标清
 sd-card: memory card, storage, camera, 存储卡, SDカード
 search: find, magnifier, magnifying glass, lookup, zoom, 搜索, 查找, 検索
@@ -765,6 +778,7 @@ star: favorite, rating, bookmark, like, featured, 星, 收藏, お気に入り
 steak: meat, beef, food, 牛排, ステーキ
 stethoscope: doctor, medical, health, diagnosis, 听诊器
 stop: media, square, halt, end, 停止
+stop-circle: stop, media, halt, end, stop generation, 停止, 停止生成
 stopwatch: timer, time, chronometer, lap, 秒表, ストップウォッチ
 store: shop, market, retail, storefront, 商店, 店
 stove: range, oven, cooker, kitchen, cooktop, 灶台, 炉灶, コンロ
@@ -807,9 +821,11 @@ terminal: console, command line, shell, cli, bash, 终端, ターミナル
 test-tube: lab, chemistry, science, experiment, 试管, 試験管
 tetromino: tetris, block, game, puzzle, 俄罗斯方块, テトリス
 text: type, font, typography, 文本, テキスト
+theater-masks: drama, roleplay, persona, character, comedy, tragedy, theatre, 戏剧, 面具, 角色扮演, 人设, 演劇
 theme: dark mode, light mode, day night, appearance, 主题, 深色模式, テーマ
 therefore: ∴, math, logic, 所以
 thermometer: temperature, weather, heat, fever, 温度计, 温度計
+thought-bubble: thinking, reasoning, thought, idea, dream, 思考, 推理, 想法, 思考中, 吹き出し
 thumbs-up: like, approve, good, ok, agree, 点赞, いいね
 thumbs-down: dislike, disapprove, bad, 踩
 tic-tac-toe: noughts and crosses, game, xo, 井字棋, 三目並べ
@@ -832,6 +848,7 @@ transistor: npn, circuit, electronics, component, 晶体管
 trash: delete, remove, bin, garbage, rubbish, discard, 删除, 垃圾桶, ゴミ箱
 trash-restore: restore, undelete, recover, recycle bin, 恢复
 trash-x: delete permanently, empty trash, remove, 彻底删除
+treasure-chest: chest, loot, reward, inventory, treasure, fantasy, 宝箱, 宝物, 戦利品
 tree: nature, forest, plant, wood, 树, 木
 tree-palm: palm, beach, tropical, island, summer, 椰子树
 tree-pine: pine, christmas tree, forest, conifer, evergreen, 松树
@@ -923,6 +940,7 @@ windmill: wind turbine, energy, farm, 风车, 風車
 window: browser, app, ui, frame, 窗口, ウィンドウ
 window-pane: window frame, casement, glass, house window, sill, 窗户, 窓
 wine: alcohol, glass, drink, bar, 红酒, ワイン
+wizard-hat: magic, mage, witch, fantasy, sorcerer, 巫师帽, 魔法, 魔法使い
 wrench: tool, settings, repair, fix, spanner, 扳手, レンチ
 arrow-down-a-z: sort ascending, alphabetical, a-z, 升序
 arrow-down-z-a: sort descending, reverse alphabetical, z-a, 降序

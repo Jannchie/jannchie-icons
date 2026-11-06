@@ -45,13 +45,17 @@ const EXTRA = {
   chart: ['candlestick-chart', 'radar'],
   media: ['speaker', 'headphones', 'earbuds', 'music', 'play-circle', 'disc', 'vinyl', 'turntable', 'wave-sine', 'podcast', 'audio-lines', 'eject'],
   weather: ['moon-star'],
-  meeting: ['webcam', 'webcam-off', 'cctv', 'chats', 'collaborate', 'mic-handheld', 'mic-vintage', 'mic-studio', 'megaphone', 'handshake'],
+  meeting: ['webcam', 'webcam-off', 'cctv', 'chats', 'collaborate', 'mic-handheld', 'mic-vintage', 'mic-studio', 'megaphone', 'handshake', 'thought-bubble'],
   search: ['map-search', 'globe-search'],
-  object: ['stopwatch', 'toolbox', 'tools', 'graduation-cap', 'glasses', 'glasses-square', 'sunglasses', 'vr-headset', 'goggles', 'ghost', 'gift', 'package', 'receipt', 'map', 'rocket', 'ruler', 'books', 'diamond', 'notebook-pen', 'scale-balance', 'language-hiragana', 'calculator', 'backpack', 'library', 'region', 'hologram', 'sticky-note', 'newspaper', 'watch', 'candle', 'rings'],
+  object: ['stopwatch', 'toolbox', 'tools', 'graduation-cap', 'glasses', 'glasses-square', 'sunglasses', 'vr-headset', 'goggles', 'ghost', 'gift', 'package', 'receipt', 'map', 'rocket', 'ruler', 'books', 'diamond', 'notebook-pen', 'scale-balance', 'language-hiragana', 'calculator', 'backpack', 'library', 'region', 'hologram', 'sticky-note', 'newspaper', 'watch', 'candle', 'rings',
+    // 酒馆、奇幻题材（角色扮演聊天、跑团）：卷轴、羽毛笔、宝箱、药水、水晶球、提灯、巫师帽、挂牌、戏剧面具、木桶
+    'scroll', 'quill', 'treasure-chest', 'potion', 'crystal-ball', 'lantern', 'wizard-hat', 'hanging-sign', 'theater-masks', 'barrel'],
   // 制图：地形编辑（抬升、压低、抹平）、沙盘、陆块，和山、波浪放在一起
   // 人物关系：老人（祖辈）、家族树、兄弟姐妹
   user: ['elder', 'family-tree', 'siblings'],
-  nature: ['terrain-raise', 'terrain-lower', 'terrain-smooth', 'diorama', 'continent'],
+  nature: ['terrain-raise', 'terrain-lower', 'terrain-smooth', 'diorama', 'continent', 'campfire'],
+  instrument: ['lute'],
+  tabletop: ['go-stones', 'chess-clock'],
 }
 const NAVY = ['battleship', 'cruiser', 'destroyer', 'frigate', 'carrier', 'submarine']
 const ARMY = ['tank-heavy', 'tank-medium', 'tank-light', 'tank-destroyer', 'tank-spg', 'apc', 'spaag', 'sam', 'missile', 'radar-dish']
