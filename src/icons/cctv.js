@@ -1,4 +1,5 @@
 import { rounded } from '../geometry'
+import { solid } from '../solid'
 import { rotate } from '../transform'
 
 // 监控摄像头：长方机身逆时针倾斜 20°（镜头朝左下）+ 机身前端上沿的遮光檐 + 从机身底部折到墙上的支架 + 右侧墙板
@@ -7,6 +8,14 @@ import { rotate } from '../transform'
 const tilt = d => rotate(d, -20, [10.75, 10])
 export default ({ radius }) => [
   tilt(rounded([[5.75, 7.25], [16.75, 7.25], [16.75, 12.75], [5.75, 12.75]], Math.min(radius, 1.5))),
+  tilt('M5.75 7.25H3.75'),
+  'M15 11.5L16 15.5H20.5',
+  'M20.5 11.5V18.5',
+]
+
+// 实心：机身一块；遮光檐、支架、墙板照旧是线
+export const fill = ({ radius }) => [
+  solid(tilt(rounded([[5.75, 7.25], [16.75, 7.25], [16.75, 12.75], [5.75, 12.75]], Math.min(radius, 1.5)))),
   tilt('M5.75 7.25H3.75'),
   'M15 11.5L16 15.5H20.5',
   'M20.5 11.5V18.5',

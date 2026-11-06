@@ -1,4 +1,5 @@
 import { circle, rounded } from '../geometry'
+import { hole, solid } from '../solid'
 // 蒙版：外框 3.5–20.5 × 4.5–19.5（四边落在 .5 上）+ 正中一个圆；框内、圆外画斜向细线阴影（遮住的部分），圆里留空（选中的部分）
 // 阴影线是 x + y = c（c = 15 / 21 / 27 / 33，圆心落在两条线正中）：穿过圆的两条离圆心近、和圆陡交；外侧两条离圆够远。
 // 斜线如果擦着圆边交（离圆心接近半径），交点是锐角，finalize 会把圆在那里断开；两端直接接到外框和圆的中心线上，不刻意断开；
@@ -21,4 +22,10 @@ export default ({ radius }) => [
   rounded([[x0, y0], [x1, y0], [x1, y1], [x0, y1]], Math.min(radius, 2.5)),
   ...[15, 21, 27, 33].map(c => ({ d: hatch(c), thin: true, round: true })),
   circle(cx, cy, r),
+]
+
+// 实心：遮住的部分就是整块实心（不用阴影线），正中的圆挖成洞（洞边落在描边版圆的中心线上）
+export const fill = ({ radius, stroke }) => [
+  solid(rounded([[x0, y0], [x1, y0], [x1, y1], [x0, y1]], Math.min(radius, 2.5))),
+  hole(circle(cx, cy, r - stroke / 2)),
 ]

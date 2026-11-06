@@ -1,3 +1,4 @@
+import { knock, solid } from '../solid'
 
 // 优惠券：两侧各一个半圆缺口的长条 + 右侧一道虚线撕口
 export default ({ radius }) => [
@@ -5,4 +6,10 @@ export default ({ radius }) => [
   'M14.5 6.5V8',
   'M14.5 11.25V12.75',
   'M14.5 16V17.5',
+]
+
+// 实心：券面一块，撕口虚线挖空
+export const fill = () => [
+  solid('M3.5 6.5H20.5V10A2 2 0 0 0 20.5 14V17.5H3.5V14A2 2 0 0 0 3.5 10Z'),
+  knock(['M14.5 6.5V8', 'M14.5 11.25V12.75', 'M14.5 16V17.5']),
 ]

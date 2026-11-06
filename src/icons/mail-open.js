@@ -1,4 +1,5 @@
 import { rounded } from '../geometry'
+import { knock, solid } from '../solid'
 
 // 已读邮件（拆开的信封）：侧墙、底边和 mail 一样（墨迹左右 2–22、底 21），顶上是翻开的封口——两侧墙顶起斜向收到中间的屋顶形，
 // 屋顶尖和 mail 的顶边一样顶到 3，整体墨迹 2–22 × 3–21；线宽变粗时外缘不动、往里长（h 是半个线宽）
@@ -14,5 +15,18 @@ export default ({ radius, stroke }) => {
   return [
     rounded([[l, WALL], [12, apex], [r, WALL], [r, b], [l, b]], Math.min(radius, 2.5)),
     rounded([[l, v], [12, v + depth], [r, v]], Math.min(radius, 1.5), false),
+  ]
+}
+
+// 实心：信封一块，挖掉 V 口（和 mail 一样整条挖开，翻开的封口自成一块）
+export const fill = ({ radius, stroke }) => {
+  const h = stroke / 2
+  const [l, r, b] = [2 + h, 22 - h, 21 - h]
+  const apex = 2.6 + h
+  const v = WALL + 2
+  const depth = (r - l) / 2 * Math.tan(Math.PI / 6)
+  return [
+    solid(rounded([[l, WALL], [12, apex], [r, WALL], [r, b], [l, b]], Math.min(radius, 2.5))),
+    knock(rounded([[l, v], [12, v + depth], [r, v]], Math.min(radius, 1.5), false)),
   ]
 }

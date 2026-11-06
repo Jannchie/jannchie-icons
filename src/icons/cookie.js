@@ -1,4 +1,5 @@
 import { dot } from '../scene'
+import { knock, solid } from '../solid'
 
 // 饼干：右上咬掉一口的圆 + 几颗巧克力豆
 export default ({ radius }) => [
@@ -8,4 +9,10 @@ export default ({ radius }) => [
   dot(15.5, 14),
   dot(7.5, 15),
   dot(12, 10.5),
+]
+
+// 实心：饼干一块，巧克力豆挖空
+export const fill = () => [
+  solid('M20.69 9.67A9 9 0 1 1 14.33 3.31C14 5.5 15 7.5 16.5 7.5C16.5 9 18.5 10 20.69 9.67Z'),
+  knock([dot(8, 9.5), dot(10.5, 15), dot(15.5, 14), dot(7.5, 15), dot(12, 10.5)]),
 ]

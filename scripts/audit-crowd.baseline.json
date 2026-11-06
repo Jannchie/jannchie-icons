@@ -883,10 +883,8 @@
     "bold @(12, 12)"
   ],
   "harmonica": [
-    "bold @(11, 11)",
     "bold @(11, 12)",
-    "bold @(20.5, 12)",
-    "regular @(11, 12)"
+    "bold @(20.5, 13.5)"
   ],
   "hazard-corrosive": [
     "bold @(12, 12.1)",
@@ -1105,6 +1103,9 @@
     "bold @(14.8, 15)",
     "bold @(14.8, 18)",
     "bold @(14.8, 21)"
+  ],
+  "lute": [
+    "regular @(14.9, 14.9)"
   ],
   "mahjong": [
     "bold @(12, 12)",
@@ -1916,6 +1917,9 @@
     "bold @(6, 9)",
     "regular @(11.9, 12)"
   ],
+  "theater-masks": [
+    "bold @(8.5, 14.4)"
+  ],
   "thermometer": [
     "bold @(12, 11.9)"
   ],
@@ -2072,10 +2076,6 @@
   ],
   "washing-machine": [
     "bold @(12, 15)"
-  ],
-  "watermelon": [
-    "bold @(12, 10.8)",
-    "regular @(12, 10.8)"
   ],
   "webcam": [
     "bold @(12, 9.5)"

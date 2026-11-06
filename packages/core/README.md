@@ -22,6 +22,7 @@ Each icon is a separate module, so bundlers keep only the icons you import. One 
 |---|---|---|
 | `radius` | `'sharp'`, `0`, `1`, `2`, `3` | `2` |
 | `weight` | `'light'` (1), `'regular'` (1.5), `'bold'` (2) | `'regular'` |
+| `variant` | `'outline'` or `'fill'` (solid shapes with knocked-out details); icons without a fill version fall back to the outline, check with `hasFill(icon)` | `'outline'` |
 | `size` | width and height: a number (px) or a CSS length such as `'1em'` | `24` |
 | `duo` | color badges and strike-throughs by meaning | `false` |
 | `theme` | `'light'` or `'dark'` recommended colors for `duo` | `'light'` |
@@ -31,7 +32,7 @@ Each icon is a separate module, so bundlers keep only the icons you import. One 
 
 `toPaths(icon, options)` returns the root attributes (`svg`), the per-path attributes (`paths`) and, when given, the `title`, for rendering in a framework component; pass `px` (the displayed size in device pixels) to opt into pixel hinting, which shifts the icon so the outer edges of horizontal and vertical strokes land on pixel boundaries; without it the exact geometry is returned. To look icons up by name, import `icons` from `@jannchie/icons/all` (this includes every icon).
 
-Invalid options throw a `RangeError` (unknown `radius` or `weight`) or a `TypeError` (not an icon, invalid attribute name).
+Invalid options throw a `RangeError` (unknown `radius`, `weight` or `variant`) or a `TypeError` (not an icon, invalid attribute name).
 
 ## Accessibility
 

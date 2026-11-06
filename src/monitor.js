@@ -4,8 +4,9 @@
 // 立杆是一条居中的竖线，放在 x 12：居中优先，线宽 1 时它落在整数上、1 倍屏略虚，可以接受；
 // 底座墨迹 8–16，以立杆为中心；立杆露出来的长度是 4 − 线宽（常规 2.5）
 import { blocked, rectAroundTop } from './clearance'
-import { asBadge, fitBadge, roomBelow, roomOnRight } from './corner'
+import { asBadge, fitBadge, notchOf, roomBelow, roomOnRight } from './corner'
 import { rounded } from './geometry'
+import { badgeFill, solid } from './solid'
 
 const pole = 12
 
@@ -34,7 +35,7 @@ export const plain = (radius, stroke) => {
 const MIN_SHOULDER = 1
 // 角标比普通角标大 GROW 倍，和文件夹一样（16px 下也认得出符号）；放不下时 fitBadge 再缩回去
 const GROW = 1.3
-export function withBadge(name, draw, tone, radius, stroke) {
+export function withBadge(name, draw, tone, radius, stroke, { fill = false } = {}) {
   const f = frame(stroke)
   const { l, t, r, b } = f
   const roomRight = roomOnRight(stroke, r, t)
@@ -44,6 +45,9 @@ export function withBadge(name, draw, tone, radius, stroke) {
   }, GROW, 0.6)
   const right = blocked(shape, 'y', r, stroke)
   const bottom = blocked(shape, 'x', b, stroke)
+  // 实心版：同样的角标位置，主体在角上挖出缺口，角标落在缺口里
+  if (fill)
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), notchOf(shape, 'bottom', radius))
   return [
     rounded([[bottom ? bottom[0] : r, b], [l, b], [l, t], [r, t], [r, right ? right[0] : b]], Math.min(radius, 2.5), false),
     ...standOf(f),
@@ -52,13 +56,16 @@ export function withBadge(name, draw, tone, radius, stroke) {
 }
 
 // 右上角标（-badge-top）：符号墨迹的右缘贴到 22，上缘贴到屏幕顶边的外缘 3；顶边、右边在离符号 GAP 处断开，立杆和底座不变
-export function withBadgeTop(name, draw, tone, radius, stroke) {
+export function withBadgeTop(name, draw, tone, radius, stroke, { fill = false } = {}) {
   const f = frame(stroke)
   // 顶边至少伸到画布中线 12，免得屏幕只剩左上一个小角
   const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, top: f.t - f.h }, (s) => {
     const c = blocked(s, 'x', f.t, stroke)
     return (!c || c[0] >= 12) && roomBelow(stroke, f.r, f.b)(s)
   }, GROW)
+  // 实心版：同样的角标位置，主体在角上挖出缺口，角标落在缺口里
+  if (fill)
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), notchOf(shape, 'top', radius))
   return [
     rounded(rectAroundTop(shape, stroke, [f.l, f.t, f.r, f.b]), Math.min(radius, 2.5), false),
     ...standOf(f),
@@ -69,3 +76,9 @@ export function withBadgeTop(name, draw, tone, radius, stroke) {
 // 以下是旧版几何（屏幕 3.5–20.5 × 3.5–16.5、立杆 x 11.5），screen-record、screen-share 还在用；那两个按新规则重画时再换成 plain
 export const screen = [[3.5, 3.5], [20.5, 3.5], [20.5, 16.5], [3.5, 16.5]]
 export const stand = ['M11.5 16.5V20.5', 'M7.5 20.5H15.5']
+
+// 实心版（见 solid.js 的 plainFill / badgeFill / centerFill）：屏幕一块，立杆和底座照旧是线
+export function fillParts(radius, stroke) {
+  const f = frame(stroke)
+  return { body: [solid(rounded(screenOf(f), Math.min(radius, 2.5)))], lines: standOf(f) }
+}

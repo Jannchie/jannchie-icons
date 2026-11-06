@@ -13,7 +13,7 @@ const props = defineProps({
 const style = inject('iconStyle')
 const paths = computed(() => {
   const icon = byName.get(props.name)
-  return icon && pathsOf(icon, style.value.corner, style.value.weight, style.value.hinting ? devicePx(props.size) : 0)
+  return icon && pathsOf(icon, style.value.corner, style.value.weight, style.value.hinting ? devicePx(props.size) : 0, style.value.variant)
 })
 </script>
 

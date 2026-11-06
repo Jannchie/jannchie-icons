@@ -1,3 +1,4 @@
+import { solid } from '../solid'
 // 思考：灯泡（圆弧）收进灯座，下方一道底线
 const [cx, cy, r] = [12, 9.5, 6.25]
 const rad = deg => deg * Math.PI / 180
@@ -6,5 +7,11 @@ const [left, right] = [at(125), at(55)]
 
 export default () => [
   `M${left.join(' ')}A${r} ${r} 0 1 1 ${right.join(' ')}L15 17.5H9Z`,
+  'M9.75 20.5H14.25',
+]
+
+// 实心：灯泡连灯座一块；底线照旧是线
+export const fill = () => [
+  solid(`M${left.join(' ')}A${r} ${r} 0 1 1 ${right.join(' ')}L15 17.5H9Z`),
   'M9.75 20.5H14.25',
 ]

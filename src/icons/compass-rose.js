@@ -1,4 +1,5 @@
 import { rounded } from '../geometry'
+import { knock, solid } from '../solid'
 // 罗经玫瑰（地图上的指北针）：前层四角星（北刺尖半径 10.5，其余 9，凹点半径 3.5），每根主刺一道细中线（从刺尖到中心，
 // 表示刺是两个面拼成的），北刺的顺时针一半填实，标出北方；
 // 后层四根斜刺（尖半径 8.5，根部 ±20°、半径 3）只画露在主刺之间的部分：两条侧边从刺尖往里走，走到离主刺边 2.25 处停下
@@ -39,4 +40,11 @@ export default () => [
   back,
   { d: main.map(([t]) => `M${f(t)}L${cx} ${cy}`).join(''), thin: true },
   half(main[0], 1),
+]
+
+// 实心：前层四角星一块，挖掉刺尖到中心的细中线（每根刺分成两个面）；后层斜刺照旧是线
+export const fill = () => [
+  solid(rounded(front, 0)),
+  knock({ d: main.map(([t]) => `M${f(t)}L${cx} ${cy}`).join(''), thin: true }),
+  back,
 ]

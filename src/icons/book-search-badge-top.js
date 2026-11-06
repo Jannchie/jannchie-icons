@@ -4,3 +4,5 @@ import { info } from '../tone'
 
 // 书 + 右上角搜索
 export default ({ radius, stroke }) => withBadgeTop('search', search, info, radius, stroke)
+
+export const fill = ({ radius, stroke }) => withBadgeTop('search', search, info, radius, stroke, { fill: true })

@@ -1,4 +1,5 @@
 import { circle } from '../geometry'
+import { solid } from '../solid'
 
 // 播客：中心的麦克风头（圆心 (12, 11.5)、半径 2）+ 两道底部开口 90° 的同心弧（半径 5 / 8.5，外弧顶在 3）+ 从圆底伸下的支杆（到 21）
 // 上下两头（外弧顶、支杆底）离边缘一样远；支杆沿径向接在圆周上，竖线落在 12
@@ -9,6 +10,14 @@ const arc = (r) => {
 }
 export default () => [
   circle(cx, cy, 2),
+  arc(5),
+  arc(8.5),
+  `M${cx} ${cy + 2}V21`,
+]
+
+// 实心：麦克风头填实，两道弧和支杆照旧是线
+export const fill = () => [
+  solid(circle(cx, cy, 2)),
   arc(5),
   arc(8.5),
   `M${cx} ${cy + 2}V21`,

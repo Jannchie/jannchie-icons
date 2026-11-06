@@ -1,6 +1,10 @@
 import { mirror } from '../transform'
+import { solid } from '../solid'
 
 // 入耳式耳机：左边一只「圆头 + 竖柄」的耳塞（柄从圆头右下方伸下来，底端圆头），右边是它的镜像
 // 柄宽 2，两条竖边落在 8.5 / 10.5 上（镜像后 13.5 / 15.5）
 const bud = 'M10.5 8.9A3.5 3.5 0 1 0 8.5 11.85V19.5A1 1 0 0 0 10.5 19.5Z'
 export default () => [bud, mirror(bud)]
+
+// 实心：两只耳塞各填实
+export const fill = () => [solid(bud), solid(mirror(bud))]

@@ -1,4 +1,5 @@
 import { rounded } from '../geometry'
+import { knock, solid } from '../solid'
 
 // 冰箱：高的柜体（5.5–18.5 × 2.5–21.5）+ 分隔冷冻室的横线（9.5，两端垂直接在侧边上）+ 两扇门左侧的竖把手（离顶边、分隔线各 3，粗字重下也不挤）
 export default ({ radius }) => [
@@ -6,4 +7,10 @@ export default ({ radius }) => [
   'M5.5 9.5H18.5',
   'M8.5 5.5V6.5',
   'M8.5 12.5V16.5',
+]
+
+// 实心：柜体一块，分隔线挖开分出冷冻室和冷藏室两扇门，把手挖空
+export const fill = ({ radius }) => [
+  solid(rounded([[5.5, 2.5], [18.5, 2.5], [18.5, 21.5], [5.5, 21.5]], Math.min(radius, 2))),
+  knock(['M5.5 9.5H18.5', 'M8.5 5.5V6.5', 'M8.5 12.5V16.5']),
 ]

@@ -1,4 +1,5 @@
 import { rounded } from '../geometry'
+import { knock, solid } from '../solid'
 import { check } from '../symbols'
 import { success } from '../tone'
 
@@ -17,4 +18,14 @@ export default ({ radius }) => {
     rounded(points, radius),
     ...success(check([12, 12], 1.4, radius)),
   ]
+}
+
+// 实心：章一块，挖掉中间的勾
+export const fill = ({ radius }) => {
+  const points = Array.from({ length: 16 }, (_, i) => {
+    const a = -Math.PI / 2 + i * Math.PI / 8
+    const d = i % 2 ? r : R
+    return [12 + Math.cos(a) * d, 12 + Math.sin(a) * d, i % 2 ? Math.min(radius, 1.5) : Math.min(radius * 1.5, 3)]
+  })
+  return [solid(rounded(points, radius)), knock(check([12, 12], 1.4, radius))]
 }

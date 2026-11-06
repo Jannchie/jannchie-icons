@@ -1,4 +1,5 @@
 import { circle, rounded } from '../geometry'
+import { hole, knock, solid } from '../solid'
 
 // 奶酪：楔形块（顶面 + 侧面）+ 两个孔
 const body = [[3.5, 10.5], [18, 5.5], [20.5, 10.5], [20.5, 19.5], [3.5, 19.5]]
@@ -22,4 +23,11 @@ export default ({ radius }) => [
   `M${waistX(0, Math.min(radius, 1.5))} 10.5H${waistX(2, Math.min(radius, 1.5))}`,
   circle(8, 15, 1.5),
   circle(15, 15, 2),
+]
+
+// 实心：奶酪一块，挖掉腰线（顶面和侧面分开，两端多伸一个线宽切干净），两个孔挖空（外扩半个线宽后和描边版孔的中心线一样大）
+export const fill = ({ radius, stroke }) => [
+  solid(rounded(body, Math.min(radius, 1.5))),
+  knock(`M${waistX(0, Math.min(radius, 1.5)) - stroke} 10.5H${waistX(2, Math.min(radius, 1.5)) + stroke}`),
+  hole([circle(8, 15, 1.5 - stroke / 2), circle(15, 15, 2 - stroke / 2)]),
 ]

@@ -4,3 +4,5 @@ import { warning } from '../tone'
 
 // 对话 + 右上角感叹号
 export default ({ radius, stroke }) => withBadgeTop('exclaim', exclaim, warning, radius, stroke)
+
+export const fill = ({ radius, stroke }) => withBadgeTop('exclaim', exclaim, warning, radius, stroke, { fill: true })

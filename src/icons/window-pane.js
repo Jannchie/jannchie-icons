@@ -1,4 +1,5 @@
 import { rounded } from '../geometry'
+import { knock, solid } from '../solid'
 
 // 窗户（建筑立面，和界面里的 window 区分）：窗框（4.5–18.5 × 3.5–19.5）+ 十字窗棂（x 11.5 / y 11.5）分成四格；
 // 底下一条窗台，两头各伸出窗框 2（2.5–20.5 在 19.5）
@@ -6,5 +7,12 @@ export default ({ radius }) => [
   rounded([[4.5, 3.5], [18.5, 3.5], [18.5, 19.5], [4.5, 19.5]], Math.min(radius, 1)),
   'M11.5 3.5V19.5',
   'M4.5 11.5H18.5',
+  'M2.5 19.5H20.5',
+]
+
+// 实心：窗框一块，挖掉十字窗棂（分成四块玻璃）；窗台照旧是线
+export const fill = ({ radius, stroke }) => [
+  solid(rounded([[4.5, 3.5], [18.5, 3.5], [18.5, 19.5], [4.5, 19.5]], Math.min(radius, 1))),
+  knock([`M11.5 ${3.5 - stroke}V${19.5 + stroke}`, `M${4.5 - stroke} 11.5H${18.5 + stroke}`]),
   'M2.5 19.5H20.5',
 ]

@@ -1,3 +1,5 @@
+import { GAP } from '../clearance'
+import { clear, solid } from '../solid'
 import { mirror } from '../transform'
 
 // 凤蝶：俯视，左右对称，翅膀张满画布。中间一根实心身体（2 宽的胶囊，7–18.5），每侧一条开口轮廓：
@@ -8,12 +10,24 @@ import { mirror } from '../transform'
 const wing = 'M12.75 8.5C14.5 5.5 18 3.75 21 3.5C21.25 6.5 20.25 9.5 18.5 11C17.5 11.75 15.75 12 14 12C17.5 12.25 19.5 14 18.75 16.25C18.5 17 18 17.75 17.25 18.25C15.75 18.75 13.5 17.75 12.75 16.5'
 const tail = 'M17.25 18.25L17.75 21'
 const antenna = 'M12 7.5L14 3'
+const body = 'M11 8A1 1 0 0 1 13 8V17.5A1 1 0 0 1 11 17.5Z'
 export default () => [
   wing,
   mirror(wing),
   tail,
   mirror(tail),
-  { d: 'M11 8A1 1 0 0 1 13 8V17.5A1 1 0 0 1 11 17.5Z', fill: true },
+  { d: body, fill: true },
+  antenna,
+  mirror(antenna),
+]
+
+// 实心：两侧翅膀沿身体封口各成一块，在身体四周让出缝，再把身体画回去；尾突、触角照旧是线
+export const fill = () => [
+  solid([`${wing}Z`, `${mirror(wing)}Z`]),
+  clear(body, GAP),
+  solid(body),
+  tail,
+  mirror(tail),
   antenna,
   mirror(antenna),
 ]

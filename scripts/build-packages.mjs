@@ -30,7 +30,10 @@ const json = v => JSON.stringify(v)
 // 预计算、Iconify、元数据都要跑 src/ 里的引擎（import.meta.glob、无扩展名导入），借 vite 的 SSR 加载
 const server = await createSsrServer()
 const { icons, byName } = await load(server, '/src/iconset.js')
-const { pathsOf, svgAttrs } = await load(server, '/src/render.js')
+const { pathsOf, setSolidify, solidKey, svgAttrs, VARIANTS } = await load(server, '/src/render.js')
+// 实心变体（fill）在构建时算好（fill.js 依赖 Clipper2，不进发布包），见 render.js 的 solidPaths
+const { solidify } = await load(server, '/src/fill.js')
+setSolidify(solidify)
 const { iconifyBody, mergedPaths } = await load(server, '/src/export.js')
 const { categorize } = await load(server, '/src/categories.js')
 const { t } = await load(server, '/src/i18n.js')
@@ -58,17 +61,23 @@ const iconExports = () => [
   ...aliasList.flatMap(([o, n]) => [deprecatedDoc(o, n), `export { default as ${exportName(o)} } from './icons/${n}.js'`]),
 ]
 
-// 每个图标一个入口：{ name, draw, animation }；只有动画图标才带 animation
+// 实心变体：每种「圆角 × 字重」的路径 { '2|regular': [{ d, tone? }], … }（键见 render.js 的 solidKey）
+const solidOf = icon => Object.fromEntries(CORNERS.flatMap(c => WEIGHTS.map(w => [
+  solidKey(c, w),
+  pathsOf(icon, c, w, 0, 'fill').map(({ d, tone }) => (tone ? { d, tone } : { d })),
+])))
+// 每个图标一个入口：{ name, draw, animation?, solid? }；只有动画图标才带 animation，有实心版的才带 solid
 for (const name of names) {
   const src = `../../../../src/icons/${name}.js`
-  writeFileSync(`${GEN}/icons/${name}.js`, byName.get(name).animation
-    ? `import draw, { animation } from '${src}'\n\nexport default { name: '${name}', draw, animation }\n`
-    : `import draw from '${src}'\n\nexport default { name: '${name}', draw }\n`)
+  const icon = byName.get(name)
+  const fields = [`name: '${name}'`, 'draw', ...(icon.animation ? ['animation'] : []), ...(icon.fill ? [`solid: ${json(solidOf(icon))}`] : [])]
+  writeFileSync(`${GEN}/icons/${name}.js`, `import draw${icon.animation ? ', { animation }' : ''} from '${src}'\n\nexport default { ${fields.join(', ')} }\n`)
 }
 writeForwards(`${GEN}/icons`)
 writeFileSync(`${GEN}/index.js`, [
   `export { resolveColors, toPaths, toSvg } from '../../../src/export.js'`,
   `export { CORNERS, WEIGHTS } from '../../../src/options.js'`,
+  `export { hasFill, VARIANTS } from '../../../src/render.js'`,
   `export { ROLES } from '../../../src/tone.js'`,
   ...iconExports(),
   '',
@@ -145,12 +154,15 @@ const iconDeclarations = type => `${names.map(n => `export declare const ${expor
 
 ${aliasList.map(([o, n]) => `${deprecatedDoc(o, n)}\nexport declare const ${exportName(o)}: ${type}<'${n}'>`).join('\n')}
 `
+const VARIANTS_TS = VARIANTS.map(v => `'${v}'`).join(' | ')
 const DTS = `// 由 scripts/build-packages.mjs 生成，不要手改
 export type Radius = ${CORNERS.map(c => (c.sharp ? `'sharp'` : c.radius)).join(' | ')}
 export type Weight = ${WEIGHTS.map(w => `'${w.id}'`).join(' | ')}
 /** Semantic role of an overlay mark (badge, strike-through) in the duo-tone variant */
 export type Role = ${Object.keys(ROLES).map(r => `'${r}'`).join(' | ')}
 export type Theme = 'light' | 'dark'
+/** Outline (stroked, the default) or fill (solid shapes with knocked-out details; only on icons that have one) */
+export type Variant = ${VARIANTS_TS}
 
 /** Options passed to an icon's draw function (radius is the 0–3 corner radius, 0 for sharp) */
 export interface DrawOptions {
@@ -170,6 +182,8 @@ export interface Icon<N extends string = IconName> {
     frames: number
     draw: (options: DrawOptions & { t: number }) => PathSpec[]
   }
+  /** Only on icons with a fill variant: precomputed path data for every radius and weight, keyed '<radius>|<weight>' ('sharp|bold', '2|regular', …) */
+  solid?: Readonly<Record<string, ReadonlyArray<{ d: string, tone?: Role }>>>
 }
 
 /** Value of an extra root attribute; null and undefined drop the attribute */
@@ -197,12 +211,16 @@ export interface A11yOptions {
 export interface SvgOptions extends ColorOptions, A11yOptions {
   radius?: Radius
   weight?: Weight
+  /** 'fill' draws the solid version; icons without one (see hasFill) fall back to the outline. Defaults to 'outline' */
+  variant?: Variant
   /** Width and height of the SVG: a number (px) or a CSS length such as '1em'. Defaults to 24 */
   size?: number | string
 }
 export interface PathsOptions extends ColorOptions, A11yOptions {
   radius?: Radius
   weight?: Weight
+  /** 'fill' draws the solid version; icons without one (see hasFill) fall back to the outline. Defaults to 'outline' */
+  variant?: Variant
   /** Displayed size in device pixels: snaps strokes to the pixel grid when given; 0 (default) means no snapping */
   px?: number
 }
@@ -227,6 +245,7 @@ export interface AnimateAttrs {
 export interface PathAttrs {
   'd': string
   'stroke-width'?: number
+  /** 'none' on the solid paths of the fill variant */
   'stroke'?: string
   'fill'?: string
   /** Small parts (such as rank stars) that stay round in sharp mode */
@@ -244,6 +263,9 @@ export interface PathsResult {
 
 export declare function toSvg(icon: Icon<string>, options?: SvgOptions): string
 export declare function toPaths(icon: Icon<string>, options?: PathsOptions): PathsResult
+/** Whether the icon has a fill variant */
+export declare function hasFill(icon: Icon<string>): boolean
+export declare const VARIANTS: ReadonlyArray<Variant>
 export declare function resolveColors(options?: ColorOptions): ({ primary?: string } & Record<Role, string>) | undefined
 export declare const CORNERS: ReadonlyArray<{ label: string, radius: number, sharp?: boolean }>
 export declare const WEIGHTS: ReadonlyArray<{ id: Weight, stroke: number }>
@@ -391,16 +413,21 @@ const allNames = [...names, ...aliasList.map(([o]) => o)]
 const collections = []
 const stats = []
 let defaultSet = null
-for (const corner of CORNERS) {
+// 实心变体另成一组集合：前缀多一段 fill（jannchie-fill、jannchie-fill-sharp-bold……），只收有实心版的图标
+const filled = new Set(icons.filter(i => i.fill).map(i => i.name))
+// 实心集合的示例图标（Iconify 的 info.samples）
+const FILL_SAMPLES = ['folder', 'bell', 'heart']
+for (const variant of VARIANTS) for (const corner of CORNERS) {
+  const fill = variant === 'fill'
   const radiusPart = corner.sharp ? 'sharp' : corner.radius === 2 ? '' : `r${corner.radius}`
   for (const weight of WEIGHTS) {
-    const parts = [radiusPart, weight.id === 'regular' ? '' : weight.id].filter(Boolean)
+    const parts = [fill ? 'fill' : '', radiusPart, weight.id === 'regular' ? '' : weight.id].filter(Boolean)
     const prefix = ['jannchie', ...parts].join('-')
     // 外观完全相同（body 相同）的图标只存一份：连字符最少（更通用）的名字做主名，一样多时按字母序；
     // 其余写成指向它的别名，原来的名字都还能用
     const groups = new Map()
-    for (const icon of icons) {
-      const body = iconifyBody(pathsOf(icon, corner, weight), { stroke: weight.stroke, sharp: !!corner.sharp })
+    for (const icon of fill ? icons.filter(i => filled.has(i.name)) : icons) {
+      const body = iconifyBody(pathsOf(icon, corner, weight, 0, variant), { stroke: weight.stroke, sharp: !!corner.sharp })
       groups.set(body, [...(groups.get(body) ?? []), icon.name])
     }
     const setIcons = {}
@@ -413,11 +440,12 @@ for (const corner of CORNERS) {
     }
     // 每个名字的主名：改名留下的旧名先解析到现名，再取现名所在那组的主名（不留链式别名）
     const canonical = name => parentOf.get(resolveName(name))
-    const aliases = Object.fromEntries(allNames.filter(n => canonical(n) !== n).map(n => [n, { parent: canonical(n) }]))
+    // 实心集合只收有实心版的图标：指向没有实心版图标的旧名不收
+    const aliases = Object.fromEntries(allNames.filter(n => canonical(n) && canonical(n) !== n).map(n => [n, { parent: canonical(n) }]))
     const present = new Set(Object.keys(setIcons))
     const set = {
       prefix,
-      info: { ...info, name: `${info.name} (${corner.sharp ? 'Sharp' : `Radius ${corner.radius}`} ${cap(weight.id)})`, total: present.size },
+      info: { ...info, name: `${info.name} (${fill ? 'Fill, ' : ''}${corner.sharp ? 'Sharp' : `Radius ${corner.radius}`} ${cap(weight.id)})`, total: present.size, ...(fill && { tags: [], samples: FILL_SAMPLES.filter(n => present.has(n)) }) },
       lastModified,
       icons: sortKeys(setIcons),
       ...(Object.keys(aliases).length ? { aliases: sortKeys(aliases) } : {}),
@@ -427,7 +455,7 @@ for (const corner of CORNERS) {
     }
     const file = `${parts.length ? parts.join('-') : 'icons'}.json`
     writeFileSync(`${OUT}/${file}`, `${JSON.stringify(set)}\n`)
-    collections.push({ prefix, file, radius: corner.sharp ? 'sharp' : corner.radius, weight: weight.id })
+    collections.push({ prefix, file, variant, radius: corner.sharp ? 'sharp' : corner.radius, weight: weight.id })
     stats.push({ prefix, total: present.size, aliases: Object.keys(aliases).length })
     if (!parts.length)
       defaultSet = set

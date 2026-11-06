@@ -3,8 +3,9 @@
 // 线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽。线宽 1 时主体四边都落在 .5 上
 // 尾巴：主体底边往下 4、45° 斜下，尾尖在 x 6，斜边在底边上的起点（尾巴根部）x 10，给右下角标留出底边（尾尖、底边都随线宽各收半个线宽，落差不变）
 import { blocked } from './clearance'
-import { asBadge, fitBadge, roomBelow, roomOnBottom, roomOnRight } from './corner'
-import { rounded } from './geometry'
+import { asBadge, fitBadge, notchOf, roomBelow, roomOnBottom, roomOnRight } from './corner'
+import { crisp, rounded } from './geometry'
+import { badgeFill, solid } from './solid'
 
 function frame(stroke) {
   const h = stroke / 2
@@ -28,7 +29,7 @@ export const centerScale = 1.15
 // 角标比普通角标大 GROW 倍，和文件夹一样（16px 下也认得出符号）；放不下时 fitBadge 再缩回去
 const GROW = 1.3
 
-export function withBadge(name, draw, tone, radius, stroke) {
+export function withBadge(name, draw, tone, radius, stroke, { fill = false } = {}) {
   const { l, t, r, b, tip, root } = frame(stroke)
   const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, bottom: 17 }, s => roomOnRight(stroke, r, t)(s) && roomOnBottom(stroke, b, root, 1)(s), GROW, 0.6)
   const right = blocked(shape, 'y', r, stroke)
@@ -38,6 +39,9 @@ export function withBadge(name, draw, tone, radius, stroke) {
   // 斜边直接从断口起（断口越过尾巴根部时，斜边也从断口的 x 处起，截掉被让开的那一小截）
   const end = bottom ? bottom[0] : r
   const tail = end >= root + 1 ? [[end, b], [root, b], tip] : [[Math.min(end, root), b + root - Math.min(end, root)], tip]
+  // 实心版：同样的角标位置，主体在角上挖出缺口，角标落在缺口里
+  if (fill)
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), notchOf(shape, 'bottom', radius))
   return [
     rounded([[tip[0], b], [l, b], [l, t], [r, t], [r, right ? right[0] : b]], radius, false),
     rounded(tail, radius, false),
@@ -47,7 +51,7 @@ export function withBadge(name, draw, tone, radius, stroke) {
 
 // 右上角标（-badge-top）：符号墨迹的右缘贴到 22，上缘贴到主体顶边的外缘 3；顶边、右边在离符号 GAP 处断开，
 // 轮廓分两段：尾巴左侧的底边 → 左下 → 左上 → 顶边断口；右边断口 → 右下 → 底边 → 尾巴斜边到尾尖
-export function withBadgeTop(name, draw, tone, radius, stroke) {
+export function withBadgeTop(name, draw, tone, radius, stroke, { fill = false } = {}) {
   const { h, l, t, r, b, tip, root } = frame(stroke)
   // 顶边至少伸到画布中线 12，免得气泡只剩左上一个小角
   const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, top: t - h }, (s) => {
@@ -56,9 +60,20 @@ export function withBadgeTop(name, draw, tone, radius, stroke) {
   }, GROW)
   const right = blocked(shape, 'y', r, stroke)
   const top = blocked(shape, 'x', t, stroke)
+  // 实心版：同样的角标位置，主体在角上挖出缺口，角标落在缺口里
+  if (fill)
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), notchOf(shape, 'top', radius))
   return [
     rounded([[tip[0], b], [l, b], [l, t], [top ? top[0] : r, t]], radius, false),
     rounded([[r, right ? right[1] : t], [r, b], [root, b], tip], radius, false),
     ...asBadge(tone(draw(at, k, radius)), name),
   ]
+}
+
+// 实心版（见 solid.js 的 plainFill / badgeFill / centerFill）：轮廓连同尾巴封口。
+// 尾巴的两个角（尾尖、尾巴和底边的接口）用固定小圆角，大圆角会把尾巴磨成一个小鼓包
+export function fillParts(radius, stroke) {
+  const [root, ...rest] = bubble(stroke)
+  const tip = rest.at(-1)
+  return { body: [solid(rounded([[...root, crisp(radius)], ...rest.slice(0, -1), [...tip, crisp(radius)]], radius))], lines: [] }
 }

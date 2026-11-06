@@ -1,3 +1,4 @@
+import { knock, solid } from '../solid'
 import { rotate } from '../transform'
 
 // 注射器：先横着画再绕中心转 -45°（针头朝右上）
@@ -11,3 +12,10 @@ export default () => [
   'M16 12H21',
   'M10 9.5V11M12.5 9.5V11',
 ].map(d => rotate(d, -45))
+
+// 实心：针筒一块，刻度挖空；护翼、推杆、推柄、针头照旧是线
+export const fill = ({ stroke }) => [
+  solid(rotate('M7 9.5H16V14.5H7Z', -45)),
+  knock(rotate(`M10 ${9.5 - stroke}V11M12.5 ${9.5 - stroke}V11`, -45)),
+  ...['M7 8V16', 'M7 12H3.5', 'M3.5 10V14', 'M16 12H21'].map(d => rotate(d, -45)),
+]

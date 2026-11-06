@@ -2,6 +2,8 @@ import { withPaths } from '../user'
 
 // 临时工：人像 + 右下角的沙漏（手画的简化版：一条闭合的沙漏轮廓，上下边就是横梁；原 hourglass 缩小后横梁和玻璃的接口在粗字重下冒头）
 // 15.5–20.5 × 12.5–21.5，两侧短竖边落在 .5 上，腰在角标中心 (18, 17)
-export default () => withPaths([
-  'M15.5 12.5H20.5V14L18 17L20.5 20V21.5H15.5V20L18 17L15.5 14Z',
-])
+const badge = ['M15.5 12.5H20.5V14L18 17L20.5 20V21.5H15.5V20L18 17L15.5 14Z']
+export default () => withPaths(badge)
+
+// 实心：人像填实，角标四周挖出圆形的缝，角标照旧是线
+export const fill = () => withPaths(badge, undefined, { fill: true })

@@ -1,5 +1,6 @@
 import { ring } from '../marks'
 import { crisp, rounded } from '../geometry'
+import { knock, solid } from '../solid'
 
 // Xbox Share 键：圆圈 + 开口朝上的小框 + 向上的箭头（竖线落在中轴 x=12 上，整组上下居中）
 export default ({ radius }) => [
@@ -7,4 +8,14 @@ export default ({ radius }) => [
   rounded([[9.75, 11.5], [8, 11.5], [8, 16.5], [16, 16.5], [16, 11.5], [14.25, 11.5]], Math.min(radius, 0.75), false),
   'M12 14V7.5',
   rounded([[10, 9.5], [12, 7.5], [14, 9.5]], crisp(radius), false),
+]
+
+// 实心：圆片上挖出小框和箭头
+export const fill = ({ radius }) => [
+  solid(ring()),
+  knock([
+    rounded([[9.75, 11.5], [8, 11.5], [8, 16.5], [16, 16.5], [16, 11.5], [14.25, 11.5]], Math.min(radius, 0.75), false),
+    'M12 14V7.5',
+    rounded([[10, 9.5], [12, 7.5], [14, 9.5]], crisp(radius), false),
+  ]),
 ]

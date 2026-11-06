@@ -1,4 +1,5 @@
 import { eye } from '../scene'
+import { knock, solid } from '../solid'
 
 // 幽灵：半圆头 + 直身 + 底边三道波浪下摆 + 两只眼睛
 // 身子两侧在 5.5 / 18.5 上；下摆从右往左 6 段半波，交替落在 20.5 / 18.5
@@ -15,4 +16,10 @@ export default ({ radius }) => [
   `M${L} 20.5V11A${(R - L) / 2} ${(R - L) / 2} 0 0 1 ${R} 11V20.5${hem}Z`,
   eye(9.5, 11),
   eye(14.5, 11),
+]
+
+// 实心：身子一块，两只眼睛挖空
+export const fill = () => [
+  solid(`M${L} 20.5V11A${(R - L) / 2} ${(R - L) / 2} 0 0 1 ${R} 11V20.5${hem}Z`),
+  knock([eye(9.5, 11), eye(14.5, 11)]),
 ]

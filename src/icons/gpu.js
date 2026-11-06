@@ -1,5 +1,6 @@
 import { circle, rounded } from '../geometry'
 import { dot } from '../scene'
+import { knock, solid } from '../solid'
 
 // 显卡：左边挡板 + 卡身 + 两个风扇（圆 + 轴心）+ 底部金手指
 export default ({ radius }) => [
@@ -10,4 +11,12 @@ export default ({ radius }) => [
   circle(16, 11.5, 3),
   dot(16, 11.5),
   'M8.5 16.5V19.5H16.5V16.5',
+]
+
+// 实心：卡身和金手指连成一块，挖掉两个风扇的圆圈（风扇留成实心）和轴心；挡板最后画，照旧是线
+export const fill = ({ radius }) => [
+  solid(rounded([[2.5, 6.5], [21.5, 6.5], [21.5, 16.5], [2.5, 16.5]], Math.min(radius, 1.5))),
+  solid('M8.5 16.5V19.5H16.5V16.5Z'),
+  knock([circle(8.5, 11.5, 3), dot(8.5, 11.5), circle(16, 11.5, 3), dot(16, 11.5)]),
+  'M2.5 4.5V19.5',
 ]

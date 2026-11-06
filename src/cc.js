@@ -3,6 +3,7 @@
 import { circle, rounded } from './geometry'
 import { glyph, snap } from './letters'
 import { ring } from './marks'
+import { hole, knock, solid } from './solid'
 import { danger } from './tone'
 
 const D = 9 * Math.SQRT1_2
@@ -51,4 +52,12 @@ export const CC = {
   'public-domain': { zh: '公有领域', paths: () => [ring(), 'M14.5 9.75A3.25 3.25 0 1 0 14.5 14.25', slash] },
   // Copyleft：反过来的 ©
   'copyleft': { zh: 'Copyleft', paths: () => [ring(), 'M9.5 9.75A3.25 3.25 0 1 1 9.5 14.25'] },
+}
+
+// 实心：圆片上挖出符号。斜杠两端各收一个线宽，不把圆片切成两半；BY 的小人整个挖空（白色剪影）
+export function ccFill(name, radius, stroke) {
+  const [frame, ...symbol] = CC[name].paths(radius)
+  const k = (9 - stroke) * Math.SQRT1_2
+  const inner = symbol.map(p => (p === slash ? `M${12 - k} ${12 - k}L${12 + k} ${12 + k}` : p))
+  return [solid(frame), name === 'cc-by' ? hole(inner) : knock(inner)]
 }

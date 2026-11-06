@@ -3,10 +3,12 @@
 //   亮着的档画窄高的货币符号，没亮的档只留一个圆点（单色下没有「变灰」，用圆点占位）
 // - 硬币堆（price-coins-<货币>-<档>）：底下四层扁硬币，亮着的层画出轮廓，没亮的层只留一排圆点；
 //   最上面立一枚正面朝前、带货币符号的硬币，固定在满堆的位置
+import { GAP } from './clearance'
 import { circle, rounded } from './geometry'
 import { coin } from './money'
 import { snap } from './letters'
 import { dot } from './scene'
+import { clear, knock, solid } from './solid'
 import { affine } from './transform'
 
 export const LEVELS = [1, 2, 3, 4]
@@ -42,7 +44,7 @@ export const priceRow = (key, level) => SLOTS.flatMap((c, i) => (i < level ? sna
 const PITCH = 3
 const [CY, CR] = [7.5, 5.5] // 硬币圆心、外沿墨迹半径
 const S = 0.65
-export function priceCoins(key, level, { radius, stroke }) {
+export function priceCoins(key, level, { radius, stroke }, { fill = false } = {}) {
   const h = stroke / 2
   const [L, R] = [3 + h, 21 - h]
   const bottom = 22 - h
@@ -63,5 +65,11 @@ export function priceCoins(key, level, { radius, stroke }) {
   const ghosts = Array.from({ length: 4 - level }, (_, i) => top + PITCH * (i + 0.5)).flatMap(y => [dot(L, y), dot(R, y)])
   // 硬币里放缩小的货币符号：硬币图标里的 0.6 倍再缩 S 倍，细线
   const glyph = snap(coin(key).map(d => affine(d, S, S, 12 - 12 * S, CY - 12 * S))).map(d => ({ d, detail: true }))
+  // 实心版：亮着的层整块填实，层间横线挖空（一直挖到两侧，每层成一枚独立的扁硬币）；立着的硬币四周让出 GAP，
+  // 硬币本身填实、挖掉货币符号；没亮的层照旧是点
+  if (fill) {
+    const face = circle(12, CY, CR - h)
+    return [solid(rounded(box, r)), knock(lines.map(y => `M${L} ${y}H${R}`)), clear(face, GAP), ...ghosts, solid(face), knock(glyph)]
+  }
   return [...stack, ...ghosts, circle(12, CY, CR - h), ...glyph]
 }

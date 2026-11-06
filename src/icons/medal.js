@@ -1,4 +1,6 @@
+import { GAP } from '../clearance'
 import { circle } from '../geometry'
+import { clear, knock, solid } from '../solid'
 
 // 奖牌：上方 V 形挂带（一整条轮廓，顶边中间凹进一个 V 口，两条斜边正好收在圆牌边上）+ 下方的圆牌 + 牌里一道细内圈
 export default () => [
@@ -6,3 +8,14 @@ export default () => [
   circle(12, 15, 5.75),
   { d: circle(12, 15, 3), thin: true },
 ]
+
+// 实心：挂带封口成一块，圆牌四周让出缝再画实心圆，内圈细线挖空
+export const fill = () => {
+  const disc = circle(12, 15, 5.75)
+  return [
+    solid('M10.1 9.57L7 2.5H10.5L12 6L13.5 2.5H17L13.9 9.57Z'),
+    clear(disc, GAP),
+    solid(disc),
+    knock({ d: circle(12, 15, 3), thin: true }),
+  ]
+}

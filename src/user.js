@@ -1,8 +1,9 @@
 // 用户类图标共用：人像（和添加用户同一个造型，往左挪）+ 右下角标
 // 角标中心 BADGE = (18, 17)；一个隐藏的遮挡圆（半径 HOLE）让肩膀在角标附近断开（同 user-cog / server-cog 的做法），
 // 角标自己也标成刀，不会被遮挡圆删掉
-import { place } from './clearance'
+import { GAP, place } from './clearance'
 import { circle } from './geometry'
+import { clear, solid } from './solid'
 import { cornerScale, outlines } from './symbols'
 import { affine } from './transform'
 
@@ -14,25 +15,36 @@ export const figure = () => [
   'M2.5 20A6.5 6 0 0 1 15.5 20',
 ]
 
+// 实心版：头填实、肩膀封口填实；在描边版遮挡圆的位置挖出圆形的缝（外缘离遮挡圆 GAP + 半个线宽，和描边版肩膀的断口一样），再把角标画成线
+const figureFill = (r, badge) => [
+  solid([circle(9, 8, 3.5), 'M2.5 20A6.5 6 0 0 1 15.5 20Z']),
+  clear(circle(BADGE[0], BADGE[1], r), GAP),
+  ...badge,
+]
+
 const hole = r => ({ d: circle(BADGE[0], BADGE[1], r), cut: true, hidden: true, occlude: true })
 const asBadge = p => (typeof p === 'string' ? { d: p, cut: true } : { ...p, cut: true })
 
 // 符号角标：symbols.js 里的符号（时钟、盾牌……），大小和各系列的角标一致
-export function withSymbol(name, draw, tone, radius) {
+export function withSymbol(name, draw, tone, radius, { fill = false } = {}) {
   const k = cornerScale[name]
   const shape = place(outlines[name], BADGE, k)
   const r = shape.circle ?? Math.max(shape.box[2] - shape.box[0], shape.box[3] - shape.box[1]) / 2 * Math.SQRT2
+  if (fill)
+    return figureFill(Math.min(r, HOLE + 0.5), tone(draw(BADGE, k, radius)))
   return [...figure(), hole(Math.min(r, HOLE + 0.5)), ...tone(draw(BADGE, k, radius)).map(asBadge)]
 }
 
 // 图标角标：把一个完整的 24 格图标缩到 K 倍放进角标（学士帽、房子、沙漏……），用细线（主线的 0.7 倍）：
 // 缩小的图标和人像一样粗会糊成一团（细节 detail 的线宽上限 1.5 正好等于常规线宽，起不到变细的作用）
 const K = 0.4
-export function withIcon(draw, opts, tone = p => p) {
+export function withIcon(draw, opts, tone = p => p, { fill = false } = {}) {
   const paths = draw(opts).map(p => (typeof p === 'string' ? { d: p } : p))
   const scaled = paths.map(p => ({ ...p, d: affine(p.d, K, K, BADGE[0] - 12 * K, BADGE[1] - 12 * K), thin: true, ...(p.dot ? { dot: p.dot * 0.75 } : {}) }))
+  if (fill)
+    return figureFill(HOLE, tone(scaled))
   return [...figure(), hole(HOLE), ...tone(scaled).map(asBadge)]
 }
 
 // 自画角标：paths 直接按 BADGE 附近的坐标画
-export const withPaths = (paths, tone = p => p) => [...figure(), hole(HOLE), ...tone(paths).map(asBadge)]
+export const withPaths = (paths, tone = p => p, { fill = false } = {}) => fill ? figureFill(HOLE, tone(paths)) : [...figure(), hole(HOLE), ...tone(paths).map(asBadge)]

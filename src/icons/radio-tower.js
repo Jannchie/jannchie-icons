@@ -1,5 +1,6 @@
 import { crisp, rounded } from '../geometry'
 import { dot } from '../scene'
+import { solid } from '../solid'
 
 // 信号塔：顶上一个发射点 (12, 6.5) + 左右各两道 ±45° 的信号弧（半径 3.5 / 6.5）+ 下面闭合的三角塔身（顶 10、底 20.5、底宽 10）
 // 塔身顶角约 51°：底宽 8 时只有约 41°，粗字重下塔身被线宽填满
@@ -15,4 +16,14 @@ export default ({ radius }) => [
   wave(3.5, -1),
   wave(6.5, -1),
   rounded([[12, 10, crisp(radius)], [17, 20.5], [7, 20.5]], Math.min(radius, 1)),
+]
+
+// 实心：塔身填实，发射点、信号弧照旧
+export const fill = ({ radius }) => [
+  dot(cx, cy, 3),
+  wave(3.5, 1),
+  wave(6.5, 1),
+  wave(3.5, -1),
+  wave(6.5, -1),
+  solid(rounded([[12, 10, crisp(radius)], [17, 20.5], [7, 20.5]], Math.min(radius, 1))),
 ]

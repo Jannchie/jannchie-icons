@@ -4,6 +4,7 @@ import { segments } from './clip'
 import { circle, rounded } from './geometry'
 import { LABEL, line, snap, textWidth } from './letters'
 import { tagShape } from './marks'
+import { hole, knock, solid } from './solid'
 import { translate } from './transform'
 
 // 外框：shape(radius) 画框，box 是留给文字的区域 [左, 上, 右, 下]
@@ -94,8 +95,20 @@ function layout(rows, [x0, y0, x1, y1]) {
   })
 }
 
+const rowsOf = text => text.split('/').map(r => ({ chars: r.replace('+', ''), plus: r.endsWith('+') }))
+const textOf = (text, box) => layout(rowsOf(text), box).map(d => ({ d, thin: true }))
+
 export function rating(system, text, radius) {
   const { shape, box } = FRAMES[SYSTEMS[system].frame]
-  const rows = text.split('/').map(r => ({ chars: r.replace('+', ''), plus: r.endsWith('+') }))
-  return [shape(radius), ...layout(rows, box).map(d => ({ d, thin: true }))].flat()
+  return [shape(radius), ...textOf(text, box)].flat()
+}
+
+// 实心：外框铺成一块，字从里面挖掉
+// PEGI 的横栏分隔线挖成白线，两端各收一个线宽，横栏和上面的方块仍连在外框上；标签的穿孔挖空
+export function ratingFill(system, text, radius, stroke) {
+  const { frame } = SYSTEMS[system]
+  const { shape, box } = FRAMES[frame]
+  const [body, ...rest] = [shape(radius)].flat()
+  const parts = frame === 'divided' ? [knock(`M${2.5 + stroke} 17.5H${21.5 - stroke}`)] : frame === 'tag' ? [hole(rest)] : []
+  return [solid(body), ...parts, knock(textOf(text, box))]
 }

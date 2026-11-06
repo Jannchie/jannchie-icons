@@ -1,3 +1,5 @@
+import { GAP } from '../clearance'
+import { clear, solid } from '../solid'
 import { cloud } from '../symbols'
 
 // 云遮月：右上月牙，左下云挡在前面；云的轮廓作为 cut，月牙靠近云的地方断开
@@ -13,7 +15,15 @@ const m = [c1[0] + ux * a, c1[1] + uy * a]
 const p1 = [m[0] - uy * h, m[1] + ux * h]
 const p2 = [m[0] + uy * h, m[1] - ux * h]
 
+const moon = `M${pt(p1)}A${r1} ${r1} 0 1 1 ${pt(p2)}A${r2} ${r2} 0 0 0 ${pt(p1)}Z`
+
 export default () => [
-  `M${pt(p1)}A${r1} ${r1} 0 1 1 ${pt(p2)}A${r2} ${r2} 0 0 0 ${pt(p1)}Z`,
+  moon,
   ...cloud([9.75, 15.5], 2).map(d => ({ d, cut: true })),
 ]
+
+// 实心：月牙一块，在云四周让出缝（和描边版的断口一样），云也是实心
+export const fill = () => {
+  const front = cloud([9.75, 15.5], 2)
+  return [solid(moon), clear(front, GAP), ...solid(front)]
+}

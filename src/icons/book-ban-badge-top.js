@@ -4,3 +4,5 @@ import { danger } from '../tone'
 
 // 书 + 右上角禁止
 export default ({ radius, stroke }) => withBadgeTop('ban', ban, danger, radius, stroke)
+
+export const fill = ({ radius, stroke }) => withBadgeTop('ban', ban, danger, radius, stroke, { fill: true })

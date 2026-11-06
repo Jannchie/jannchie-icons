@@ -1,4 +1,5 @@
 import { circle, crisp, rounded } from '../geometry'
+import { hole, knock, solid } from '../solid'
 import { rotate } from '../transform'
 
 // 钢笔工具（矢量）：先竖直画一个笔尖——尖 (12, 0.75)，两肩 (6.5, 9.75) / (17.5, 9.75)，收到底边 8.5–15.5（y = 13.75）；
@@ -10,3 +11,13 @@ export default ({ radius }) => [
   circle(12, 9.25, 1.5),
   rounded([[8, 16.25], [16, 16.25], [16, 19.75], [8, 19.75]], Math.min(radius, 1)),
 ].map(d => rotate(d, -45))
+
+// 实心：笔尖、握把各一块；笔尖挖掉切缝（从尖上开口）和中间的小圆孔（孔和描边版小圆的外缘一样大）
+export const fill = ({ radius }) => [
+  solid([
+    rounded([[12, 0.75, crisp(radius)], [17.5, 9.75], [15.5, 13.75], [8.5, 13.75], [6.5, 9.75]], Math.min(radius, 1.5)),
+    rounded([[8, 16.25], [16, 16.25], [16, 19.75], [8, 19.75]], Math.min(radius, 1)),
+  ]),
+  knock('M12 0.75V7.75'),
+  hole(circle(12, 9.25, 1.5)),
+].flat().map(p => ({ ...p, d: rotate(p.d, -45) }))

@@ -1,7 +1,14 @@
 import { rounded } from '../geometry'
+import { knock, solid } from '../solid'
 
 // 集装箱：侧视长箱体（2.5–21.5 × 6.5–17.5）+ 箱板上四道竖向波纹（6.5 / 10.5 / 14.5 / 18.5，9.5–14.5，离上下边各 3）
 export default ({ radius }) => [
   rounded([[2.5, 6.5], [21.5, 6.5], [21.5, 17.5], [2.5, 17.5]], Math.min(radius, 1.5)),
   ...[6.5, 10.5, 14.5, 18.5].map(x => `M${x} 9.5V14.5`),
+]
+
+// 实心：箱体一块，挖掉四道波纹（离上下边各 3，不切断箱体）
+export const fill = ({ radius }) => [
+  solid(rounded([[2.5, 6.5], [21.5, 6.5], [21.5, 17.5], [2.5, 17.5]], Math.min(radius, 1.5))),
+  knock([6.5, 10.5, 14.5, 18.5].map(x => `M${x} 9.5V14.5`)),
 ]

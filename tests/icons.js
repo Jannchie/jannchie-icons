@@ -1,4 +1,5 @@
-// 测试共用：按核心包的方式组装图标（{ name, draw, animation }，见 scripts/build-packages.mjs），只用公开入口
+// 测试共用：按核心包的方式组装图标（{ name, draw, animation, fill }，见 scripts/build-packages.mjs），只用公开入口
+// 发布包里实心版是预先算好的 solid；这里带源码的 fill，渲染前要 setSolidify（见 tests/fill.test.js）
 import { readdirSync } from 'node:fs'
 
 const modules = import.meta.glob('../src/icons/*.js', { eager: true })
@@ -6,7 +7,7 @@ const modules = import.meta.glob('../src/icons/*.js', { eager: true })
 export const icons = Object.entries(modules)
   .map(([path, mod]) => {
     const name = path.split('/').pop().slice(0, -3)
-    return mod.animation ? { name, draw: mod.default, animation: mod.animation } : { name, draw: mod.default }
+    return { name, draw: mod.default, ...(mod.animation && { animation: mod.animation }), ...(mod.fill && { fill: mod.fill }) }
   })
   .sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0))
 

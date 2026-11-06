@@ -4,3 +4,5 @@ import { info } from '../tone'
 
 // 书 + 右上角云
 export default ({ radius, stroke }) => withBadgeTop('cloud', cloud, info, radius, stroke)
+
+export const fill = ({ radius, stroke }) => withBadgeTop('cloud', cloud, info, radius, stroke, { fill: true })

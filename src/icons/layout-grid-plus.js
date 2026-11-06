@@ -1,4 +1,5 @@
 import { rounded } from '../geometry'
+import { solid } from '../solid'
 import { success } from '../tone'
 
 // 网格加一格：三个方块，右下角的格子换成加号（添加应用、组件）
@@ -9,5 +10,11 @@ export default ({ radius }) => [
   cell(13.5, 3.5, radius),
   cell(3.5, 13.5, radius),
   // 加号居中在右下格子的中心 (17, 17)
+  ...success(['M17 13.5V20.5M13.5 17H20.5']),
+]
+
+// 实心：三个方块填实，加号照旧是线
+export const fill = ({ radius }) => [
+  solid([cell(3.5, 3.5, radius), cell(13.5, 3.5, radius), cell(3.5, 13.5, radius)]),
   ...success(['M17 13.5V20.5M13.5 17H20.5']),
 ]

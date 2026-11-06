@@ -1,3 +1,4 @@
+import { knock, solid } from '../solid'
 import base from './hexagon'
 
 // C#：六边形 + 左边的圆弧 C + 右边一个小 #
@@ -11,4 +12,10 @@ export default opts => [
   `M${cx + dx} ${cy - dy}A${r} ${r} 0 1 0 ${cx + dx} ${cy + dy}`,
   'M14.5 9.5V14.5M17.5 9.5V14.5',
   'M13.5 10.5H18.5M13.5 13.5H18.5',
+]
+
+// 实心：六边形一块，挖掉 C 和 #
+export const fill = opts => [
+  solid(base(opts)),
+  knock([`M${cx + dx} ${cy - dy}A${r} ${r} 0 1 0 ${cx + dx} ${cy + dy}`, 'M14.5 9.5V14.5M17.5 9.5V14.5', 'M13.5 10.5H18.5M13.5 13.5H18.5']),
 ]

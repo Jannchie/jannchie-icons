@@ -4,3 +4,5 @@ import { warning } from '../tone'
 
 // 显示器 + 右下角感叹号
 export default ({ radius, stroke }) => withBadge('exclaim', exclaim, warning, radius, stroke)
+
+export const fill = ({ radius, stroke }) => withBadge('exclaim', exclaim, warning, radius, stroke, { fill: true })

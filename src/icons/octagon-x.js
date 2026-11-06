@@ -1,4 +1,5 @@
 import { rounded } from '../geometry'
+import { knock, solid } from '../solid'
 import { cross } from '../symbols'
 
 // 停止（八边形 + 叉）
@@ -9,3 +10,6 @@ const v = Array.from({ length: 8 }, (_, i) => {
   return [12 + R * Math.cos(a), 12 + R * Math.sin(a)]
 })
 export default ({ radius }) => [rounded(v, Math.min(radius, 1.5)), ...cross([12, 12], 1.4).map(p => p.d ?? p)]
+
+// 实心：八边形一块，挖掉叉
+export const fill = ({ radius }) => [solid(rounded(v, Math.min(radius, 1.5))), knock(cross([12, 12], 1.4).map(p => p.d ?? p))]

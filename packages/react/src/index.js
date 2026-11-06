@@ -12,16 +12,16 @@ export const IconContext = createContext(null)
 const getServerDpr = () => 1
 
 // 子树里所有 JIcon 的默认配置；嵌套时和外层合并，colors 按角色合并
-export function IconProvider({ children, size, radius, weight, duo, theme, colors, hinting }) {
+export function IconProvider({ children, size, radius, weight, variant, duo, theme, colors, hinting }) {
   const parent = useContext(IconContext)
   const value = useMemo(() => {
-    const own = Object.fromEntries(Object.entries({ size, radius, weight, duo, theme, colors, hinting }).filter(([, v]) => v !== undefined))
+    const own = Object.fromEntries(Object.entries({ size, radius, weight, variant, duo, theme, colors, hinting }).filter(([, v]) => v !== undefined))
     return mergeDefaults(parent ?? {}, own)
-  }, [parent, size, radius, weight, duo, theme, colors, hinting])
+  }, [parent, size, radius, weight, variant, duo, theme, colors, hinting])
   return h(IconContext.Provider, { value }, children)
 }
 
-export const JIcon = forwardRef(function JIcon({ icon, size, radius, weight, duo, theme, colors, title, hinting, children, ...rest }, ref) {
+export const JIcon = forwardRef(function JIcon({ icon, size, radius, weight, variant, duo, theme, colors, title, hinting, children, ...rest }, ref) {
   const d = useContext(IconContext) ?? {}
   const dpr = useSyncExternalStore(subscribeDpr, getDpr, getServerDpr)
   const s = size ?? d.size ?? 24
@@ -29,12 +29,13 @@ export const JIcon = forwardRef(function JIcon({ icon, size, radius, weight, duo
   const px = (hinting ?? d.hinting ?? false) && css ? Math.round(css * dpr) : 0
   const r = radius ?? d.radius
   const w = weight ?? d.weight
+  const v = variant ?? d.variant
   const du = duo ?? d.duo
   const th = theme ?? d.theme
   const c = d.colors || colors ? { ...d.colors, ...colors } : undefined
   const ckey = c && JSON.stringify(c)
   // eslint-disable-next-line react-hooks/exhaustive-deps -- colors 按内容比较，调用方每次渲染传新对象也不会重算
-  const shape = useMemo(() => toPaths(icon, { radius: r, weight: w, duo: du, theme: th, colors: c, title, px }), [icon, r, w, du, th, ckey, title, px])
+  const shape = useMemo(() => toPaths(icon, { radius: r, weight: w, variant: v, duo: du, theme: th, colors: c, title, px }), [icon, r, w, v, du, th, ckey, title, px])
   return renderSvg(s, shape, { ...rest, ref }, children)
 })
 

@@ -1,5 +1,6 @@
 import { circle } from '../geometry'
 import { dot } from '../scene'
+import { knock, solid } from '../solid'
 
 // 病毒：圆形病毒体（半径 5）+ 八根刺突，每根末端一个圆点；刺突从 22.5° 起每隔 45° 一根，
 // 都是斜的——没有横竖的刺突，圆心就可以放在 (12, 12) 不用顾及像素网格
@@ -16,5 +17,16 @@ export default () => {
     ...angles.map(a => dot(...at(a, knob), 2.5)),
     dot(10.5, 10.75),
     dot(13.5, 13.25, 1.5),
+  ]
+}
+
+// 实心：病毒体一块，表面的两个斑点挖空；刺突和末端的圆点照旧
+export const fill = () => {
+  const angles = Array.from({ length: 8 }, (_, i) => 22.5 + i * 45)
+  return [
+    solid(circle(12, 12, R)),
+    knock([dot(10.5, 10.75), dot(13.5, 13.25, 1.5)]),
+    ...angles.map(a => `M${at(a, R).join(' ')}L${at(a, spike).join(' ')}`),
+    ...angles.map(a => dot(...at(a, knob), 2.5)),
   ]
 }

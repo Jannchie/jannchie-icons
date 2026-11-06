@@ -1,4 +1,5 @@
 import { circle } from '../geometry'
+import { solid } from '../solid'
 
 // 神经网络：三层节点（2 - 3 - 2，列在 x 4.5、12、19.5），相邻两层全连接；连线的两端正好接在节点圆圈的边上
 // 两侧节点圆的墨迹常规离画布 2、粗字重 1.75（圆形可以到 1.5）
@@ -15,13 +16,20 @@ function edge(a, b) {
   return `M${a[0] + ux} ${a[1] + uy}L${b[0] - ux} ${b[1] - uy}`
 }
 
-export default () => {
-  const edges = []
+// 相邻两层全连接的连线
+function edges() {
+  const out = []
   for (let i = 0; i < layers.length - 1; i++) {
     for (const a of layers[i]) {
       for (const b of layers[i + 1])
-        edges.push(edge(a, b))
+        out.push(edge(a, b))
     }
   }
-  return [...layers.flat().map(([x, y]) => circle(x, y, r)), ...edges]
+  return out
 }
+const nodes = () => layers.flat().map(([x, y]) => circle(x, y, r))
+
+export default () => [...nodes(), ...edges()]
+
+// 实心：节点填实，连线照旧是线
+export const fill = () => [solid(nodes()), ...edges()]

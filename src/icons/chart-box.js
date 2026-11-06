@@ -1,4 +1,5 @@
 import { rounded } from '../geometry'
+import { knock, solid } from '../solid'
 
 // 箱线图：两个箱体（中位线）+ 上下须线和须端短横
 export default ({ radius }) => [
@@ -11,6 +12,21 @@ export default ({ radius }) => [
   'M6.5 19.5H8.5',
   rounded([[14.5, 6.5], [18.5, 6.5], [18.5, 12.5], [14.5, 12.5]], Math.min(radius, 0.75)),
   'M14.5 9.5H18.5',
+  'M16.5 6.5V3.5',
+  'M16.5 12.5V17.5',
+  'M15.5 3.5H17.5',
+  'M15.5 17.5H17.5',
+]
+
+// 实心：两个箱体填实，中位线挖穿（伸出箱边一个线宽），箱体分成上下两个四分位块；须线照旧是线
+export const fill = ({ radius, stroke }) => [
+  solid(rounded([[5.5, 9.5], [9.5, 9.5], [9.5, 15.5], [5.5, 15.5]], Math.min(radius, 0.75))),
+  solid(rounded([[14.5, 6.5], [18.5, 6.5], [18.5, 12.5], [14.5, 12.5]], Math.min(radius, 0.75))),
+  knock([`M${5.5 - stroke} 12.5H${9.5 + stroke}`, `M${14.5 - stroke} 9.5H${18.5 + stroke}`]),
+  'M7.5 9.5V5.5',
+  'M7.5 15.5V19.5',
+  'M6.5 5.5H8.5',
+  'M6.5 19.5H8.5',
   'M16.5 6.5V3.5',
   'M16.5 12.5V17.5',
   'M15.5 3.5H17.5',

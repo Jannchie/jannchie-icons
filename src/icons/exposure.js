@@ -1,8 +1,9 @@
 import { rounded } from '../geometry'
+import { knock, solid } from '../solid'
 
 // 曝光：方框被 \ 对角线分开（对角线统一左上 → 右下），右上加号、左下减号
 // 对角线的两端落在框的圆角上：圆角半径 c 时，圆角弧和对角线的交点离框角 c(1 - 1/√2)，尖角模式下就是框角
-export default ({ radius }) => {
+const outline = ({ radius }) => {
   const c = Math.min(radius, 2.5)
   const e = Math.round((3.5 + c * (1 - Math.SQRT1_2)) * 1000) / 1000
   const f = 24 - e
@@ -14,4 +15,12 @@ export default ({ radius }) => {
     'M14.25 7.5H18.75',
     'M5.25 16.5H9.75',
   ]
+}
+export default outline
+
+// 实心：方框一块，挖掉对角线（分成两个三角）和加减号；对角线两头往框外多伸一个线宽，干净地切开两个框角
+export const fill = ({ radius, stroke }) => {
+  const [frame, diagonal, ...marks] = outline({ radius })
+  const [a, b] = diagonal.slice(1).split('L').map(p => +p.split(' ')[0])
+  return [solid(frame), knock([`M${a - stroke} ${a - stroke}L${b + stroke} ${b + stroke}`, ...marks])]
 }

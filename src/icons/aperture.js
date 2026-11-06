@@ -1,4 +1,5 @@
 import { circle } from '../geometry'
+import { hole, knock, solid } from '../solid'
 
 // 光圈：圆内 6 片叶片。每条线从内六边形的上一个顶点出发，沿一条边经过下一个顶点再延伸到外圆，
 // 六条线首尾相接围出中间的六边形孔，外圈形成风车状的叶片
@@ -20,3 +21,10 @@ const blades = v.map((p, i) => {
 })
 
 export default () => [circle(cx, cy, R), ...blades]
+
+// 实心：圆盘一块，挖掉叶片线（叶片各成一块），中间的六边形孔挖空
+export const fill = () => [
+  solid(circle(cx, cy, R)),
+  knock(blades),
+  hole(`M${v.map(p => p.join(' ')).join('L')}Z`),
+]

@@ -1,4 +1,10 @@
+import { fillParts } from '../calendar'
+import { centerFill } from '../solid'
 import calendar from './calendar'
 
 // 日历 + 格子里一颗心（纪念日）：心形的墨迹重心略偏上，整体比格子区中心（15.5）低 0.6，看起来居中
-export default opts => [...calendar(opts), 'M12 19C9.5 17.5 8.5 16.25 8.5 15C8.5 14 9.25 13.25 10.25 13.25C11 13.25 11.6 13.7 12 14.3C12.4 13.7 13 13.25 13.75 13.25C14.75 13.25 15.5 14 15.5 15C15.5 16.25 14.5 17.5 12 19Z']
+const HEART = 'M12 19C9.5 17.5 8.5 16.25 8.5 15C8.5 14 9.25 13.25 10.25 13.25C11 13.25 11.6 13.7 12 14.3C12.4 13.7 13 13.25 13.75 13.25C14.75 13.25 15.5 14 15.5 15C15.5 16.25 14.5 17.5 12 19Z'
+export default opts => [...calendar(opts), HEART]
+
+// 实心：心形从格子区里挖出来
+export const fill = ({ radius, stroke }) => centerFill(fillParts(radius, stroke), [HEART])

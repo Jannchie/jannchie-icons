@@ -1,4 +1,5 @@
 import { circle, rounded } from '../geometry'
+import { hole, solid } from '../solid'
 
 // 设置：8 齿齿轮 + 中心圆；齿根半径 7、齿顶半径约 8.6，齿顶比齿根窄
 const [cx, cy] = [12, 12]
@@ -14,4 +15,10 @@ const teeth = Array.from({ length: 8 }, (_, i) => {
 export default ({ radius }) => [
   rounded(teeth, Math.min(radius, 1)),
   circle(cx, cy, 3),
+]
+
+// 实心：齿轮一块，中心挖一个圆洞（洞外扩半个线宽后半径 3，和描边版中心圆的中心线一样大）
+export const fill = ({ radius, stroke }) => [
+  solid(rounded(teeth, Math.min(radius, 1))),
+  hole(circle(cx, cy, 3 - stroke / 2)),
 ]

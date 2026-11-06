@@ -2,6 +2,7 @@
 // 外形按墨迹的外缘定（尖角下的外缘）：每条边往里收半个线宽 h 得到中心线，线宽变粗时外缘不动、往里长（见 docs/design.md）
 // 斜边、尖角在大圆角下会被削掉一截，所以尖角处的外缘留得比直边更靠外，让常规圆角下的墨迹框以画布中线对称
 import { circle, rounded } from './geometry'
+import { hole, solid } from './solid'
 
 // 外缘多边形（顺时针、凸）每条边沿法线往里收 h，返回中心线多边形的顶点
 export function shrink(points, h) {
@@ -40,4 +41,9 @@ export const tagHole = () => circle(8, 8, 1.25)
 export function tagHorizontal(stroke, radius) {
   const outer = [[1.5, 12], [7.2, 4], [22, 4], [22, 20], [7.2, 20]]
   return [rounded(shrink(outer, stroke / 2), Math.min(radius, 2)), circle(7.5, 12, 1.25)]
+}
+// 横放标签的实心版：标签一块，穿孔挖空（tag-horizontal、tag-<字母/数字> 共用，字形再从这块上挖掉）
+export function tagHorizontalFill(stroke, radius) {
+  const [body, punch] = tagHorizontal(stroke, radius)
+  return [solid(body), hole(punch)]
 }

@@ -4,3 +4,5 @@ import { success } from '../tone'
 
 // 显示器 + 右上角加号
 export default ({ radius, stroke }) => withBadgeTop('plus', plus, success, radius, stroke)
+
+export const fill = ({ radius, stroke }) => withBadgeTop('plus', plus, success, radius, stroke, { fill: true })

@@ -1,3 +1,4 @@
+import { knock, solid } from '../solid'
 import base from './hexagon'
 
 // C：六边形 + 中间一个圆弧 C
@@ -8,4 +9,10 @@ const [dx, dy] = [r * Math.cos(a), r * Math.sin(a)].map(v => +v.toFixed(3))
 export default opts => [
   ...base(opts),
   `M${cx + dx} ${cy - dy}A${r} ${r} 0 1 0 ${cx + dx} ${cy + dy}`,
+]
+
+// 实心：六边形一块，挖掉 C
+export const fill = opts => [
+  solid(base(opts)),
+  knock(`M${cx + dx} ${cy - dy}A${r} ${r} 0 1 0 ${cx + dx} ${cy + dy}`),
 ]

@@ -1,4 +1,5 @@
 import { rounded } from '../geometry'
+import { knock, solid } from '../solid'
 
 // 全息投影：底部一台投影座（y = 20.5 上的短横线 8.5–15.5），向上张开两道光束，托着一个悬浮的线框立方体
 // 立方体：30° 等距，中轴 x = 12，半宽 5（三条竖棱落在 7 / 12 / 17），顶 2.5、底 14
@@ -9,6 +10,15 @@ export default ({ radius }) => [
   rounded([[cx, top], [cx + hw, top + dy], [cx + hw, bottom - dy], [cx, bottom], [cx - hw, bottom - dy], [cx - hw, top + dy]], Math.min(radius, 1)),
   `M${cx - hw} ${top + dy}L${cx} ${top + 2 * dy}L${cx + hw} ${top + dy}`,
   `M${cx} ${top + 2 * dy}V${bottom}`,
+  'M8.5 20.5H15.5',
+  { d: 'M9.5 18.5L6 13.5', thin: true },
+  { d: 'M14.5 18.5L18 13.5', thin: true },
+]
+
+// 实心：立方体一块，里面的 Y 形棱挖空，分成三个面；投影座和光束照旧是线
+export const fill = ({ radius }) => [
+  solid(rounded([[cx, top], [cx + hw, top + dy], [cx + hw, bottom - dy], [cx, bottom], [cx - hw, bottom - dy], [cx - hw, top + dy]], Math.min(radius, 1))),
+  knock([`M${cx - hw} ${top + dy}L${cx} ${top + 2 * dy}L${cx + hw} ${top + dy}`, `M${cx} ${top + 2 * dy}V${bottom}`]),
   'M8.5 20.5H15.5',
   { d: 'M9.5 18.5L6 13.5', thin: true },
   { d: 'M14.5 18.5L18 13.5', thin: true },

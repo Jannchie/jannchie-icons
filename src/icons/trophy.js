@@ -1,4 +1,5 @@
 import { rounded } from '../geometry'
+import { solid } from '../solid'
 
 // 奖杯：上口平直、下面半圆的杯身 + 两侧往下收的耳柄（末端正好收在杯身的弧线上） + 杯脚 + 底座
 export default ({ radius }) => [
@@ -7,4 +8,15 @@ export default ({ radius }) => [
   'M17 5.5H19.5C19.5 8 18.6 10 16.77 11',
   'M12 14.5V17.5',
   rounded([[8, 17.5], [16, 17.5], [16, 20.5], [8, 20.5]], Math.min(radius, 1)),
+]
+
+// 实心：杯身、底座各一块；耳柄和杯脚照旧是线
+export const fill = ({ radius }) => [
+  solid([
+    'M7 3.5H17V9.5A5 5 0 0 1 7 9.5Z',
+    rounded([[8, 17.5], [16, 17.5], [16, 20.5], [8, 20.5]], Math.min(radius, 1)),
+  ]),
+  'M7 5.5H4.5C4.5 8 5.4 10 7.23 11',
+  'M17 5.5H19.5C19.5 8 18.6 10 16.77 11',
+  'M12 14.5V17.5',
 ]

@@ -1,4 +1,5 @@
 import { rounded } from '../geometry'
+import { knock, solid } from '../solid'
 import { mirror } from '../transform'
 
 // 双筒望远镜（平面）：左右两根镜筒，各是窄目镜（4.5–8.5 × 4.5–8.5）+ 向下外扩的梯形镜筒（棱镜望远镜的剪影，
@@ -15,4 +16,16 @@ export default ({ radius }) => {
   // 不画闭合小块：小块的竖边贴着斜边，粗字重下糊成一团、尖角模式下角还会冒出去
   const edge = y => +(9.5 + (y - 8.5) / 12).toFixed(3)
   return [...left, ...left.map(d => mirror(d)), ...[11, 14].map(y => `M${edge(y)} ${y}H${24 - edge(y)}`)]
+}
+
+// 实心：目镜、镜筒各是一块，两者之间挖一道缝（不然粘成一个酒瓶剪影）；铰链横杆照旧是线，最后画
+export const fill = ({ radius }) => {
+  const eyepiece = rounded([[4.5, 8.5], [4.5, 4.5], [8.5, 4.5], [8.5, 8.5]], Math.min(radius, 1))
+  const barrel = rounded([[3.5, 8.5], [9.5, 8.5], [10.5, 20.5], [2.5, 20.5]], Math.min(radius, 1.5))
+  const edge = y => +(9.5 + (y - 8.5) / 12).toFixed(3)
+  return [
+    solid([eyepiece, barrel, mirror(eyepiece), mirror(barrel)]),
+    knock(['M4.5 8.5H8.5', mirror('M4.5 8.5H8.5')]),
+    ...[11, 14].map(y => `M${edge(y)} ${y}H${24 - edge(y)}`),
+  ]
 }

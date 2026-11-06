@@ -1,4 +1,5 @@
 import { circle, rounded } from '../geometry'
+import { solid } from '../solid'
 
 // 气泡图：坐标轴 + 三个大小不同的圆
 export default ({ radius }) => [
@@ -6,4 +7,10 @@ export default ({ radius }) => [
   circle(9, 14.5, 2.5),
   circle(15, 8.5, 3.5),
   circle(17, 16.5, 1.5),
+]
+
+// 实心：三个气泡填实，坐标轴照旧是线
+export const fill = ({ radius }) => [
+  rounded([[3.5, 3.5], [3.5, 20.5], [20.5, 20.5]], Math.min(radius, 1), false),
+  solid([circle(9, 14.5, 2.5), circle(15, 8.5, 3.5), circle(17, 16.5, 1.5)]),
 ]

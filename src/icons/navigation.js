@@ -1,4 +1,5 @@
 import { crisp, rounded } from '../geometry'
+import { solid } from '../solid'
 import { rotate } from '../transform'
 
 // 导航：带内凹尾缺的箭头（尖在上，尖 -0.5、两翼 4.5 / 19.5 落在 18、尾缺 13.5），整体顺时针转 45° 指向右上
@@ -6,4 +7,9 @@ import { rotate } from '../transform'
 // 尖不随全局圆角，两翼与尾缺的角圆角封顶 1；尖很窄，直角模式下斜接会往外多伸约 1.4，所以四周留到约 2.5
 export default ({ radius }) => [
   rotate(rounded([[12, -0.5, crisp(radius)], [19.5, 18], [12, 13.5], [4.5, 18]], Math.min(radius, 1)), 45),
+]
+
+// 实心：整个箭头
+export const fill = ({ radius }) => [
+  solid(rotate(rounded([[12, -0.5, crisp(radius)], [19.5, 18], [12, 13.5], [4.5, 18]], Math.min(radius, 1)), 45)),
 ]

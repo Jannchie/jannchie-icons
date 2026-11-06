@@ -1,4 +1,5 @@
 import { petals, spiral } from '../hanamaru'
+import { knock, solid } from '../solid'
 
 // はなまる（花丸）：中间一笔绕两圈的漩涡（半径每半圈加 1.25，相邻两圈中心线间距 2.5）+ 外面一圈七瓣花瓣轮廓
 // 花瓣分界点在半径 7.5 的圆上，瓣尖外缘固定在半径 10.3（线宽变粗往里长）；
@@ -6,4 +7,10 @@ import { petals, spiral } from '../hanamaru'
 export default ({ stroke }) => {
   const h = stroke / 2
   return [petals(12, 12.3, 7, 7.5, 10.3 - h), spiral(12, 12.3, 1.25, 4)]
+}
+
+// 实心：花瓣轮廓填实，漩涡挖空
+export const fill = ({ stroke }) => {
+  const h = stroke / 2
+  return [solid(petals(12, 12.3, 7, 7.5, 10.3 - h)), knock(spiral(12, 12.3, 1.25, 4))]
 }

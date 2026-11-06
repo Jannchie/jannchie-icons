@@ -15,7 +15,7 @@ import LazyIcon from './LazyIcon.vue'
 import { svgString } from './export'
 import initialTimes from 'virtual:icon-times'
 import { CORNERS, WEIGHTS } from './options'
-import { pathsOf } from './render'
+import { hasFill, pathsOf, VARIANTS } from './render'
 import { devicePx } from './site/preview'
 import { ROLES } from './tone'
 import { resnapAll } from './snap'
@@ -47,6 +47,8 @@ const saved = load()
 
 const corner = shallowRef(corners.find(c => c.label === saved.corner) ?? corners[3])
 const weight = shallowRef(weights.find(w => w.id === saved.weight) ?? weights[1])
+// 样式：描边（默认）或实心（fill.js）；没有实心版的图标在实心模式下显示描边版、变淡
+const variant = ref(VARIANTS.includes(saved.variant) ? saved.variant : 'outline')
 const size = ref(Number.isFinite(saved.size) ? Math.min(SIZE.max, Math.max(SIZE.min, Math.round(saved.size / SIZE.step) * SIZE.step)) : 32)
 const theme = ref(themes.some(t => t.id === saved.theme) ? saved.theme : 'auto')
 // 像素对齐（render.js 的 hint）：默认关闭，按原始几何显示；打开后按实际显示的设备像素数整体微移，小尺寸在 1 倍屏上更清晰
@@ -114,7 +116,7 @@ const cornerLabel = c => c.sharp ? t('ui.sharp') : c.label
 
 watchEffect(() => {
   try {
-    localStorage.setItem('preview', JSON.stringify({ corner: corner.value.label, weight: weight.value.id, size: size.value, theme: theme.value, lang: locale.value, duo: duo.value, primary: primary.value, overrides: overrides.value, sort: sortBy.value, hinting: hinting.value }))
+    localStorage.setItem('preview', JSON.stringify({ corner: corner.value.label, weight: weight.value.id, variant: variant.value, size: size.value, theme: theme.value, lang: locale.value, duo: duo.value, primary: primary.value, overrides: overrides.value, sort: sortBy.value, hinting: hinting.value }))
   }
   catch {}
 })
@@ -171,7 +173,7 @@ const keptCategories = computed(() => catFilter.value.trim() ? new Set(categoriz
 const sideSections = computed(() => keptCategories.value ? sections.value.filter(c => keptCategories.value.has(c.id)) : sections.value)
 const searchPaths = finalize(searchIcon(), 1.5)
 // 按名字取图标的 Icon 组件（页头标志、详情的多尺寸预览、示例页）用同一套设置
-provide('iconStyle', computed(() => ({ corner: corner.value, weight: weight.value, hinting: hinting.value })))
+provide('iconStyle', computed(() => ({ corner: corner.value, weight: weight.value, hinting: hinting.value, variant: variant.value })))
 
 // 视图：图标网格 / 示例组件；记在网址的 ?view=examples 上，方便直接分享示例页
 const view = ref(new URLSearchParams(location.search).get('view') === 'examples' ? 'examples' : 'icons')
@@ -204,7 +206,7 @@ const selectedIcon = computed(() => {
   if (!icon)
     return null
   // 不做像素对齐的路径：详情大图和导出用
-  return { name: icon.name, paths: pathsOf(icon, corner.value, weight.value) }
+  return { name: icon.name, paths: pathsOf(icon, corner.value, weight.value, 0, variant.value) }
 })
 // 变体：去掉 -badge-top / -badge / -off 后缀得到「本体」，本体和所有以「本体-」开头的图标算一族（folder-search → folder-search-badge、-badge-top……）；
 // 一族只有自己时，退而显示它所在分组里的其他图标（tag-a → tag-b、tag-c……）
@@ -239,7 +241,7 @@ const allCategories = () => (categoriesCache ??= categorize(icons))
 // 圆角 × 字重：同一个图标在每种组合下的样子，点一格就切到那套设置
 const styleGrid = computed(() => {
   const icon = selected.value && byName.get(selected.value)
-  return icon && weights.map(w => ({ w, cells: corners.map(c => ({ c, paths: pathsOf(icon, c, w, hintPx(24)) })) }))
+  return icon && weights.map(w => ({ w, cells: corners.map(c => ({ c, paths: pathsOf(icon, c, w, hintPx(24), variant.value) })) }))
 })
 const selectedAnimated = computed(() => !!(selected.value && byName.get(selected.value)?.animation))
 // 元数据（meta/meta.js）：搜索关键词、首次发布的版本（"next" = 还没发布）
@@ -426,6 +428,9 @@ onUnmounted(() => {
           <button :aria-pressed="sortBy === 'category'" @click="sortBy = 'category'">{{ t('ui.sortCategory') }}</button>
           <button :aria-pressed="sortBy === 'recent'" @click="sortBy = 'recent'">{{ t('ui.sortRecent') }}</button>
         </div>
+        <div class="opt" role="group" :aria-label="t('ui.variant')">
+          <button v-for="v in VARIANTS" :key="v" :aria-pressed="variant === v" @click="variant = v">{{ t(`ui.${v}`) }}</button>
+        </div>
         <div class="opt" role="group" :aria-label="t('ui.corner')">
           <button v-for="c in corners" :key="c.label" :aria-pressed="corner === c" @click="corner = c">{{ cornerLabel(c) }}</button>
         </div>
@@ -507,12 +512,12 @@ onUnmounted(() => {
                 v-for="icon in g.icons"
                 :key="icon.name"
                 class="cell"
-                :class="{ selected: selected === icon.name }"
+                :class="{ 'selected': selected === icon.name, 'no-fill': variant === 'fill' && !hasFill(icon) }"
                 :data-name="icon.name"
-                :title="icon.name"
+                :title="variant === 'fill' && !hasFill(icon) ? `${icon.name} · ${t('ui.noFill')}` : icon.name"
                 @click="selected = selected === icon.name ? null : icon.name"
               >
-                <LazyIcon :icon="icon" :corner="corner" :weight="weight" :px="hintPx(size)" />
+                <LazyIcon :icon="icon" :corner="corner" :weight="weight" :px="hintPx(size)" :variant="variant" />
                 <span class="name">{{ icon.name }}</span>
               </button>
               <div v-for="i in fillers(g.icons.length)" :key="`fill-${i}`" class="cell filler" aria-hidden="true" />
@@ -815,6 +820,7 @@ main { min-width: 0; padding-bottom: 80px; }
 .cell:hover { background: var(--sunken); }
 .cell.filler { cursor: default; }
 .cell.filler:hover { background: none; }
+.cell.no-fill .lazy-icon { opacity: .3; }
 /* 选中：强调色淡底 + 一圈 2px 强调色内描边（只有淡底时和悬停的灰底差不多，不够醒目） */
 .cell.selected { background: var(--accent-soft); color: var(--accent); box-shadow: inset 0 0 0 2px var(--accent); }
 .cell .name {

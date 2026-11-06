@@ -1,5 +1,6 @@
 import { rounded } from '../geometry'
 import { speaker } from '../media'
+import { solid } from '../solid'
 
 // 音量：喇叭 + 两道 ±45° 的声波弧
 const c = [12.5, 12]
@@ -13,3 +14,6 @@ export default ({ radius }) => [
   wave(3.5),
   wave(7),
 ]
+
+// 实心：喇叭填实，声波照旧是线
+export const fill = ({ radius }) => [solid(rounded(speaker, radius)), wave(3.5), wave(7)]

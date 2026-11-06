@@ -4,3 +4,5 @@ import { info } from '../tone'
 
 // 盾 + 右下角时钟
 export default ({ radius, stroke }) => withBadge('clock', clock, info, radius, stroke)
+
+export const fill = ({ radius, stroke }) => withBadge('clock', clock, info, radius, stroke, { fill: true })

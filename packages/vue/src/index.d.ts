@@ -1,4 +1,4 @@
-import type { Icon, Radius, Role, Theme, Weight } from '@jannchie/icons'
+import type { Icon, Radius, Role, Theme, Variant, Weight } from '@jannchie/icons'
 import type { ComputedRef, DefineComponent, InjectionKey, MaybeRefOrGetter, Plugin } from 'vue'
 
 export type IconColors = Partial<Record<'primary' | Role, string>>
@@ -11,6 +11,8 @@ export interface IconDefaults {
   radius?: Radius
   /** Stroke weight: 'light', 'regular' or 'bold'. Defaults to 'regular' */
   weight?: Weight
+  /** 'fill' draws the solid version (icons without one fall back to the outline, see hasFill). Defaults to 'outline' */
+  variant?: Variant
   /** Color badges and strike-throughs by their meaning */
   duo?: boolean
   /** Light or dark recommended colors for duo */

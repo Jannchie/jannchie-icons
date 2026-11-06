@@ -4,3 +4,5 @@ import { accent } from '../tone'
 
 // 书 + 右上角插头
 export default ({ radius, stroke }) => withBadgeTop('plug', plug, accent, radius, stroke)
+
+export const fill = ({ radius, stroke }) => withBadgeTop('plug', plug, accent, radius, stroke, { fill: true })

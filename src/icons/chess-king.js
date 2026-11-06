@@ -1,4 +1,4 @@
-import { base } from '../chess'
+import { base, pieceFill } from '../chess'
 
 // 国际象棋·王：顶上十字 + 圆鼓的冠 + 身子 + 底座
 export default ({ radius }) => [
@@ -9,4 +9,14 @@ export default ({ radius }) => [
   'M9.5 13.5L8.5 17.5',
   'M14.5 13.5L15.5 17.5',
   base(radius),
+]
+
+// 实心：冠、身子、底座填实，部件之间挖缝，顶上的十字照旧是线
+export const fill = ({ radius }) => [
+  ...pieceFill(radius, [
+    'M8 8.75C8 7.25 9.5 6.5 12 6.5C14.5 6.5 16 7.25 16 8.75C16 10.25 15 12 14.5 13.5H9.5C9 12 8 10.25 8 8.75Z',
+    'M9.5 13.5L8.5 17.5H15.5L14.5 13.5Z',
+  ], ['M9.5 13.5H14.5']),
+  'M12 2.5V6.5',
+  'M10.25 4.5H13.75',
 ]

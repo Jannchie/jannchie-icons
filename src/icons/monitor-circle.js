@@ -1,9 +1,15 @@
-import { center, centerScale, plain } from '../monitor'
+import { center, centerScale, fillParts, plain } from '../monitor'
 import { ring, visual } from '../symbols'
 import { accent } from '../tone'
+import { centerFill } from '../solid'
 
 // 显示器 + 圆
 export default ({ radius, stroke }) => [
   ...plain(radius, stroke),
   ...accent(ring(center, centerScale * visual.ring, radius)),
 ]
+
+// 实心：主体填实，挖掉居中的符号
+export const fill = ({ radius, stroke }) => centerFill(fillParts(radius, stroke), [
+  ...accent(ring(center, centerScale * visual.ring, radius)),
+])

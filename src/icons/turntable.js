@@ -1,5 +1,6 @@
 import { circle, crisp, rounded } from '../geometry'
 import { dot } from '../scene'
+import { knock, solid } from '../solid'
 
 // 黑胶唱片机（俯视）：方形的圆角机身（3.5–20.5 见方）+ 左边一张唱片（圆心 (10.5, 12)、半径 5，离机身左、上、下边各留 2）+ 中心轴
 // 右上角是唱臂支点（实心点 (17.5, 6.5)，唱臂从点里出发，线头藏在点里），唱臂竖直落下再斜折进唱片，唱头落在 (13, 14.5)，离唱片外圈约 1.5
@@ -9,4 +10,10 @@ export default ({ radius }) => [
   dot(10.5, 12),
   dot(17.5, 6.5, 3),
   rounded([[17.5, 6.5], [17.5, 13], [13, 14.5]], crisp(radius), false),
+]
+
+// 实心：机身一块，挖掉唱片的圆圈（唱片留成实心）、中心轴、唱臂和支点
+export const fill = ({ radius }) => [
+  solid(rounded([[3.5, 3.5], [20.5, 3.5], [20.5, 20.5], [3.5, 20.5]], Math.min(radius, 2.5))),
+  knock([circle(10.5, 12, 5), dot(10.5, 12), dot(17.5, 6.5, 3), rounded([[17.5, 6.5], [17.5, 13], [13, 14.5]], crisp(radius), false)]),
 ]

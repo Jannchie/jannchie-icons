@@ -3,8 +3,9 @@
 // 线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽
 // 外框墨迹 3–21 × 4–22；表头线在外框顶边下 5（线宽 1 时落在 9.5 上）；挂环 x 7.5 / 16.5，从 2 往下穿过顶边，停在离表头线 2.5 处
 import { rectAround } from './clearance'
-import { asBadge, fitBadge, roomOnBottom, roomOnRight } from './corner'
+import { asBadge, fitBadge, notchOf, roomOnBottom, roomOnRight } from './corner'
 import { rounded } from './geometry'
+import { badgeFill, knock, solid } from './solid'
 
 const RINGS = [7.5, 16.5]
 const R = 2.5 // 外框圆角上限
@@ -32,7 +33,7 @@ export const centerScale = 1.05
 // 角标比普通角标大 GROW 倍，和文件夹一样（16px 下也认得出符号）；放不下时 fitBadge 再缩回去
 const GROW = 1.3
 
-export function withBadge(name, draw, tone, radius, stroke) {
+export function withBadge(name, draw, tone, radius, stroke, { fill = false } = {}) {
   const { l, t, r, b, head } = frame(stroke)
   const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 21, bottom: 22 }, s => roomOnRight(stroke, r, head)(s) && roomOnBottom(stroke, b, l)(s), GROW)
   const outline = rectAround(shape, stroke, [l, t, r, b])
@@ -42,9 +43,22 @@ export function withBadge(name, draw, tone, radius, stroke) {
   const turn = end[1] < head + 1.5
   if (turn)
     end[1] = head
+  // 实心版：同样的角标位置，主体在角上挖出缺口，角标落在缺口里
+  if (fill)
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), notchOf(shape, 'bottom', radius))
   return [
     ...(turn ? [`${rounded(outline, Math.min(radius, R), false)}H${l}`] : [rounded(outline, Math.min(radius, R), false), `M${l} ${head}H${r}`]),
     ...RINGS.map(x => ring(x, stroke)),
     ...asBadge(tone(draw(at, k, radius)), name),
   ]
+}
+
+// 实心版（见 solid.js 的 plainFill / badgeFill / centerFill）：外框一块，挖掉表头线；表头线两端各缩一个线宽，
+// 左右两边留一道线宽的墙，表头和格子区连成一块。挂环照旧是线
+export function fillParts(radius, stroke) {
+  const { l, t, r, b, head } = frame(stroke)
+  return {
+    body: [solid(rounded([[l, t], [r, t], [r, b], [l, b]], Math.min(radius, R))), knock(`M${l + stroke} ${head}H${r - stroke}`)],
+    lines: RINGS.map(x => ring(x, stroke)),
+  }
 }

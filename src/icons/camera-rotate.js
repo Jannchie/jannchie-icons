@@ -1,3 +1,4 @@
+import { knock, solid } from '../solid'
 import camera from './camera'
 
 // 翻转镜头：相机外形（不画镜头圆）+ 机身里两段顺时针相追的圆弧箭头，圆心同镜头 (12, 13.25)、半径 3.5
@@ -9,9 +10,16 @@ const at = deg => {
   const a = deg * Math.PI / 180
   return `${+(cx + r * Math.cos(a)).toFixed(3)} ${+(cy + r * Math.sin(a)).toFixed(3)}`
 }
-export default ({ radius }) => [
+const outline = ({ radius }) => [
   camera({ radius })[0],
   // 弧和箭翼画成一笔（折角），分开画时粗字重的端点吸附会把短短的箭翼吸回弧上
   `M${at(180 + gap)}A${r} ${r} 0 0 1 ${cx + r} ${cy}L${cx + r + wing * 0.7} ${cy - wing * 0.7}`,
   `M${at(gap)}A${r} ${r} 0 0 1 ${cx - r} ${cy}L${cx - r - wing * 0.7} ${cy + wing * 0.7}`,
 ]
+export default outline
+
+// 实心：机身一块，挖掉两段圆弧箭头
+export const fill = ({ radius }) => {
+  const [body, ...arrows] = outline({ radius })
+  return [solid(body), knock(arrows)]
+}

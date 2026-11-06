@@ -3,7 +3,8 @@
 // 页线在封面底边上方 5（线宽 1 时落在 16.5 上）；封面左上角是半径 2.5 的书脊圆弧，左下角圆角 1.5
 // 页线从书脊处顺着竖边起笔（起点切线朝上，比左下圆角的起点高 1），线头落在竖边的直段里，尖角模式下不会从左下圆角外侧冒出来
 import { blocked } from './clearance'
-import { asBadge, fitBadge, roomOnBottom } from './corner'
+import { asBadge, fitBadge, notchOf, roomOnBottom } from './corner'
+import { badgeFill, knock, solid } from './solid'
 
 function frame(stroke) {
   const h = stroke / 2
@@ -33,14 +34,20 @@ export const centerScale = 1.25
 const GROW = 1.3
 
 // 右上角标（-badge-top）：符号墨迹的右缘贴到封面右边的外缘 20，上缘贴到封面顶边的外缘 2；顶边、右边在离符号 GAP 处断开，页线不受影响
-export function withBadgeTop(name, draw, tone, radius, stroke) {
+export function withBadgeTop(name, draw, tone, radius, stroke, { fill = false } = {}) {
   const f = frame(stroke)
   const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 20, top: 2 }, roomOnBottom(stroke, f.t, f.l + 2.5), GROW)
   const right = blocked(shape, 'y', f.r, stroke)
   const top = blocked(shape, 'x', f.t, stroke)
+  // 实心版：同样的角标位置，主体在角上挖出缺口，角标落在缺口里
+  if (fill)
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), notchOf(shape, 'top', radius))
   return [
     `M${f.r} ${right ? right[1] : f.t}V${f.b}${spine(f)}H${top ? top[0] : f.r}`,
     pageLine(f, f.r),
     ...asBadge(tone(draw(at, k, radius)), name),
   ]
 }
+
+// 实心版（见 solid.js 的 plainFill / badgeFill / centerFill）：封面一块，挖掉页线（页线以下成了单独的一条书页）
+export const fillParts = (radius, stroke) => ({ body: [solid(cover(stroke)), knock(page(stroke))], lines: [] })

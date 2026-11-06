@@ -1,4 +1,5 @@
 import { crisp, rounded } from '../geometry'
+import { solid } from '../solid'
 
 // 点击：比普通光标小一号的箭头（约 0.85 倍，左边竖直、右上边 45°，尾巴斜伸）+ 尖端外三道放射短线
 // 普通光标高 17，原样摆进来再加短线会顶到画布边，所以箭头单独画：尖端 (9.5, 7)，左边竖线在 9.5、底边横线在 16.5（细字重下落在像素上），尾巴最低到 21；尾巴宽约 2.6，粗字重下中间也留缝
@@ -14,6 +15,14 @@ const ray = (deg, from) => {
 
 export default ({ radius }) => [
   rounded(pointer.map((p, i) => (i === 0 ? [...p, crisp(radius)] : p)), Math.min(radius, 1)),
+  ray(-112.5, 3.25),
+  ray(-67.5, 3),
+  ray(-157.5, 3),
+]
+
+// 实心：箭头一块，三道放射短线照旧是线
+export const fill = ({ radius }) => [
+  solid(rounded(pointer.map((p, i) => (i === 0 ? [...p, crisp(radius)] : p)), Math.min(radius, 1))),
   ray(-112.5, 3.25),
   ray(-67.5, 3),
   ray(-157.5, 3),

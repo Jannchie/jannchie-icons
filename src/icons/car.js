@@ -1,4 +1,7 @@
+import { GAP } from '../clearance'
 import { circle, rounded } from '../geometry'
+import { clear, hole, solid } from '../solid'
+import { shrink } from '../tag'
 
 // 汽车（侧视、车头朝右）：车身是闭合轮廓——车尾 2.5、车头 21.5，腰线 11.5，车顶 6.5（8.5–15，前后挡风斜下到腰线），底边 14.5
 // 腰线横贯车窗下沿：两端顺着车身轮廓的水平段延续（不是斜接），中间一根竖柱把车窗分成前后两扇
@@ -10,3 +13,16 @@ export default ({ radius }) => [
   circle(7, 16.75, 2.25),
   circle(17, 16.75, 2.25),
 ]
+
+// 实心：车身一块，前后两扇车窗挖空（窗洞是车窗中心线往里收一个线宽再外扩半个线宽，和描边版窗框的内缘一样大；
+// 粗字重下 4 高的车窗收不了一个线宽，最多收 1.6）；车轮四周让出缝，车轮是实心圆
+export const fill = ({ radius, stroke }) => {
+  const k = Math.min(stroke, 1.6)
+  const wheels = [circle(7, 16.75, 2.25), circle(17, 16.75, 2.25)]
+  return [
+    solid(rounded([[2.5, 14.5], [2.5, 10.5], [6, 10.5], [8.5, 6.5], [15, 6.5], [18, 10.5], [21.5, 10.5], [21.5, 14.5]], Math.min(radius, 1.5))),
+    hole([rounded(shrink([[6, 10.5], [8.5, 6.5], [12.5, 6.5], [12.5, 10.5]], k), 0), rounded(shrink([[12.5, 6.5], [15, 6.5], [18, 10.5], [12.5, 10.5]], k), 0)]),
+    clear(wheels, GAP),
+    solid(wheels),
+  ]
+}

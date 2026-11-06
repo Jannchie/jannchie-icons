@@ -1,5 +1,6 @@
 import { crisp, rounded } from '../geometry'
 import { ring } from '../marks'
+import { knock, solid } from '../solid'
 
 // 足球：圆 + 中间的正五边形 + 从五边形每个顶点射向球边的缝线
 // 五边形中心放在 (11.5, …)：朝上的缝线落在 x = 11.5，底边落在 y = 14.5
@@ -21,4 +22,17 @@ export default ({ radius }) => [
   ring(),
   rounded(penta, crisp(radius)),
   ...penta.map((p, i) => `M${p.join(' ')}L${rim(i).join(' ')}`),
+]
+
+// 实心：球一块，挖掉五边形的轮廓（五边形留成实心）和五道缝线；缝线外端缩一个线宽，球边不被切开
+export const fill = ({ radius, stroke }) => [
+  solid(ring()),
+  knock([
+    rounded(penta, crisp(radius)),
+    ...penta.map((p, i) => {
+      const [ux, uy] = dir(i)
+      const [x, y] = rim(i)
+      return `M${p.join(' ')}L${x - ux * stroke} ${y - uy * stroke}`
+    }),
+  ]),
 ]

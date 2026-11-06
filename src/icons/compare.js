@@ -1,4 +1,6 @@
+import { GAP } from '../clearance'
 import { circle, crisp, rounded } from '../geometry'
+import { clear, knock, solid } from '../solid'
 
 // 对比：外框 + 中间分隔线（分隔线在滑块圆圈处断开）+ 圆形滑块
 export default ({ radius, stroke }) => [
@@ -6,4 +8,12 @@ export default ({ radius, stroke }) => [
   rounded([[3, 4.5], [21, 4.5], [21, 19.5], [3, 19.5]], Math.min(radius, 2.5)),
   'M12 4.5V19.5',
   { d: circle(12, 12, 2.25), cut: true },
+]
+
+// 实心：外框一块，分隔线挖开、分成左右两半；滑块是实心圆，四周让出缝
+export const fill = ({ radius }) => [
+  solid(rounded([[3, 4.5], [21, 4.5], [21, 19.5], [3, 19.5]], Math.min(radius, 2.5))),
+  knock('M12 4.5V19.5'),
+  clear(circle(12, 12, 2.25), GAP),
+  solid(circle(12, 12, 2.25)),
 ]

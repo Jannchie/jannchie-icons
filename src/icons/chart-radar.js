@@ -1,4 +1,5 @@
 import { crisp, rounded } from '../geometry'
+import { solid } from '../solid'
 
 // 雷达图：正六边形网 + 三根穿过中心的辐条 + 半径各不相同的数据多边形
 // 网的半径取 8 / cos30°，左右竖边落在 4 / 20 上
@@ -9,4 +10,11 @@ export default ({ radius }) => [
   rounded(web, crisp(radius)),
   ...[0, 1, 2].map(i => `M${web[i].join(' ')}L${web[i + 3].join(' ')}`),
   rounded(data, crisp(radius)),
+]
+
+// 实心：数据多边形填实（盖住中间的辐条），网和辐条照旧是线
+export const fill = ({ radius }) => [
+  rounded(web, crisp(radius)),
+  ...[0, 1, 2].map(i => `M${web[i].join(' ')}L${web[i + 3].join(' ')}`),
+  solid(rounded(data, crisp(radius))),
 ]

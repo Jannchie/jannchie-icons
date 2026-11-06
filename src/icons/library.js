@@ -1,4 +1,6 @@
+import { GAP } from '../clearance'
 import { rounded } from '../geometry'
+import { clear, solid } from '../solid'
 import { rotate } from '../transform'
 
 // 图书馆（书架）：底板（墨迹 2–22，中线 y 20.5）上立着两本竖书（3–7、9–12）和一本斜靠的书
@@ -10,5 +12,24 @@ export default ({ radius, stroke }) => {
     rounded([[3, 4.5], [7, 4.5], [7, 20.5, 0], [3, 20.5, 0]], Math.min(radius, 1)),
     rounded([[9, 6.5], [12, 6.5], [12, 20.5, 0], [9, 20.5, 0]], Math.min(radius, 1)),
     rotate(rounded([[14, 6.5], [17, 6.5], [17, 20.5, 0], [14, 20.5, 0]], Math.min(radius, 1)), 18, [17, 20.5]),
+  ]
+}
+
+// 实心：三本书各填实，后一本四周让出缝再画（书之间本来只隔半个线宽，粗字重下会糊成一片）；底板照旧是线，最后画
+export const fill = ({ radius, stroke }) => {
+  const h = stroke / 2
+  const r = Math.min(radius, 1)
+  const books = [
+    rounded([[3, 4.5], [7, 4.5], [7, 20.5, 0], [3, 20.5, 0]], r),
+    rounded([[9, 6.5], [12, 6.5], [12, 20.5, 0], [9, 20.5, 0]], r),
+    rotate(rounded([[14, 6.5], [17, 6.5], [17, 20.5, 0], [14, 20.5, 0]], r), 18, [17, 20.5]),
+  ]
+  return [
+    solid(books[0]),
+    clear(books[1], GAP),
+    solid(books[1]),
+    clear(books[2], GAP),
+    solid(books[2]),
+    `M${2 + h} 20.5H${22 - h}`,
   ]
 }

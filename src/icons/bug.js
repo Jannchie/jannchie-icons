@@ -1,4 +1,6 @@
+import { GAP } from '../clearance'
 import { circle, crisp, rounded } from '../geometry'
+import { clear, knock, solid } from '../solid'
 
 // 调试（虫子）：胶囊身体 + 头 + 中线 + 六条腿 + 两根触角
 export default ({ radius, stroke }) => [
@@ -15,3 +17,23 @@ export default ({ radius, stroke }) => [
   'M10.5 5.75L9 3.5',
   'M13.5 5.75L15 3.5',
 ]
+
+// 实心：头和身子各一块，头在身子四周让出缝（描边版里两者是贴着的两条线，填实以后要分开）；
+// 挖掉中线（下端缩一个线宽，不把身子切开），腿和触角照旧是线
+export const fill = ({ stroke }) => {
+  const body = rounded([[7, 8], [17, 8], [17, 20.5], [7, 20.5]], 5)
+  return [
+    solid('M9.5 8A2.5 2.5 0 0 1 14.5 8Z'),
+    clear(body, GAP),
+    solid(body),
+    knock(`M12 11V${20.5 - stroke}`),
+    'M7 13.5H3.5',
+    'M17 13.5H20.5',
+    'M7 17L4 19',
+    'M17 17L20 19',
+    'M7.5 9.5L5 7',
+    'M16.5 9.5L19 7',
+    'M10.5 5.75L9 3.5',
+    'M13.5 5.75L15 3.5',
+  ]
+}

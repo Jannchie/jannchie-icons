@@ -1,4 +1,5 @@
 import { ring } from '../marks'
+import { knock, solid } from '../solid'
 
 // 棒球：圆 + 左右两道弧形缝线 + 缝线上的针脚（细线）
 export default ({ radius }) => [
@@ -6,4 +7,15 @@ export default ({ radius }) => [
   'M5.6 5.6C8.25 8.25 8.25 15.75 5.6 18.4',
   'M18.4 5.6C15.75 8.25 15.75 15.75 18.4 18.4',
   ...[[6.75, 8], [7.5, 10.75], [7.5, 13.25], [6.75, 16]].flatMap(([x, y]) => [{ d: `M${x - 0.9} ${y}H${x + 0.9}`, thin: true }, { d: `M${24 - x - 0.9} ${y}H${24 - x + 0.9}`, thin: true }]),
+]
+
+// 实心：球一块，挖掉两道缝线和针脚
+export const fill = ({ stroke }) => [
+  solid(ring()),
+  knock([
+    // 缝线两端顺着切线往外多伸一个线宽，把球边切干净，不留连着的细丝
+    `M${5.6 - stroke * Math.SQRT1_2} ${5.6 - stroke * Math.SQRT1_2}L5.6 5.6C8.25 8.25 8.25 15.75 5.6 18.4L${5.6 - stroke * Math.SQRT1_2} ${18.4 + stroke * Math.SQRT1_2}`,
+    `M${18.4 + stroke * Math.SQRT1_2} ${5.6 - stroke * Math.SQRT1_2}L18.4 5.6C15.75 8.25 15.75 15.75 18.4 18.4L${18.4 + stroke * Math.SQRT1_2} ${18.4 + stroke * Math.SQRT1_2}`,
+    ...[[6.75, 8], [7.5, 10.75], [7.5, 13.25], [6.75, 16]].flatMap(([x, y]) => [{ d: `M${x - 0.9} ${y}H${x + 0.9}`, thin: true }, { d: `M${24 - x - 0.9} ${y}H${24 - x + 0.9}`, thin: true }]),
+  ]),
 ]

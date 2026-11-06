@@ -1,4 +1,5 @@
 import { rounded } from '../geometry'
+import { solid } from '../solid'
 
 // 三角（PlayStation 手柄那种正三角，尖朝上）：和 circle / square / x 摆在一起视觉等大
 // 三角面积小，边长放到 19（比方块 17、圆直径 18 都宽）；高 19·√3/2 ≈ 16.45，
@@ -11,3 +12,6 @@ const [top, bottom] = [20.5 - h, 20.5]
 export default ({ radius }) => [
   rounded([[12, top], [12 + side / 2, bottom], [12 - side / 2, bottom]], Math.min(radius, 2)),
 ]
+
+// 实心：整个三角
+export const fill = ({ radius }) => [solid(rounded([[12, top], [12 + side / 2, bottom], [12 - side / 2, bottom]], Math.min(radius, 2)))]

@@ -1,5 +1,6 @@
 import { circle } from '../geometry'
 import { glyph, LABEL, snap } from '../letters'
+import { knock, solid } from '../solid'
 
 // Rust：一圈细齿的齿轮 + 中间的 R
 // 齿轮圈半径 7；16 个短齿从半径 7 伸到 9，整圈错开半个齿距（11.25°），没有正横正竖的齿，不用对网格
@@ -14,4 +15,11 @@ export default () => [
   circle(cx, cy, 7),
   teeth,
   snap(glyph('R', cx - 2.1, cy - 3.9, 1.2, 1.3, LABEL)),
+]
+
+// 实心：齿轮圈里铺满、R 挖空，细齿仍是线
+export const fill = () => [
+  solid(circle(cx, cy, 7)),
+  knock(snap(glyph('R', cx - 2.1, cy - 3.9, 1.2, 1.3, LABEL))),
+  teeth,
 ]

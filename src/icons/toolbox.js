@@ -1,4 +1,5 @@
 import { rounded } from '../geometry'
+import { knock, solid } from '../solid'
 
 // 工具箱：箱体（3.5–20.5 × 8.5–19.5）+ 顶上的梯形提手 + 箱体上部一道合缝，合缝正中一个搭扣（10.5–13.5 × 10.5–14.5）
 export default ({ radius }) => [
@@ -7,4 +8,11 @@ export default ({ radius }) => [
   'M3.5 12.5H10.5',
   'M13.5 12.5H20.5',
   rounded([[10.5, 10.5], [13.5, 10.5], [13.5, 14.5], [10.5, 14.5]], Math.min(radius, 0.5)),
+]
+
+// 实心：箱体一块，合缝挖开、搭扣的轮廓挖空（搭扣留成实心）；提手照旧是线
+export const fill = ({ radius }) => [
+  solid(rounded([[3.5, 8.5], [20.5, 8.5], [20.5, 19.5], [3.5, 19.5]], Math.min(radius, 2))),
+  knock(['M3.5 12.5H10.5', 'M13.5 12.5H20.5', rounded([[10.5, 10.5], [13.5, 10.5], [13.5, 14.5], [10.5, 14.5]], Math.min(radius, 0.5))]),
+  rounded([[8.5, 8.5], [8.5, 5.5], [15.5, 5.5], [15.5, 8.5]], Math.min(radius, 1), false),
 ]

@@ -4,3 +4,5 @@ import { accent } from '../tone'
 
 // 对话 + 右上角拼图（模组）
 export default ({ radius, stroke }) => withBadgeTop('puzzle', puzzle, accent, radius, stroke)
+
+export const fill = ({ radius, stroke }) => withBadgeTop('puzzle', puzzle, accent, radius, stroke, { fill: true })

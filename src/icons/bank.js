@@ -1,5 +1,6 @@
 import { rounded } from '../geometry'
 import { GROUND, groundLine } from '../scene'
+import { solid } from '../solid'
 
 // 银行：古典式门廊，三角山花、四根柱、一级台基；柱距 3，都落在 .5 上
 // 山花两端各有一小段竖直的檐口（高 0.75），不画成闭合三角形：三角形的底角只有约 33°，
@@ -11,4 +12,12 @@ export default ({ radius }) => [
   rounded([[3.5, 9.5], [3.5, 8.75], [12, 4], [20.5, 8.75], [20.5, 9.5]], radius),
   ...columns.map(x => `M${x} 9.5V17.5`),
   rounded([[3.5, GROUND], [3.5, 17.5], [20.5, 17.5], [20.5, GROUND]], radius, false),
+]
+
+// 实心：山花、台基各一块，柱子和地平线照旧是线
+export const fill = ({ radius }) => [
+  solid(rounded([[3.5, 9.5], [3.5, 8.75], [12, 4], [20.5, 8.75], [20.5, 9.5]], radius)),
+  ...columns.map(x => `M${x} 9.5V17.5`),
+  solid(rounded([[3.5, GROUND], [3.5, 17.5], [20.5, 17.5], [20.5, GROUND]], radius)),
+  groundLine,
 ]

@@ -1,4 +1,5 @@
 import { rounded } from '../geometry'
+import { knock, solid } from '../solid'
 
 // 网口（RJ45）：带下方卡扣凸起的方口 + 顶部四根针脚
 export default ({ radius }) => [
@@ -8,4 +9,10 @@ export default ({ radius }) => [
   'M10.5 7.5V10',
   'M13.5 7.5V10',
   'M16.5 7.5V10',
+]
+
+// 实心：网口一块，挖掉四根针脚
+export const fill = ({ radius }) => [
+  solid(rounded([[4.5, 4.5], [19.5, 4.5], [19.5, 16.5], [15.5, 16.5], [15.5, 19.5], [8.5, 19.5], [8.5, 16.5], [4.5, 16.5]], Math.min(radius, 1.5))),
+  knock(['M7.5 7.5V10', 'M10.5 7.5V10', 'M13.5 7.5V10', 'M16.5 7.5V10']),
 ]

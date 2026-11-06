@@ -1,5 +1,6 @@
 import { rounded } from '../geometry'
 import { triangle } from '../media'
+import { solid } from '../solid'
 
 // 上一首：下一首的镜像
 const h = 12
@@ -10,3 +11,5 @@ export default ({ radius }) => [
   rounded(triangle(base, h, -1), radius),
   `M${bar} ${12 - h / 2}V${12 + h / 2}`,
 ]
+
+export const fill = ({ radius }) => [solid(rounded(triangle(base, h, -1), radius)), `M${bar} ${12 - h / 2}V${12 + h / 2}`]

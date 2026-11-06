@@ -1,4 +1,5 @@
 import { circle } from '../geometry'
+import { solid } from '../solid'
 
 // 日夜切换：左上小太阳 / 45° 斜杠 / 右下小月牙
 const pt = p => `${p[0]} ${p[1]}`
@@ -29,4 +30,12 @@ export default ({ stroke = 1.5 }) => [
   ...rays(stroke),
   'M19 5L5 19',
   `M${pt(p1)}A${r1} ${r1} 0 1 1 ${pt(p2)}A${r2} ${r2} 0 0 0 ${pt(p1)}Z`,
+]
+
+// 实心：日轮和月牙填实，光线、斜杠照旧是线
+export const fill = ({ stroke = 1.5 }) => [
+  solid(circle(sun[0], sun[1], R)),
+  ...rays(stroke),
+  'M19 5L5 19',
+  solid(`M${pt(p1)}A${r1} ${r1} 0 1 1 ${pt(p2)}A${r2} ${r2} 0 0 0 ${pt(p1)}Z`),
 ]

@@ -35,3 +35,32 @@ export function forget(el) {
   observer?.unobserve(el)
   callbacks.delete(el)
 }
+
+// 分帧计算：实心变体的路径要现算（fill.js，每个几毫秒），一屏几百个图标一起算会卡住页面好几秒。
+// 排进队列，每帧最多算 FRAME_BUDGET 毫秒，其余留到下一帧；返回取消函数（格子离开视口、设置又变了时用）
+const FRAME_BUDGET = 8
+const queue = new Set()
+let pending = false
+function drain() {
+  pending = false
+  const end = performance.now() + FRAME_BUDGET
+  for (const job of queue) {
+    queue.delete(job)
+    job()
+    if (performance.now() > end)
+      break
+  }
+  if (queue.size)
+    wake()
+}
+function wake() {
+  if (!pending) {
+    pending = true
+    requestAnimationFrame(drain)
+  }
+}
+export function schedule(job) {
+  queue.add(job)
+  wake()
+  return () => queue.delete(job)
+}

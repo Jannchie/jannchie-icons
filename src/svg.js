@@ -138,14 +138,14 @@ export const THIN = 0.7
 export const DETAIL_RATIO = 0.8
 export const DETAIL_STROKE = 1.25
 // relief 是拥挤检测（见 relieve）给出的退让线宽，只会让线变细
-const widthOf = (item, stroke) => Math.min(item.thin ? stroke * THIN : item.badge || item.detail ? Math.min(stroke * DETAIL_RATIO, DETAIL_STROKE) : stroke, item.relief ?? Infinity)
+export const widthOf = (item, stroke) => Math.min(item.thin ? stroke * THIN : item.badge || item.detail ? Math.min(stroke * DETAIL_RATIO, DETAIL_STROKE) : stroke, item.relief ?? Infinity)
 // 点：显式给了 dot 直径，或者是字符串写的零长度路径（M x y h0，按默认直径 DOT）
-const dotSize = item => item.dot ?? (/^(?:M[^MLHVCSQTAZ]+h0)+$/i.test(item.d.replace(/\s+/g, '')) ? DOT : 0)
+export const dotSize = item => item.dot ?? (/^(?:M[^MLHVCSQTAZ]+h0)+$/i.test(item.d.replace(/\s+/g, '')) ? DOT : 0)
 // 点的直径是按线宽 DOT_STROKE 设计的，实际按字重等比缩放：点和线的粗细比例在任何字重下都一样
 // （默认 DOT 2 : 线宽 1.5，略大于线宽，补偿圆点看起来比同宽的线小）
 export const DOT_STROKE = 1.5
 // 眼睛（scene.js 的 eye）例外：粗字重下不再放大，直径停在常规线宽那一档
-const dotWidth = (item, stroke) => dotSize(item) * (item.eye ? Math.min(stroke, DOT_STROKE) : stroke) / DOT_STROKE
+export const dotWidth = (item, stroke) => dotSize(item) * (item.eye ? Math.min(stroke, DOT_STROKE) : stroke) / DOT_STROKE
 
 // 端点吸附：开放线条的端点如果碰到了另一条线（两者中心线距离小于半线宽之和），说明它本来就是要接到那条线上的，
 // 把端点精确投影到那条线上最近的点。这样端点落在被圆角切掉的角部、或者稍微画过头时，线头都不会从另一条线外侧冒出来。

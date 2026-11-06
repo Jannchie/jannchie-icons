@@ -1,4 +1,8 @@
+import { symbolFill } from '../list'
 import { sparkle } from '../symbols'
 
 // AI 星芒：一大一小两颗星斜着排（见 symbols 的 sparkle），整组放大到墨迹约 2–22
 export default ({ radius }) => sparkle([12, 12], 2.6, radius)
+
+// 实心：两颗星都填实
+export const fill = ({ radius, stroke }) => symbolFill('sparkle', sparkle([12, 12], 2.6, radius), stroke)

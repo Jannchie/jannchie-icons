@@ -1,4 +1,5 @@
 import { crisp, rounded } from '../geometry'
+import { knock, solid } from '../solid'
 
 // 魔方：等距视角的立方体（六边形 + Y 形棱）+ 每个面一横一竖的分格线（2 × 2）
 // 中心 x = 12、半宽 8（左右竖边 4 / 20），斜棱接近 30°
@@ -17,3 +18,28 @@ export default ({ radius }) => [
   { d: `M${c + w / 2} ${(upper + mid) / 2}V${(lower + bottom) / 2}`, thin: true },
   { d: line([c + w, mid], [c, lower]), thin: true },
 ]
+
+// 线段 a→b，两端各缩 s0 / s1
+const cut = ([ax, ay], [bx, by], s0, s1) => {
+  const l = Math.hypot(bx - ax, by - ay)
+  const [ux, uy] = [(bx - ax) / l, (by - ay) / l]
+  return `M${ax + ux * s0} ${ay + uy * s0}L${bx - ux * s1} ${by - uy * s1}`
+}
+
+// 实心：六边形一块，挖掉 Y 形棱和分格细线；碰到外轮廓的那头都缩一个线宽，九个小格在外圈连着
+export const fill = ({ radius, stroke }) => {
+  const s = stroke
+  const o = [c, mid]
+  return [
+    solid(rounded([[c, top], [c + w, upper], [c + w, lower], [c, bottom], [c - w, lower], [c - w, upper]], crisp(radius))),
+    knock([cut(o, [c - w, upper], 0, s), cut(o, [c + w, upper], 0, s), cut(o, [c, bottom], 0, s)]),
+    knock([
+      cut([c - w / 2, (top + upper) / 2], [c + w / 2, (upper + mid) / 2], s, 0),
+      cut([c + w / 2, (top + upper) / 2], [c - w / 2, (upper + mid) / 2], s, 0),
+      cut([c - w / 2, (upper + mid) / 2], [c - w / 2, (lower + bottom) / 2], 0, s),
+      cut([c - w, mid], [c, lower], s, 0),
+      cut([c + w / 2, (upper + mid) / 2], [c + w / 2, (lower + bottom) / 2], 0, s),
+      cut([c + w, mid], [c, lower], s, 0),
+    ].map(d => ({ d, thin: true }))),
+  ]
+}

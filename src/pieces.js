@@ -1,6 +1,7 @@
 // 象棋、将棋棋子：棋子外形 + 棋子上的字
 // 每个字的笔画写在 10 × 10 的小方框里（0–10），affine 把它缩放平移到棋子上；字用细线（thin），复杂的字也不至于糊成一团
 import { circle, rounded } from './geometry'
+import { knock, solid } from './solid'
 import { affine } from './transform'
 
 const write = (strokes, x0, y0, s) => strokes.map(d => ({ d: affine(d, s, s, x0, y0), thin: true }))
@@ -16,6 +17,16 @@ export const shogi = (strokes, radius) => [
   rounded([[12, 2.5], [17.5, 5], [19.5, 21.5], [4.5, 21.5], [6.5, 5]], Math.min(radius, 1.5)),
   ...write(strokes, 7.5, 9, 0.9),
 ]
+
+// 实心版：棋子外形填实，字挖空（细线挖出细缝）
+export const xiangqiFill = (strokes) => {
+  const [disc, ...text] = xiangqi(strokes)
+  return [solid(disc), knock(text)]
+}
+export const shogiFill = (strokes, radius) => {
+  const [piece, ...text] = shogi(strokes, radius)
+  return [solid(piece), knock(text)]
+}
 
 // 「木」字旁（相、桂 共用），占左边约 4.5 宽
 const MU = ['M0.5 3H4.5', 'M2.5 0.5V10', 'M2.5 3.5L0.5 7', 'M2.5 4.5L4 6']

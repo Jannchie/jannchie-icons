@@ -1,5 +1,6 @@
 import { crispGlyph } from '../letters'
 import { glyphSquare } from '../marks'
+import { knock, solid } from '../solid'
 
 // 方框里的 8：线条字形放大 1.9 倍居中，横竖笔画对齐像素网格
 const scale = 1.9
@@ -7,3 +8,6 @@ export default ({ radius, stroke }) => [
   glyphSquare(radius, stroke),
   crispGlyph('8', 12 - 1.75 * scale, 12 - 3 * scale, scale),
 ]
+
+// 实心：方块上挖出字形
+export const fill = ({ radius, stroke }) => [solid(glyphSquare(radius, stroke)), knock(crispGlyph('8', 12 - 1.75 * scale, 12 - 3 * scale, scale))]

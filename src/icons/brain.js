@@ -1,3 +1,5 @@
+import { knock, solid } from '../solid'
+
 // 智能（大脑）：正面对称，左右各四段向外鼓的圆弧串成脑叶轮廓，中间一道竖直脑沟，两侧各两道褶皱
 // 左半从顶部中点往下、右半从底部中点往上，整条轮廓都按逆时针绕（sweep 0）
 // 中间脑沟在画布中轴 12 上
@@ -17,3 +19,9 @@ export const LEFT_FOLDS = ['M8.25 9.5A2.5 2.5 0 0 1 9.75 12', 'M7.5 14.5A2.25 2.
 export const RIGHT_FOLDS = ['M15.75 9.5A2.5 2.5 0 0 0 14.25 12', 'M16.5 14.5A2.25 2.25 0 0 1 14.25 15.5']
 
 export default () => [outline(), MIDLINE, ...LEFT_FOLDS, ...RIGHT_FOLDS]
+
+// 实心：脑叶轮廓一块，挖掉中间脑沟和两侧的细节（褶皱或电路走线）；脑沟上下各缩一个线宽，左右两半不被切开
+// 机械脑、半机械脑也用它，只换细节
+export const brainFill = (details, stroke) => [solid(outline()), knock([`M12 ${5 + stroke}V${19 - stroke}`, ...details])]
+
+export const fill = ({ stroke }) => brainFill([...LEFT_FOLDS, ...RIGHT_FOLDS], stroke)

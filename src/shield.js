@@ -5,7 +5,8 @@
 // 线宽变粗时外缘不动、往里长（h 是半个线宽）
 // 右下角标：盾的右下是一段收向底尖的曲线，没有横平竖直的边可以按区间断开（各系列用的 blocked 只处理轴对齐的边），
 // 所以改用一个隐藏的遮挡框：角标外形外扩一圈，框里的盾线删掉、框边附近的线断开（clip 按 GAP + 线宽留缝）
-import { asBadge, centerBadge } from './corner'
+import { asBadge, centerBadge, notchOf } from './corner'
+import { badgeFill, solid } from './solid'
 
 const fmt = v => +v.toFixed(3)
 
@@ -45,12 +46,18 @@ export const plain = stroke => [outline(stroke)]
 // 不像文件夹等系列放大到 1.3：盾的下半收成尖，大角标会把盾的右半边整个吃掉
 const BADGE_CENTER = [17, 17]
 const GROW = 1.1
-export function withBadge(name, draw, tone, radius, stroke) {
+export function withBadge(name, draw, tone, radius, stroke, { fill = false } = {}) {
   const { k, at, shape } = centerBadge(name, draw, radius, stroke, BADGE_CENTER, 22, GROW)
   // 遮挡框取符号实际墨迹（中心线）的外接框：按 outlines 的近似外形会比墨迹大（对勾、云），线断得太早
   const xs = shape.pts.map(q => q[0])
   const ys = shape.pts.map(q => q[1])
   const [x0, y0, x1, y1] = [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)]
   const hole = { d: `M${x0} ${y0}H${x1}V${y1}H${x0}Z`, cut: true, hidden: true, occlude: true }
+  // 实心版：同样的角标位置，主体在角上挖出缺口，角标落在缺口里
+  if (fill)
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), notchOf(shape, 'bottom', radius))
   return [...plain(stroke), hole, ...asBadge(tone(draw(at, k, radius)), name).map(p => (typeof p === 'string' ? { d: p, cut: true } : { ...p, cut: true }))]
 }
+
+// 实心版（见 solid.js 的 plainFill / badgeFill / centerFill）：盾形整块填实
+export const fillParts = (radius, stroke) => ({ body: [solid(outline(stroke))], lines: [] })

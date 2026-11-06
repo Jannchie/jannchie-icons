@@ -1,4 +1,5 @@
 import { rounded } from '../geometry'
+import { knock, solid } from '../solid'
 
 // 购物篮：上宽下窄的篮身 + 两道斜上的提手 + 三根竖向篮条
 export default ({ radius }) => [
@@ -9,4 +10,12 @@ export default ({ radius }) => [
   'M9 13.5V17.5',
   'M12 13.5V17.5',
   'M15 13.5V17.5',
+]
+
+// 实心：篮身一块，三根篮条挖空；提手照旧是线
+export const fill = ({ radius }) => [
+  solid(rounded([[3, 10.5], [21, 10.5], [19, 20.5], [5, 20.5]], Math.min(radius, 1.5))),
+  knock(['M9 13.5V17.5', 'M12 13.5V17.5', 'M15 13.5V17.5']),
+  'M7 10.5L10 4',
+  'M17 10.5L14 4',
 ]

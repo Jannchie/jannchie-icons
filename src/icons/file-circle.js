@@ -1,7 +1,8 @@
-import { center, flap, page, centerScale } from '../file'
+import { center, centerScale, fillParts, flap, page } from '../file'
 import { rounded } from '../geometry'
 import { ring, visual } from '../symbols'
 import { accent } from '../tone'
+import { centerFill } from '../solid'
 
 // 文件 + 圆
 export default ({ radius, stroke }) => [
@@ -9,3 +10,8 @@ export default ({ radius, stroke }) => [
   flap(stroke),
   ...accent(ring(center, centerScale * visual.ring, radius)),
 ]
+
+// 实心：主体填实，挖掉居中的符号
+export const fill = ({ radius, stroke }) => centerFill(fillParts(radius, stroke), [
+  ...accent(ring(center, centerScale * visual.ring, radius)),
+])

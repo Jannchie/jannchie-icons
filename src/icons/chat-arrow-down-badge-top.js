@@ -4,3 +4,5 @@ import { info } from '../tone'
 
 // 对话 + 右上角下箭头
 export default ({ radius, stroke }) => withBadgeTop('arrowDown', arrowDown, info, radius, stroke)
+
+export const fill = ({ radius, stroke }) => withBadgeTop('arrowDown', arrowDown, info, radius, stroke, { fill: true })

@@ -4,8 +4,9 @@
 // 折角：翻折线（竖线 x FOLD_X、横线 y FOLD_Y）是固定的中心线，不随线宽动；纸张的斜边从 (FOLD_X, 顶边) 连到 (右边, FOLD_Y)，
 // 两端各随线宽收半个线宽，所以始终是 45°（线宽 1 时折角 5）
 import { blocked } from './clearance'
-import { asBadge, fitBadge, roomOnBottom, roomOnRight } from './corner'
+import { asBadge, fitBadge, notchOf, roomOnBottom, roomOnRight } from './corner'
 import { crisp, rounded } from './geometry'
+import { badgeFill, knock, solid } from './solid'
 
 const FOLD_X = 14.5
 const FOLD_Y = 7.5
@@ -43,12 +44,15 @@ export const centerScale = 1.3
 // 角标比普通角标大 GROW 倍，和文件夹一样（16px 下也认得出符号）；放不下时 fitBadge 再缩回去
 const GROW = 1.3
 
-export function withBadge(name, draw, tone, radius, stroke) {
+export function withBadge(name, draw, tone, radius, stroke, { fill = false } = {}) {
   const { l, t, r, b } = frame(stroke)
   const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 20, bottom: 22 }, s => roomOnRight(stroke, r, FOLD_Y)(s) && roomOnBottom(stroke, b, l)(s), GROW)
   const right = blocked(shape, 'y', r, stroke)
   const bottom = blocked(shape, 'x', b, stroke)
   const outline = [[bottom ? bottom[0] : r, b], [l, b], [l, t], ...corner(stroke, radius), [r, right ? right[0] : b]]
+  // 实心版：同样的角标位置，主体在角上挖出缺口，角标落在缺口里
+  if (fill)
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), notchOf(shape, 'bottom', radius))
   return [rounded(outline, radius, false), flap(stroke), ...asBadge(tone(draw(at, k, radius)), name)]
 }
 
@@ -62,3 +66,6 @@ export const labelBox = { left: 5, right: 19, top: 14.5, bottom: 21.5 }
 // 四个字母的扩展名：label 放宽 2.5 后会排到 2.5–21.5，笔画吸附网格后墨迹会到离画布边 1.5；
 // 这里把排版区收窄 0.5，放宽后是 3–21，墨迹不越过离边 2
 export const wideLabelBox = { ...labelBox, left: 5.5, right: 18.5 }
+
+// 实心版（见 solid.js 的 plainFill / badgeFill / centerFill）：纸张一块，挖掉翻折线，折角成了单独的一小块三角
+export const fillParts = (radius, stroke) => ({ body: [solid(rounded(page(stroke, radius), radius)), knock(flap(stroke))], lines: [] })

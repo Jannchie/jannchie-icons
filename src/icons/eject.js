@@ -1,4 +1,5 @@
 import { rounded } from '../geometry'
+import { solid } from '../solid'
 
 // 弹出：朝上的三角 + 下面一道横线；三角和播放类图标一样是 30° 斜边的等边三角（底宽 13，高 ≈ 11.3），
 // 底边 15.5、横线 19.5 都落在 .5 上，两者同宽（5.5–18.5），整体 4.2–19.5 上下居中
@@ -7,5 +8,11 @@ const h = (r - l) / 2 * Math.tan(Math.PI / 3)
 
 export default ({ radius }) => [
   rounded([[l, base], [12, base - h], [r, base]], radius),
+  `M${l} 19.5H${r}`,
+]
+
+// 实心：三角填实，下面的横线照旧是线
+export const fill = ({ radius }) => [
+  solid(rounded([[l, base], [12, base - h], [r, base]], radius)),
   `M${l} 19.5H${r}`,
 ]

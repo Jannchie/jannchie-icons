@@ -26,6 +26,7 @@ Exported SVGs use `currentColor`, so they inherit the surrounding text color. Th
 |---|---|---|
 | Radius | Sharp, 0, 1, 2, 3 | Corner radius of outlines; Sharp also switches to square caps and miter joins |
 | Weight | Light 1, Regular 1.5, Bold 2 | Stroke width; dots and reduced-size details are capped separately |
+| Style | Outline, Fill | Fill draws solid shapes with the inner details knocked out; available for a growing subset of icons, the rest fall back to the outline |
 
 ## Use in a project
 

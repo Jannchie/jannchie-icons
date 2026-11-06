@@ -13,6 +13,7 @@ export const JIcon = defineComponent({
     size: { type: [Number, String], default: undefined },
     radius: { type: [String, Number], default: undefined },
     weight: { type: String, default: undefined },
+    variant: { type: String, default: undefined },
     duo: { type: Boolean, default: undefined },
     theme: { type: String, default: undefined },
     colors: { type: Object, default: undefined },
@@ -33,6 +34,7 @@ export const JIcon = defineComponent({
         shape: toPaths(props.icon, {
           radius: props.radius ?? d.radius,
           weight: props.weight ?? d.weight,
+          variant: props.variant ?? d.variant,
           duo: props.duo ?? d.duo,
           theme: props.theme ?? d.theme,
           colors,

@@ -1,3 +1,5 @@
+import { solid } from '../solid'
+
 // 船舵：轮毂（半径 3.75）+ 舵轮外圈（半径 6.5）+ 8 根辐条，从轮毂一直伸出外圈成为把手
 // 把手末端墨迹固定在半径 10.5（离画布边 1.5，整体是圆形，按圆形放宽）：中心线到 10.5 − 半个线宽，线宽变粗时往里收
 // 圆心 (12, 12)：辐条和轮毂、外圈都是垂直相交（径向线），线头不会斜接
@@ -10,11 +12,13 @@ const at = (r, deg) => {
 }
 const ring = r => `M${at(r, 22.5)}A${r} ${r} 0 1 1 ${at(r, 202.5)}A${r} ${r} 0 1 1 ${at(r, 22.5)}Z`
 
-export default ({ stroke }) => {
-  const spoke = deg => `M${at(3.75, deg)}L${at(10.5 - stroke / 2, deg)}`
-  return [
-    ring(3.75),
-    ring(6.5),
-    [0, 45, 90, 135, 180, 225, 270, 315].map(spoke).join(''),
-  ]
-}
+const spokes = stroke => [0, 45, 90, 135, 180, 225, 270, 315].map(deg => `M${at(3.75, deg)}L${at(10.5 - stroke / 2, deg)}`).join('')
+
+export default ({ stroke }) => [
+  ring(3.75),
+  ring(6.5),
+  spokes(stroke),
+]
+
+// 实心：轮毂填实，舵轮外圈和辐条照旧是线
+export const fill = ({ stroke }) => [solid(ring(3.75)), ring(6.5), spokes(stroke)]

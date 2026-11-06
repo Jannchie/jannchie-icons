@@ -1,5 +1,6 @@
 import { rounded } from '../geometry'
 import { rotate } from '../transform'
+import { knock, solid } from '../solid'
 
 // 卫星：先横着画——中间方舱（10–14 × 10–14）、左右两块太阳能板（0.5–6.5、17.5–23.5，高 7），
 // 板中间一道竖向分隔线；舱和板相距 3.5，中间一截连杆（垂直接在两边的竖边上）；舱顶一根短天线 + 实心半圆小碟（圆弧朝外、平边朝舱体，天线杆垂直接在平边上）。再整体逆时针转 45°
@@ -16,3 +17,17 @@ const parts = r => [
   { d: 'M10 6.5A2 2 0 0 1 14 6.5Z', fill: true },
 ]
 export default ({ radius }) => parts(radius).map(p => (typeof p === 'string' ? rotate(p, -45) : { ...p, d: rotate(p.d, -45) }))
+
+// 实心：方舱、两块太阳能板填实，挖掉板中间的分隔线（两端各缩一个线宽，板子不被切成两半）；连杆、天线照旧是线，小碟本来就是实心
+const fillParts = (r, s) => [
+  solid(rounded([[10, 10], [14, 10], [14, 14], [10, 14]], Math.min(r, 1))),
+  solid(rounded([[0.5, 8.5], [6.5, 8.5], [6.5, 15.5], [0.5, 15.5]], Math.min(r, 1))),
+  solid(rounded([[17.5, 8.5], [23.5, 8.5], [23.5, 15.5], [17.5, 15.5]], Math.min(r, 1))),
+  knock([`M3.5 ${8.5 + s}V${15.5 - s}`, `M20.5 ${8.5 + s}V${15.5 - s}`]),
+  'M6.5 12H10',
+  'M14 12H17.5',
+  'M12 10V6.5',
+  solid('M10 6.5A2 2 0 0 1 14 6.5Z'),
+]
+const turn = p => (Array.isArray(p) ? p.map(turn) : typeof p === 'string' ? rotate(p, -45) : { ...p, d: rotate(p.d, -45) })
+export const fill = ({ radius, stroke }) => fillParts(radius, stroke).map(turn)

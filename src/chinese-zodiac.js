@@ -1,8 +1,10 @@
 // 十二生肖：都画成动物头部正面，占 3–21 左右；键按鼠牛虎兔龙蛇马羊猴鸡狗猪的顺序，预览页据此排序
 // 左右对称的部件只写左半边，另一半镜像得到
 import { face, longEar, pointedEar, roundEar } from './chiikawa'
+import { GAP } from './clearance'
 import { circle, crisp, rounded } from './geometry'
 import { dot, eye } from './scene'
+import { clear, knock, solid } from './solid'
 import { mirror } from './transform'
 
 const thin = d => ({ d, thin: true })
@@ -163,5 +165,73 @@ export const CHINESE_ZODIAC = {
       ellipse(12, 15.5, 3.5, 2.5),
       ...nostrils(10.75, 15.5, 1.5),
     ],
+  },
+}
+
+// ---------- 实心版 ----------
+// 从描边版的路径里按位置取部件（去掉遮挡刀的标记），头填实；眼睛、鼻孔、花纹这些头里的细节挖空；
+// 角、须、胡子、信子这类读作线的部件照旧是线，最后画。被头挡住的耳朵（鼠、猴、鸡冠）先填实，再在头四周让出一圈缝，然后填头
+const bare = (p) => {
+  if (typeof p === 'string')
+    return p
+  const { cut, gap, occlude, ...rest } = p
+  return rest
+}
+const parts = key => CHINESE_ZODIAC[key].paths().map(bare)
+const closed = d => `${d}Z`
+export const CHINESE_ZODIAC_FILL = {
+  // 鼻尖贴着下巴尖，挖掉会在下巴上咬出缺口：并进实心的头里
+  rat: () => {
+    const [head, ...p] = parts('rat')
+    return [solid(p.slice(0, 2)), clear(head, GAP), solid(head), knock(p.slice(2, 4)), ...p.slice(5)]
+  },
+  // 耳朵封口填实（封口的一段落在脸的侧边上）
+  ox: () => {
+    const [head, ...p] = parts('ox')
+    return [solid(head), solid(p.slice(2, 4).map(closed)), knock(p.slice(4)), ...p.slice(0, 2)]
+  },
+  tiger: () => {
+    const [head, ...p] = parts('tiger')
+    return [solid(head), knock(p)]
+  },
+  rabbit: () => {
+    const [head, ...p] = parts('rabbit')
+    return [solid(head), knock(p)]
+  },
+  dragon: (r) => {
+    const [head, ...p] = CHINESE_ZODIAC.dragon.paths(r)
+    return [solid(head), knock(p.slice(6)), ...p.slice(0, 6)]
+  },
+  snake: () => {
+    const [head, ...p] = parts('snake')
+    return [solid(head), knock(p.slice(0, 2)), ...p.slice(2)]
+  },
+  horse: () => {
+    const [head, ...p] = parts('horse')
+    return [solid(head), knock(p)]
+  },
+  // 胡子封口成实心小三角，接在下巴上
+  goat: () => {
+    const [head, ...p] = parts('goat')
+    return [solid([head, closed(p[4])]), knock(p.slice(2, 4)), ...p.slice(0, 2)]
+  },
+  // 耳朵只比头多出约 2：缝收窄到 0.5，耳朵才不被吃得太薄
+  monkey: () => {
+    const [head, ...p] = parts('monkey')
+    return [solid(p.slice(0, 2)), clear(head, 0.5), solid(head), knock(p.slice(2))]
+  },
+  // 头、鸡冠在描边版里是开口的线：都封口；鸡冠在头顶四周让出缝，肉垂和头连成一块，喙挖成洞
+  rooster: () => {
+    const [head, comb, ...p] = parts('rooster')
+    return [solid(closed(comb)), clear(closed(head), GAP), solid([closed(head), p[3]]), knock(p.slice(0, 3))]
+  },
+  // 垂耳挡在头前面：头填实后在耳朵四周让出缝，再填耳朵
+  dog: () => {
+    const [head, ...p] = parts('dog')
+    return [solid(head), clear(p.slice(0, 2), GAP), solid(p.slice(0, 2)), knock(p.slice(2))]
+  },
+  pig: () => {
+    const [head, ...p] = parts('pig')
+    return [solid(head), knock(p)]
   },
 }

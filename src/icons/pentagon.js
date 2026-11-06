@@ -1,4 +1,5 @@
 import { rounded } from '../geometry'
+import { solid } from '../solid'
 
 // 五边形：尖顶朝上的正五边形，外接圆半径 9.7；底边落在 20.5 上
 const R = 9.7
@@ -8,3 +9,6 @@ const pts = Array.from({ length: 5 }, (_, i) => {
   return [12 + R * Math.cos(a), i === 2 || i === 3 ? 20.5 : cy + R * Math.sin(a)]
 })
 export default ({ radius }) => [rounded(pts, Math.min(radius, 2))]
+
+// 实心：整个五边形
+export const fill = ({ radius }) => [solid(rounded(pts, Math.min(radius, 2)))]

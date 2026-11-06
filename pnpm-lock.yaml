@@ -12,6 +12,9 @@ importers:
         specifier: ^3.5.43
         version: 3.5.43
     devDependencies:
+      '@countertype/clipper2-ts':
+        specifier: 1.5.4-3.9a869ba
+        version: 1.5.4-3.9a869ba
       '@vitejs/plugin-vue':
         specifier: ^6.0.9
         version: 6.0.9(vite@8.3.2)(vue@3.5.43)
@@ -66,6 +69,11 @@ packages:
   '@babel/types@7.29.8':
     resolution: {integrity: sha512-Vj1jF3cPfxg7OAfoI7QnVKLoILlm2JF9pnVHrX8qx7AHMiYWT+NDAA7jChlNgRS4WTLc/fD1lXLmPixluj+3Gg==}
     engines: {node: '>=6.9.0'}
+
+  '@countertype/clipper2-ts@1.5.4-3.9a869ba':
+    resolution: {integrity: sha512-LeO+CRdfipmLjSBszws6FC2KIjyjOpqDlNgLIrC5LtdV/ab0YXCt4cioIMYFaIVGT3saQQ51ejdHhWw28Rmdjw==}
+    engines: {node: '>=14.0.0'}
+    deprecated: Package moved to clipper2-ts (no scope). Please update your dependencies
 
   '@jridgewell/resolve-uri@3.1.2':
     resolution: {integrity: sha512-bRISgCIjP20/tbWSPWMEi54QVPRZExkuD9lJL+UIxUKtwVJA8wW1Trb1jMs1RFXo1CBTNZ/5hpC9QvmKWdopKw==}
@@ -511,6 +519,8 @@ snapshots:
     dependencies:
       '@babel/helper-string-parser': 7.29.7
       '@babel/helper-validator-identifier': 7.29.7
+
+  '@countertype/clipper2-ts@1.5.4-3.9a869ba': {}
 
   '@jridgewell/resolve-uri@3.1.2': {}
 

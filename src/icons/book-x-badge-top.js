@@ -4,3 +4,5 @@ import { danger } from '../tone'
 
 // 书 + 右上角叉
 export default ({ radius, stroke }) => withBadgeTop('cross', cross, danger, radius, stroke)
+
+export const fill = ({ radius, stroke }) => withBadgeTop('cross', cross, danger, radius, stroke, { fill: true })

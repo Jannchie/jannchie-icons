@@ -1,3 +1,5 @@
+import { knock, solid } from '../solid'
+
 // 四叶草：四片心形叶子在中心相连，只画外轮廓 + 中心到四个凹角的分隔线 + 从右下凹角伸出的叶柄
 // 每片叶子是两个叶瓣圆（圆心在叶片方向 ±24°、离中心 5.5，半径 2.6）；外轮廓沿叶瓣圆的外侧走，
 // 相邻两个叶瓣圆的外侧交点就是轮廓的拐点（同一片叶子的两瓣之间是心形缺口，相邻叶片之间是凹角）
@@ -35,8 +37,10 @@ lobes.forEach((c, i) => {
 const valleys = [1, 3, 5, 7].map(i => corners[i])
 const stem = valleys[1]
 
-export default () => [
-  `${outline}Z`,
-  valleys.map(v => `M${cx} ${cy}L${f(v)}`).join(''),
-  `M${f(stem)}Q${f([stem[0] + 1.5, stem[1] + 3])} ${f([stem[0] + 2.5, 21.5])}`,
-]
+const dividers = valleys.map(v => `M${cx} ${cy}L${f(v)}`).join('')
+const stalk = `M${f(stem)}Q${f([stem[0] + 1.5, stem[1] + 3])} ${f([stem[0] + 2.5, 21.5])}`
+
+export default () => [`${outline}Z`, dividers, stalk]
+
+// 实心：整片轮廓填实，挖掉分隔线（四片叶子各成一块），叶柄照旧是线
+export const fill = () => [solid(`${outline}Z`), knock(dividers), stalk]

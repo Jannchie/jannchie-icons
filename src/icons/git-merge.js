@@ -1,9 +1,16 @@
 import { circle } from '../geometry'
+import { solid } from '../solid'
 
 // 合并（时间从下往上）：主线从底边往上连到合并提交（左上）；
 // 分支提交（右下）沿半径 8.5 的四分之一圆弧汇入主线
 export default () => [
   circle(6.5, 6, 2.5),
   circle(17.5, 17, 2.5),
+  'M6.5 20.5V8.5A8.5 8.5 0 0 0 15 17',
+]
+
+// 实心：两个节点填实，主线和汇入的弧照旧是线
+export const fill = () => [
+  solid([circle(6.5, 6, 2.5), circle(17.5, 17, 2.5)]),
   'M6.5 20.5V8.5A8.5 8.5 0 0 0 15 17',
 ]

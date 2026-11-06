@@ -1,3 +1,4 @@
+import { knock, solid } from '../solid'
 // 打开的书：左右两页 + 中间书脊（落在画布中线 12 上：线宽 1 时不在 .5 上，居中优先）
 // 墨迹框左右 2–22、上下 3–21，以画布中线对称；线宽变粗时外缘不动、往里长，h 是半个线宽
 // 页的外角比书脊高 2（书脊顶低 2、底也低 2）；两页各画成闭合形状、以书脊为共用的一条边：
@@ -7,4 +8,12 @@ export default ({ stroke }) => {
   const [l, t, b] = [2 + h, 3 + h, 21 - h]
   const page = x => `M12 ${t + 2}C${x(10)} ${t + 0.5} ${x(l + 4)} ${t} ${x(l)} ${t}V${b - 2}C${x(l + 4)} ${b - 2} ${x(10)} ${b - 1.5} 12 ${b}Z`
   return [page(x => x), page(x => 24 - x)]
+}
+
+// 实心：两页各一块，挖掉书脊，左右两页分开
+export const fill = ({ stroke }) => {
+  const h = stroke / 2
+  const [l, t, b] = [2 + h, 3 + h, 21 - h]
+  const page = x => `M12 ${t + 2}C${x(10)} ${t + 0.5} ${x(l + 4)} ${t} ${x(l)} ${t}V${b - 2}C${x(l + 4)} ${b - 2} ${x(10)} ${b - 1.5} 12 ${b}Z`
+  return [solid([page(x => x), page(x => 24 - x)]), knock(`M12 ${t + 2}V${b}`)]
 }

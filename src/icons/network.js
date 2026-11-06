@@ -1,4 +1,5 @@
 import { rounded } from '../geometry'
+import { solid } from '../solid'
 
 // 网络拓扑：上面一个节点（9–15 × 3.5–8.5），下面两个（3–9、15–21 × 15.5–20.5）；
 // 一根竖线从上节点落到横干（12），横干两端再竖直落到下节点，所有接头都是垂直的 T 字或直角
@@ -6,6 +7,15 @@ export default ({ radius }) => [
   rounded([[9, 3.5], [15, 3.5], [15, 8.5], [9, 8.5]], Math.min(radius, 1.5)),
   rounded([[3, 15.5], [9, 15.5], [9, 20.5], [3, 20.5]], Math.min(radius, 1.5)),
   rounded([[15, 15.5], [21, 15.5], [21, 20.5], [15, 20.5]], Math.min(radius, 1.5)),
+  'M12 8.5V12.5',
+  rounded([[6, 15.5], [6, 12.5], [18, 12.5], [18, 15.5]], Math.min(radius, 1.5), false),
+]
+
+// 实心：三个节点填实，连线照旧是线
+export const fill = ({ radius }) => [
+  solid(rounded([[9, 3.5], [15, 3.5], [15, 8.5], [9, 8.5]], Math.min(radius, 1.5))),
+  solid(rounded([[3, 15.5], [9, 15.5], [9, 20.5], [3, 20.5]], Math.min(radius, 1.5))),
+  solid(rounded([[15, 15.5], [21, 15.5], [21, 20.5], [15, 20.5]], Math.min(radius, 1.5))),
   'M12 8.5V12.5',
   rounded([[6, 15.5], [6, 12.5], [18, 12.5], [18, 15.5]], Math.min(radius, 1.5), false),
 ]

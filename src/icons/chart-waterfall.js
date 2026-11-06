@@ -1,4 +1,5 @@
 import { rounded } from '../geometry'
+import { solid } from '../solid'
 
 // 瀑布图：底线 + 首尾两根落地的柱 + 中间两根悬空、上下错开的柱
 export default ({ radius, stroke }) => {
@@ -11,5 +12,17 @@ export default ({ radius, stroke }) => {
     rounded([[8, 6.5], [11, 6.5], [11, 11.5], [8, 11.5]], Math.min(radius, 1)),
     rounded([[13, 6.5], [16, 6.5], [16, 9.5], [13, 9.5]], Math.min(radius, 1)),
     rounded([[18, 20.5], [18, 9.5], [21, 9.5], [21, 20.5]], Math.min(radius, 1), false),
+  ]
+}
+
+// 实心：四根柱填实（落地的两根和底线连成一体），底线照旧是线
+export const fill = ({ radius, stroke }) => {
+  const h = stroke / 2
+  return [
+    `M${2 + h} 20.5H${22 - h}`,
+    solid(rounded([[3, 20.5], [3, 11.5], [6, 11.5], [6, 20.5]], Math.min(radius, 1))),
+    solid(rounded([[8, 6.5], [11, 6.5], [11, 11.5], [8, 11.5]], Math.min(radius, 1))),
+    solid(rounded([[13, 6.5], [16, 6.5], [16, 9.5], [13, 9.5]], Math.min(radius, 1))),
+    solid(rounded([[18, 20.5], [18, 9.5], [21, 9.5], [21, 20.5]], Math.min(radius, 1))),
   ]
 }

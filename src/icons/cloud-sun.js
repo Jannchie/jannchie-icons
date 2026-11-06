@@ -1,4 +1,6 @@
+import { GAP } from '../clearance'
 import { circle } from '../geometry'
+import { clear, solid } from '../solid'
 import { cloud } from '../symbols'
 
 // 晴转多云：右上太阳，左下云挡在前面；云的轮廓作为 cut，太阳靠近云的地方断开
@@ -16,3 +18,9 @@ export default ({ stroke = 1.5 }) => [
   ...rays(stroke),
   ...cloud([9.75, 15.5], 2).map(d => ({ d, cut: true })),
 ]
+
+// 实心：日轮填实、光线照旧，在云四周让出缝，云也是实心
+export const fill = ({ stroke = 1.5 }) => {
+  const front = cloud([9.75, 15.5], 2)
+  return [solid(circle(sun[0], sun[1], R)), ...rays(stroke), clear(front, GAP), ...solid(front)]
+}

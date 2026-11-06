@@ -1,4 +1,5 @@
 import { rounded } from '../geometry'
+import { clear, hole, solid } from '../solid'
 import { HEART } from '../suits'
 import { scale } from '../transform'
 
@@ -10,3 +11,14 @@ export default ({ radius }) => [
   // 缩放中心按「红心中心 (12, 12.25) 缩 0.4 后落在牌面中心 (15, 12.5)」反推；红心也作为 cut，不会被前一张牌切断
   { d: scale(HEART, 0.4, [17, 12.67]), cut: true, gap: 0 },
 ]
+
+// 实心：两张牌都填实，前一张四周让出和描边版一样的 0.5 的缝，红心挖成白色的洞
+export const fill = ({ radius }) => {
+  const front = rounded([[9.5, 4.5], [20.5, 4.5], [20.5, 20.5], [9.5, 20.5]], Math.min(radius, 1.75))
+  return [
+    solid(rounded([[4.5, 2.5], [15.5, 2.5], [15.5, 18.5], [4.5, 18.5]], Math.min(radius, 1.75))),
+    clear(front, 0.5),
+    solid(front),
+    hole(scale(HEART, 0.4, [17, 12.67])),
+  ]
+}

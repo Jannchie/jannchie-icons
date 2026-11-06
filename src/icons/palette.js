@@ -1,4 +1,5 @@
 import { dot } from '../scene'
+import { knock, solid } from '../solid'
 
 // 调色板：带拇指凹口的圆盘 + 四个颜料点
 export default ({ radius }) => [
@@ -7,4 +8,10 @@ export default ({ radius }) => [
   dot(9.5, 7.25),
   dot(14.5, 7.25),
   dot(17.25, 10.5),
+]
+
+// 实心：调色板一块，四个颜料点挖空
+export const fill = () => [
+  solid('M12 3A9 9 0 0 0 12 21C13.4 21 14 20 14 19C14 17.9 13.2 17.5 13.2 16.5C13.2 15.4 14.1 14.5 15.2 14.5H17A4 4 0 0 0 21 10.5C21 6.4 17 3 12 3Z'),
+  knock([dot(7.5, 11), dot(9.5, 7.25), dot(14.5, 7.25), dot(17.25, 10.5)]),
 ]

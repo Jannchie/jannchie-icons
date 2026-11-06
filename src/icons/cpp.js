@@ -1,3 +1,4 @@
+import { knock, solid } from '../solid'
 import base from './hexagon'
 
 // C++：六边形 + 左边的圆弧 C + 右边并排两个小加号
@@ -13,4 +14,10 @@ export default opts => [
   `M${cx + dx} ${cy - dy}A${r} ${r} 0 1 0 ${cx + dx} ${cy + dy}`,
   plus(13.5),
   plus(17.5),
+]
+
+// 实心：六边形一块，挖掉 C 和两个加号
+export const fill = opts => [
+  solid(base(opts)),
+  knock([`M${cx + dx} ${cy - dy}A${r} ${r} 0 1 0 ${cx + dx} ${cy + dy}`, plus(13.5), plus(17.5)]),
 ]

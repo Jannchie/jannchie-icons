@@ -1,4 +1,5 @@
 import { circle, crisp, rounded } from '../geometry'
+import { knock, solid } from '../solid'
 
 // 秒表：表盘（圆心 (12, 14.5)、半径 7）+ 顶上的按钮（同计时器）+ 右上 45° 的侧键（沿半径方向伸出，和表盘垂直相接）+
 // 一根从中心指向右上的指针
@@ -8,4 +9,13 @@ export default ({ radius }) => [
   rounded([[10, 2.5], [14, 2.5], [14, 4.5], [10, 4.5]], crisp(radius)),
   'M16.950 9.550L18.450 8.050',
   'M12 14.5L14.5 12',
+]
+
+// 实心：表盘一块，指针挖空；顶上按钮填实，短杆和侧键照旧是线
+export const fill = ({ radius }) => [
+  solid(circle(12, 14.5, 7)),
+  knock('M12 14.5L14.5 12'),
+  'M12 7.5V4.5',
+  solid(rounded([[10, 2.5], [14, 2.5], [14, 4.5], [10, 4.5]], crisp(radius))),
+  'M16.950 9.550L18.450 8.050',
 ]

@@ -1,3 +1,5 @@
+import { solid } from '../solid'
+
 // 夜间：大圆减去往右上 45° 偏移的小圆，得到月牙；两个尖角受圆角控制
 const [c1, r1] = [[12, 12.5], 8.5]
 const [c2, r2] = [[16.5, 8], 6.5]
@@ -17,7 +19,7 @@ const pt = p => `${p[0]} ${p[1]}`
 
 // 大圆沿顺时针（角度增大）的长弧从 p1 走到 p2，小圆沿逆时针的短弧从 p2 回到 p1；
 // 尖角处两段弧各让出 fillet 的弧长，用以尖点为控制点的曲线接上
-export default ({ radius }) => {
+const outline = ({ radius }) => {
   const fillet = radius * 0.8
   if (!fillet)
     return [`M${pt(p1)}A${r1} ${r1} 0 1 1 ${pt(p2)}A${r2} ${r2} 0 0 0 ${pt(p1)}Z`]
@@ -28,3 +30,8 @@ export default ({ radius }) => {
     + `A${r2} ${r2} 0 0 0 ${pt(small[1])}Q${pt(p1)} ${pt(big[0])}Z`,
   ]
 }
+
+export default outline
+
+// 实心：整个月牙
+export const fill = opts => solid(outline(opts))

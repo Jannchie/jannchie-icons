@@ -4,3 +4,5 @@ import { accent } from '../tone'
 
 // 对话 + 右下角书签
 export default ({ radius, stroke }) => withBadge('bookmark', bookmark, accent, radius, stroke)
+
+export const fill = ({ radius, stroke }) => withBadge('bookmark', bookmark, accent, radius, stroke, { fill: true })

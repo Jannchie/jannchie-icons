@@ -1,5 +1,6 @@
 import { rounded } from '../geometry'
 import { GROUND, groundLine } from '../scene'
+import { hole, solid } from '../solid'
 import { HEART } from './heart'
 
 // 住宅 + 爱心：和 home 同样的屋顶与墙，门换成一颗缩小的爱心
@@ -24,4 +25,12 @@ export default ({ radius }) => [
   `M${wallL} ${roofY(wallL)}V${GROUND}`,
   `M${wallR} ${roofY(wallR)}V${GROUND}`,
   heart,
+]
+
+// 实心：墙和屋顶围成的一块，屋檐照旧是线；爱心挖空（洞是描边版爱心墨迹的外形），地平线最后画
+export const fill = ({ radius }) => [
+  solid(rounded([[wallL, roofY(wallL)], apex, [wallR, roofY(wallR)], [wallR, GROUND], [wallL, GROUND]], radius)),
+  rounded([[apex[0] - eave, roofY(apex[0] - eave)], apex, [apex[0] + eave, roofY(apex[0] + eave)]], radius, false),
+  hole(heart),
+  groundLine,
 ]

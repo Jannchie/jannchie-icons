@@ -1,5 +1,6 @@
 import { rounded } from '../geometry'
 import { triangle, triangleWidth } from '../media'
+import { solid } from '../solid'
 
 // 播放：等边三角，重心对齐画布中心（重心在宽度 1/3 处）
 const h = 14
@@ -9,3 +10,5 @@ const base = 8.5
 export default ({ radius }) => [
   rounded(triangle(base, h), radius),
 ]
+
+export const fill = ({ radius }) => [solid(rounded(triangle(base, h), radius))]

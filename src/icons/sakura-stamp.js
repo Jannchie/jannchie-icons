@@ -1,4 +1,5 @@
 import { circle } from '../geometry'
+import { knock, solid } from '../solid'
 
 // 桜スタンプ（「よくできました」那种樱花印）：五瓣樱花轮廓（每瓣瓣尖一个小 V 形缺口）+ 中间一个小圆花心
 // 每瓣在自己的局部坐标里画（u 横向、v 沿瓣轴往外），左半边一段三次曲线：
@@ -9,7 +10,7 @@ const fmt = n => String(Math.round(n * 1000) / 1000)
 const pt = ([x, y]) => `${fmt(x)} ${fmt(y)}`
 const [CX, CY, VALLEY] = [12, 12.2, 4]
 
-export default ({ stroke }) => {
+function draw({ stroke }) {
   const R = 10.85 - stroke / 2
   const [s, c] = [Math.sin(Math.PI / 5), Math.cos(Math.PI / 5)]
   const left = [[-VALLEY * s, VALLEY * c], [-VALLEY * s - 1.2, VALLEY * c + 2.6], [-5, R + 0.6], [0, R - 1]]
@@ -24,4 +25,11 @@ export default ({ stroke }) => {
     return `${i ? '' : `M${pt(q[0])}`}C${pt(q[1])} ${pt(q[2])} ${pt(q[3])}C${pt(q[4])} ${pt(q[5])} ${pt(q[6])}`
   }).join('')
   return [`${d}Z`, circle(CX, CY, 1.5)]
+}
+export default draw
+
+// 实心：樱花一块，挖掉花心的圆圈，花心里留成实心
+export const fill = (opts) => {
+  const [flower, heart] = draw(opts)
+  return [solid(flower), knock(heart)]
 }

@@ -4,3 +4,5 @@ import { success } from '../tone'
 
 // 书 + 右上角盾
 export default ({ radius, stroke }) => withBadgeTop('shield', shield, success, radius, stroke)
+
+export const fill = ({ radius, stroke }) => withBadgeTop('shield', shield, success, radius, stroke, { fill: true })

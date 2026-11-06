@@ -1,9 +1,11 @@
 // AI 任务图标用的「模态」小符号（与 symbols.js 一样：c 为中心，k 为缩放，k = 1 时约 7×7）
 // 以及「输入 › 输出」的统一构图
 // 按 k = 1、中心在整数坐标上设计，每个符号的墨迹以中心为中
+import { GAP } from './clearance'
 import { circle, crisp, rounded } from './geometry'
 import { glyph } from './letters'
 import { dot } from './scene'
+import { clear, knock, solid } from './solid'
 import { chevronRight, image, music, sparkle } from './symbols'
 
 const at = ([cx, cy], k) => ([x, y]) => [cx + x * k, cy + y * k]
@@ -137,5 +139,82 @@ export function pipeline(inputs, output, radius) {
     ...inputs.flatMap((m, i) => M[m]([6, ys[i]], 1, radius)),
     ...plain(chevronRight([12, 12], 0.55, radius)),
     ...M[output]([18, 12], 1, radius),
+  ]
+}
+
+// ---------- 实心版 ----------
+// 每个模态符号的实心画法，沿用 M 的几何：闭合的部件填实、里面的细节挖空；只有线条的符号（文字、音频、问号、向量……）原样不动
+// 表格的线挖到边上会把小表格切碎，所以两端缩一个线宽，要用 stroke
+export const MF = {
+  // 相框一块，挖掉太阳点和山形线
+  image: (c, k, r) => {
+    const [frame, ...scene] = M.image(c, k, r)
+    return [solid(frame), knock(scene)]
+  },
+  // 机身和镜头罩各填实
+  video: (c, k, r) => [
+    solid(M.video(c, k, r)[0]),
+    solid(rounded(pts(c, k, [[1.5, -0.75], [3.5, -2], [3.5, 2], [1.5, 0.75]]), Math.min(r, k * 0.5))),
+  ],
+  // 符头填实，符干、符尾照旧是线
+  music: (c, k, r) => {
+    const [head, stem] = M.music(c, k, r)
+    return [solid(head), stem]
+  },
+  // 话筒头填实，托弧和立杆照旧是线
+  speech: (c, k) => {
+    const [head, ...stand] = M.speech(c, k)
+    return [solid(head), ...stand]
+  },
+  // 纸一块，正中挖一道字线：符号只有 7 高，照描边版挖两道时粗字重下两道线连成一个洞，看着像空心的纸
+  doc: (c, k, r) => [solid(M.doc(c, k, r)[0]), knock(line(c, k, [-1, 0.5], [1, 0.5]))],
+  // 表格一块，挖掉表头线（两端各缩一个线宽）和竖线（底端缩一个线宽），表格不被切成几块
+  table: (c, k, r, stroke) => [
+    solid(M.table(c, k, r)[0]),
+    knock([line(c, k, [-3.5 + stroke / k, -0.5], [3.5 - stroke / k, -0.5]), line(c, k, [-1.5, -0.5], [-1.5, 2.5 - stroke / k])]),
+  ],
+  // 六边形一块，挖掉中间的 Y（分成三个面）
+  cube: (c, k, r) => {
+    const [hex, ...edges] = M.cube(c, k, r)
+    return [solid(hex), knock(edges)]
+  },
+  // 两颗星都填实
+  any: (c, k, r) => solid(M.any(c, k, r)),
+  // 被框出来的词填实
+  tokens: (c, k, r) => M.tokens(c, k, r).map((p, i) => (i === 2 ? solid(p) : p)),
+  // 标签一块，挖掉穿孔
+  tag: (c, k, r) => {
+    const [body, eyelet] = M.tag(c, k, r)
+    return [solid(body), knock(eyelet)]
+  },
+  // 四个角标照旧是线，中间的目标填实
+  detect: (c, k, r) => M.detect(c, k, r).map((p, i) => (i === 4 ? solid(p) : p)),
+  // 方框一块，挖掉分界曲线（分成两块区域）
+  segment: (c, k, r) => {
+    const [frame, edge] = M.segment(c, k, r)
+    return [solid(frame), knock(edge)]
+  },
+  // 两个圆都填实，后面那个在前面那个四周让出缝，不粘成一团
+  mask: (c, k) => {
+    const [back, front] = M.mask(c, k)
+    return [solid(back), clear(front, GAP), solid(front)]
+  },
+  // 顶层的菱形填实，下面两层照旧是线
+  depth: (c, k) => {
+    const [top, ...layers] = M.depth(c, k)
+    return [solid(top), ...layers]
+  },
+  // 待填的空格填实
+  blank: (c, k, r) => M.blank(c, k, r).map((p, i) => (i === 2 ? solid(p) : p)),
+}
+const fillOf = m => MF[m] ?? M[m]
+
+// pipeline 的实心版：同样的构图，各模态换成 MF 的画法，› 照旧是线
+export function pipelineFill(inputs, output, radius, stroke) {
+  const ys = inputs.length === 1 ? [12] : [7, 17]
+  return [
+    ...inputs.flatMap((m, i) => fillOf(m)([6, ys[i]], 1, radius, stroke)),
+    ...plain(chevronRight([12, 12], 0.55, radius)),
+    ...fillOf(output)([18, 12], 1, radius, stroke),
   ]
 }

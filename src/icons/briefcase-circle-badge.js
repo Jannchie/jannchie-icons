@@ -4,3 +4,5 @@ import { accent } from '../tone'
 
 // 公文包 + 右下角圆
 export default ({ radius, stroke }) => withBadge('ring', ring, accent, radius, stroke)
+
+export const fill = ({ radius, stroke }) => withBadge('ring', ring, accent, radius, stroke, { fill: true })

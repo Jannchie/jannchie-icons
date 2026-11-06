@@ -1,4 +1,5 @@
 import { dot } from '../scene'
+import { knock, solid } from '../solid'
 import { shrink, tagDiagonal } from '../tag'
 
 // 多个标签：前面一个完整的斜放标签（和 tag 同样的 45° 外形，缩小）+ 后面一个只露出顶边和右上斜边，
@@ -10,11 +11,17 @@ const A = 8.15
 const FRONT = [[2, 6], [2 + A, 6], [2 + 2 * A, 6 + A], [2 + A, 6 + 2 * A], [2, 6 + A]]
 const round = v => Math.round(v * 1000) / 1000
 
-export default ({ radius, stroke }) => {
+export default function tags({ radius, stroke }) {
   const [p0, p1, p2] = shrink(FRONT, stroke / 2).map(([x, y]) => [round(x + 4), round(y - 4)])
   return [
     tagDiagonal(stroke, Math.min(radius, 1.5), FRONT),
     dot(6.25, 10.25),
     `M${p0[0]} ${p0[1]}H${p1[0]}L${p2[0]} ${p2[1]}`,
   ]
+}
+
+// 实心：前面的标签一块、穿孔挖空，后面露出的那条边仍是线
+export const fill = ({ radius, stroke }) => {
+  const [front, punch, back] = tags({ radius, stroke })
+  return [solid(front), knock(punch), back]
 }

@@ -1,5 +1,6 @@
 import { card } from '../game-card'
 import { glyph, LABEL } from '../letters'
+import { hole, solid } from '../solid'
 
 // 功能牌 +4：牌心里一个小加号 + 数字 4；两者缩小后顺着牌心的倾斜摆：加号偏左下、数字偏右上（转 30° 的牌心右下、左上最窄），离牌心边缘都留出空隙
 export default ({ radius }) => [
@@ -8,3 +9,15 @@ export default ({ radius }) => [
   { d: 'M8.75 12.5H10.75', thin: true },
   { d: glyph('4', 12.5, 9.4, 0.7, 0.7, LABEL), thin: true },
 ]
+
+// 实心：牌面一块，牌心整个挖空成白底，+4 画回牌心里
+export const fill = ({ radius }) => {
+  const [face, heart] = card(radius)
+  return [
+    solid(face),
+    hole(heart),
+    { d: 'M9.75 11.5V13.5', thin: true },
+    { d: 'M8.75 12.5H10.75', thin: true },
+    { d: glyph('4', 12.5, 9.4, 0.7, 0.7, LABEL), thin: true },
+  ]
+}

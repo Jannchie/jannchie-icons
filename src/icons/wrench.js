@@ -1,3 +1,4 @@
+import { solid } from '../solid'
 import { rotate } from '../transform'
 
 // 扳手：一整条外轮廓。圆形扳手头（顶部切出 U 形开口）+ 胶囊形手柄；先竖直画，再顺时针转 45°，扳手头朝右上
@@ -15,3 +16,6 @@ const outline = `M${cx - hw} ${join}`
   + `L${cx + hw} ${bottom}A${hw} ${hw} 0 0 1 ${cx - hw} ${bottom}Z`
 
 export default () => [rotate(outline, 45)]
+
+// 实心：整把扳手一块
+export const fill = () => [solid(rotate(outline, 45))]

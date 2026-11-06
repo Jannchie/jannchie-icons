@@ -2,6 +2,7 @@
 import { blocked, GAP, place } from './clearance'
 import { cornerCenter } from './corner'
 import { dot } from './scene'
+import { clear, knock, solid } from './solid'
 import { accent } from './tone'
 
 // 墨迹（含半个线宽）左右收在 3–21、以画布中线对称；线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽
@@ -54,6 +55,42 @@ export function listBadge(outline, k, stroke, draw, radius) {
   return result
 }
 
+// ---------- 实心版 ----------
+// 列表的行线照旧是线，只把符号填实。symbolFill 按符号名把 symbols.js 画出的路径换成实心标记：
+// 闭合外形整块填实；框里的细节（图片的山和太阳、田字的十字、时钟指针、锁孔、禁止的斜线）挖空；
+// 读作线的部分（音符符干、锁梁、放大镜手柄）保持是线，最后画
+const SOLID_SYMBOLS = new Set(['heart', 'star', 'cloud', 'shield', 'bookmark', 'video', 'puzzle', 'ring', 'sparkle'])
+export function symbolFill(name, paths, stroke) {
+  if (SOLID_SYMBOLS.has(name))
+    return solid(paths)
+  const [body, ...rest] = paths
+  switch (name) {
+    // 方框填实，山形线、太阳挖空（山形线两端落在框边上，左下角的山体自成一块）
+    case 'image':
+    // 方框填实，十字挖空成四块
+    case 'assets':
+    // 圆面填实，指针挖空
+    case 'clock':
+      return [solid(body), knock(rest)]
+    // 圆面填实，斜线挖空、两端各收一个线宽，圆面不被切成两半
+    case 'ban': {
+      const [x0, y0, x1, y1] = (rest[0].d ?? rest[0]).match(/-?[\d.]+/g).map(Number)
+      const s = stroke / Math.SQRT2
+      const d = `M${x0 + s} ${y0 + s}L${x1 - s} ${y1 - s}`
+      return [solid(body), knock(typeof rest[0] === 'string' ? d : { ...rest[0], d })]
+    }
+    // 符头填实，符干是线
+    case 'music':
+    // 镜片填实，手柄是线
+    case 'search':
+      return [solid(body), ...rest]
+    // 锁身填实，锁孔挖空，锁梁是线
+    case 'lock':
+      return [solid(body), knock(rest[1]), rest[0]]
+  }
+  throw new Error(`symbolFill: unknown symbol ${name}`)
+}
+
 // 主次反过来：符号为主时右下角的小列表（圆点 + 三行线，约 8 × 8），作为 cut 让主符号在附近断开
 // 行距 3，三行以 cy 为中；圆点直径 1.5、圆心 cx - 3.25（墨迹左缘 cx - 4）
 // 长行墨迹右缘固定在 cx + 4（线宽变粗时往里收），整块墨迹左右以 cx 对称：cx = 18 时墨迹 14–22；末行短一截
@@ -63,3 +100,9 @@ export const listMark = ([cx, cy], stroke = 1.5) => accent([
   ...markRows.map(y => dot(cx - 3.25, cy + y, 1.5)),
   ...markRows.map((y, i) => `M${cx - 1.25} ${cy + y}H${cx + (i === 2 ? 1.5 : 4 - stroke / 2)}`),
 ])
+
+// 实心版：主符号填实（symbolFill），在右下的小列表四周让出 GAP（和描边版 cut 断开的间隙一样），再把小列表画回去
+export const withListMarkFill = (main, stroke) => {
+  const mark = listMark([18, 18], stroke)
+  return [...main, clear(mark, GAP), ...mark]
+}

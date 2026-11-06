@@ -3,8 +3,9 @@
 // 线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽；线宽 1 时四边中心线 2.5 / 21.5 / 3.5 / 20.5，都落在 .5 上
 // 不取更扁的 20 × 16：右下角标（约 8.5 见方）贴到外框角上之后，顶会戳到 V 形封口，右边也只剩很短一截
 import { blocked, GAP } from './clearance'
-import { asBadge, fitBadge, roomOnRight } from './corner'
+import { asBadge, fitBadge, notchOf, roomOnRight } from './corner'
 import { rounded } from './geometry'
+import { badgeFill, knock, solid } from './solid'
 
 export function frame(stroke) {
   const h = stroke / 2
@@ -46,12 +47,18 @@ function clearOfFlap(stroke) {
 }
 
 // 角标：符号墨迹的右缘、下缘贴到画布留白的边 (22, 22)（比信封底缘 21 低 1，和文件夹一样压在外框角上）；右边和底边在离符号 GAP 处断开，轮廓从底边的断口出发绕一圈到右边的断口
-export function withBadge(name, draw, tone, radius, stroke) {
+export function withBadge(name, draw, tone, radius, stroke, { fill = false } = {}) {
   const { l, t, r, b } = frame(stroke)
   const [roomRight, flapClear] = [roomOnRight(stroke, r, t), clearOfFlap(stroke)]
   const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, bottom: 22 }, s => roomRight(s) && flapClear(s), GROW)
   const right = blocked(shape, 'y', r, stroke)
   const bottom = blocked(shape, 'x', b, stroke)
   const outline = [[bottom ? bottom[0] : r, b], [l, b], [l, t], [r, t], [r, right ? right[0] : b]]
+  // 实心版：同样的角标位置，主体在角上挖出缺口，角标落在缺口里
+  if (fill)
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), notchOf(shape, 'bottom', radius))
   return [rounded(outline, radius, false), flap(stroke, radius), ...asBadge(tone(draw(at, k, radius)), name)]
 }
+
+// 实心版（见 solid.js 的 plainFill / badgeFill / centerFill）：信封一块，挖掉封口线
+export const fillParts = (radius, stroke) => ({ body: [solid(rounded(envelope(stroke), radius)), knock(flap(stroke, radius))], lines: [] })

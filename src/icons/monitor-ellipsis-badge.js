@@ -4,3 +4,5 @@ import { accent } from '../tone'
 
 // 显示器 + 右下角省略号
 export default ({ radius, stroke }) => withBadge('ellipsis', ellipsis, accent, radius, stroke)
+
+export const fill = ({ radius, stroke }) => withBadge('ellipsis', ellipsis, accent, radius, stroke, { fill: true })

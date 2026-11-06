@@ -1,4 +1,5 @@
 import { crisp, rounded } from '../geometry'
+import { knock, solid } from '../solid'
 
 // 多个文件：前面一张纸（右上折角，和 file 一样的 45° 折角画法）+ 身后一张纸只露出左边和底边，画成一条 L 线
 // 墨迹框左右 3–21、上下 2–22，以画布中线对称；线宽变粗时外缘不动、往里长（h 是半个线宽）：
@@ -15,6 +16,18 @@ export default ({ radius, stroke }) => {
   return [
     rounded([[fl, t], [FOLD_X, t, crisp(radius)], [r, FOLD_Y, crisp(radius)], [r, fb], [fl, fb]], radius),
     `M${FOLD_X} ${t}V${FOLD_Y}H${r}`,
+    rounded([[l, t + 4], [l, b], [r - 4, b]], radius, false),
+  ]
+}
+
+// 实心：前面那张纸一块，挖掉折角的翻折线；身后那张纸的 L 线照旧是线
+export const fill = ({ radius, stroke }) => {
+  const h = stroke / 2
+  const [l, t, r, b] = [3 + h, 2 + h, 21 - h, 22 - h]
+  const [fl, fb] = [l + 4, b - 4]
+  return [
+    solid(rounded([[fl, t], [FOLD_X, t, crisp(radius)], [r, FOLD_Y, crisp(radius)], [r, fb], [fl, fb]], radius)),
+    knock(`M${FOLD_X} ${t}V${FOLD_Y}H${r}`),
     rounded([[l, t + 4], [l, b], [r - 4, b]], radius, false),
   ]
 }

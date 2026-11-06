@@ -4,6 +4,7 @@
 import { circle, rounded } from './geometry'
 import { ring } from './marks'
 import { dot } from './scene'
+import { hole, knock, solid } from './solid'
 import { check, cross } from './symbols'
 import { danger, success, warning } from './tone'
 import { rotate } from './transform'
@@ -19,6 +20,8 @@ const pie = deg => ({
     : `M12 12V6.5A5.5 5.5 0 ${deg > 180 ? 1 : 0} 1 ${+(12 + 5.5 * Math.sin(deg * Math.PI / 180)).toFixed(3)} ${+(12 - 5.5 * Math.cos(deg * Math.PI / 180)).toFixed(3)}Z`,
   fill: true,
 })
+// 实心版（fill）：有实心圆的状态把圆面填实、里面的内容挖空（受阻的横条挖成和描边版横条外缘一样大的洞）；草稿只把铅笔填实，虚线圆照旧。
+// 待办（空圆）、进行中 / 审核中（扇形本来就是实心）不做：填实的圆会读成「已完成」，和进度扇形混淆
 // 草稿的铅笔：沿左下—右上的对角线，闭合轮廓（尖 + 笔杆），长 9、粗 2.5
 const pencil = radius => rotate(rounded([[7.5, 12], [9.25, 10.75], [16.5, 10.75], [16.5, 13.25], [9.25, 13.25]], Math.min(radius, 0.5)), -45)
 
@@ -26,23 +29,23 @@ export const STATUS = {
   // 积压：只有虚线圆
   'backlog': { zh: '积压', paths: () => dashed() },
   // 草稿：虚线圆 + 斜放的铅笔
-  'draft': { zh: '草稿', paths: radius => [...dashed(), pencil(radius)] },
+  'draft': { zh: '草稿', paths: radius => [...dashed(), pencil(radius)], fill: radius => [...dashed(), solid(pencil(radius))] },
   // 待办：空圆
   'todo': { zh: '待办', paths: () => [ring()] },
   // 待处理：圆 + 三个点（在等）
-  'pending': { zh: '待处理', paths: () => [ring(), dot(8, 12), dot(12, 12), dot(16, 12)].map(p => (typeof p === 'string' ? p : warning(p))) },
+  'pending': { zh: '待处理', paths: () => [ring(), dot(8, 12), dot(12, 12), dot(16, 12)].map(p => (typeof p === 'string' ? p : warning(p))), fill: () => [solid(ring()), knock([dot(8, 12), dot(12, 12), dot(16, 12)])] },
   // 进行中：圆 + 半边扇形
   'in-progress': { zh: '进行中', paths: () => [ring(), warning(pie(180))] },
   // 审核中：圆 + 四分之三扇形
   'in-review': { zh: '审核中', paths: () => [ring(), warning(pie(270))] },
   // 搁置：圆 + 暂停的两道竖线（9.5 / 14.5，落在 .5 上）
-  'on-hold': { zh: '搁置', paths: () => [ring(), 'M9.5 8.5V15.5', 'M14.5 8.5V15.5'] },
+  'on-hold': { zh: '搁置', paths: () => [ring(), 'M9.5 8.5V15.5', 'M14.5 8.5V15.5'], fill: () => [solid(ring()), knock(['M9.5 8.5V15.5', 'M14.5 8.5V15.5'])] },
   // 受阻：圆 + 横条（禁行标志的白条，闭合的扁矩形 7.5–16.5 × 10.5–13.5）
-  'blocked': { zh: '受阻', paths: radius => [ring(), danger(rounded([[7.5, 10.5], [16.5, 10.5], [16.5, 13.5], [7.5, 13.5]], Math.min(radius, 1.5)))] },
+  'blocked': { zh: '受阻', paths: radius => [ring(), danger(rounded([[7.5, 10.5], [16.5, 10.5], [16.5, 13.5], [7.5, 13.5]], Math.min(radius, 1.5)))], fill: radius => [solid(ring()), hole(rounded([[7.5, 10.5], [16.5, 10.5], [16.5, 13.5], [7.5, 13.5]], Math.min(radius, 1.5)))] },
   // 已批准：圆 + 勾
-  'approved': { zh: '已批准', paths: radius => [ring(), ...success(check([12, 12], 1.4, radius))] },
+  'approved': { zh: '已批准', paths: radius => [ring(), ...success(check([12, 12], 1.4, radius))], fill: radius => [solid(ring()), knock(check([12, 12], 1.4, radius))] },
   // 已驳回：圆 + 叉
-  'rejected': { zh: '已驳回', paths: radius => [ring(), ...danger(cross([12, 12], 1.6, radius))] },
+  'rejected': { zh: '已驳回', paths: radius => [ring(), ...danger(cross([12, 12], 1.6, radius))], fill: radius => [solid(ring()), knock(cross([12, 12], 1.6, radius))] },
   // 已取消：虚线圆 + 叉（和驳回区分：没走完流程就作废）
   'cancelled': { zh: '已取消', paths: radius => [...dashed(), ...cross([12, 12], 1.6, radius)] },
 }

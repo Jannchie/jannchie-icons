@@ -1,4 +1,5 @@
 import { rounded } from '../geometry'
+import { knock, solid } from '../solid'
 import { sparkle } from '../symbols'
 import { rotate } from '../transform'
 
@@ -11,4 +12,11 @@ export default ({ radius }) => [
   turn(rounded([[cx - 4, cy - 7], [cx + 4, cy - 7], [cx + 4, cy + 7], [cx - 4, cy + 7]], Math.min(radius, 2))),
   turn(`M${cx - 4} ${cy + 1.5}H${cx + 4}`),
   ...sparkle([18, 5.25], 0.9, radius),
+]
+
+// 实心：橡皮一块，挖掉分隔线（同 eraser）；星芒两颗都填实
+export const fill = ({ radius }) => [
+  solid(turn(rounded([[cx - 4, cy - 7], [cx + 4, cy - 7], [cx + 4, cy + 7], [cx - 4, cy + 7]], Math.min(radius, 2)))),
+  knock(turn(`M${cx - 4} ${cy + 1.5}H${cx + 4}`)),
+  ...solid(sparkle([18, 5.25], 0.9, radius)),
 ]

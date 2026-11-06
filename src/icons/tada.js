@@ -1,5 +1,6 @@
 import { rounded } from '../geometry'
 import { dot } from '../scene'
+import { solid } from '../solid'
 
 // tada（礼花筒）：左下尖、右上开口的圆锥（开口边 45°），三个角都跟随圆角；
 // 彩带和纸屑从开口中心呈扇形放射：三道彩带等距排开，纸屑点落在彩带之间、稍远处
@@ -16,6 +17,22 @@ export default ({ radius }) => {
   const [a, b, tip] = cone.map(p => [0, 1].map(i => g[i] + (p[i] - g[i]) * grow))
   return [
     rounded([a, b, [...tip, r * 1.25]], r),
+    streamer(-100),
+    streamer(-45),
+    streamer(10),
+    dot(...polar(-72, 8.75)),
+    dot(...polar(-18, 8.75)),
+    dot(...polar(-45, 11)),
+  ]
+}
+
+// 实心：圆锥填实；彩带照旧是线，纸屑照旧是点
+export const fill = ({ radius }) => {
+  const r = Math.min(radius, 2)
+  const grow = 1 + 0.06 * r
+  const [a, b, tip] = cone.map(p => [0, 1].map(i => g[i] + (p[i] - g[i]) * grow))
+  return [
+    solid(rounded([a, b, [...tip, r * 1.25]], r)),
     streamer(-100),
     streamer(-45),
     streamer(10),

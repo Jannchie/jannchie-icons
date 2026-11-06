@@ -1,4 +1,5 @@
 import { rounded } from '../geometry'
+import { knock, solid } from '../solid'
 
 // 内存条：长条 PCB + 三颗颗粒 + 底部金手指（中间留一个防呆缺口）；金手指间距 2，横竖线都落在 .5 上
 export default ({ radius }) => [
@@ -6,6 +7,18 @@ export default ({ radius }) => [
   rounded([[5.5, 8.5], [8.5, 8.5], [8.5, 13.5], [5.5, 13.5]], Math.min(radius, 0.5)),
   rounded([[10.5, 8.5], [13.5, 8.5], [13.5, 13.5], [10.5, 13.5]], Math.min(radius, 0.5)),
   rounded([[15.5, 8.5], [18.5, 8.5], [18.5, 13.5], [15.5, 13.5]], Math.min(radius, 0.5)),
+  'M5.5 15.5V18',
+  'M7.5 15.5V18',
+  'M9.5 15.5V18',
+  'M14.5 15.5V18',
+  'M16.5 15.5V18',
+  'M18.5 15.5V18',
+]
+
+// 实心：PCB 一块，挖掉三颗颗粒的轮廓（颗粒留成实心），金手指照旧是线
+export const fill = ({ radius }) => [
+  solid(rounded([[2.5, 6.5], [21.5, 6.5], [21.5, 15.5], [2.5, 15.5]], Math.min(radius, 1))),
+  knock([5.5, 10.5, 15.5].map(x => rounded([[x, 8.5], [x + 3, 8.5], [x + 3, 13.5], [x, 13.5]], Math.min(radius, 0.5)))),
   'M5.5 15.5V18',
   'M7.5 15.5V18',
   'M9.5 15.5V18',

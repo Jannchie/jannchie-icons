@@ -4,3 +4,5 @@ import { info } from '../tone'
 
 // 书 + 右上角计速器
 export default ({ radius, stroke }) => withBadgeTop('gauge', gauge, info, radius, stroke)
+
+export const fill = ({ radius, stroke }) => withBadgeTop('gauge', gauge, info, radius, stroke, { fill: true })

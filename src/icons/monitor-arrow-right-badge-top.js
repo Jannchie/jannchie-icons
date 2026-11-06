@@ -4,3 +4,5 @@ import { info } from '../tone'
 
 // 显示器 + 右上角右箭头
 export default ({ radius, stroke }) => withBadgeTop('arrowRight', arrowRight, info, radius, stroke)
+
+export const fill = ({ radius, stroke }) => withBadgeTop('arrowRight', arrowRight, info, radius, stroke, { fill: true })

@@ -1,4 +1,5 @@
 import { rounded } from '../geometry'
+import { solid } from '../solid'
 
 // 仪表盘布局：两列四块，和 layout-grid 同样的列（3.5–10.5 / 13.5–20.5）、块间隔 3；
 // 左列上高下矮（9 / 5）、右列上矮下高（5 / 9），错开的高低块就是仪表盘的样子
@@ -9,4 +10,9 @@ export default ({ radius }) => [
   cell(3.5, 15.5, 5, radius),
   cell(13.5, 3.5, 5, radius),
   cell(13.5, 11.5, 9, radius),
+]
+
+// 实心：四块都填实
+export const fill = ({ radius }) => [
+  solid([cell(3.5, 3.5, 9, radius), cell(3.5, 15.5, 5, radius), cell(13.5, 3.5, 5, radius), cell(13.5, 11.5, 9, radius)]),
 ]

@@ -1,4 +1,6 @@
-import { rating } from '../rating'
+import { rating, ratingFill } from '../rating'
 
 // 内容分级：北美游戏 ESRB RP
 export default ({ radius }) => rating('esrb', 'RP', radius)
+
+export const fill = ({ radius, stroke }) => ratingFill('esrb', 'RP', radius, stroke)

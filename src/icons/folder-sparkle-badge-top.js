@@ -4,3 +4,5 @@ import { accent } from '../tone'
 
 // 文件夹 + 右上角星芒
 export default ({ radius, stroke }) => withBadgeTop('sparkle', sparkle, accent, radius, stroke)
+
+export const fill = ({ radius, stroke }) => withBadgeTop('sparkle', sparkle, accent, radius, stroke, { fill: true })

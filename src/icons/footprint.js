@@ -1,3 +1,4 @@
+import { solid } from '../solid'
 // 人类脚印（一只左脚）：脚掌是一条闭合轮廓（前掌宽、足弓在内侧收进去、脚跟圆），上方一排四个脚趾点，大脚趾在内侧最大；
 // 脚趾在尖角模式下也是圆点（方点像像素，不像脚趾）。按 1.35 倍放大，整只脚居中
 const s = 1.35
@@ -7,5 +8,11 @@ const sole = 'M6.75 10.5C9 10.5 10 12 9.6 14.8C9.3 16.8 9.4 17.8 9.4 18.7C9.4 20
 const toes = [[9.1, 7.9, 2.2], [6.7, 7.3, 1.7], [4.75, 7.8, 1.4], [3.4, 8.9, 1.1]]
 export default () => [
   move(sole),
+  ...toes.map(([x, y, size]) => ({ d: `M${t(x, y).map(v => +v.toFixed(2)).join(' ')}h0`, dot: size * s, round: true })),
+]
+
+// 实心：脚掌一块；脚趾本来就是实心点，照旧
+export const fill = () => [
+  solid(move(sole)),
   ...toes.map(([x, y, size]) => ({ d: `M${t(x, y).map(v => +v.toFixed(2)).join(' ')}h0`, dot: size * s, round: true })),
 ]

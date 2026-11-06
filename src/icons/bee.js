@@ -1,4 +1,5 @@
 import { circle } from '../geometry'
+import { knock, solid } from '../solid'
 import { rotate } from '../transform'
 
 // 蜜蜂：俯视。头是实心圆（圆心 (12, 6)、半径 2），两根往外弯的触角从头里伸出（-125° / -55°，长 4，起点藏在填实的头里，尖角时线头不冒出来）；
@@ -21,4 +22,15 @@ export default () => [
   'M8.5 15.5H15.5',
   wing(5.5, 11, -25),
   wing(18.5, 11, 25),
+]
+
+// 实心：头本来就是实心；腹部一块，挖掉两道横纹（腹部分成三节，读作条纹）；翅膀各是一块，触角照旧是线
+const abdomen = 'M8.5 13A3.5 3.5 0 0 1 15.5 13V16C15.5 18.1 13.75 19.9 12 21C10.25 19.9 8.5 18.1 8.5 16Z'
+export const fill = () => [
+  { d: `${circle(12, 6, 2)}Z`, fill: true },
+  antenna(-125),
+  antenna(-55),
+  solid(abdomen),
+  knock(['M8.5 13.5H15.5', 'M8.5 15.5H15.5']),
+  solid([wing(5.5, 11, -25), wing(18.5, 11, 25)]),
 ]

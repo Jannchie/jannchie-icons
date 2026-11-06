@@ -41,6 +41,24 @@ How icons are drawn on the 24 × 24 canvas. Naming rules are in [naming.md](nami
 
 - Leave a visible gap of at least 0.5 between strokes at regular and 0.25 at bold. `pnpm audit:icons` reports smaller gaps, but they are a hint: accept crowding that does not hurt recognition.
 
+## Fill variant
+
+- An icon gets a fill version by exporting `fill` next to its default export. It receives `{ radius, stroke, weight, sharp }` and returns paths like the outline, marked with the helpers in `src/solid.js`:
+  - `solid(d)`: a closed area, plus half a stroke around its edge. Use the same outline path as the stroke version, so the ink edge stays where the outline's ink edge is.
+  - plain paths: lines, drawn as their stroke shape (dots, `detail`, `badge` and `thin` widths work as in the outline).
+  - `knock(d)`: removes the stroke shape of a line from everything drawn before it.
+  - `hole(d)`: removes a closed area plus half a stroke. To get a hole as large as the inside of an outline shape, pass that shape inset by half a stroke.
+- Paths apply in order: lay down the solid body, knock out the details, then add lines that should stay whole (a ground line drawn after the door hole is not cut by it).
+- Draw the fill by hand from the outline's geometry, not by filling every closed path. Keep the outer silhouette of the outline; turn inner lines into knock-outs; keep parts that read as lines in the outline (eaves, handles, hanging rings) as lines.
+- A knocked-out line that runs into the outer edge splits the shape. Stop it one stroke short of the edge when the parts should stay connected (the calendar header line).
+- Corners that are features of the shape (a speech-bubble tail) keep their small fixed radius (`crisp`), as in the outline.
+- Series (folder, file, chat, mail, calendar, monitor, book, briefcase, shield) define their fill once, as `fillParts(radius, stroke)` in the series module: `body` is the solid shape with its knock-outs, `lines` are parts that stay whole (hanging rings, the monitor stand, the briefcase handle) and are drawn last. Icons in a series use the helpers in `src/solid.js`:
+  - `plainFill(parts)` for the plain icon;
+  - `centerFill(parts, symbol)` for a centered symbol, which is knocked out of the body;
+  - `withBadge(…, { fill: true })` / `withBadgeTop(…, { fill: true })` for a corner badge: same placement as the outline, the body clears a `GAP` around the badge (`clear`: closed parts of the badge are cleared with their inside), then the badge is drawn as lines.
+- `-off` icons use `offFill(baseFill)` from `src/off.js`: the base fill clears a `GAP` on both sides of the slash, then the slash is drawn.
+- `src/fill.js` computes the result with Clipper2 and fits arcs and cubic curves back into the polyline output. The preview site computes it live; the published package carries precomputed path data, so the package does not depend on Clipper2. `pnpm test` checks that every fill renders at all 15 settings and that the fitted path stays on the computed outline.
+
 ## Checking
 
 - `node --import <scratchpad>/ext-register.mjs <scratchpad>/margins2.mjs` (see the maintainers' notes) lists the ink margins of every icon.

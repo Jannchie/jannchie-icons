@@ -1,4 +1,5 @@
 import { rounded } from '../geometry'
+import { knock, solid } from '../solid'
 
 // 洗面台（立柱式，正面）：盆体是上宽下窄的梯形（口沿 3.5–20.5 在 9.5，盆底 6.5–17.5 在 14.5，大圆角让它像个碗）；
 // 立柱两条竖线（10.5 / 13.5）从盆底落到地面，底下一道横线是底座（8.5–15.5）；
@@ -6,6 +7,17 @@ import { rounded } from '../geometry'
 export default ({ radius }) => [
   rounded([[3.5, 9.5], [20.5, 9.5], [17.5, 14.5], [6.5, 14.5]], Math.min(radius, 2)),
   rounded([[10.5, 14.5], [10.5, 20.5], [13.5, 20.5], [13.5, 14.5]], Math.min(radius, 0.5), false),
+  'M8.5 20.5H15.5',
+  rounded([[11.5, 9.5], [11.5, 4.5], [15.5, 4.5], [15.5, 6.5]], Math.min(radius, 1.5), false),
+]
+
+// 实心：盆体、立柱各一块，立柱顶上那段盆底挖开；底座和水龙头照旧是线
+export const fill = ({ radius }) => [
+  solid([
+    rounded([[3.5, 9.5], [20.5, 9.5], [17.5, 14.5], [6.5, 14.5]], Math.min(radius, 2)),
+    rounded([[10.5, 14.5], [10.5, 20.5], [13.5, 20.5], [13.5, 14.5]], Math.min(radius, 0.5)),
+  ]),
+  knock('M10.5 14.5H13.5'),
   'M8.5 20.5H15.5',
   rounded([[11.5, 9.5], [11.5, 4.5], [15.5, 4.5], [15.5, 6.5]], Math.min(radius, 1.5), false),
 ]

@@ -1,4 +1,5 @@
 import { circle } from '../geometry'
+import { solid } from '../solid'
 
 // Hugging Face 任务：图机器学习。五个节点连成一圈（连线两端接在节点圆圈的边上）；最高的节点在 y = 5、最低的在 19，墨迹上下居中
 // 不画对角线：同一节点上两条线的夹角不到 60° 时，挨着节点的那一段在常规字重下就粘在一起，五边形的对角线和邻边只差 36°
@@ -14,5 +15,11 @@ function edge(a, b) {
 
 export default () => [
   ...nodes.map(([x, y]) => circle(x, y, r)),
+  ...links.map(([i, j]) => edge(nodes[i], nodes[j])),
+]
+
+// 实心：节点填实，连线照旧
+export const fill = () => [
+  solid(nodes.map(([x, y]) => circle(x, y, r))),
   ...links.map(([i, j]) => edge(nodes[i], nodes[j])),
 ]

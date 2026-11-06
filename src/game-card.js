@@ -1,5 +1,6 @@
 // 功能牌共用：竖长圆角牌面 + 斜放的椭圆牌心（牌心里放符号），左上、右下两个角标位
 import { rounded } from './geometry'
+import { knock, solid } from './solid'
 import { rotate } from './transform'
 
 export const card = radius => [
@@ -8,3 +9,9 @@ export const card = radius => [
   // 牌心：半宽 5.1、半高 5.5 的椭圆，转 30° 后离牌边至少 2（常规字重下还留 0.5 的缝）
   rotate('M12 6.475C15.825 6.475 17.1 9.45 17.1 12C17.1 14.55 15.825 17.525 12 17.525C8.175 17.525 6.9 14.55 6.9 12C6.9 9.45 8.175 6.475 12 6.475Z', 30),
 ]
+
+// 实心版：牌面填实，牌心椭圆挖成一圈缝（椭圆里面仍是实心），各图标再把牌心里的符号挖空
+export const cardFill = (radius) => {
+  const [face, heart] = card(radius)
+  return [solid(face), knock(heart)]
+}

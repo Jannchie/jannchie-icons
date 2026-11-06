@@ -1,4 +1,5 @@
 import { crisp, rounded } from '../geometry'
+import { solid } from '../solid'
 
 // Shift ⇧：空心的上箭头，45° 箭头头部 + 宽 7 的箭杆；箭尖和两翼的锐角不随全局圆角
 export const shiftArrow = (tip, base, bottom, radius) => {
@@ -16,3 +17,6 @@ export const shiftArrow = (tip, base, bottom, radius) => {
 }
 
 export default ({ radius }) => [shiftArrow(4, 12.5, 20.5, radius)]
+
+// 实心：整个箭头
+export const fill = ({ radius }) => [solid(shiftArrow(4, 12.5, 20.5, radius))]

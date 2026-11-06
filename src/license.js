@@ -1,6 +1,8 @@
 // 开源协议：横放的证书（右下角压一个带绶带的印章），协议名写在证书上半部分
+import { GAP } from './clearance'
 import { circle, rounded } from './geometry'
 import { LABEL, line, snap } from './letters'
+import { clear, knock, solid } from './solid'
 
 // 印章：圆心 (17, 16)，半径 2.5，压在证书右下角；遮挡刀，证书外框落在印章里的部分整段去掉
 // 刀会把离印章 gap + 线宽 以内的线都断开：gap 0.5 时最粗字重（2）下是 2.5，协议名底边（y = 10.75）离印章顶（13.5）有 2.75，不会被切到
@@ -42,4 +44,18 @@ export const LICENSES = {
   bsd: { text: 'BSD', zh: 'BSD 许可证' },
   mpl: { text: 'MPL', zh: 'Mozilla 公共许可证' },
   isc: { text: 'ISC', zh: 'ISC 许可证' },
+}
+
+// 实心：证书铺成一块、字挖掉；印章四周让出 GAP 的缝（和角标一样），印章本身是实心圆片，绶带仍是线
+const sealFill = (h) => {
+  const [disc, ribbons] = seal(h).map(p => p.d)
+  return [clear([disc, ribbons], GAP), solid(disc), ribbons]
+}
+export function licenseFill(text, radius, stroke = 1.5) {
+  const [body, , , ...letters] = license(text, radius, stroke)
+  return [solid(body), knock(letters), ...sealFill(stroke / 2)]
+}
+export function certificateFill(radius, stroke = 1.5) {
+  const [body, , , lines] = certificate(radius, stroke)
+  return [solid(body), knock(lines), ...sealFill(stroke / 2)]
 }

@@ -50,7 +50,10 @@ function bestShift(lines, k) {
 // 线宽（设备像素）：不取整，只保证至少 MIN_LINE；点向下取整到整像素（点要吸到像素中心才实），但至少 1 像素、不小于主线宽
 function pxWidthOf(stroke, k) {
   const line = Math.max(MIN_LINE, stroke * k)
-  return p => p.detail
+  // 实心路径（fill 变体）没有描边：边就是轮廓本身，按零线宽参与对齐
+  return p => p.solid
+    ? 0
+    : p.detail
     ? (p.width ?? stroke) * k
     : p.dot ? Math.max(1, Math.ceil(line - 1e-9), Math.floor(p.width * k)) : Math.max(MIN_LINE, (p.width ?? stroke) * k)
 }
@@ -72,7 +75,7 @@ function hint(paths, stroke, px, [dx, dy]) {
       const f = v => (Math.round(v * k - o) + o) / k
       return { ...p, d: minify(mapPath(d, ([x, y]) => [f(x), f(y)])), width: pxWidth(p) / k }
     }
-    return { ...p, d, width: p.detail ? p.width : pxWidth(p) / k }
+    return p.solid ? { ...p, d } : { ...p, d, width: p.detail ? p.width : pxWidth(p) / k }
   })
 }
 
@@ -104,20 +107,47 @@ const hinted = new Map()
 const HINTED_LIMIT = 20000
 // 对齐用的平移量只按常规字重算一次，三档字重共用：各字重的内缘不同，分开算会挑出不同的平移量，切换字重时整个图标跳半个像素
 const REFERENCE = { id: 'regular', stroke: 1.5 }
-function finalizedOf(icon, corner, weight) {
+
+// ---------- 实心变体（fill） ----------
+// 图标有两种来源：源码里的 icon.fill（绘制函数，要用 fill.js 的 solidify 现算，它依赖 Clipper2），
+// 或者发布包里预先算好的 icon.solid（{ 'sharp|light': [{ d, tone? }], '2|regular': …}，键是圆角档位 label + 字重 id）。
+// 这个模块会打进核心包，不能直接导入 fill.js：预览站和构建脚本用 setSolidify 注入
+let solidify = null
+export const setSolidify = (fn) => {
+  solidify = fn
+}
+export const VARIANTS = ['outline', 'fill']
+export const hasFill = icon => !!(icon.solid || icon.fill)
+export const solidKey = (corner, weight) => `${corner.label}|${weight.id}`
+function solidPaths(icon, corner, weight) {
+  if (icon.solid)
+    return icon.solid[solidKey(corner, weight)].map(p => ({ ...p, solid: true }))
+  if (!solidify)
+    throw new Error('fill variant needs setSolidify(solidify) from src/fill.js')
+  const opts = { radius: corner.radius, stroke: weight.stroke, weight: weight.id, sharp: !!corner.sharp }
+  return solidify(icon.fill(opts), weight.stroke, { sharp: !!corner.sharp })
+}
+
+// variant：'outline'（默认）或 'fill'；没有实心版的图标退回描边版
+function finalizedOf(icon, corner, weight, variant = 'outline') {
+  const fill = variant === 'fill' && hasFill(icon)
   // 尖角单独一份（finalize 要缩方头线帽）；动画图标不走 fitSquareCaps，和 0 圆角共用
-  const base = `${icon.name}|${corner.sharp && !icon.animation ? 'sharp' : corner.radius}|${weight.stroke}`
+  const base = fill
+    ? `${icon.name}|fill|${corner.label}|${weight.stroke}`
+    : `${icon.name}|${corner.sharp && !icon.animation ? 'sharp' : corner.radius}|${weight.stroke}`
   let paths = finalized.get(base)
   if (!paths) {
     const stroke = weight.stroke
     const opts = { radius: corner.radius, stroke, weight: weight.id }
-    paths = icon.animation ? animatedPaths(icon, opts, stroke) : finalize(icon.draw(opts), stroke, { sharp: !!corner.sharp })
+    paths = fill
+      ? solidPaths(icon, corner, weight)
+      : icon.animation ? animatedPaths(icon, opts, stroke) : finalize(icon.draw(opts), stroke, { sharp: !!corner.sharp })
     finalized.set(base, paths)
   }
-  return [base, paths]
+  return [base, paths, fill]
 }
-export function pathsOf(icon, corner, weight, px = 0) {
-  const [base, paths] = finalizedOf(icon, corner, weight)
+export function pathsOf(icon, corner, weight, px = 0, variant = 'outline') {
+  const [base, paths, fill] = finalizedOf(icon, corner, weight, variant)
   // 大尺寸、动画图标不对齐（见 hint），直接用 finalize 的结果
   if (!px || px / 24 >= HINT_MAX_SCALE || icon.animation)
     return paths
@@ -127,7 +157,7 @@ export function pathsOf(icon, corner, weight, px = 0) {
     // 对齐结果按 px 缓存，拖大小滑块会不断产生新的 px：超过上限就整个清空，免得长时间使用后无限增长
     if (hinted.size >= HINTED_LIMIT)
       hinted.clear()
-    const [refBase, ref] = finalizedOf(icon, corner, REFERENCE)
+    const [refBase, ref] = finalizedOf(icon, corner, REFERENCE, fill ? 'fill' : 'outline')
     const shiftKey = `${refBase}|${px}|shift`
     let shift = hinted.get(shiftKey)
     if (!shift)
@@ -159,8 +189,9 @@ export const pathAttrs = (p, colors) => {
   return {
     'd': p.d,
     'stroke-width': p.width ? +p.width.toFixed(3) : undefined,
-    'stroke': color,
-    'fill': p.fill ? color ?? colors?.primary ?? 'currentColor' : undefined,
+    // 实心变体的路径只有填充：根元素上的描边属性在这里关掉
+    'stroke': p.solid ? 'none' : color,
+    'fill': p.fill || p.solid ? color ?? colors?.primary ?? 'currentColor' : undefined,
     // 尖角模式下也要圆角的路径（见 svg.js 的 round）；圆角模式下和根元素一样，写上也无妨
     'stroke-linecap': p.round ? 'round' : undefined,
     'stroke-linejoin': p.round ? 'round' : undefined,

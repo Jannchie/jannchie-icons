@@ -1,6 +1,6 @@
 # @jannchie/iconify-json
 
-[Jannchie Icons](https://icons.jannchie.com) in [Iconify JSON](https://iconify.design/docs/types/iconify-json.html) format, with one collection for each corner radius and stroke weight (15 in total). The prefix is `jannchie`, followed by the radius and the weight; radius 2 and weight regular are the defaults and are omitted.
+[Jannchie Icons](https://icons.jannchie.com) in [Iconify JSON](https://iconify.design/docs/types/iconify-json.html) format, with one collection for each corner radius and stroke weight (15 in total, plus 15 for the fill variant). The prefix is `jannchie`, followed by the radius and the weight; radius 2 and weight regular are the defaults and are omitted.
 
 | Radius \ Weight | regular (1.5) | light (1) | bold (2) |
 |---|---|---|---|
@@ -10,7 +10,9 @@
 | 1 | `jannchie-r1` | `jannchie-r1-light` | `jannchie-r1-bold` |
 | 3 | `jannchie-r3` | `jannchie-r3-light` | `jannchie-r3-bold` |
 
-Each collection is a file named after its prefix without `jannchie-` (`jannchie` itself is `icons.json`), for example `sharp-bold.json`. `collections.json` lists every prefix with its file, radius and weight.
+The fill variant (solid shapes with knocked-out details) has its own 15 collections with `fill` after `jannchie`: `jannchie-fill`, `jannchie-fill-bold`, `jannchie-fill-sharp-light` and so on. They contain only the icons that have a fill version.
+
+Each collection is a file named after its prefix without `jannchie-` (`jannchie` itself is `icons.json`), for example `sharp-bold.json` or `fill-r1.json`. `collections.json` lists every prefix with its file, variant, radius and weight.
 
 Each collection has `categories` (English category titles), `lastModified` and the usual `info` fields. Icons that look exactly the same in a collection (for example `astro-sun` and `alchemy-gold`) are stored once and the other names are `aliases` of it, so every icon name still works. Like the `@iconify-json/*` packages, the package root exports the default collection, its info and metadata:
 

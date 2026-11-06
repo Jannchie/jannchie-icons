@@ -1,6 +1,7 @@
 // 对齐对象（幻灯片编辑器工具栏）：一条基准线 + 两个长短不同的圆角条
 // 先按「横向条、竖直基准线」给出点列（贴左、居中、贴右），上 / 中 / 下把点列的横竖坐标互换后再画
 import { rounded } from './geometry'
+import { solid } from './solid'
 
 // 竖直基准线 x = 3.5（左）、12（中）、20.5（右）；两条：长条 14 宽、短条 8 宽，高 5，上下排在 5.5–10.5 / 13.5–18.5
 const ROWS = [[5.5, 10.5, 14], [13.5, 18.5, 8]]
@@ -21,5 +22,14 @@ export function alignObjects(side, vertical, radius) {
   return [
     ...axis(side).map(seg => rounded(t(seg), 0, false)),
     ...bars(side).map(pts => rounded(t(pts), Math.min(radius, 1.5))),
+  ]
+}
+
+// 实心版：两个圆角条填实，基准线照旧是线
+export function alignObjectsFill(side, vertical, radius) {
+  const t = pts => (vertical ? pts.map(([x, y]) => [y, x]) : pts)
+  return [
+    ...bars(side).map(pts => solid(rounded(t(pts), Math.min(radius, 1.5)))),
+    ...axis(side).map(seg => rounded(t(seg), 0, false)),
   ]
 }
