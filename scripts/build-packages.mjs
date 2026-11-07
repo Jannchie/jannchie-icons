@@ -69,11 +69,19 @@ const allModule = () => [
   '',
 ].join('\n')
 
-// 实心变体：每种「圆角 × 字重」的路径 { '2|regular': [{ d, tone? }], … }（键见 render.js 的 solidKey）
-const solidOf = icon => Object.fromEntries(CORNERS.flatMap(c => WEIGHTS.map(w => [
-  solidKey(c, w),
-  pathsOf(icon, c, w, 0, 'fill').map(({ d, tone }) => (tone ? { d, tone } : { d })),
-])))
+// 实心变体的模块：每种「圆角 × 字重」的路径 { '2|regular': [{ d, tone? }], … }（键见 render.js 的 solidKey）；
+// 圆角对不少图标不起作用，几档设置算出来一模一样（约四分之一），相同的路径只写一次（模块里的常量 p0、p1……），各键引用同一份
+function solidModule(name, icon) {
+  const consts = []
+  const refs = CORNERS.flatMap(c => WEIGHTS.map((w) => {
+    const value = json(pathsOf(icon, c, w, 0, 'fill').map(({ d, tone }) => (tone ? { d, tone } : { d })))
+    let i = consts.indexOf(value)
+    if (i < 0)
+      i = consts.push(value) - 1
+    return `${json(solidKey(c, w))}: p${i}`
+  }))
+  return `import icon from '../../icons/${name}.js'\n\n${consts.map((v, i) => `const p${i} = ${v}\n`).join('')}\nexport default { ...icon, solid: { ${refs.join(', ')} } }\n`
+}
 // 每个图标一个入口：{ name, draw, animation? }；只有动画图标才带 animation
 // 实心版的路径数据（15 种设置，一个图标几 KB）放在 ./fill/icons/<name>：同一个图标对象再加上 solid，
 // 只用描边版的项目打包时不会带上它。没有实心版的图标，./fill 里就是原来的对象
@@ -83,7 +91,7 @@ for (const name of names) {
   const fields = [`name: '${name}'`, 'draw', ...(icon.animation ? ['animation'] : [])]
   writeFileSync(`${GEN}/icons/${name}.js`, `import draw${icon.animation ? ', { animation }' : ''} from '${src}'\n\nexport default { ${fields.join(', ')} }\n`)
   writeFileSync(`${GEN}/fill/icons/${name}.js`, icon.fill
-    ? `import icon from '../../icons/${name}.js'\n\nexport default { ...icon, solid: ${json(solidOf(icon))} }\n`
+    ? solidModule(name, icon)
     : `export { default } from '../../icons/${name}.js'\n`)
 }
 writeForwards(`${GEN}/icons`)
@@ -96,7 +104,6 @@ writeFileSync(`${GEN}/index.js`, [
   ...iconExports(),
   '',
 ].join('\n'))
-// 按名字查图标（会引入全部图标，不能 tree-shaking）；旧名也能查到
 writeFileSync(`${GEN}/all.js`, allModule())
 // 实心入口 ./fill：和 . 同名的图标导出，带实心版的路径数据；toSvg 等渲染函数从 . 导入
 writeFileSync(`${GEN}/fill/index.js`, [...iconExports(), ''].join('\n'))
@@ -293,8 +300,9 @@ export type DeprecatedIconName =
 ${aliasList.length ? aliasList.map(([o]) => `  | '${o}'`).join('\n') : '  never'}
 
 ${iconDeclarations('Icon')}`
-const ALL_DTS = ext => `// 由 scripts/build-packages.mjs 生成，不要手改
-import type { Icon, IconName } from './index.${ext}'
+// base：到核心包 index 的相对目录（./fill 下的声明是 '..'）
+const ALL_DTS = (ext, base = '.') => `// 由 scripts/build-packages.mjs 生成，不要手改
+import type { Icon, IconName } from '${base}/index.${ext}'
 
 /** Every icon by name (imports all icons); old names of renamed icons also resolve, to the renamed icon */
 export declare const icons: { readonly [N in IconName]: Icon<N> } & {
@@ -302,8 +310,8 @@ ${aliasList.map(([o, n]) => `${deprecatedDoc(o, n, '  ')}\n  readonly '${o}': Ic
 }
 `
 // 深路径 ./icons/<name>：所有文件共用一份声明
-const ICON_DTS = ext => `// 由 scripts/build-packages.mjs 生成，不要手改
-import type { Icon, IconName } from './index.${ext}'
+const ICON_DTS = (ext, base = '.') => `// 由 scripts/build-packages.mjs 生成，不要手改
+import type { Icon, IconName } from '${base}/index.${ext}'
 
 declare const icon: Icon<IconName>
 export default icon
@@ -333,13 +341,10 @@ export declare function toSvg(icon: StaticIcon<string>, options?: StaticSvgOptio
 export declare function toPaths(icon: StaticIcon<string>, options?: A11yOptions): PathsResult
 
 ${iconDeclarations('StaticIcon')}`
-// ./fill：同样的图标导出（Icon 类型，有实心版的带 solid）
+// ./fill：同样的图标导出（Icon 类型，有实心版的带 solid），声明直接从核心入口转导出
 const FILL_DTS = ext => `// 由 scripts/build-packages.mjs 生成，不要手改
-import type { Icon } from '../index.${ext}'
-
-${iconDeclarations('Icon')}`
-const FILL_ALL_DTS = ext => ALL_DTS(ext).replace(`from './index.${ext}'`, `from '../index.${ext}'`)
-const FILL_ICON_DTS = ext => ICON_DTS(ext).replace(`from './index.${ext}'`, `from '../index.${ext}'`)
+export { ${[...names.map(exportName), ...aliasList.map(([o]) => exportName(o))].join(', ')} } from '../index.${ext}'
+`
 const STATIC_ICON_DTS = ext => `// 由 scripts/build-packages.mjs 生成，不要手改
 import type { StaticIcon } from './index.${ext}'
 import type { IconName } from '../index.${ext}'
@@ -397,8 +402,8 @@ for (const [ts, ext] of [['d.ts', 'js'], ['d.cts', 'cjs']]) {
   writeFileSync(`${D}/static/index.${ts}`, STATIC_DTS(ext))
   writeFileSync(`${D}/static/icon.${ts}`, STATIC_ICON_DTS(ext))
   writeFileSync(`${D}/fill/index.${ts}`, FILL_DTS(ext))
-  writeFileSync(`${D}/fill/all.${ts}`, FILL_ALL_DTS(ext))
-  writeFileSync(`${D}/fill/icon.${ts}`, FILL_ICON_DTS(ext))
+  writeFileSync(`${D}/fill/all.${ts}`, ALL_DTS(ext, '..'))
+  writeFileSync(`${D}/fill/icon.${ts}`, ICON_DTS(ext, '..'))
 }
 
 // ---------- Iconify JSON ----------
