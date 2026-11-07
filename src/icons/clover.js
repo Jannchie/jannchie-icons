@@ -44,11 +44,11 @@ const stalk = `M${f(stem)}Q${f([stem[0] + 1.5, stem[1] + 3])} ${f([stem[0] + 2.5
 
 export default () => [`${outline}Z`, dividers, stalk]
 
-// 实心：整片轮廓填实，挖掉分隔线（四片叶子各成一块）：分隔线穿出凹角 1.5（停在凹角上时圆头只擦到外缘，留一层发丝）；
-// 叶柄照旧是线，叶子在叶柄四周让出 GAP 的缝：叶柄的起点落在右下那道缝里，不和两边的叶尖粘在一起
+// 实心：叶柄在后面：先画叶柄，叶子整片在前、在四周让出 GAP 的缝（叶柄像从叶子后面伸出来），
+// 再挖掉分隔线（四片叶子各成一块）：分隔线穿出凹角 1.5（停在凹角上时圆头只擦到外缘，留一层发丝）
 export const fill = () => [
+  stalk,
+  clear(`${outline}Z`, GAP),
   solid(`${outline}Z`),
   knock(valleys.map(v => through([cx, cy], v, 0, 1.5))),
-  clear(stalk, GAP),
-  stalk,
 ]
