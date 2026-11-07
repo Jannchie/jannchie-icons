@@ -1,5 +1,5 @@
 import { rounded } from '../geometry'
-import { dot } from '../scene'
+import { dot, eye } from '../scene'
 import { knock, spans, tile } from '../solid'
 
 // 热力图：3×3 网格，格子里的点大小代表数值强弱
@@ -22,21 +22,21 @@ export default ({ radius }) => [
 ]
 
 // 实心：九个独立的方块（见 solid.js 的 tile），块和块之间留 GAP 的缝，再从每块里挖掉大小不同的点；
-// 格子只有 6 见方，圆角最多 0.5（和 tetromino 一样）
+// 格子只有 6 见方，圆角最多 0.5（和 tetromino 一样）；点用 eye：尖角模式下也是圆点、粗字重下不再变大（方点挨得近，尖角粗字重下会连成一片），大点在格子里不会只剩一圈细边
 export const fill = ({ radius, stroke }) => {
   const cells = spans(3, 21, [9, 15], stroke)
   return [
     ...cells.flatMap(([y0, y1]) => cells.map(([x0, x1]) => tile([x0, y0, x1, y1], Math.min(radius, 0.5)))),
     knock([
-      dot(6, 6, 3.5),
-      dot(12, 6, 1.25),
-      dot(18, 6, 2.5),
-      dot(6, 12, 2.5),
-      dot(12, 12, 3.5),
-      dot(18, 12, 1.25),
-      dot(6, 18, 1.25),
-      dot(12, 18, 2.5),
-      dot(18, 18, 3.5),
+      eye(6, 6, 3.5),
+      eye(12, 6, 1.25),
+      eye(18, 6, 2.5),
+      eye(6, 12, 2.5),
+      eye(12, 12, 3.5),
+      eye(18, 12, 1.25),
+      eye(6, 18, 1.25),
+      eye(12, 18, 2.5),
+      eye(18, 18, 3.5),
     ]),
   ]
 }

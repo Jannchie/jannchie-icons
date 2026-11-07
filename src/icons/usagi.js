@@ -1,4 +1,4 @@
-import { blush, eyes, face, longEar, mouth, thin } from '../chiikawa'
+import { blush, eyes, face, longEar, mouth, soft, thin } from '../chiikawa'
 import { knock, solid } from '../solid'
 
 // 乌萨奇（usagi）：圆润的大福脸 + 两只又长又直、靠得很近的兔耳（和脸是一笔）
@@ -15,5 +15,5 @@ const features = () => [
 ]
 export default () => [head(), ...features()]
 
-// 实心：脸（连耳朵）填实，眉、五官、腮红挖空
-export const fill = () => [solid(head()), knock(features())]
+// 实心：脸（连耳朵）填实，眉、五官、腮红挖空（尖角模式下也是圆头，见 chiikawa.js 的 soft）
+export const fill = () => [solid(head()), knock(soft(features()))]

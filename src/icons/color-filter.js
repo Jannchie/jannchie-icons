@@ -1,8 +1,8 @@
-import { circle, crisp, rounded } from '../geometry'
+import { circle } from '../geometry'
 import { knock, solid } from '../solid'
 
 // 滤色：三个交叠的圆
-export default ({ radius, stroke }) => [
+export default () => [
   circle(12, 8.5, 5),
   circle(8.5, 14.5, 5),
   circle(15.5, 14.5, 5),
@@ -24,6 +24,14 @@ function outer(a, b, far) {
 }
 const f = p => p.map(v => +v.toFixed(3)).join(' ')
 // 每个圆朝向中心的那段弧：两端是它和另外两个圆的外交点
+// 两端顺着外交点处的凹口（两圆圆心连线的中垂线，朝外）各穿出 E：停在交点上时圆头只擦到外缘，凹口里留一层发丝；
+// 顺着圆的切线穿出去又会贴着外轮廓走、把轮廓削掉一层
+const E = 2
+const out = (p, a, b) => {
+  const m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]
+  const l = Math.hypot(p[0] - m[0], p[1] - m[1])
+  return [p[0] + (p[0] - m[0]) / l * E, p[1] + (p[1] - m[1]) / l * E]
+}
 const inner = discs.map((c, i) => {
   const [b, e] = [discs[(i + 1) % 3], discs[(i + 2) % 3]]
   const [p, q] = [outer(c, b, e), outer(c, e, b)]
@@ -31,6 +39,6 @@ const inner = discs.map((c, i) => {
   const norm = a => ((a % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI)
   // 顺着角度增大的方向从 p 走，先经过中心方向再到 q，就取 sweep = 1
   const sweep = norm(ang(centroid) - ang(p)) < norm(ang(q) - ang(p)) ? 1 : 0
-  return `M${f(p)}A${R} ${R} 0 0 ${sweep} ${f(q)}`
+  return `M${f(out(p, c, b))}L${f(p)}A${R} ${R} 0 0 ${sweep} ${f(q)}L${f(out(q, c, e))}`
 })
 export const fill = () => [solid(discs.map(c => circle(...c, R))), knock(inner)]

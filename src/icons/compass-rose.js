@@ -1,5 +1,5 @@
 import { rounded } from '../geometry'
-import { knock, solid } from '../solid'
+import { cutout, solid } from '../solid'
 // 罗经玫瑰（地图上的指北针）：前层四角星（北刺尖半径 10.5，其余 9，凹点半径 3.5），每根主刺一道细中线（从刺尖到中心，
 // 表示刺是两个面拼成的），北刺的顺时针一半填实，标出北方；
 // 后层四根斜刺（尖半径 8.5，根部 ±20°、半径 3）只画露在主刺之间的部分：两条侧边从刺尖往里走，走到离主刺边 2.25 处停下
@@ -42,9 +42,19 @@ export default () => [
   half(main[0], 1),
 ]
 
-// 实心：前层四角星一块，挖掉刺尖到中心的细中线（每根刺分成两个面）；后层斜刺照旧是线
-export const fill = () => [
-  solid(rounded(front, 0)),
-  knock({ d: main.map(([t]) => `M${f(t)}L${cx} ${cy}`).join(''), thin: true }),
-  back,
-]
+// 实心：前层四角星一块；中线挖成两道从中心往刺尖收窄的菱形缝（中心宽为细线宽，到刺尖外半个线宽收成一点）：
+// 每根刺分成两个面，缝和刺的两条边一起收到尖上，不会像等宽的缝那样在刺尖两侧切出两根细针、把尖头啃开；后层斜刺照旧是线
+export const fill = ({ stroke }) => {
+  // 中心宽 0.7 个线宽（和描边版 thin 细线一样宽）
+  const [w, h] = [stroke * 0.35, stroke / 2]
+  const beyond = ([[x, y], d]) => [x + h * Math.cos(d * Math.PI / 180), y + h * Math.sin(d * Math.PI / 180)]
+  const [n, e, s, wst] = main.map(beyond)
+  return [
+    solid(rounded(front, 0)),
+    cutout([
+      `M${f(n)}L${cx + w} ${cy}L${f(s)}L${cx - w} ${cy}Z`,
+      `M${f(wst)}L${cx} ${cy - w}L${f(e)}L${cx} ${cy + w}Z`,
+    ]),
+    back,
+  ]
+}

@@ -1,9 +1,10 @@
 // 知识共享（Creative Commons）许可元素：和版权 © 一样的圆环（r = 9），里面放各自的符号
-// 斜杠（NC、公有领域）直接压在符号上、不断开：圆环里的符号很小，断开以后反而看不清
+// 斜杠（NC、公有领域）直接压在符号上、不断开：圆环里的符号很小，断开以后反而看不清（实心版另说，见 ccFill）
+import { GAP } from './clearance'
 import { circle, rounded } from './geometry'
 import { glyph, snap } from './letters'
 import { ring } from './marks'
-import { hole, knock, solid } from './solid'
+import { cutout, hole, knock, solid } from './solid'
 import { danger } from './tone'
 
 const D = 9 * Math.SQRT1_2
@@ -54,10 +55,22 @@ export const CC = {
   'copyleft': { zh: 'Copyleft', paths: () => [ring(), 'M9.5 9.75A3.25 3.25 0 1 1 9.5 14.25'] },
 }
 
-// 实心：圆片上挖出符号。斜杠两端各收一个线宽，不把圆片切成两半；BY 的小人整个挖空（白色剪影）
+// 实心：圆片上挖出符号。斜杠挖成一条方头长条、两端刚好穿出圆片外缘，圆片分成两半（和禁止符号一样，见 list.js 的 symbolFill）；
+// 停在圆片里会留下两头封死的槽。BY 的小人整个挖空（白色剪影）
+// 斜杠和符号都是白的，直接叠着挖会糊成一团：先挖符号，再沿斜杠铺回一条比它两边各宽 GAP 的实心带，最后挖斜杠——
+// 符号在斜杠两侧断开、各留 GAP 的缝（和 off.js 的划掉一致），斜杠本身完整
 export function ccFill(name, radius, stroke) {
   const [frame, ...symbol] = CC[name].paths(radius)
   const k = (9 - stroke) * Math.SQRT1_2
-  const inner = symbol.map(p => (p === slash ? `M${12 - k} ${12 - k}L${12 + k} ${12 + k}` : p))
-  return [solid(frame), name === 'cc-by' ? hole(inner) : knock(inner)]
+  // 斜杠长条：沿 45° 方向半长 a（圆片墨迹半径 9 + 半个线宽，再多 0.25），半宽半个线宽
+  const [a, w] = [(9 + stroke / 2 + 0.25) * Math.SQRT1_2, stroke / 2 * Math.SQRT1_2]
+  const pt = (u, v) => `${12 + u * a + v * w} ${12 + u * a - v * w}`
+  const cross = `M${pt(-1, -1)}L${pt(1, -1)}L${pt(1, 1)}L${pt(-1, 1)}Z`
+  if (name === 'cc-by')
+    return [solid(frame), hole(symbol)]
+  if (!symbol.includes(slash))
+    return [solid(frame), knock(symbol)]
+  const g = GAP * Math.SQRT1_2
+  const band = `M${12 - k + g} ${12 - k - g}L${12 + k + g} ${12 + k - g}L${12 + k - g} ${12 + k + g}L${12 - k - g} ${12 - k + g}Z`
+  return [solid(frame), knock(symbol.filter(p => p !== slash)), solid(band), cutout(cross)]
 }

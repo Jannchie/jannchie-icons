@@ -12,8 +12,9 @@ export default ({ radius }) => [
   ...seeds(),
 ]
 
-// 实心：瓜瓣一块，挖掉瓜皮线（瓜皮和瓜瓤分开）和三颗瓜子；瓜子大小停在常规字重那一档（eye），粗字重下不会挤到瓜皮
+// 实心：瓜瓣一块，挖掉瓜皮线（瓜皮和瓜瓤分开）和三颗瓜子；瓜子大小停在常规字重那一档（eye），粗字重下不会挤到瓜皮；
+// 尖角模式下也是圆的
 export const fill = ({ stroke }) => [
   solid('M3 7.5A9 9 0 0 0 21 7.5Z'),
-  knock([`M5.5 ${7.5 - stroke}V7.5A6.5 6.5 0 0 0 18.5 7.5V${7.5 - stroke}`, ...seeds().map(p => ({ ...p, eye: true }))]),
+  knock([`M5.5 ${7.5 - stroke}V7.5A6.5 6.5 0 0 0 18.5 7.5V${7.5 - stroke}`, ...seeds().map(p => ({ ...p, eye: true, round: true }))]),
 ]

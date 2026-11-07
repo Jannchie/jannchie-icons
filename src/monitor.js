@@ -3,6 +3,7 @@
 // 线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽。线宽 1 时屏幕四边和底座都落在 .5 上
 // 立杆是一条居中的竖线，放在 x 12：居中优先，线宽 1 时它落在整数上、1 倍屏略虚，可以接受；
 // 底座墨迹 8–16，以立杆为中心；立杆露出来的长度是 4 − 线宽（常规 2.5）
+import { fillDraw, fillSymbol, ledgeAbove, ledgeBelow, leftOf } from './badge-room'
 import { blocked, rectAroundTop } from './clearance'
 import { asBadge, fitBadge, roomBelow, roomOnRight } from './corner'
 import { rounded } from './geometry'
@@ -37,17 +38,21 @@ const MIN_SHOULDER = 1
 const GROW = 1.3
 export function withBadge(name, draw, tone, radius, stroke, { fill = false } = {}) {
   const f = frame(stroke)
-  const { l, t, r, b } = f
+  const { h, l, t, r, b } = f
   const roomRight = roomOnRight(stroke, r, t)
-  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, bottom: 17 }, (s) => {
+  const fit = (n, d, more = () => true) => fitBadge(n, d, radius, stroke, { right: 22, bottom: 17 }, (s) => {
     const bottom = blocked(s, 'x', b, stroke)
-    return roomRight(s) && (!bottom || bottom[0] >= pole + MIN_SHOULDER)
+    return roomRight(s) && (!bottom || bottom[0] >= pole + MIN_SHOULDER) && more(s)
   }, GROW, 0.6)
+  // 实心版：主体在角标四周让出一圈缝、朝右下整片让掉，角标画回去（见 badge-room.js）。
+  // 让掉的部分从角标最左的墨迹一直拖到底边，所以角标左缘的让位要离开立杆（再留 0.5，不贴着立杆），上面也要留一段够厚的屏幕
+  if (fill) {
+    const { k, at } = fit(...fillSymbol(name, draw), s => leftOf(stroke, pole + h + 0.5)(s) && ledgeAbove(stroke, 3)(s))
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(fillDraw(name, draw)(at, k, radius)), name), 'bottom')
+  }
+  const { k, at, shape } = fit(name, draw)
   const right = blocked(shape, 'y', r, stroke)
   const bottom = blocked(shape, 'x', b, stroke)
-  // 实心版：同样的角标位置，主体在角标四周让出一圈缝，角标画回去
-  if (fill)
-    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), 'bottom')
   return [
     rounded([[bottom ? bottom[0] : r, b], [l, b], [l, t], [r, t], [r, right ? right[0] : b]], Math.min(radius, 2.5), false),
     ...standOf(f),
@@ -59,13 +64,16 @@ export function withBadge(name, draw, tone, radius, stroke, { fill = false } = {
 export function withBadgeTop(name, draw, tone, radius, stroke, { fill = false } = {}) {
   const f = frame(stroke)
   // 顶边至少伸到画布中线 12，免得屏幕只剩左上一个小角
-  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, top: f.t - f.h }, (s) => {
+  const fit = (n, d, more = () => true) => fitBadge(n, d, radius, stroke, { right: 22, top: f.t - f.h }, (s) => {
     const c = blocked(s, 'x', f.t, stroke)
-    return (!c || c[0] >= 12) && roomBelow(stroke, f.r, f.b)(s)
+    return (!c || c[0] >= 12) && roomBelow(stroke, f.r, f.b)(s) && more(s)
   }, GROW)
-  // 实心版：同样的角标位置，主体在角标四周让出一圈缝，角标画回去
-  if (fill)
-    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), 'top')
+  // 实心版：主体在角标四周让出一圈缝、朝右上整片让掉，角标画回去；角标下面到屏幕下缘 17 要留一段够厚的屏幕（见 badge-room.js）
+  if (fill) {
+    const { k, at } = fit(...fillSymbol(name, draw), ledgeBelow(stroke, 17))
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(fillDraw(name, draw)(at, k, radius)), name), 'top')
+  }
+  const { k, at, shape } = fit(name, draw)
   return [
     rounded(rectAroundTop(shape, stroke, [f.l, f.t, f.r, f.b]), Math.min(radius, 2.5), false),
     ...standOf(f),

@@ -2,6 +2,7 @@
 // 墨迹框左右 2–22、上下 3–21，和文件夹一样（宽高比也和旧版的信封一样），以画布中线对称；
 // 线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽；线宽 1 时四边中心线 2.5 / 21.5 / 3.5 / 20.5，都落在 .5 上
 // 不取更扁的 20 × 16：右下角标（约 8.5 见方）贴到外框角上之后，顶会戳到 V 形封口，右边也只剩很短一截
+import { fillDraw, fillSymbol, minLedge } from './badge-room'
 import { blocked, GAP } from './clearance'
 import { asBadge, fitBadge, roomOnRight } from './corner'
 import { rounded } from './geometry'
@@ -27,11 +28,12 @@ export function flap(stroke, radius) {
 
 // 角标比普通角标大 GROW 倍，和文件夹一样；放大后顶会靠近封口的右半边，离封口不到 GAP（按垂直距离算）时缩小一点再摆
 const GROW = 1.3
-function clearOfFlap(stroke) {
+// extra：再多留的距离（实心版在封口挖出的缝和角标的让位之间要留一段够厚的信封，见 badge-room.js）
+function clearOfFlap(stroke, extra = 0) {
   const { l, r } = frame(stroke)
   const depth = (r - l) / 2 * Math.tan(Math.PI / 6)
   const [ax, ay, bx, by] = [12, FLAP_Y + depth, r, FLAP_Y]
-  const [len, need] = [Math.hypot(bx - ax, by - ay), GAP + stroke]
+  const [len, need] = [Math.hypot(bx - ax, by - ay), GAP + stroke + extra]
   // 点到封口右半边（线段）的距离
   const dist = ([x, y]) => {
     const u = Math.max(0, Math.min(1, ((x - ax) * (bx - ax) + (y - ay) * (by - ay)) / (len * len)))
@@ -49,16 +51,26 @@ function clearOfFlap(stroke) {
 // 角标：符号墨迹的右缘、下缘贴到画布留白的边 (22, 22)（比信封底缘 21 低 1，和文件夹一样压在外框角上）；右边和底边在离符号 GAP 处断开，轮廓从底边的断口出发绕一圈到右边的断口
 export function withBadge(name, draw, tone, radius, stroke, { fill = false } = {}) {
   const { l, t, r, b } = frame(stroke)
-  const [roomRight, flapClear] = [roomOnRight(stroke, r, t), clearOfFlap(stroke)]
-  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, bottom: 22 }, s => roomRight(s) && flapClear(s), GROW)
+  const roomRight = roomOnRight(stroke, r, t)
+  const fit = (n, d, extra) => fitBadge(n, d, radius, stroke, { right: 22, bottom: 22 }, s => roomRight(s) && clearOfFlap(stroke, extra)(s), GROW)
+  // 实心版：主体在角标四周让出一圈缝、朝右下整片让掉，角标画回去；封口挖出的缝和角标的让位之间要留 minLedge 厚的信封
+  if (fill) {
+    const { k, at } = fit(...fillSymbol(name, draw), minLedge(stroke))
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(fillDraw(name, draw)(at, k, radius)), name), 'bottom')
+  }
+  const { k, at, shape } = fit(name, draw, 0)
   const right = blocked(shape, 'y', r, stroke)
   const bottom = blocked(shape, 'x', b, stroke)
   const outline = [[bottom ? bottom[0] : r, b], [l, b], [l, t], [r, t], [r, right ? right[0] : b]]
-  // 实心版：同样的角标位置，主体在角标四周让出一圈缝，角标画回去
-  if (fill)
-    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), 'bottom')
   return [rounded(outline, radius, false), flap(stroke, radius), ...asBadge(tone(draw(at, k, radius)), name)]
 }
 
-// 实心版（见 solid.js 的 plainFill / badgeFill / centerFill）：信封一块，挖掉封口线
-export const fillParts = (radius, stroke) => ({ body: [solid(rounded(envelope(stroke), radius)), knock(flap(stroke, radius))], lines: [] })
+// 实心版（见 solid.js 的 plainFill / badgeFill / centerFill）：信封一块，挖掉封口线。
+// 封口线两头顺着 30° 的方向各穿出侧墙一个线宽：停在侧墙的中心线上的话，线帽只是擦到外缘，切口那里会留一根发丝
+export function fillParts(radius, stroke) {
+  const { l, r } = frame(stroke)
+  const depth = (r - l) / 2 * Math.tan(Math.PI / 6)
+  const [dx, dy] = [stroke * Math.cos(Math.PI / 6), stroke * Math.sin(Math.PI / 6)]
+  const cut = rounded([[l - dx, FLAP_Y - dy], [12, FLAP_Y + depth], [r + dx, FLAP_Y - dy]], Math.min(radius, 1.5), false)
+  return { body: [solid(rounded(envelope(stroke), radius)), knock(cut)], lines: [] }
+}

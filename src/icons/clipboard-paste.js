@@ -15,8 +15,9 @@ export default (opts) => {
   ]
 }
 
-// 实心：剪贴板的实心版，箭头四周让出缝（板子里的一段读成挖空的通道），箭头照旧是线
+// 实心：剪贴板的实心版，箭头四周让出缝（板子里的一段读成挖空的通道），箭头照旧是线。
+// 缝按真实距离外扩（圆角连接）：尖角模式下斜接会在箭头尖外拉出一根尖刺；箭杆从箭头尖往里半个线宽处起笔，方头不从斜接的尖两侧戳出来
 export const fill = (opts) => {
-  const arrowPaths = ['M11.5 13.5H21.5', rounded(arrow(11.5, 13.5, 'left', 3), crisp(opts.radius), false)]
-  return [...baseFill(opts), clear(arrowPaths, GAP), ...arrowPaths]
+  const arrowPaths = [`M${11.5 + opts.stroke / 2} 13.5H21.5`, rounded(arrow(11.5, 13.5, 'left', 3), crisp(opts.radius), false)]
+  return [...baseFill(opts), ...clear(arrowPaths, GAP).map(p => ({ ...p, round: true })), ...arrowPaths]
 }

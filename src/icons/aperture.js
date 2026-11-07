@@ -1,4 +1,4 @@
-import { circle } from '../geometry'
+import { circle, through } from '../geometry'
 import { hole, knock, solid } from '../solid'
 
 // 光圈：圆内 6 片叶片。每条线从内六边形的上一个顶点出发，沿一条边经过下一个顶点再延伸到外圆，
@@ -17,14 +17,16 @@ const blades = v.map((p, i) => {
   const [dx, dy] = [p[0] - cx, p[1] - cy]
   const b = dx * ux + dy * uy
   const t = -b + Math.sqrt(b * b - (dx * dx + dy * dy - R * R))
-  return `M${q[0]} ${q[1]}L${p[0] + ux * t} ${p[1] + uy * t}`
+  return [q, [p[0] + ux * t, p[1] + uy * t]]
 })
+const line = ([a, b]) => `M${a[0]} ${a[1]}L${b[0]} ${b[1]}`
 
-export default () => [circle(cx, cy, R), ...blades]
+export default () => [circle(cx, cy, R), ...blades.map(line)]
 
-// 实心：圆盘一块，挖掉叶片线（叶片各成一块），中间的六边形孔挖空
+// 实心：圆盘一块，挖掉叶片线（叶片各成一块），中间的六边形孔挖空；叶片线穿出圆外 2，
+// 停在外圆中心线上时圆头只擦到外缘，留下一层发丝
 export const fill = () => [
   solid(circle(cx, cy, R)),
-  knock(blades),
+  knock(blades.map(([a, b]) => through(a, b, 0, 2))),
   hole(`M${v.map(p => p.join(' ')).join('L')}Z`),
 ]

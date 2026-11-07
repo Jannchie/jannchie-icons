@@ -1,6 +1,7 @@
 // 公文包类图标共用：箱体 + 提手；基础款有一道腰线，带符号的变体去掉腰线给符号让位
 // 墨迹框左右 2–22、上下 3–21，以画布中线对称：箱体外缘 2–22 × 7–21，提手外缘 8–16 × 3–7
 // 线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽；线宽 1 时箱体四边、提手三边都落在 .5 上
+import { fillDraw, fillSymbol, ledgeAbove } from './badge-room'
 import { blocked, rectAround } from './clearance'
 import { asBadge, fitBadge, roomOnRight } from './corner'
 import { rounded } from './geometry'
@@ -44,11 +45,14 @@ const GROW = 1.3
 
 export function withBadge(name, draw, tone, radius, stroke, { fill = false } = {}) {
   const { l, t, r, b } = frame(stroke)
-  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, bottom: 22 }, roomOnRight(stroke, r, t), GROW)
+  const fit = (n, d, more = () => true) => fitBadge(n, d, radius, stroke, { right: 22, bottom: 22 }, s => roomOnRight(stroke, r, t)(s) && more(s), GROW)
+  // 实心版：主体在角标四周让出一圈缝、朝右下整片让掉，角标画回去；角标上面到箱体上缘 7 要留一段够厚的箱体（见 badge-room.js）
+  if (fill) {
+    const { k, at } = fit(...fillSymbol(name, draw), ledgeAbove(stroke, 7))
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(fillDraw(name, draw)(at, k, radius)), name), 'bottom')
+  }
+  const { k, at, shape } = fit(name, draw)
   const w = blocked(shape, 'x', WAIST, stroke)
-  // 实心版：同样的角标位置，主体在角标四周让出一圈缝，角标画回去
-  if (fill)
-    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), 'bottom')
   return [
     rounded(rectAround(shape, stroke, [l, t, r, b]), bodyRadius(radius), false),
     handle(stroke),

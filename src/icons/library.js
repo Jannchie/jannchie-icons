@@ -1,6 +1,6 @@
 import { GAP } from '../clearance'
 import { rounded } from '../geometry'
-import { clear, solid } from '../solid'
+import { clear, solid, tile } from '../solid'
 import { rotate } from '../transform'
 
 // 图书馆（书架）：底板（墨迹 2–22，中线 y 20.5）上立着两本竖书（3–7、9–12）和一本斜靠的书
@@ -15,21 +15,19 @@ export default ({ radius, stroke }) => {
   ]
 }
 
-// 实心：三本书各填实，后一本四周让出缝再画（书之间本来只隔半个线宽，粗字重下会糊成一片）；底板照旧是线，最后画
+// 实心：两本竖书各画一块（见 solid.js 的 tile），书脊之间留 GAP 的缝（中心线 8 的两侧）——两本书的中心线只隔 2，
+// 粗字重下墨迹正好挨上，让缝时一本书的上角会悬在另一本的缝外面；第二本书的右缘收在 12（墨迹不往外扩），
+// 离斜书的下角留得出缝，不被斜书的让位斜着削掉一角；斜书四周让出缝再画实心；底板照旧是线，最后画
 export const fill = ({ radius, stroke }) => {
   const h = stroke / 2
   const r = Math.min(radius, 1)
-  const books = [
-    rounded([[3, 4.5], [7, 4.5], [7, 20.5, 0], [3, 20.5, 0]], r),
-    rounded([[9, 6.5], [12, 6.5], [12, 20.5, 0], [9, 20.5, 0]], r),
-    rotate(rounded([[14, 6.5], [17, 6.5], [17, 20.5, 0], [14, 20.5, 0]], r), 18, [17, 20.5]),
-  ]
+  // 斜书压在底板上的右下角收 0.5 的小圆角：直角在尖角模式下斜接出去，会从底板下面冒出一个小尖
+  const leaning = rotate(rounded([[14, 6.5], [17, 6.5], [17, 20.5, 0.5], [14, 20.5, 0]], r), 18, [17, 20.5])
   return [
-    solid(books[0]),
-    clear(books[1], GAP),
-    solid(books[1]),
-    clear(books[2], GAP),
-    solid(books[2]),
+    tile([3 - h, 4.5 - h, 8 - GAP / 2, 20.5 + h], r),
+    tile([8 + GAP / 2, 6.5 - h, 12, 20.5 + h], r),
+    clear(leaning, GAP),
+    solid(leaning),
     `M${2 + h} 20.5H${22 - h}`,
   ]
 }

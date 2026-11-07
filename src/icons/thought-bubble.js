@@ -19,5 +19,5 @@ const trail = circle(7, 17.5, 1.5)
 
 export default () => [cloud, trail, dot(4, 20.5)]
 
-// 实心：云和小圆都填实
-export const fill = () => [solid(cloud), solid(trail), dot(4, 20.5)]
+// 实心：云和小圆都填实；最小的那个泡泡在尖角模式下也是圆点（方点和两个圆泡排在一起像掉了一块）
+export const fill = () => [solid(cloud), solid(trail), { ...dot(4, 20.5), round: true }]

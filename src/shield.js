@@ -5,6 +5,7 @@
 // 线宽变粗时外缘不动、往里长（h 是半个线宽）
 // 右下角标：盾的右下是一段收向底尖的曲线，没有横平竖直的边可以按区间断开（各系列用的 blocked 只处理轴对齐的边），
 // 所以改用一个隐藏的遮挡框：角标外形外扩一圈，框里的盾线删掉、框边附近的线断开（clip 按 GAP + 线宽留缝）
+import { fillDraw, fillSymbol } from './badge-room'
 import { asBadge, centerBadge } from './corner'
 import { badgeFill, solid } from './solid'
 
@@ -46,16 +47,21 @@ export const plain = stroke => [outline(stroke)]
 // 不像文件夹等系列放大到 1.3：盾的下半收成尖，大角标会把盾的右半边整个吃掉
 const BADGE_CENTER = [17, 17]
 const GROW = 1.1
+// 实心版的角标：主体在角标四周让出一圈缝、朝右下整片让掉（和其他系列一样，角标的凹处、角标和盾边之间不剩碎块）。
+// 让掉的部分从角标最左的墨迹一直拖到底，所以角标整体往右下挪、小一圈（墨迹约 14.5–21.5），让位停在底尖右边，底尖完整
+const FILL_CENTER = [18, 17.5]
+const FILL_LIMIT = 21.5
 export function withBadge(name, draw, tone, radius, stroke, { fill = false } = {}) {
+  if (fill) {
+    const { k, at } = centerBadge(...fillSymbol(name, draw), radius, stroke, FILL_CENTER, FILL_LIMIT, GROW)
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(fillDraw(name, draw)(at, k, radius)), name), 'bottom')
+  }
   const { k, at, shape } = centerBadge(name, draw, radius, stroke, BADGE_CENTER, 22, GROW)
   // 遮挡框取符号实际墨迹（中心线）的外接框：按 outlines 的近似外形会比墨迹大（对勾、云），线断得太早
   const xs = shape.pts.map(q => q[0])
   const ys = shape.pts.map(q => q[1])
   const [x0, y0, x1, y1] = [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)]
   const hole = { d: `M${x0} ${y0}H${x1}V${y1}H${x0}Z`, cut: true, hidden: true, occlude: true }
-  // 实心版：同样的角标位置，主体在角标四周让出一圈缝，角标画回去
-  if (fill)
-    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name))
   return [...plain(stroke), hole, ...asBadge(tone(draw(at, k, radius)), name).map(p => (typeof p === 'string' ? { d: p, cut: true } : { ...p, cut: true }))]
 }
 

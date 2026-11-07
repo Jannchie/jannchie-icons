@@ -20,10 +20,14 @@ export default ({ radius }) => [
   ray(-157.5, 3),
 ]
 
-// 实心：箭头一块，三道放射短线照旧是线
-export const fill = ({ radius }) => [
-  solid(rounded(pointer.map((p, i) => (i === 0 ? [...p, crisp(radius)] : p)), Math.min(radius, 1))),
-  ray(-112.5, 3.25),
-  ray(-67.5, 3),
-  ray(-157.5, 3),
-]
+// 实心：箭头一块，三道放射短线照旧是线。尖角模式下方头的内角会往两侧张开，粗字重时相邻两道的线头碰在一起（描边版有断线处理，
+// 实心版没有）：内端往外挪 stroke − 1（粗字重挪 1，细字重不挪）
+export const fill = ({ radius, stroke, sharp }) => {
+  const e = sharp ? Math.max(0, stroke - 1) : 0
+  return [
+    solid(rounded(pointer.map((p, i) => (i === 0 ? [...p, crisp(radius)] : p)), Math.min(radius, 1))),
+    ray(-112.5, 3.25 + e),
+    ray(-67.5, 3 + e),
+    ray(-157.5, 3 + e),
+  ]
+}

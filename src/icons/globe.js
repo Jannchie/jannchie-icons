@@ -14,7 +14,8 @@ export default () => [
 ]
 
 // 实心：圆一块，赤道和两条纬线挖穿两侧，地球切成四条；经线椭圆只挖在两条纬线之间（两头落进纬线的缝里），
-// 上下两顶保持整块——椭圆在两极和圆相切，挖到那里只会剩两道越来越细的尖条
+// 上下两顶保持整块——椭圆在两极和圆相切，挖到那里只会剩两道越来越细的尖条；经线用圆线帽，线帽正好收在纬线的缝里
+// （尖角模式下方线帽顺着斜的切线伸出纬线的缝，在上下两顶啃出小缺口）
 export const fill = ({ stroke }) => {
   const e = 12 + r + stroke
   const x = 4.5 * Math.sqrt(1 - (lat / r) ** 2)
@@ -22,8 +23,8 @@ export const fill = ({ stroke }) => {
     solid(circle(12, cy, r)),
     knock([
       ...[cy - lat, cy, cy + lat].map(y => `M${24 - e} ${y}H${e}`),
-      `M${12 - x} ${cy - lat}A4.5 ${r} 0 0 0 ${12 - x} ${cy + lat}`,
-      `M${12 + x} ${cy - lat}A4.5 ${r} 0 0 1 ${12 + x} ${cy + lat}`,
+      ...[`M${12 - x} ${cy - lat}A4.5 ${r} 0 0 0 ${12 - x} ${cy + lat}`, `M${12 + x} ${cy - lat}A4.5 ${r} 0 0 1 ${12 + x} ${cy + lat}`]
+        .map(d => ({ d, round: true })),
     ]),
   ]
 }

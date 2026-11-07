@@ -9,8 +9,8 @@ export default ({ stroke }) => {
   return [petals(12, 12.3, 7, 7.5, 10.3 - h), spiral(12, 12.3, 1.25, 4)]
 }
 
-// 实心：花瓣轮廓填实，漩涡挖空
+// 实心：花瓣轮廓填实，漩涡挖空；漩涡尖角模式下也用圆头——方头的内端顶在最里一圈上，挖出一块带方角的缺口
 export const fill = ({ stroke }) => {
   const h = stroke / 2
-  return [solid(petals(12, 12.3, 7, 7.5, 10.3 - h)), knock(spiral(12, 12.3, 1.25, 4))]
+  return [solid(petals(12, 12.3, 7, 7.5, 10.3 - h)), knock({ d: spiral(12, 12.3, 1.25, 4), round: true })]
 }

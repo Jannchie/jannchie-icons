@@ -15,12 +15,15 @@ export default ({ radius }) => [
   dot(14.4, 10.4, 3),
 ]
 
+// 砝码：尖角模式下也是圆点
+const bob = { ...dot(14.4, 10.4, 3), round: true }
+
 // 实心：机身、底座各一块，中间挖开一道缝；摆杆从底座的缝挖到砝码，落进砝码四周的缝里（砝码以上那一小段不画：
-// 挖穿右斜边只会把机身右边切出一根细尖条），砝码是实心点
+// 挖穿右斜边只会把机身右边切出一根细尖条；圆线帽，尖角模式下方线帽的角不从缝里戳进底座），砝码是实心圆点
 export const fill = ({ radius, stroke }) => [
   solid(rounded([[side(BASE), BASE], [24 - side(BASE), BASE], [19, 20.5], [5, 20.5]], Math.min(radius, 1.5))),
   solid(rounded([[side(BASE), BASE], [8.5, 3.5], [15.5, 3.5], [24 - side(BASE), BASE]], Math.min(radius, 1.5))),
-  knock([`M${side(BASE) - stroke} ${BASE}H${24 - side(BASE) + stroke}`, 'M12 16.5L14.4 10.4']),
-  clear(dot(14.4, 10.4, 3), GAP),
-  dot(14.4, 10.4, 3),
+  knock([`M${side(BASE) - stroke} ${BASE}H${24 - side(BASE) + stroke}`, { d: 'M12 16.5L14.4 10.4', round: true }]),
+  clear(bob, GAP),
+  bob,
 ]

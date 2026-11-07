@@ -18,5 +18,5 @@ const features = [
 
 export default () => [face, ...features]
 
-// 实心：脸一块，挖掉猪鼻轮廓（猪鼻留成实心）、鼻孔和眼睛
-export const fill = () => [solid(face), knock(features)]
+// 实心：脸一块，挖掉猪鼻轮廓（猪鼻留成实心）、鼻孔和眼睛；鼻孔在尖角模式下也是圆的（方鼻孔贴着鼻子的缝，像插座）
+export const fill = () => [solid(face), knock(features.map(f => (f.dot ? { ...f, round: true } : f)))]

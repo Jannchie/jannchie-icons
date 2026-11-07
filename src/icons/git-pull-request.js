@@ -12,10 +12,10 @@ export default ({ radius }) => [
   rounded(arrow(12.5, 5.5, 'left', 2.5), crisp(radius), false),
 ]
 
-// 实心：三个节点填实，主线、折线和箭头照旧是线
-export const fill = ({ radius }) => [
+// 实心：三个节点填实，主线、折线和箭头照旧是线；箭杆停在箭头尖往里半个线宽处：尖角模式下方头的箭杆顶到尖上，两角会从斜接的箭头尖两侧戳出来
+export const fill = ({ radius, stroke }) => [
   solid([circle(6.5, 6, 2.5), circle(6.5, 18, 2.5), circle(17.5, 18, 2.5)]),
   'M6.5 8.5V15.5',
-  rounded([[17.5, 15.5], [17.5, 5.5], [12.5, 5.5]], Math.min(radius, 2), false),
+  rounded([[17.5, 15.5], [17.5, 5.5], [12.5 + stroke / 2, 5.5]], Math.min(radius, 2), false),
   rounded(arrow(12.5, 5.5, 'left', 2.5), crisp(radius), false),
 ]

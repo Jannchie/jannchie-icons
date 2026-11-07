@@ -3,6 +3,7 @@
 // 线宽 1 时纸张四边的中心线是 4.5 / 19.5 / 2.5 / 21.5，都落在 .5 上
 // 折角：翻折线（竖线 x FOLD_X、横线 y FOLD_Y）是固定的中心线，不随线宽动；纸张的斜边从 (FOLD_X, 顶边) 连到 (右边, FOLD_Y)，
 // 两端各随线宽收半个线宽，所以始终是 45°（线宽 1 时折角 5）
+import { fillDraw, fillSymbol, ledgeAbove } from './badge-room'
 import { blocked } from './clearance'
 import { asBadge, fitBadge, roomOnBottom, roomOnRight } from './corner'
 import { crisp, rounded } from './geometry'
@@ -46,13 +47,17 @@ const GROW = 1.3
 
 export function withBadge(name, draw, tone, radius, stroke, { fill = false } = {}) {
   const { l, t, r, b } = frame(stroke)
-  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 20, bottom: 22 }, s => roomOnRight(stroke, r, FOLD_Y)(s) && roomOnBottom(stroke, b, l)(s), GROW)
+  const fit = (n, d, more = () => true) => fitBadge(n, d, radius, stroke, { right: 20, bottom: 22 }, s => roomOnRight(stroke, r, FOLD_Y)(s) && roomOnBottom(stroke, b, l)(s) && more(s), GROW)
+  // 实心版：主体在角标四周让出一圈缝、朝右下整片让掉，角标画回去；角标上面到翻折线挖出的缝（FOLD_Y + h）
+  // 要留一段够厚的纸，不然折角下面只剩一道细条（见 badge-room.js）
+  if (fill) {
+    const { k, at } = fit(...fillSymbol(name, draw), ledgeAbove(stroke, FOLD_Y + stroke / 2))
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(fillDraw(name, draw)(at, k, radius)), name), 'bottom')
+  }
+  const { k, at, shape } = fit(name, draw)
   const right = blocked(shape, 'y', r, stroke)
   const bottom = blocked(shape, 'x', b, stroke)
   const outline = [[bottom ? bottom[0] : r, b], [l, b], [l, t], ...corner(stroke, radius), [r, right ? right[0] : b]]
-  // 实心版：同样的角标位置，主体在角标四周让出一圈缝，角标画回去
-  if (fill)
-    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), 'bottom')
   return [rounded(outline, radius, false), flap(stroke), ...asBadge(tone(draw(at, k, radius)), name)]
 }
 
@@ -67,5 +72,11 @@ export const labelBox = { left: 5, right: 19, top: 14.5, bottom: 21.5 }
 // 这里把排版区收窄 0.5，放宽后是 3–21，墨迹不越过离边 2
 export const wideLabelBox = { ...labelBox, left: 5.5, right: 18.5 }
 
+// 实心版挖的翻折线：两头各穿出外框一个线宽（停在顶边、右边的中心线上的话，线帽只是擦到外缘，切口那里会留一根发丝）
+export function flapCut(stroke) {
+  const { t, r } = frame(stroke)
+  return `M${FOLD_X} ${t - stroke}V${FOLD_Y}H${r + stroke}`
+}
+
 // 实心版（见 solid.js 的 plainFill / badgeFill / centerFill）：纸张一块，挖掉翻折线，折角成了单独的一小块三角
-export const fillParts = (radius, stroke) => ({ body: [solid(rounded(page(stroke, radius), radius)), knock(flap(stroke))], lines: [] })
+export const fillParts = (radius, stroke) => ({ body: [solid(rounded(page(stroke, radius), radius)), knock(flapCut(stroke))], lines: [] })

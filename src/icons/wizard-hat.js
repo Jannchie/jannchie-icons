@@ -1,5 +1,5 @@
 import { crisp, rounded } from '../geometry'
-import { hole, knock, solid } from '../solid'
+import { cutout, knock, solid } from '../solid'
 import { star } from '../symbols'
 
 // 巫师帽：尖顶的帽身 + 帽带 + 帽身上一颗小星 + 帽檐（上沿平直、下沿成弧，和 hat 一样）
@@ -13,5 +13,6 @@ const badge = radius => star([12, 10.25], 0.75, radius)
 
 export default ({ radius }) => [cone(radius), band, brim, ...badge(radius)]
 
-// 实心：帽身和帽檐连成一块，挖掉帽带（两端穿出斜边一个线宽，切口顺着斜边），星星挖空
-export const fill = ({ radius, stroke }) => [solid([cone(radius), brim]), knock(`M${bandL - stroke} ${bandY}H${bandR + stroke}`), hole(badge(radius))]
+// 实心：帽身和帽檐连成一块，挖掉帽带（两端穿出斜边一个线宽），星星按中心线原样挖成洞：
+// 外扩半个线宽的星星比帽身还宽，两个横角和斜边之间只剩一条细线
+export const fill = ({ radius, stroke }) => [solid([cone(radius), brim]), knock(`M${bandL - stroke} ${bandY}H${bandR + stroke}`), cutout(badge(radius))]

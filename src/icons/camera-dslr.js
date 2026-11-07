@@ -1,5 +1,5 @@
 import { circle, rounded } from '../geometry'
-import { knock, solid } from '../solid'
+import { cutout, knock, solid } from '../solid'
 
 // 单反（大相机）：高高隆起的五棱镜（梯形，顶到 4.5）+ 左侧握把（一道竖线，正面看握把在左）+ 双圈镜头（镜筒 + 镜片）
 export default ({ radius }) => [
@@ -9,8 +9,10 @@ export default ({ radius }) => [
   circle(14, 14.5, 1.75),
 ]
 
-// 实心：机身一块，握把线整条挖穿，握把成为左边单独的一片；镜头的两圈挖空
+// 实心：机身一块，握把线整条挖穿，握把成为左边单独的一片；挖掉镜头外圈（镜筒成一块实心圆），镜片按内圈的中心线原样挖成圆洞
+// （两圈都挖时中间的实心环只剩 2.25 − 线宽，太细）
 export const fill = ({ radius }) => [
   solid(rounded([[2.5, 8.5], [8.5, 8.5], [10, 4.5], [14, 4.5], [15.5, 8.5], [21.5, 8.5], [21.5, 20.5], [2.5, 20.5]], Math.min(radius, 2.5))),
-  knock(['M6.5 0V24', circle(14, 14.5, 4), circle(14, 14.5, 1.75)]),
+  knock(['M6.5 0V24', circle(14, 14.5, 4)]),
+  cutout(circle(14, 14.5, 1.75)),
 ]

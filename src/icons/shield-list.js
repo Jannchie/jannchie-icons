@@ -12,8 +12,9 @@ export default ({ radius, stroke }) => {
   ]
 }
 
-// 实心：盾形填实，在小列表四周让出缝，再画上小列表
+// 实心：盾形填实，在小列表四周让出缝、朝右下整片让掉（行和行之间不剩盾的碎条），再画上小列表；
+// 小列表墨迹左缘在 14，让位停在底尖右边，底尖完整
 export const fill = ({ radius, stroke }) => {
   const mark = c => listMark(c, stroke)
-  return badgeFill(fillParts(radius, stroke), listMark(cornerCenter(mark, 1, radius, stroke, { right: 22, bottom: 22 }), stroke))
+  return badgeFill(fillParts(radius, stroke), listMark(cornerCenter(mark, 1, radius, stroke, { right: 22, bottom: 22 }), stroke), 'bottom')
 }

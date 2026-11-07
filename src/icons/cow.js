@@ -24,7 +24,7 @@ export default ({ radius }) => [
 ]
 
 // 实心：头、牛角、耳朵合成一块，口鼻是完整的一块在前；头沿口鼻让出 GAP 的缝，两者分开，不用挖一道停在半路的横缝；
-// 眼睛、鼻孔挖空
+// 眼睛、鼻孔挖空（鼻孔在尖角模式下也是圆的）
 export const fill = ({ radius }) => {
   const muzzle = rounded([[6.5, 14.5], [17.5, 14.5], [17.5, 20.5], [6.5, 20.5]], Math.min(radius, 2.5))
   return [
@@ -40,8 +40,8 @@ export const fill = ({ radius }) => {
     knock([
       eye(10.5, 11, 1.5),
       eye(13.5, 11, 1.5),
-      dot(10, 17.5, 1.5),
-      dot(14, 17.5, 1.5),
+      { ...dot(10, 17.5, 1.5), round: true },
+      { ...dot(14, 17.5, 1.5), round: true },
     ]),
   ]
 }

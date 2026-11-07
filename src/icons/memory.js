@@ -1,5 +1,5 @@
 import { rounded } from '../geometry'
-import { knock, solid } from '../solid'
+import { cutout, solid, tile } from '../solid'
 
 // 内存条：长条 PCB + 三颗颗粒 + 底部金手指（中间留一个防呆缺口）；金手指间距 2，横竖线都落在 .5 上
 export default ({ radius }) => [
@@ -15,10 +15,13 @@ export default ({ radius }) => [
   'M18.5 15.5V18',
 ]
 
-// 实心：PCB 一块，挖掉三颗颗粒的轮廓（颗粒留成实心），金手指照旧是线
+// 实心：PCB 一块，三颗颗粒是实心块，四周挖开一圈 GAP 宽的缝：缝的外沿是颗粒轮廓中线往外 0.5，颗粒按墨迹范围原样画
+// （中线往里 0.5，见 solid.js 的 tile）。不用颗粒的轮廓线去挖——颗粒只有 3 宽，粗字重下按线宽挖完只剩一道细条；
+// 这样缝、颗粒、颗粒之间的 PCB 在任何字重下都是 1 / 2 / 1；金手指照旧是线
 export const fill = ({ radius }) => [
   solid(rounded([[2.5, 6.5], [21.5, 6.5], [21.5, 15.5], [2.5, 15.5]], Math.min(radius, 1))),
-  knock([5.5, 10.5, 15.5].map(x => rounded([[x, 8.5], [x + 3, 8.5], [x + 3, 13.5], [x, 13.5]], Math.min(radius, 0.5)))),
+  cutout([5.5, 10.5, 15.5].map(x => rounded([[x - 0.5, 8], [x + 3.5, 8], [x + 3.5, 14], [x - 0.5, 14]], radius && Math.min(radius, 0.5) + 0.5))),
+  ...[5.5, 10.5, 15.5].map(x => tile([x + 0.5, 9, x + 2.5, 13], Math.min(radius, 0.5))),
   'M5.5 15.5V18',
   'M7.5 15.5V18',
   'M9.5 15.5V18',

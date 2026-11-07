@@ -10,10 +10,10 @@ export default ({ stroke }) => {
   return [page(x => x), page(x => 24 - x)]
 }
 
-// 实心：两页各一块，挖掉书脊，左右两页分开
+// 实心：两页各一块，书脊整条竖着挖穿（上下都穿出外缘，书脊顶的凹口、底的尖上不留窄桥），左右两页完全分开
 export const fill = ({ stroke }) => {
   const h = stroke / 2
   const [l, t, b] = [2 + h, 3 + h, 21 - h]
   const page = x => `M12 ${t + 2}C${x(10)} ${t + 0.5} ${x(l + 4)} ${t} ${x(l)} ${t}V${b - 2}C${x(l + 4)} ${b - 2} ${x(10)} ${b - 1.5} 12 ${b}Z`
-  return [solid([page(x => x), page(x => 24 - x)]), knock(`M12 ${t + 2}V${b}`)]
+  return [solid([page(x => x), page(x => 24 - x)]), knock('M12 0V24')]
 }

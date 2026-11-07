@@ -1,5 +1,5 @@
 import { rounded } from '../geometry'
-import { knock, solid } from '../solid'
+import { knock, stacked } from '../solid'
 
 // 药水：圆底瓶（圆心 (12, 14.75)、半径 6.25）+ 瓶颈 + 软木塞 + 液面
 const [cx, cy, r] = [12, 14.75, 6.25]
@@ -15,9 +15,9 @@ const liquid = `M${f(cx - half)} ${level}H${f(cx + half)}`
 
 export default ({ radius }) => [bottle, cork(radius), liquid]
 
-// 实心：瓶子一块、软木塞一块，中间挖开一道缝；液面挖空
+// 实心：软木塞在前、完整的一块，瓶子沿木塞让出 GAP 的缝（木塞四个角都是自己的圆角，不被一道缝切平）；
+// 液面挖空，两端穿出瓶身 1.5（停在瓶身中心线上时圆头只擦到外缘，留一层发丝）
 export const fill = ({ radius }) => [
-  solid(`${bottle}Z`),
-  solid(cork(radius)),
-  knock(['M8.5 5.5H15.5', liquid]),
+  ...stacked(`${bottle}Z`, cork(radius)),
+  knock(`M${f(cx - half - 1.5)} ${level}H${f(cx + half + 1.5)}`),
 ]

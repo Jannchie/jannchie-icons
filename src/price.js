@@ -8,7 +8,7 @@ import { circle, rounded } from './geometry'
 import { coin } from './money'
 import { snap } from './letters'
 import { dot } from './scene'
-import { clear, knock, solid } from './solid'
+import { clear, knock, solid, spans, tile } from './solid'
 import { affine } from './transform'
 
 export const LEVELS = [1, 2, 3, 4]
@@ -65,11 +65,12 @@ export function priceCoins(key, level, { radius, stroke }, { fill = false } = {}
   const ghosts = Array.from({ length: 4 - level }, (_, i) => top + PITCH * (i + 0.5)).flatMap(y => [dot(L, y), dot(R, y)])
   // 硬币里放缩小的货币符号：硬币图标里的 0.6 倍再缩 S 倍，细线
   const glyph = snap(coin(key).map(d => affine(d, S, S, 12 - 12 * S, CY - 12 * S))).map(d => ({ d, detail: true }))
-  // 实心版：亮着的层整块填实，层间横线挖空（一直挖到两侧，每层成一枚独立的扁硬币）；立着的硬币四周让出 GAP，
-  // 硬币本身填实、挖掉货币符号；没亮的层照旧是点
+  // 实心版：亮着的每层各画一块扁硬币（见 solid.js 的 tile），层间留 GAP 的缝，四个角各自收圆——不用挖一道两端停在边框上的横线；
+  // 立着的硬币四周让出 GAP，硬币本身填实、挖掉货币符号；没亮的层照旧是点
   if (fill) {
     const face = circle(12, CY, CR - h)
-    return [solid(rounded(box, r)), knock(lines.map(y => `M${L} ${y}H${R}`)), clear(face, GAP), ...ghosts, solid(face), knock(glyph)]
+    const layers = spans(lit, bottom, lines, stroke).map(([y0, y1]) => tile([3, y0, 21, y1], Math.min(radius, 0.75)))
+    return [...layers, clear(face, GAP), ...ghosts, solid(face), knock(glyph)]
   }
   return [...stack, ...ghosts, circle(12, CY, CR - h), ...glyph]
 }

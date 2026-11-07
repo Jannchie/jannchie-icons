@@ -14,7 +14,7 @@ export default () => [
   dot(9.5, 15.1, 1.75),
 ]
 
-// 实心：球瓶一块，挖掉颈上的条纹；球四周让出缝，球是实心，三个指孔挖空
+// 实心：球瓶一块，挖掉颈上的条纹；球四周让出缝，球是实心，三个指孔挖空（尖角模式下也是圆孔，方孔会连成一块）
 export const fill = ({ stroke }) => {
   const ball = circle(8.5, 15.25, 5.75)
   return [
@@ -22,6 +22,6 @@ export const fill = ({ stroke }) => {
     knock(`M${15.6 - stroke} 6.5H${17.9 + stroke}`),
     clear(ball, GAP),
     solid(ball),
-    knock([dot(7, 13.75, 1.75), dot(9.25, 12.6, 1.75), dot(9.5, 15.1, 1.75)]),
+    knock([dot(7, 13.75, 1.75), dot(9.25, 12.6, 1.75), dot(9.5, 15.1, 1.75)].map(d => ({ ...d, round: true }))),
   ]
 }

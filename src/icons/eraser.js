@@ -8,8 +8,8 @@ export default ({ radius }) => [
   rotate('M7.5 13L16.5 13', 30),
 ]
 
-// 实心：橡皮一块，挖掉中间的分隔线（分成上下两截）
-export const fill = ({ radius }) => [
+// 实心：橡皮一块，挖掉中间的分隔线（分成上下两截）；分隔线两端横着穿出两侧（停在侧边中线上的线帽只擦到外缘，留一道细桥）
+export const fill = ({ radius, stroke }) => [
   solid(rotate(rounded([[7.5, 4], [16.5, 4], [16.5, 20], [7.5, 20]], Math.min(radius, 2)), 30)),
-  knock(rotate('M7.5 13L16.5 13', 30)),
+  knock(rotate(`M${7.5 - stroke} 13H${16.5 + stroke}`, 30)),
 ]

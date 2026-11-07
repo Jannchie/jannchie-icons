@@ -13,5 +13,5 @@ const spots = [
 ]
 export default () => [cap, stem, ...spots]
 
-// 实心：菌柄封口填实，在菌盖四周让出缝（不和菌盖粘成一团），菌盖一块、斑点挖空
-export const fill = () => [solid(`${stem}Z`), clear(cap, GAP), solid(cap), knock(spots)]
+// 实心：菌柄封口填实，在菌盖四周让出缝（不和菌盖粘成一团），菌盖一块、斑点挖空；斑点在尖角模式下也是圆的
+export const fill = () => [solid(`${stem}Z`), clear(cap, GAP), solid(cap), knock(spots.map(s => ({ ...s, round: true })))]

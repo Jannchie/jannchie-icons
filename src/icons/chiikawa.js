@@ -1,4 +1,4 @@
-import { blush, brows, eyes, face, mouth, roundEar } from '../chiikawa'
+import { blush, brows, eyes, face, mouth, roundEar, soft } from '../chiikawa'
 import { knock, solid } from '../solid'
 
 // 吉伊（chiikawa）：圆润的大福脸 + 长在头顶两个斜角上、往斜上方鼓出的小圆耳（和脸是一笔）+ 短眉 + 圆豆豆眼 + ω 嘴 + 腮红
@@ -12,5 +12,5 @@ const features = () => [
 ]
 export default () => [head(), ...features()]
 
-// 实心：脸（连耳朵）填实，五官、腮红挖空
-export const fill = () => [solid(head()), knock(features())]
+// 实心：脸（连耳朵）填实，五官、腮红挖空（尖角模式下也是圆头，见 chiikawa.js 的 soft）
+export const fill = () => [solid(head()), knock(soft(features()))]

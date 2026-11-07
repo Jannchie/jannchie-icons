@@ -20,8 +20,8 @@ export default function tags({ radius, stroke }) {
   ]
 }
 
-// 实心：前面的标签一块、穿孔挖空，后面露出的那条边仍是线
+// 实心：前面的标签一块、穿孔挖空（尖角模式下也挖圆孔，和其他标签图标一致），后面露出的那条边仍是线
 export const fill = ({ radius, stroke }) => {
   const [front, punch, back] = tags({ radius, stroke })
-  return [solid(front), knock(punch), back]
+  return [solid(front), knock({ ...punch, round: true }), back]
 }

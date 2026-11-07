@@ -20,13 +20,15 @@ export default () => {
   ]
 }
 
-// 实心：病毒体一块，表面的两个斑点挖空；刺突和末端的圆点照旧
+const round = d => ({ ...d, round: true })
+
+// 实心：病毒体一块，表面的两个斑点挖空；刺突和末端的圆点照旧——圆点和斑点在尖角模式下也是圆的（方点让整个病毒变成一团像素块）
 export const fill = () => {
   const angles = Array.from({ length: 8 }, (_, i) => 22.5 + i * 45)
   return [
     solid(circle(12, 12, R)),
-    knock([dot(10.5, 10.75), dot(13.5, 13.25, 1.5)]),
+    knock([dot(10.5, 10.75), dot(13.5, 13.25, 1.5)].map(round)),
     ...angles.map(a => `M${at(a, R).join(' ')}L${at(a, spike).join(' ')}`),
-    ...angles.map(a => dot(...at(a, knob), 2.5)),
+    ...angles.map(a => round(dot(...at(a, knob), 2.5))),
   ]
 }

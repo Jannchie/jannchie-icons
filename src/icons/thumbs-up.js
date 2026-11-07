@@ -1,5 +1,6 @@
+import { GAP } from '../clearance'
 import { crisp, rounded } from '../geometry'
-import { knock, solid } from '../solid'
+import { cutout, solid } from '../solid'
 
 // 点赞：左边袖口小方块（贴手的一侧用 crisp 小圆角，手的线条从角上接出去）
 // + 手：拇指斜着竖起、圆头，手掌顶边和袖口顶边对齐在 10.5，右边略斜，右上、右下两个圆角跟随圆角设置
@@ -14,7 +15,8 @@ export default ({ radius }) => {
   ]
 }
 
-// 实心：袖口、手各一块，两者本来共用 7.5 这条边，挖开一道缝分开
+// 实心：袖口、手各一块，两者本来共用 7.5 这条边：沿这条边挖开一道 GAP 宽、上下都穿出轮廓的直缝
+// （用线去挖的话线帽停在顶边、底边的中线上，两头各留一道细桥）；缝两侧都是直边，和描边版这里的直角一致
 export const fill = ({ radius }) => {
   const r = Math.min(radius, 1.5)
   const thumb = 'M7.5 10.5L10.5 4C11 3 13.5 3 14 5L13.5 10.5'
@@ -22,6 +24,6 @@ export const fill = ({ radius }) => {
   return [
     solid(rounded([[3.5, 10.5], [7.5, 10.5, crisp(radius)], [7.5, 20.5, crisp(radius)], [3.5, 20.5]], r)),
     solid(`${thumb}${palm.replace(/^M[^A-Z]+/i, '')}Z`),
-    knock('M7.5 10.5V20.5'),
+    cutout(`M${7.5 - GAP / 2} 0H${7.5 + GAP / 2}V24H${7.5 - GAP / 2}Z`),
   ]
 }

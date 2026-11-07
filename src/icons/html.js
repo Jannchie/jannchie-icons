@@ -1,5 +1,5 @@
 import { rounded } from '../geometry'
-import { dot } from '../scene'
+import { eye } from '../scene'
 import { knock, solid } from '../solid'
 import base from './window'
 
@@ -13,12 +13,13 @@ export default opts => [
   'M13 10.5L11 17.5',
 ]
 
-// 实心：窗口一块（同 window 的外框），标题栏分隔线挖穿两侧，标题栏成了单独的一块；再挖掉三个小圆点和 </>
+// 实心：窗口一块（同 window 的外框），标题栏分隔线挖穿两侧，标题栏成了单独的一块；再挖掉三个小圆点和 </>；
+// 小圆点用 eye：尖角模式下也是圆点、粗字重下不再变大（方点挨得近，尖角粗字重下会连成一片）
 export const fill = ({ radius, stroke }) => [
   solid(rounded([[3.5, 4.5], [20.5, 4.5], [20.5, 19.5], [3.5, 19.5]], Math.min(radius, 2.5))),
   knock([
     `M${3.5 - stroke} 8.5H${20.5 + stroke}`,
-    ...[6, 8.5, 11].map(x => dot(x, 6.5, 1.5)),
+    ...[6, 8.5, 11].map(x => eye(x, 6.5, 1.5)),
     'M9 11L6 14L9 17',
     'M15 11L18 14L15 17',
     'M13 10.5L11 17.5',

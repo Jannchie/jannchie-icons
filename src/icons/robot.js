@@ -1,3 +1,4 @@
+import { GAP } from '../clearance'
 import { rounded } from '../geometry'
 import { knock, solid } from '../solid'
 
@@ -14,11 +15,15 @@ export default ({ radius }) => [
   `M20.5 ${eyeY - 1.5}v3`,
 ]
 
-// 实心：方头一块，挖掉眼睛，天线和耳朵照旧是线
-export const fill = ({ radius }) => [
-  solid(rounded([[head.l, head.t], [head.r, head.t], [head.r, head.b], [head.l, head.b]], radius)),
-  knock([`M9.5 ${eyeY - 1}v2`, `M14.5 ${eyeY - 1}v2`]),
-  `M12 ${head.t}V5.5`,
-  `M3.5 ${eyeY - 1.5}v3`,
-  `M20.5 ${eyeY - 1.5}v3`,
-]
+// 实心：方头一块，挖掉眼睛，天线和耳朵照旧是线；耳朵和头的中线只隔 2，粗字重下墨迹贴在一起（描边版有断线处理，实心版没有）：
+// 耳朵往外挪到和头的墨迹之间至少留 GAP
+export const fill = ({ radius, stroke }) => {
+  const e = Math.max(0, stroke - (head.l - 3.5 - GAP))
+  return [
+    solid(rounded([[head.l, head.t], [head.r, head.t], [head.r, head.b], [head.l, head.b]], radius)),
+    knock([`M9.5 ${eyeY - 1}v2`, `M14.5 ${eyeY - 1}v2`]),
+    `M12 ${head.t}V5.5`,
+    `M${3.5 - e} ${eyeY - 1.5}v3`,
+    `M${20.5 + e} ${eyeY - 1.5}v3`,
+  ]
+}

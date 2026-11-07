@@ -1,6 +1,6 @@
 import { circle } from '../geometry'
+import { hole, knock, solid } from '../solid'
 import { rotate } from '../transform'
-import { knock, solid } from '../solid'
 
 // 鲁特琴：上窄下宽的梨形琴身（没有吉他那样的腰）+ 音孔 + 琴桥 + 两条边的琴颈 + 往后折成直角的弦轴箱；
 // 竖着画再逆时针转 45°，琴头朝左上（和 guitar 同向）
@@ -13,9 +13,10 @@ const pegbox = 'M11 4.5L8 2.5'
 
 export default () => [body, rose, bridge, neck, pegbox].map(d => rotate(d, -45))
 
-// 实心：琴身和琴颈各一块，挖掉音孔和琴桥；弦轴箱照旧是线
+// 实心：琴身和琴颈一块，音孔挖成圆洞（只挖一圈的话中间剩一个小点，粗字重下只有针眼大），挖掉琴桥；弦轴箱照旧是线
 export const fill = () => [
   solid([rotate(body, -45), rotate(`${neck}Z`, -45)]),
-  knock([rose, bridge].map(d => rotate(d, -45))),
+  hole(rotate(rose, -45)),
+  knock(rotate(bridge, -45)),
   rotate(pegbox, -45),
 ]

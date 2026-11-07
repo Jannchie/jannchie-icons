@@ -11,12 +11,11 @@ export default ({ radius }) => [
   ...pts.map(([x, y]) => dot(x, y, 3.5)),
 ]
 
-// 实心：区域一块，顶点手柄四周让出缝，再把手柄画回去
+// 实心：边框和手柄照旧是线、圆点（尖角模式下也是圆点），里面的区域填实、和边框之间留 GAP 的缝——读成「被选中、填满的区域」。
+// 整块填实再在顶点手柄四周让缝的话，五个顶点都被啃掉一圈，五边形成了一个齿轮
 export const fill = ({ radius }) => {
-  const handles = pts.map(([x, y]) => dot(x, y, 3.5))
-  return [
-    solid(rounded(pts, Math.min(radius, 0.5))),
-    clear(handles, GAP),
-    ...handles,
-  ]
+  const outline = rounded(pts, Math.min(radius, 0.5))
+  const handles = pts.map(([x, y]) => ({ ...dot(x, y, 3.5), round: true }))
+  const edges = pts.map((p, i) => `M${p.join(' ')}L${pts[(i + 1) % pts.length].join(' ')}`)
+  return [solid(outline), clear(edges, GAP), outline, ...handles]
 }

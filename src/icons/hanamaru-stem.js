@@ -17,13 +17,13 @@ export default ({ stroke }) => {
   ]
 }
 
-// 实心：花瓣、两片叶子填实，漩涡挖空，花茎照旧是线
+// 实心：花瓣、两片叶子填实，漩涡挖空（尖角模式下也用圆头，见 hanamaru.js），花茎照旧是线
 export const fill = ({ stroke }) => {
   const h = stroke / 2
   const [cy, b] = [9.6, 22 - h]
   return [
     solid(petals(12, cy, 7, 6, 7.6 - h)),
-    knock(spiral(12, cy, 1.15, 3)),
+    knock({ d: spiral(12, cy, 1.15, 3), round: true }),
     `M12 ${cy + 6}V${b}`,
     solid([
       `M12 ${b}C10.5 18.5 8.5 17.5 5.5 18C6.5 20.5 9 ${b} 12 ${b}Z`,

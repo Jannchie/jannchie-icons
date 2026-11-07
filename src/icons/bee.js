@@ -1,5 +1,6 @@
+import { GAP } from '../clearance'
 import { circle } from '../geometry'
-import { knock, solid } from '../solid'
+import { cutout, solid } from '../solid'
 import { rotate } from '../transform'
 
 // 蜜蜂：俯视。头是实心圆（圆心 (12, 6)、半径 2），两根往外弯的触角从头里伸出（-125° / -55°，长 4，起点藏在填实的头里，尖角时线头不冒出来）；
@@ -24,13 +25,16 @@ export default () => [
   wing(18.5, 11, 25),
 ]
 
-// 实心：头本来就是实心；腹部一块，挖掉两道横纹（腹部分成三节，读作条纹）；翅膀各是一块，触角照旧是线
+// 实心：头本来就是实心；腹部一块，沿两道横纹各切开一条 GAP 宽的缝（腹部分成三节，读作条纹）；翅膀各是一块，触角照旧是线。
+// 不按线宽挖横纹：两道纹只隔 2，常规字重下中间那节只剩 0.5 的细条，粗字重下两道缝连成一片。缝按 GAP 切，中间那节总是 1 厚，
+// 缝是横穿腹部的矩形（腹部在这里两侧竖直），两端伸出腹部外，翅膀最后画、不受影响
 const abdomen = 'M8.5 13A3.5 3.5 0 0 1 15.5 13V16C15.5 18.1 13.75 19.9 12 21C10.25 19.9 8.5 18.1 8.5 16Z'
+const stripe = y => `M6 ${y - GAP / 2}H18V${y + GAP / 2}H6Z`
 export const fill = () => [
   { d: `${circle(12, 6, 2)}Z`, fill: true },
   antenna(-125),
   antenna(-55),
   solid(abdomen),
-  knock(['M8.5 13.5H15.5', 'M8.5 15.5H15.5']),
+  cutout([stripe(13.5), stripe(15.5)]),
   solid([wing(5.5, 11, -25), wing(18.5, 11, 25)]),
 ]

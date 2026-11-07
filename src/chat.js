@@ -2,6 +2,7 @@
 // 墨迹框左右 2–22、上下 3–21，以画布中线对称：主体墨迹 2–22 × 3–17，尾尖墨迹到 21；
 // 线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽。线宽 1 时主体四边都落在 .5 上
 // 尾巴：主体底边往下 4、45° 斜下，尾尖在 x 6，斜边在底边上的起点（尾巴根部）x 10，给右下角标留出底边（尾尖、底边都随线宽各收半个线宽，落差不变）
+import { fillDraw, fillSymbol, ledgeAbove, ledgeBelow, leftOf } from './badge-room'
 import { blocked } from './clearance'
 import { asBadge, fitBadge, roomBelow, roomOnBottom, roomOnRight } from './corner'
 import { crisp, rounded } from './geometry'
@@ -31,7 +32,14 @@ const GROW = 1.3
 
 export function withBadge(name, draw, tone, radius, stroke, { fill = false } = {}) {
   const { l, t, r, b, tip, root } = frame(stroke)
-  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, bottom: 17 }, s => roomOnRight(stroke, r, t)(s) && roomOnBottom(stroke, b, root, 1)(s), GROW, 0.6)
+  const fit = (n, d, more = () => true) => fitBadge(n, d, radius, stroke, { right: 22, bottom: 17 }, s => roomOnRight(stroke, r, t)(s) && roomOnBottom(stroke, b, root, 1)(s) && more(s), GROW, 0.6)
+  // 实心版：主体在角标四周让出一圈缝、朝右下整片让掉，角标画回去（见 badge-room.js）。
+  // 让掉的部分从角标最左的墨迹一直拖到底边，所以角标左缘的让位要离开尾巴根部（底边至少留 1），上面也要留一段够厚的气泡
+  if (fill) {
+    const { k, at } = fit(...fillSymbol(name, draw), s => leftOf(stroke, root + stroke / 2 + 1)(s) && ledgeAbove(stroke, 3)(s))
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(fillDraw(name, draw)(at, k, radius)), name), 'bottom')
+  }
+  const { k, at, shape } = fit(name, draw)
   const right = blocked(shape, 'y', r, stroke)
   const bottom = blocked(shape, 'x', b, stroke)
   // 底边在尾巴根部右边至少留 1，否则尾巴和气泡断开；拼图这类缩放吸在网格上、缩不下去的宽符号允许缩到普通大小的 0.6 倍
@@ -39,9 +47,6 @@ export function withBadge(name, draw, tone, radius, stroke, { fill = false } = {
   // 斜边直接从断口起（断口越过尾巴根部时，斜边也从断口的 x 处起，截掉被让开的那一小截）
   const end = bottom ? bottom[0] : r
   const tail = end >= root + 1 ? [[end, b], [root, b], tip] : [[Math.min(end, root), b + root - Math.min(end, root)], tip]
-  // 实心版：同样的角标位置，主体在角标四周让出一圈缝，角标画回去
-  if (fill)
-    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), 'bottom')
   return [
     rounded([[tip[0], b], [l, b], [l, t], [r, t], [r, right ? right[0] : b]], radius, false),
     rounded(tail, radius, false),
@@ -54,15 +59,18 @@ export function withBadge(name, draw, tone, radius, stroke, { fill = false } = {
 export function withBadgeTop(name, draw, tone, radius, stroke, { fill = false } = {}) {
   const { h, l, t, r, b, tip, root } = frame(stroke)
   // 顶边至少伸到画布中线 12，免得气泡只剩左上一个小角
-  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, top: t - h }, (s) => {
+  const fit = (n, d, more = () => true) => fitBadge(n, d, radius, stroke, { right: 22, top: t - h }, (s) => {
     const c = blocked(s, 'x', t, stroke)
-    return (!c || c[0] >= 12) && roomBelow(stroke, r, b)(s)
+    return (!c || c[0] >= 12) && roomBelow(stroke, r, b)(s) && more(s)
   }, GROW)
+  // 实心版：主体在角标四周让出一圈缝、朝右上整片让掉，角标画回去；角标下面到气泡下缘 17 要留一段够厚的气泡（见 badge-room.js）
+  if (fill) {
+    const { k, at } = fit(...fillSymbol(name, draw), ledgeBelow(stroke, 17))
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(fillDraw(name, draw)(at, k, radius)), name), 'top')
+  }
+  const { k, at, shape } = fit(name, draw)
   const right = blocked(shape, 'y', r, stroke)
   const top = blocked(shape, 'x', t, stroke)
-  // 实心版：同样的角标位置，主体在角标四周让出一圈缝，角标画回去
-  if (fill)
-    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), 'top')
   return [
     rounded([[tip[0], b], [l, b], [l, t], [top ? top[0] : r, t]], radius, false),
     rounded([[r, right ? right[1] : t], [r, b], [root, b], tip], radius, false),

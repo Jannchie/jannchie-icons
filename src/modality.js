@@ -5,7 +5,7 @@ import { GAP } from './clearance'
 import { circle, crisp, rounded } from './geometry'
 import { glyph } from './letters'
 import { dot } from './scene'
-import { clear, knock, solid, spans, tile } from './solid'
+import { clear, cutout, knock, solid, spans, stacked, tile } from './solid'
 import { chevronRight, image, music, sparkle } from './symbols'
 
 const at = ([cx, cy], k) => ([x, y]) => [cx + x * k, cy + y * k]
@@ -146,16 +146,13 @@ export function pipeline(inputs, output, radius) {
 // 每个模态符号的实心画法，沿用 M 的几何：闭合的部件填实、里面的细节挖空；只有线条的符号（文字、音频、问号、向量……）原样不动
 // 表格按墨迹范围分块，要用 stroke
 export const MF = {
-  // 相框一块，挖掉太阳点和山形线
+  // 相框一块，挖掉太阳点和山形线；太阳点用圆线帽，尖角模式下不挖成方块
   image: (c, k, r) => {
     const [frame, ...scene] = M.image(c, k, r)
-    return [solid(frame), knock(scene)]
+    return [solid(frame), knock(scene.map(d => (/h0$/.test(d) ? { d, round: true } : d)))]
   },
-  // 机身和镜头罩各填实
-  video: (c, k, r) => [
-    solid(M.video(c, k, r)[0]),
-    solid(rounded(pts(c, k, [[1.5, -0.75], [3.5, -2], [3.5, 2], [1.5, 0.75]]), Math.min(r, k * 0.5))),
-  ],
+  // 机身和镜头罩各一块，镜头罩在前、机身在它四周让出缝（见 solid.js 的 stacked），粗字重下不合成一块
+  video: (c, k, r) => stacked(M.video(c, k, r)[0], rounded(pts(c, k, [[1.5, -0.75], [3.5, -2], [3.5, 2], [1.5, 0.75]]), Math.min(r, k * 0.5))),
   // 符头填实，符干、符尾照旧是线
   music: (c, k, r) => {
     const [head, stem] = M.music(c, k, r)
@@ -174,11 +171,16 @@ export const MF = {
     const q = Math.min(r, 0.5)
     return [tile([cols[0][0], head[0], cols[1][1], head[1]], q), ...cols.map(([x0, x1]) => tile([x0, body[0], x1, body[1]], q))]
   },
-  // 六边形一块，挖掉中间的 Y（分成三个面）
+  // 和 cube.js 一样：六边形一块，从中心往下挖一道 GAP 宽的竖缝分开左右两个侧面，顶面菱形整块画在前面、四周让出缝——
+  // 不挖 Y 形棱：棱从六边形的顶点穿出去会在三个顶点上啃出缺口
   cube: (c, k, r) => {
-    const [hex, ...edges] = M.cube(c, k, r)
-    return [solid(hex), knock(edges)]
+    const [hex] = M.cube(c, k, r)
+    const [cx, cy] = c
+    const top = rounded(pts(c, k, [[0, -3.5], [3, -1.75], [0, 0], [-3, -1.75]]), Math.min(r, k * 0.5))
+    return [solid(hex), cutout(`M${cx - GAP / 2} ${cy}H${cx + GAP / 2}V24H${cx - GAP / 2}Z`), clear(top, GAP), solid(top)]
   },
+  // 关键点：骨架照旧是线，关节点用圆点、粗字重下不变大（eye），尖角模式下不连成方块
+  keypoints: (c, k) => M.keypoints(c, k).map(p => (p.dot ? { ...p, round: true, eye: true } : p)),
   // 两颗星都填实
   any: (c, k, r) => solid(M.any(c, k, r)),
   // 被框出来的词填实

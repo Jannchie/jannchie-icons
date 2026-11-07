@@ -1,5 +1,5 @@
 import { circle, rounded } from '../geometry'
-import { hole, knock, solid } from '../solid'
+import { cutout, knock, solid } from '../solid'
 
 // 卡片机：扁平的长方机身（顶部没有取景器凸起）+ 右上角快门按钮 + 偏右的双圈镜头（伸缩镜筒）+ 左上角闪光灯
 export default ({ radius }) => [
@@ -10,12 +10,14 @@ export default ({ radius }) => [
   rounded([[5.5, 9.5], [8.5, 9.5], [8.5, 11.5], [5.5, 11.5]], Math.min(radius, 0.5)),
 ]
 
-// 实心：机身和快门按钮一块，挖掉镜头的两圈（镜筒成一圈实心环、镜片中心留成实心），闪光灯挖成洞
+// 实心：机身和快门按钮一块，挖掉镜头外圈（镜筒成一块实心圆），镜片按内圈的中心线原样挖成圆洞：
+// 两圈都挖时中间的实心环只剩 2 − 线宽，常规字重就是一条细线、粗字重下没了。
+// 闪光灯也按中心线原样挖（不外扩），右边收进 0.5：外扩或原宽时粗字重下和镜头外圈的缝之间只剩一条细线
 export const fill = ({ radius }) => [
   solid([
     rounded([[2.5, 7.5], [21.5, 7.5], [21.5, 18.5], [2.5, 18.5]], Math.min(radius, 2.5)),
     rounded([[15.5, 7.5], [15.5, 5.5], [18.5, 5.5], [18.5, 7.5]], Math.min(radius, 0.75)),
   ]),
-  knock([circle(13.5, 13, 3.75), circle(13.5, 13, 1.75)]),
-  hole(rounded([[5.5, 9.5], [8.5, 9.5], [8.5, 11.5], [5.5, 11.5]], Math.min(radius, 0.5))),
+  knock(circle(13.5, 13, 3.75)),
+  cutout([circle(13.5, 13, 1.75), rounded([[5.5, 9.5], [8, 9.5], [8, 11.5], [5.5, 11.5]], Math.min(radius, 0.5))]),
 ]

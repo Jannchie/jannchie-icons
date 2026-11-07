@@ -71,6 +71,8 @@ export const longEar = top => (p0, p1) => {
 export const eyes = (y, dx) => [eye(12 - dx, y, 2.25), eye(12 + dx, y, 2.25)]
 // 内部线条（眉、嘴、腮红、花纹）都用细线
 export const thin = d => ({ d, thin: true })
+// 实心版挖空的五官：尖角模式下也用圆头圆角，方头的腮红、嘴角挖在脸上读成一块块方楔子
+export const soft = paths => paths.map(p => (typeof p === 'string' ? { d: p, round: true } : { ...p, round: true }))
 // 短眉：眼睛上方一小段微弯的线（外低内略高）
 export const brows = (y, dx) => [
   thin(`M${12 - dx - 0.7} ${y + 0.2}Q${12 - dx} ${y - 0.1} ${12 - dx + 0.7} ${y}`),

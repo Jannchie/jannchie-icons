@@ -16,5 +16,5 @@ const features = [
 ]
 export default () => [face, ...features]
 
-// 实心：脸一块，眼睛、鼻头、嘴挖空
-export const fill = () => [solid(face), knock(features)]
+// 实心：脸一块，眼睛、鼻头、嘴挖空；尖角模式下鼻头和嘴也按圆角挖（斜接的三角鼻和 ω 嘴在粗字重下粘成一块带尖的白斑）
+export const fill = () => [solid(face), knock(features.map(f => (typeof f === 'string' ? { d: f, round: true } : { ...f, round: true })))]

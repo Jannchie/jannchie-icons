@@ -65,8 +65,17 @@ export function symbolFill(name, paths, stroke) {
     return solid(paths)
   const [body, ...rest] = paths
   switch (name) {
-    // 方框填实，山形线、太阳挖空（山形线两端落在框边上，左下角的山体自成一块）
-    case 'image':
+    // 方框填实，太阳挖空；山形线挖穿方框，左下角的山体自成一块。山形线两端落在框边的中心线上，
+    // 线帽只擦到外缘、会留一根发丝，所以两端顺着 45° 各往外延长，让挖出的缝整条穿出框的外缘
+    case 'image': {
+      const [sun, ridge] = rest
+      const d = ridge.d ?? ridge
+      const pts = d.match(/-?[\d.]+/g).map(Number)
+      const [[ax, ay], [ex, ey]] = [pts.slice(0, 2), pts.slice(-2)]
+      const e = Math.SQRT2 * (stroke / 2 + 0.25) + stroke / 2
+      const cut = `M${ax - e / Math.SQRT2} ${ay + e / Math.SQRT2}L${d.slice(1)}L${ex + e / Math.SQRT2} ${ey + e / Math.SQRT2}`
+      return [solid(body), knock(sun), knock(typeof ridge === 'string' ? cut : { ...ridge, d: cut })]
+    }
     // 方框填实，十字挖空成四块
     case 'assets':
     // 圆面填实，指针挖空
@@ -104,8 +113,13 @@ export const listMark = ([cx, cy], stroke = 1.5) => accent([
   ...markRows.map((y, i) => `M${cx - 1.25} ${cy + y}H${cx + (i === 2 ? 1.5 : 4 - stroke / 2)}`),
 ])
 
-// 实心版：主符号填实（symbolFill），在右下的小列表四周让出 GAP（和描边版 cut 断开的间隙一样），再把小列表画回去
+// 实心版：主符号填实（symbolFill），在右下的小列表外面让出一个圆角方框（小列表墨迹外扩 GAP），再把小列表画回去。
+// 不按每个圆点、每行线各自外扩：那样让出来的边跟着点和线头起伏，主体的边缘坑坑洼洼
+// 方框按中心线画：左边是圆点的圆心（圆点直径在线宽 DOT_STROKE 下是 1.5，随字重缩放，半径正好是半个线宽）、右边是长行的线头、上下是首末行，
+// 作为闭合路径让位时外扩半个线宽 + GAP，正好包住小列表的墨迹；圆角连接，尖角模式下也是圆角
 export const withListMarkFill = (main, stroke) => {
-  const mark = listMark([18, 18], stroke)
-  return [...main, clear(mark, GAP), ...mark]
+  const [cx, cy] = [18, 18]
+  const mark = listMark([cx, cy], stroke)
+  const [x0, x1, y0, y1] = [cx - 3.25, cx + 4 - stroke / 2, cy + markRows[0], cy + markRows.at(-1)]
+  return [...main, { ...clear(`M${x0} ${y0}H${x1}V${y1}H${x0}Z`, GAP), round: true }, ...mark]
 }

@@ -5,6 +5,7 @@
 // 角标墨迹贴到右缘 22、下缘 22（和针尖同高），整体墨迹框 2–22 × 2–22；角标的遮挡框只切到针体右下的曲线，碰不到中心小圆
 // 右下角标：针体右下是一段收向针尖的曲线，没有横平竖直的边可以按区间断开，和盾牌系列一样
 // 用一个隐藏的遮挡框：角标外形外扩一圈，框里的针线删掉、框边附近的线断开（clip 按 GAP + 线宽留缝），断口比只让符号本身去切宽得多
+import { fillDraw, fillSymbol, leftOf } from './badge-room'
 import { GAP } from './clearance'
 import { asBadge, fitBadge } from './corner'
 import { circle } from './geometry'
@@ -39,10 +40,14 @@ const clearOfDot = stroke => (shape) => {
   return Math.hypot(dx, dy) >= 2.25 + GAP + stroke
 }
 export function withBadge(name, draw, tone, radius, stroke, { fill = false } = {}) {
-  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, bottom: 22 }, clearOfDot(stroke), GROW)
-  // 实心版：同样的角标位置，小针填实、中心挖洞，角标四周让出一圈缝
-  if (fill)
-    return badgeFill(plainFillParts(stroke), asBadge(tone(draw(at, k, radius)), name), 'bottom')
+  const fit = (n, d, more = () => true) => fitBadge(n, d, radius, stroke, { right: 22, bottom: 22 }, s => clearOfDot(stroke)(s) && more(s), GROW)
+  // 实心版：小针填实、中心挖洞，角标四周让出一圈缝、朝右下整片让掉。让掉的部分从角标最左的墨迹一直拖到底，
+  // 角标左缘的让位要停在针尖（x 9）右边至少 1，针尖才完整（见 badge-room.js）
+  if (fill) {
+    const { k, at } = fit(...fillSymbol(name, draw), leftOf(stroke, 9 + stroke / 2 + 1))
+    return badgeFill(plainFillParts(stroke), asBadge(tone(fillDraw(name, draw)(at, k, radius)), name), 'bottom')
+  }
+  const { k, at, shape } = fit(name, draw)
   // 遮挡框取符号实际墨迹（中心线）的外接框：按 outlines 的近似外形会比墨迹大（对勾、云），线断得太早
   const xs = shape.pts.map(q => q[0])
   const ys = shape.pts.map(q => q[1])

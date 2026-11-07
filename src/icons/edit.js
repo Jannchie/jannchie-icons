@@ -9,8 +9,8 @@ export default ({ radius }) => [
   rotate('M9.5 7L14.5 7', 30),
 ]
 
-// 实心：铅笔一块，挖掉橡皮分隔线（橡皮头分成单独一截）
-export const fill = ({ radius }) => [
+// 实心：铅笔一块，挖掉橡皮分隔线（橡皮头分成单独一截）；分隔线两端横着穿出笔杆两侧（停在笔杆中线上的线帽只擦到外缘，留一道细桥）
+export const fill = ({ radius, stroke }) => [
   solid(rotate(rounded([[12, 21, crisp(radius)], [9.5, 16.5], [9.5, 3.5], [14.5, 3.5], [14.5, 16.5]], Math.min(radius, 1)), 30)),
-  knock(rotate('M9.5 7L14.5 7', 30)),
+  knock(rotate(`M${9.5 - stroke} 7H${14.5 + stroke}`, 30)),
 ]

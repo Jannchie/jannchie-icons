@@ -1,6 +1,6 @@
 import { crisp, rounded } from '../geometry'
 import { dot } from '../scene'
-import { knock, solid } from '../solid'
+import { stacked } from '../solid'
 
 // 学位帽：上面一块压扁的菱形帽顶（2–22 × 4.5–13.5），下面是帽身（两侧竖边 6.5 / 17.5，底部向下鼓）；
 // 右边一根流苏从帽顶边垂下，末端一个点压在线头上（隔开的话线头和点之间只剩一道窄缝）
@@ -14,11 +14,10 @@ export default ({ radius }) => [
   dot(19.5, 17.5),
 ]
 
-// 实心：帽顶菱形、帽身（顶上封口）各一块，帽身顶上那段菱形下边挖开；流苏照旧是线 + 点，最后画
+// 实心：帽顶菱形在前，完整的一块；帽身（顶上封口）在后，沿菱形让出 GAP 的缝（见 solid.js 的 stacked）——
+// 缝顺着菱形下边走、两头自然穿出帽身两侧，不像挖一道线那样线帽停在帽身的两个上角、留下连着的细桥；流苏照旧是线 + 点，最后画
 export const fill = ({ radius }) => [
-  solid(rounded(top, crisp(radius))),
-  solid(`M6.5 ${edge(6.5)}V15.5C6.5 17.5 9 18.5 12 18.5C15 18.5 17.5 17.5 17.5 15.5V${edge(17.5)}Z`),
-  knock(`M6.5 ${edge(6.5)}L12 13.5L17.5 ${edge(17.5)}`),
+  ...stacked(`M6.5 ${edge(6.5)}V15.5C6.5 17.5 9 18.5 12 18.5C15 18.5 17.5 17.5 17.5 15.5V${edge(17.5)}Z`, rounded(top, crisp(radius))),
   `M19.5 ${edge(19.5)}V17.5`,
   dot(19.5, 17.5),
 ]

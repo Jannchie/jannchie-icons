@@ -10,5 +10,5 @@ const rays = Array.from({ length: 8 }, (_, i) => {
 
 export default () => [circle(12, 12, 4.5), ...rays]
 
-// 实心：中间的圆填实，8 个点照旧
-export const fill = () => [solid(circle(12, 12, 4.5)), ...rays]
+// 实心：中间的圆填实，8 个点照旧、尖角模式下也是圆点（实心圆配一圈方块读成齿轮）
+export const fill = () => [solid(circle(12, 12, 4.5)), ...rays.map(r => ({ ...r, round: true }))]

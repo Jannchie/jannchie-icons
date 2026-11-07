@@ -1,10 +1,10 @@
 // 各国内容分级：每个体系一种外框，框里是放大的线条字母；长的分级（PG-13、MA15+）拆成上下两行
 // 外框只用来区分体系（同样写着 12 的，带横栏的方框是 PEGI、圆是韩国），不是照搬各机构的官方标志
 import { segments } from './clip'
-import { circle, rounded } from './geometry'
+import { circle, crisp, rounded } from './geometry'
 import { LABEL, line, snap, textWidth } from './letters'
 import { tagShape } from './marks'
-import { hole, knock, solid } from './solid'
+import { hole, knock, solid, spans } from './solid'
 import { translate } from './transform'
 
 // 外框：shape(radius) 画框，box 是留给文字的区域 [左, 上, 右, 下]
@@ -103,12 +103,22 @@ export function rating(system, text, radius) {
   return [shape(radius), ...textOf(text, box)].flat()
 }
 
-// 实心：外框铺成一块，字从里面挖掉
-// PEGI 的横栏分隔线挖成白线，两端各收一个线宽，横栏和上面的方块仍连在外框上；标签的穿孔挖空
+// 实心：外框铺成一块，字从里面挖掉；标签的穿孔挖空
+// PEGI：横栏和上面的方块是两块独立的实心块（见 solid.js 的 spans），中间留 GAP 的缝；外侧四角和描边版墨迹的圆角一致，
+// 缝两边的角只用 crisp 小圆角——不用一道两头收住的白线去挖，那样两端会留下连着外框的窄桥
+function dividedFill(radius, stroke) {
+  const h = stroke / 2
+  const [x0, x1] = [2.5 - h, 21.5 + h]
+  const R = radius ? Math.min(radius, 2.5) + h : 0
+  const k = crisp(radius)
+  const [[a0, a1], [b0, b1]] = spans(2.5, 21.5, [17.5], stroke)
+  const block = (y0, y1, top, bottom) => ({ d: rounded([[x0, y0, top], [x1, y0, top], [x1, y1, bottom], [x0, y1, bottom]], 0), fill: true, exact: true })
+  return [block(a0, a1, R, k), block(b0, b1, k, R)]
+}
 export function ratingFill(system, text, radius, stroke) {
   const { frame } = SYSTEMS[system]
   const { shape, box } = FRAMES[frame]
   const [body, ...rest] = [shape(radius)].flat()
-  const parts = frame === 'divided' ? [knock(`M${2.5 + stroke} 17.5H${21.5 - stroke}`)] : frame === 'tag' ? [hole(rest)] : []
-  return [solid(body), ...parts, knock(textOf(text, box))]
+  const base = frame === 'divided' ? dividedFill(radius, stroke) : frame === 'tag' ? [solid(body), hole(rest)] : [solid(body)]
+  return [...base, knock(textOf(text, box))]
 }

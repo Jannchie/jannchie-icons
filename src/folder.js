@@ -1,6 +1,7 @@
 // 文件夹类图标共用：45° 斜边的标签页 + 本体
 // 墨迹框左右 2–22、上下 3–21，以画布中线对称；线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽
 // 标签页右端在 x 9，45° 斜边往下 3 接到本体顶边（线宽 1 时本体顶边落在 6.5 上，横线清晰）
+import { fillDraw, fillSymbol, ledgeAbove } from './badge-room'
 import { blocked } from './clearance'
 import { asBadge, fitBadge, roomOnRight } from './corner'
 import { rounded } from './geometry'
@@ -32,14 +33,17 @@ const GROW = 1.3
 
 // 角标：符号墨迹的右缘、下缘贴到画布留白的边 (22, 22)（比本体底边的外缘 21 低 1，角标压在外框角上，不显得缩在文件夹里）；右边和底边在离符号 GAP 处断开，轮廓从底边的断口出发绕一圈到右边的断口
 export function withBadge(name, draw, tone, radius, stroke, { fill = false } = {}) {
-  const { l, t, r, b, tabEnd, tabSlope, body } = frame(stroke)
-  const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, bottom: 22 }, roomOnRight(stroke, r, body), GROW)
+  const { h, l, t, r, b, tabEnd, tabSlope, body } = frame(stroke)
+  const fit = (n, d, more = () => true) => fitBadge(n, d, radius, stroke, { right: 22, bottom: 22 }, s => roomOnRight(stroke, r, body)(s) && more(s), GROW)
+  // 实心版：主体在角标四周让出一圈缝、朝右下整片让掉，角标画回去；角标上面到本体上缘要留一段够厚的本体（见 badge-room.js）
+  if (fill) {
+    const { k, at } = fit(...fillSymbol(name, draw), ledgeAbove(stroke, body - h))
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(fillDraw(name, draw)(at, k, radius)), name), 'bottom')
+  }
+  const { k, at, shape } = fit(name, draw)
   const right = blocked(shape, 'y', r, stroke)
   const bottom = blocked(shape, 'x', b, stroke)
   const outline = [[bottom ? bottom[0] : r, b], [l, b], [l, t], [tabEnd, t], [tabSlope, body], [r, body], [r, right ? right[0] : b]]
-  // 实心版：同样的角标位置，主体在角标四周让出一圈缝，角标画回去
-  if (fill)
-    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), 'bottom')
   return [rounded(outline, radius, false), ...asBadge(tone(draw(at, k, radius)), name)]
 }
 

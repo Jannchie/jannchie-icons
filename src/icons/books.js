@@ -30,11 +30,13 @@ export const fill = ({ radius, stroke }) => {
   const r = Math.min(radius, 1)
   const h = stroke / 2
   const [tall, short] = spans(4.5, 12.5, [8.5], stroke)
+  // 斜书搭在书架上的左下角至少收 0.5 的圆角：尖角模式下这个角斜接出去会从书架横线底下冒出一个小尖
+  const leaning = rounded([[px, py, Math.max(r, 0.5)], ...lean.slice(1)], r)
   return [
     tile([tall[0], 3.5 - h, tall[1], 20.5 + h], r),
     tile([short[0], 7.5 - h, short[1], 20.5 + h], r),
-    clear(rounded(lean, r), GAP),
-    solid(rounded(lean, r)),
+    clear(leaning, GAP),
+    solid(leaning),
     'M3 20.5H21',
   ]
 }

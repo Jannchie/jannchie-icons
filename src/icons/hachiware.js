@@ -1,4 +1,4 @@
-import { blush, brows, eyes, face, mouth, pointOn, pointedEar, thin } from '../chiikawa'
+import { blush, brows, eyes, face, mouth, pointOn, pointedEar, soft, thin } from '../chiikawa'
 import { knock, solid } from '../solid'
 
 // 小八（hachiware）：圆润的大福脸 + 两只宽底尖耳（和脸是一笔；外侧边几乎竖直地接住脸的侧边，内侧边从靠近头顶中间斜上去，耳尖不超出脸宽）
@@ -11,9 +11,14 @@ const head = () => face(shape, {
   right: { from: ears.right[0], to: ears.right[1], draw: pointedEar([16.6, 4.3], 0.85) },
   left: { from: ears.left[0], to: ears.left[1], draw: pointedEar([7.4, 4.3], 0.85) },
 })
-const features = () => [
-  thin(`M${sideL.join(' ')}C6.5 11.3 9.8 11.3 12 8`),
-  thin(`M${sideR.join(' ')}C17.5 11.3 14.2 11.3 12 8`),
+// 花纹分界从耳根起笔；out 是起笔处顺着切线往脸外多伸出的一段（实心版挖穿脸的侧边用）
+const outward = ([x, y], [cx, cy], out) => {
+  const l = Math.hypot(cx - x, cy - y)
+  return out ? `M${+(x - (cx - x) / l * out).toFixed(2)} ${+(y - (cy - y) / l * out).toFixed(2)}L${x} ${y}` : `M${x} ${y}`
+}
+const features = (out = 0) => [
+  thin(`${outward(sideL, [6.5, 11.3], out)}C6.5 11.3 9.8 11.3 12 8`),
+  thin(`${outward(sideR, [17.5, 11.3], out)}C17.5 11.3 14.2 11.3 12 8`),
   ...brows(11.9, 3.5),
   ...eyes(13.9, 3.5),
   mouth(15.75),
@@ -21,5 +26,6 @@ const features = () => [
 ]
 export default () => [head(), ...features()]
 
-// 实心：脸（连耳朵）填实，花纹分界、五官、腮红挖空（分界线通到脸的两侧，头顶的花纹自成一块，正好读成两色的头）
-export const fill = () => [solid(head()), knock(features())]
+// 实心：脸（连耳朵）填实，花纹分界、五官、腮红挖空（尖角模式下也是圆头，见 chiikawa.js 的 soft）；
+// 分界线在耳根处顺着方向穿出脸的两侧（不停在轮廓的中心线上留细桥），头顶的花纹自成一块，正好读成两色的头
+export const fill = () => [solid(head()), knock(soft(features(1.5)))]

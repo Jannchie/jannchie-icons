@@ -11,8 +11,9 @@ export default ({ radius }) => [
   ...[7.5, 15.5].flatMap(x => [`M${x} 3.5V13.5`, rounded(arrow(x, 13.5, 'down', 2.5), crisp(radius), false)]),
 ]
 
-// 实心：三块砖各画一块（见 solid.js 的 tile），砖和砖之间留 GAP 的缝；砖高只有 4，圆角最多 0.5。箭头照旧是线
+// 实心：三块砖各画一块（见 solid.js 的 tile），砖和砖之间留 GAP 的缝；砖高只有 4，圆角最多 0.5。箭头照旧是线；
+// 箭杆停在箭头尖往上半个线宽处（尖角模式下方头的箭杆顶到尖上，两角会从斜接的箭头尖两侧戳出来）
 export const fill = ({ radius, stroke }) => [
   ...spans(3.5, 19.5, [7.5, 15.5], stroke).map(([x0, x1]) => tile([x0, 16.5 - stroke / 2, x1, 20.5 + stroke / 2], Math.min(radius, 0.5))),
-  ...[7.5, 15.5].flatMap(x => [`M${x} 3.5V13.5`, rounded(arrow(x, 13.5, 'down', 2.5), crisp(radius), false)]),
+  ...[7.5, 15.5].flatMap(x => [`M${x} 3.5V${13.5 - stroke / 2}`, rounded(arrow(x, 13.5, 'down', 2.5), crisp(radius), false)]),
 ]

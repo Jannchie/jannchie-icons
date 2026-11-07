@@ -1,4 +1,4 @@
-import { flap, labelBox, pageTop } from '../file'
+import { flap, flapCut, labelBox, pageTop } from '../file'
 import { rounded } from '../geometry'
 import { label } from '../letters'
 import { knock, solid } from '../solid'
@@ -10,9 +10,9 @@ export default ({ radius, stroke }) => [
   ...label('psd', labelBox),
 ]
 
-// 实心：纸张上半部分是一块（下沿是直的），挖掉翻折线，字母照旧是线
+// 实心：纸张上半部分是一块（下沿是直的），挖掉翻折线（两头穿出外框，见 file.js 的 flapCut），字母照旧是线
 export const fill = ({ radius, stroke }) => [
   solid(rounded(pageTop(stroke, radius), radius, false)),
-  knock(flap(stroke)),
+  knock(flapCut(stroke)),
   ...label('psd', labelBox),
 ]

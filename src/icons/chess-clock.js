@@ -1,5 +1,5 @@
 import { circle, rounded } from '../geometry'
-import { knock, solid } from '../solid'
+import { hole, solid } from '../solid'
 
 // 棋钟（读秒、对局计时）：横放的机身（3.5–20.5 × 8.5–18.5）+ 两个表盘（各一根斜指针）+ 顶上两个按钮，左边弹起、右边按下
 // 横竖边都落在 .5 上；表盘中心 x 8.25 / 15.75、半径 2.25：离机身侧边 2.5、彼此相距 3，粗字重下也留得出空隙
@@ -13,8 +13,10 @@ const buttons = radius => [
 
 export default ({ radius }) => [body(radius), ...faces, ...hands, ...buttons(radius)]
 
-// 实心：机身一块，挖掉表盘的圆圈（表盘留成实心圆）和指针；按钮也是实心
+// 实心：机身和按钮一块，表盘挖成白色的圆洞（到描边版圆圈的外缘），指针照旧是线、画在洞里。
+// 不再挖圆圈留实心圆：圆盘只剩半径 2.25 − 线宽，粗字重下被指针的缝切成碎块
 export const fill = ({ radius }) => [
   solid([body(radius), ...buttons(radius).map(d => `${d}Z`)]),
-  knock([...faces, ...hands]),
+  hole(faces),
+  ...hands,
 ]

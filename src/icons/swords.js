@@ -9,10 +9,11 @@ export default () => {
   return [...back, ...back.map(d => ({ d: mirror(d), cut: true, gap: 0.5 }))]
 }
 
-// 实心：两把都用 swordFill；后面那把在前面那把四周让出同样的细缝
+// 实心：两把都用 swordFill；后面那把在前面那把四周让出同样的细缝。
+// 后面那把的护手左端（剑的坐标里 8–9）伸过前面那把的护手，让缝切下来只剩一粒碎墨，实心版里护手从 9 画起，不留这一截
 export const fill = () => {
   const map = f => p => (typeof p === 'string' ? f(p) : { ...p, d: f(p.d) })
-  const back = swordFill.map(map(d => rotate(d, -45)))
-  const front = back.map(map(d => mirror(d)))
+  const front = swordFill.map(map(d => mirror(rotate(d, -45))))
+  const back = swordFill.map(p => (p === 'M8 15H16' ? 'M9 15H16' : p)).map(map(d => rotate(d, -45)))
   return [...back, clear(sword.map(d => mirror(rotate(d, -45))), 0.5), ...front]
 }
