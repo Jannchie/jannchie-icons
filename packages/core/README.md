@@ -22,7 +22,7 @@ Each icon is a separate module, so bundlers keep only the icons you import. One 
 |---|---|---|
 | `radius` | `'sharp'`, `0`, `1`, `2`, `3` | `2` |
 | `weight` | `'light'` (1), `'regular'` (1.5), `'bold'` (2) | `'regular'` |
-| `variant` | `'outline'` or `'fill'` (solid shapes with knocked-out details); icons without a fill version fall back to the outline, check with `hasFill(icon)` | `'outline'` |
+| `variant` | `'outline'` or `'fill'` (solid shapes with knocked-out details); `'fill'` needs icons from the [fill entry](#fill-entry), other icons fall back to the outline, check with `hasFill(icon)` | `'outline'` |
 | `size` | width and height: a number (px) or a CSS length such as `'1em'` | `24` |
 | `duo` | color badges and strike-throughs by meaning | `false` |
 | `theme` | `'light'` or `'dark'` recommended colors for `duo` | `'light'` |
@@ -56,6 +56,20 @@ IconHeart.paths // [{ d: 'M12 20C9 18 3 14.5 ...' }], for rendering with SVG_ATT
 
 `toSvg` here takes `size`, `title` and `attrs`; its output is the same as the main entry's `toSvg` with default options.
 
+## Fill entry
+
+The fill variant's path data is precomputed for every radius and weight, a few KB per icon, so it is kept out of the main entry. Import icons from `@jannchie/icons/fill` to use `variant: 'fill'`: the exports have the same names, and each icon carries its fill data. Icons without a fill version are the plain icons and render as outlines.
+
+```js
+import { toSvg } from '@jannchie/icons'
+import { IconFolder } from '@jannchie/icons/fill'
+
+toSvg(IconFolder, { variant: 'fill', radius: 'sharp' })
+toSvg(IconFolder) // the outline still works
+```
+
+`@jannchie/icons/fill/all` looks icons up by name, and `@jannchie/icons/fill/icons/<name>` imports one icon.
+
 ## Deep imports
 
 Single icons can also be imported by name, without going through an index module:
@@ -63,6 +77,7 @@ Single icons can also be imported by name, without going through an index module
 ```js
 import heart from '@jannchie/icons/icons/heart' // same object as IconHeart
 import staticHeart from '@jannchie/icons/static/icons/heart'
+import fillHeart from '@jannchie/icons/fill/icons/heart' // IconHeart from the fill entry
 ```
 
 ## Metadata

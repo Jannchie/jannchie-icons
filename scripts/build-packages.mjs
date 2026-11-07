@@ -1,7 +1,7 @@
 // 构建可发布的包（都从 src/ 生成）：
 // - packages/core：@jannchie/icons，引擎 + 图标定义，ESM + CJS、按模块保留结构，可以 tree-shaking
 //   入口：.（全功能）、./all（按名字查）、./static（预先算好的默认样式，不带渲染引擎）、./meta（分类、标签）、./icons/*（单个图标）、
-//   ./runtime（框架组件包共用的纯函数）
+//   ./fill、./fill/all、./fill/icons/*（带实心版路径数据的图标）、./runtime（框架组件包共用的纯函数）
 // - packages/iconify-json：@jannchie/iconify-json，Iconify 格式，每种「圆角 × 字重」一个集合（5 × 3 = 15 个）
 // 用法：pnpm build:packages
 import { mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
@@ -50,6 +50,7 @@ const GEN = 'packages/core/.gen'
 rmSync(GEN, { recursive: true, force: true })
 mkdirSync(`${GEN}/icons`, { recursive: true })
 mkdirSync(`${GEN}/static/icons`, { recursive: true })
+mkdirSync(`${GEN}/fill/icons`, { recursive: true })
 // 改名留下的旧名：深路径 ./icons/<旧名>（./static/icons/<旧名> 同样）转发到新图标
 const writeForwards = (dir) => {
   for (const [o, n] of aliasList)
@@ -60,20 +61,33 @@ const iconExports = () => [
   ...names.map(n => `export { default as ${exportName(n)} } from './icons/${n}.js'`),
   ...aliasList.flatMap(([o, n]) => [deprecatedDoc(o, n), `export { default as ${exportName(o)} } from './icons/${n}.js'`]),
 ]
+// 按名字查图标的 all.js（会引入全部图标，不能 tree-shaking）；旧名也能查到
+const allModule = () => [
+  ...names.map(n => `import ${exportName(n)} from './icons/${n}.js'`),
+  '',
+  `export const icons = {\n${[...names.map(n => `  '${n}': ${exportName(n)},`), ...aliasList.map(([o, n]) => `  '${o}': ${exportName(n)},`)].join('\n')}\n}`,
+  '',
+].join('\n')
 
 // 实心变体：每种「圆角 × 字重」的路径 { '2|regular': [{ d, tone? }], … }（键见 render.js 的 solidKey）
 const solidOf = icon => Object.fromEntries(CORNERS.flatMap(c => WEIGHTS.map(w => [
   solidKey(c, w),
   pathsOf(icon, c, w, 0, 'fill').map(({ d, tone }) => (tone ? { d, tone } : { d })),
 ])))
-// 每个图标一个入口：{ name, draw, animation?, solid? }；只有动画图标才带 animation，有实心版的才带 solid
+// 每个图标一个入口：{ name, draw, animation? }；只有动画图标才带 animation
+// 实心版的路径数据（15 种设置，一个图标几 KB）放在 ./fill/icons/<name>：同一个图标对象再加上 solid，
+// 只用描边版的项目打包时不会带上它。没有实心版的图标，./fill 里就是原来的对象
 for (const name of names) {
   const src = `../../../../src/icons/${name}.js`
   const icon = byName.get(name)
-  const fields = [`name: '${name}'`, 'draw', ...(icon.animation ? ['animation'] : []), ...(icon.fill ? [`solid: ${json(solidOf(icon))}`] : [])]
+  const fields = [`name: '${name}'`, 'draw', ...(icon.animation ? ['animation'] : [])]
   writeFileSync(`${GEN}/icons/${name}.js`, `import draw${icon.animation ? ', { animation }' : ''} from '${src}'\n\nexport default { ${fields.join(', ')} }\n`)
+  writeFileSync(`${GEN}/fill/icons/${name}.js`, icon.fill
+    ? `import icon from '../../icons/${name}.js'\n\nexport default { ...icon, solid: ${json(solidOf(icon))} }\n`
+    : `export { default } from '../../icons/${name}.js'\n`)
 }
 writeForwards(`${GEN}/icons`)
+writeForwards(`${GEN}/fill/icons`)
 writeFileSync(`${GEN}/index.js`, [
   `export { resolveColors, toPaths, toSvg } from '../../../src/export.js'`,
   `export { CORNERS, WEIGHTS } from '../../../src/options.js'`,
@@ -83,12 +97,10 @@ writeFileSync(`${GEN}/index.js`, [
   '',
 ].join('\n'))
 // 按名字查图标（会引入全部图标，不能 tree-shaking）；旧名也能查到
-writeFileSync(`${GEN}/all.js`, [
-  ...names.map(n => `import ${exportName(n)} from './icons/${n}.js'`),
-  '',
-  `export const icons = {\n${[...names.map(n => `  '${n}': ${exportName(n)},`), ...aliasList.map(([o, n]) => `  '${o}': ${exportName(n)},`)].join('\n')}\n}`,
-  '',
-].join('\n'))
+writeFileSync(`${GEN}/all.js`, allModule())
+// 实心入口 ./fill：和 . 同名的图标导出，带实心版的路径数据；toSvg 等渲染函数从 . 导入
+writeFileSync(`${GEN}/fill/index.js`, [...iconExports(), ''].join('\n'))
+writeFileSync(`${GEN}/fill/all.js`, allModule())
 // 框架组件包共用的纯函数（尺寸解析、默认配置合并、设备像素比订阅、根元素属性）
 writeFileSync(`${GEN}/runtime.js`, `export * from '../../../src/runtime.js'\n`)
 
@@ -139,10 +151,12 @@ const entry = {
   'index': `${GEN}/index.js`,
   'all': `${GEN}/all.js`,
   'static/index': `${GEN}/static/index.js`,
+  'fill/index': `${GEN}/fill/index.js`,
+  'fill/all': `${GEN}/fill/all.js`,
   'meta': `${GEN}/meta.js`,
   'runtime': `${GEN}/runtime.js`,
   // 旧名的深路径文件没有被别的入口引用，单独作为入口
-  ...Object.fromEntries(aliasList.flatMap(([o]) => [[`icons/${o}`, `${GEN}/icons/${o}.js`], [`static/icons/${o}`, `${GEN}/static/icons/${o}.js`]])),
+  ...Object.fromEntries(aliasList.flatMap(([o]) => ['icons', 'static/icons', 'fill/icons'].map(d => [`${d}/${o}`, `${GEN}/${d}/${o}.js`]))),
 }
 await buildLib({ entry, outDir: 'packages/core/dist', root: GEN })
 rmSync(GEN, { recursive: true, force: true })
@@ -182,7 +196,7 @@ export interface Icon<N extends string = IconName> {
     frames: number
     draw: (options: DrawOptions & { t: number }) => PathSpec[]
   }
-  /** Only on icons with a fill variant: precomputed path data for every radius and weight, keyed '<radius>|<weight>' ('sharp|bold', '2|regular', …) */
+  /** Only on icons imported from @jannchie/icons/fill that have a fill variant: precomputed path data for every radius and weight, keyed '<radius>|<weight>' ('sharp|bold', '2|regular', …) */
   solid?: Readonly<Record<string, ReadonlyArray<{ d: string, tone?: Role }>>>
 }
 
@@ -319,6 +333,13 @@ export declare function toSvg(icon: StaticIcon<string>, options?: StaticSvgOptio
 export declare function toPaths(icon: StaticIcon<string>, options?: A11yOptions): PathsResult
 
 ${iconDeclarations('StaticIcon')}`
+// ./fill：同样的图标导出（Icon 类型，有实心版的带 solid）
+const FILL_DTS = ext => `// 由 scripts/build-packages.mjs 生成，不要手改
+import type { Icon } from '../index.${ext}'
+
+${iconDeclarations('Icon')}`
+const FILL_ALL_DTS = ext => ALL_DTS(ext).replace(`from './index.${ext}'`, `from '../index.${ext}'`)
+const FILL_ICON_DTS = ext => ICON_DTS(ext).replace(`from './index.${ext}'`, `from '../index.${ext}'`)
 const STATIC_ICON_DTS = ext => `// 由 scripts/build-packages.mjs 生成，不要手改
 import type { StaticIcon } from './index.${ext}'
 import type { IconName } from '../index.${ext}'
@@ -375,6 +396,9 @@ for (const [ts, ext] of [['d.ts', 'js'], ['d.cts', 'cjs']]) {
   writeFileSync(`${D}/runtime.${ts}`, RUNTIME_DTS)
   writeFileSync(`${D}/static/index.${ts}`, STATIC_DTS(ext))
   writeFileSync(`${D}/static/icon.${ts}`, STATIC_ICON_DTS(ext))
+  writeFileSync(`${D}/fill/index.${ts}`, FILL_DTS(ext))
+  writeFileSync(`${D}/fill/all.${ts}`, FILL_ALL_DTS(ext))
+  writeFileSync(`${D}/fill/icon.${ts}`, FILL_ICON_DTS(ext))
 }
 
 // ---------- Iconify JSON ----------

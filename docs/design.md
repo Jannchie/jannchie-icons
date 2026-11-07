@@ -55,9 +55,9 @@ How icons are drawn on the 24 × 24 canvas. Naming rules are in [naming.md](nami
 - Series (folder, file, chat, mail, calendar, monitor, book, briefcase, shield) define their fill once, as `fillParts(radius, stroke)` in the series module: `body` is the solid shape with its knock-outs, `lines` are parts that stay whole (hanging rings, the monitor stand, the briefcase handle) and are drawn last. Icons in a series use the helpers in `src/solid.js`:
   - `plainFill(parts)` for the plain icon;
   - `centerFill(parts, symbol)` for a centered symbol, which is knocked out of the body;
-  - `withBadge(…, { fill: true })` / `withBadgeTop(…, { fill: true })` for a corner badge: same placement as the outline, the body clears a `GAP` around the badge (`clear`: closed parts of the badge are cleared with their inside), then the badge is drawn as lines.
+  - `withBadge(…, { fill: true })` / `withBadgeTop(…, { fill: true })` for a corner badge: same placement as the outline, the body clears a `GAP` around the badge (`clear`: closed parts of the badge are cleared with their inside), then the badge is drawn as lines. `badgeFill` also takes the corner (`'bottom'` or `'top'`): the cleared area is swept toward that outer corner, so toward the body the badge reads as a thin outline, and no thin strip of body is left between the badge and the outer edge.
 - `-off` icons use `offFill(baseFill)` from `src/off.js`: the base fill clears a `GAP` on both sides of the slash, then the slash is drawn.
-- `src/fill.js` computes the result with Clipper2 and fits arcs and cubic curves back into the polyline output. The preview site computes it live; the published package carries precomputed path data, so the package does not depend on Clipper2. `pnpm test` checks that every fill renders at all 15 settings and that the fitted path stays on the computed outline.
+- `src/fill.js` computes the result with Clipper2 and fits arcs and cubic curves back into the polyline output. The preview site computes it live; the published package carries precomputed path data in the `@jannchie/icons/fill` entry, so the package does not depend on Clipper2 and outline-only bundles do not carry fill data. `pnpm test` checks that every fill renders at all 15 settings and that the fitted path stays on the computed outline.
 
 ## Checking
 

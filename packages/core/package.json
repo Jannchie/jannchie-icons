@@ -95,6 +95,36 @@
         "default": "./dist/static/icons/*.cjs"
       }
     },
+    "./fill": {
+      "import": {
+        "types": "./dist/fill/index.d.ts",
+        "default": "./dist/fill/index.js"
+      },
+      "require": {
+        "types": "./dist/fill/index.d.cts",
+        "default": "./dist/fill/index.cjs"
+      }
+    },
+    "./fill/all": {
+      "import": {
+        "types": "./dist/fill/all.d.ts",
+        "default": "./dist/fill/all.js"
+      },
+      "require": {
+        "types": "./dist/fill/all.d.cts",
+        "default": "./dist/fill/all.cjs"
+      }
+    },
+    "./fill/icons/*": {
+      "import": {
+        "types": "./dist/fill/icon.d.ts",
+        "default": "./dist/fill/icons/*.js"
+      },
+      "require": {
+        "types": "./dist/fill/icon.d.cts",
+        "default": "./dist/fill/icons/*.cjs"
+      }
+    },
     "./package.json": "./package.json"
   },
   "engines": {

@@ -11,7 +11,7 @@ export interface IconDefaults {
   radius?: Radius
   /** Stroke weight: 'light', 'regular' or 'bold'. Defaults to 'regular' */
   weight?: Weight
-  /** 'fill' draws the solid version (icons without one fall back to the outline, see hasFill). Defaults to 'outline' */
+  /** 'fill' draws the solid version of icons imported from @jannchie/icons/fill (others fall back to the outline, see hasFill). Defaults to 'outline' */
   variant?: Variant
   /** Color badges and strike-throughs by their meaning */
   duo?: boolean
