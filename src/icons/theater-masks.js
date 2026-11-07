@@ -1,5 +1,5 @@
-import { clear, knock, solid } from '../solid'
 import { GAP } from '../clearance'
+import { clear, cutout, knock, solid } from '../solid'
 
 // 戏剧面具（角色扮演、人设）：前面左下一张笑脸（喜剧），后面右上一张哭脸（悲剧）；两张脸同一个造型：
 // 上沿微微拱起，两侧往下收成圆下巴。前面的脸是遮挡刀：后面的脸在它四周断开、被它挡住的部分删掉
@@ -20,5 +20,10 @@ const tragedy = ['M17.25 7.25L19.25 8.25', 'M17 13Q18.5 11.5 20 13']
 // 前脸的五官也标成刀：遮挡刀会删掉落在它内部的其他线，五官是刀就不会被删（它们离后面的脸很远，不会误裁）
 export default () => [back, ...tragedy, { d: front, cut: true, occlude: true }, ...comedy.map(d => ({ d, cut: true }))]
 
-// 实心：后面的脸一块、挖掉五官；前面的脸四周让出缝，再铺一块、挖掉五官
-export const fill = () => [solid(back), knock(tragedy), clear(front, GAP), solid(front), knock(comedy)]
+// 实心：后面的脸一块、挖掉五官；前面的脸四周让出缝，再铺一块、挖掉五官。
+// 嘴挖成月牙形的开口（原样挖，不外扩）：笑脸的下沿是描边版那道上扬的弧、往下鼓得更多，上沿平缓；哭脸反过来、往上拱。
+// 只挖一道弧线的话嘴是一条细缝，尖角模式下方线帽还会和眼睛挤成锯齿；眼睛也用圆线帽
+const smile = 'M6 15.75Q8.5 19.5 11 15.75Q8.5 16.75 6 15.75Z'
+const frown = 'M16.75 13.5Q18.5 10.5 20 13Q18.5 12.75 16.75 13.5Z'
+const eyes = d => d.slice(0, -1).map(e => ({ d: e, round: true }))
+export const fill = () => [solid(back), knock(eyes(tragedy)), cutout(frown), clear(front, GAP), solid(front), knock(eyes(comedy)), cutout(smile)]

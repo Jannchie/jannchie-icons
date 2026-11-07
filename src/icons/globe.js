@@ -13,16 +13,17 @@ export default () => [
   `M${12 - half} ${cy + lat}H${12 + half}`,
 ]
 
-// 实心：圆一块，经纬线挖空；纬线两端、经线椭圆的上下两头都离外缘一个线宽，地球不被切碎、外缘不被咬缺
+// 实心：圆一块，赤道和两条纬线挖穿两侧，地球切成四条；经线椭圆只挖在两条纬线之间（两头落进纬线的缝里），
+// 上下两顶保持整块——椭圆在两极和圆相切，挖到那里只会剩两道越来越细的尖条
 export const fill = ({ stroke }) => {
-  const ry = r - stroke
+  const e = 12 + r + stroke
+  const x = 4.5 * Math.sqrt(1 - (lat / r) ** 2)
   return [
     solid(circle(12, cy, r)),
     knock([
-      `M12 ${cy - ry}A4.5 ${ry} 0 0 1 12 ${cy + ry}A4.5 ${ry} 0 0 1 12 ${cy - ry}`,
-      `M${12 - r + stroke} ${cy}H${12 + r - stroke}`,
-      `M${12 - half + stroke} ${cy - lat}H${12 + half - stroke}`,
-      `M${12 - half + stroke} ${cy + lat}H${12 + half - stroke}`,
+      ...[cy - lat, cy, cy + lat].map(y => `M${24 - e} ${y}H${e}`),
+      `M${12 - x} ${cy - lat}A4.5 ${r} 0 0 0 ${12 - x} ${cy + lat}`,
+      `M${12 + x} ${cy - lat}A4.5 ${r} 0 0 1 ${12 + x} ${cy + lat}`,
     ]),
   ]
 }

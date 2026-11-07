@@ -1,6 +1,6 @@
 import { GAP } from '../clearance'
-import { circle, crisp, rounded } from '../geometry'
-import { clear, knock, solid } from '../solid'
+import { rounded } from '../geometry'
+import { clear, cutout, solid } from '../solid'
 
 // 调试（虫子）：胶囊身体 + 头 + 中线 + 六条腿 + 两根触角
 export default ({ radius, stroke }) => [
@@ -19,21 +19,25 @@ export default ({ radius, stroke }) => [
 ]
 
 // 实心：头和身子各一块，头在身子四周让出缝（描边版里两者是贴着的两条线，填实以后要分开）；
-// 挖掉中线（下端缩一个线宽，不把身子切开），腿和触角照旧是线
+// 中线从身子顶上一直挖穿到底（上端平头，停在头下面的缝里），身子分成左右两片鞘翅；腿和触角照旧是线
+// 触角的根部顺着触角方向往头里多伸 1.5，线帽整个埋在头里，不会从头的轮廓上冒出来；先画触角再给身子让缝，触角根不会搭到身子上
 export const fill = ({ stroke }) => {
   const body = rounded([[7, 8], [17, 8], [17, 20.5], [7, 20.5]], 5)
+  const h = stroke / 2
+  const l = Math.hypot(1.5, 2.25)
+  const [ux, uy] = [1.5 / l, 2.25 / l]
   return [
     solid('M9.5 8A2.5 2.5 0 0 1 14.5 8Z'),
+    `M${10.5 + ux * 1.5} ${5.75 + uy * 1.5}L9 3.5`,
+    `M${13.5 - ux * 1.5} ${5.75 + uy * 1.5}L15 3.5`,
     clear(body, GAP),
     solid(body),
-    knock(`M12 11V${20.5 - stroke}`),
+    cutout(`M${12 - h} ${8 - h - GAP}H${12 + h}V24H${12 - h}Z`),
     'M7 13.5H3.5',
     'M17 13.5H20.5',
     'M7 17L4 19',
     'M17 17L20 19',
     'M7.5 9.5L5 7',
     'M16.5 9.5L19 7',
-    'M10.5 5.75L9 3.5',
-    'M13.5 5.75L15 3.5',
   ]
 }

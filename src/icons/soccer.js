@@ -24,7 +24,7 @@ export default ({ radius }) => [
   ...penta.map((p, i) => `M${p.join(' ')}L${rim(i).join(' ')}`),
 ]
 
-// 实心：球一块，挖掉五边形的轮廓（五边形留成实心）和五道缝线；缝线外端缩一个线宽，球边不被切开
+// 实心：球一块，挖掉五边形的轮廓（五边形留成实心）和五道缝线；缝线外端穿出球边，球面分成中间的五边形和外圈五块
 export const fill = ({ radius, stroke }) => [
   solid(ring()),
   knock([
@@ -32,7 +32,7 @@ export const fill = ({ radius, stroke }) => [
     ...penta.map((p, i) => {
       const [ux, uy] = dir(i)
       const [x, y] = rim(i)
-      return `M${p.join(' ')}L${x - ux * stroke} ${y - uy * stroke}`
+      return `M${p.join(' ')}L${x + ux * stroke} ${y + uy * stroke}`
     }),
   ]),
 ]

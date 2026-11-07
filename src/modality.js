@@ -5,7 +5,7 @@ import { GAP } from './clearance'
 import { circle, crisp, rounded } from './geometry'
 import { glyph } from './letters'
 import { dot } from './scene'
-import { clear, knock, solid } from './solid'
+import { clear, knock, solid, spans, tile } from './solid'
 import { chevronRight, image, music, sparkle } from './symbols'
 
 const at = ([cx, cy], k) => ([x, y]) => [cx + x * k, cy + y * k]
@@ -144,7 +144,7 @@ export function pipeline(inputs, output, radius) {
 
 // ---------- 实心版 ----------
 // 每个模态符号的实心画法，沿用 M 的几何：闭合的部件填实、里面的细节挖空；只有线条的符号（文字、音频、问号、向量……）原样不动
-// 表格的线挖到边上会把小表格切碎，所以两端缩一个线宽，要用 stroke
+// 表格按墨迹范围分块，要用 stroke
 export const MF = {
   // 相框一块，挖掉太阳点和山形线
   image: (c, k, r) => {
@@ -168,11 +168,12 @@ export const MF = {
   },
   // 纸一块，正中挖一道字线：符号只有 7 高，照描边版挖两道时粗字重下两道线连成一个洞，看着像空心的纸
   doc: (c, k, r) => [solid(M.doc(c, k, r)[0]), knock(line(c, k, [-1, 0.5], [1, 0.5]))],
-  // 表格一块，挖掉表头线（两端各缩一个线宽）和竖线（底端缩一个线宽），表格不被切成几块
-  table: (c, k, r, stroke) => [
-    solid(M.table(c, k, r)[0]),
-    knock([line(c, k, [-3.5 + stroke / k, -0.5], [3.5 - stroke / k, -0.5]), line(c, k, [-1.5, -0.5], [-1.5, 2.5 - stroke / k])]),
-  ],
+  // 表头、左右两个格子各画一块（见 solid.js 的 tile），块和块之间留 GAP 的缝；格子小，圆角最多 0.5
+  table: ([cx, cy], k, r, stroke) => {
+    const [cols, [head, body]] = [spans(cx - 3.5 * k, cx + 3.5 * k, [cx - 1.5 * k], stroke), spans(cy - 2.5 * k, cy + 2.5 * k, [cy - 0.5 * k], stroke)]
+    const q = Math.min(r, 0.5)
+    return [tile([cols[0][0], head[0], cols[1][1], head[1]], q), ...cols.map(([x0, x1]) => tile([x0, body[0], x1, body[1]], q))]
+  },
   // 六边形一块，挖掉中间的 Y（分成三个面）
   cube: (c, k, r) => {
     const [hex, ...edges] = M.cube(c, k, r)

@@ -5,4 +5,4 @@ import { brainFill, LEFT_FOLDS, MIDLINE, outline } from './brain'
 export default () => [outline(), MIDLINE, ...LEFT_FOLDS, ...RIGHT_TRACES]
 
 // 实心：脑叶一块，挖掉脑沟、左半的褶皱和右半的走线
-export const fill = ({ stroke }) => brainFill([...LEFT_FOLDS, ...RIGHT_TRACES], stroke)
+export const fill = () => brainFill([...LEFT_FOLDS, ...RIGHT_TRACES])

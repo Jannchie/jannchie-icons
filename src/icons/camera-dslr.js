@@ -9,8 +9,8 @@ export default ({ radius }) => [
   circle(14, 14.5, 1.75),
 ]
 
-// 实心：机身一块，挖掉握把线（两端各缩一个线宽，握把不和机身断开）和镜头的两圈
-export const fill = ({ radius, stroke }) => [
+// 实心：机身一块，握把线整条挖穿，握把成为左边单独的一片；镜头的两圈挖空
+export const fill = ({ radius }) => [
   solid(rounded([[2.5, 8.5], [8.5, 8.5], [10, 4.5], [14, 4.5], [15.5, 8.5], [21.5, 8.5], [21.5, 20.5], [2.5, 20.5]], Math.min(radius, 2.5))),
-  knock([`M6.5 ${8.5 + stroke}V${20.5 - stroke}`, circle(14, 14.5, 4), circle(14, 14.5, 1.75)]),
+  knock(['M6.5 0V24', circle(14, 14.5, 4), circle(14, 14.5, 1.75)]),
 ]

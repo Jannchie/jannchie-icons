@@ -49,5 +49,5 @@ export function withBadgeTop(name, draw, tone, radius, stroke, { fill = false } 
   ]
 }
 
-// 实心版（见 solid.js 的 plainFill / badgeFill / centerFill）：封面一块，挖掉页线（页线以下成了单独的一条书页）
-export const fillParts = (radius, stroke) => ({ body: [solid(cover(stroke)), knock(page(stroke))], lines: [] })
+// 实心版（见 solid.js 的 plainFill / badgeFill / centerFill）：封面一块，挖掉页线（页线以下成了单独的一条书页）；页线穿出右边，切口干净
+export const fillParts = (radius, stroke) => ({ body: [solid(cover(stroke)), knock(page(stroke, frame(stroke).r + stroke))], lines: [] })

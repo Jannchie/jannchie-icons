@@ -20,14 +20,14 @@ export default ({ radius, stroke }) => {
   ]
 }
 
-// 实心：前面那张纸一块，挖掉折角的翻折线；身后那张纸的 L 线照旧是线
+// 实心：前面那张纸一块，折角的翻折线两头都挖穿外缘，折角成了单独的一块三角；身后那张纸的 L 线照旧是线
 export const fill = ({ radius, stroke }) => {
   const h = stroke / 2
   const [l, t, r, b] = [3 + h, 2 + h, 21 - h, 22 - h]
   const [fl, fb] = [l + 4, b - 4]
   return [
     solid(rounded([[fl, t], [FOLD_X, t, crisp(radius)], [r, FOLD_Y, crisp(radius)], [r, fb], [fl, fb]], radius)),
-    knock(`M${FOLD_X} ${t}V${FOLD_Y}H${r}`),
+    knock(`M${FOLD_X} ${t - stroke}V${FOLD_Y}H${r + stroke}`),
     rounded([[l, t + 4], [l, b], [r - 4, b]], radius, false),
   ]
 }

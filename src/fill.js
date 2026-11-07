@@ -3,6 +3,7 @@
 // - { d, fill: true }：实心块。墨迹是闭合区域本身加上沿边外扩半个线宽（和描边版 fill 路径的外缘一致，外缘按 docs/design.md 固定）
 // - 字符串或普通 { d }：一条线，墨迹就是描边的形状（线宽、点、detail、badge、thin、round 的规则和描边版一样）
 // - { d, knock: true }：挖空。从已经叠上去的墨迹里减掉这条线描边的形状（加 fill: true 时减掉闭合区域 + 半线宽外扩）
+// - { d, knock: true, fill: true, exact: true }：挖掉闭合区域本身，不外扩
 // - { d, knock: true, clear: g }：让位。挖掉这条线的墨迹再外扩 g，闭合的子路径连内部一起挖（系列图标的角标四周留缝）
 // 后面的路径作用在前面的结果上：先铺实心、再挖空、再在挖空里放回小点，按顺序写就行
 // tone：双色变体的角色（见 tone.js），同一角色的墨迹合成一条 path；挖空对所有角色都生效
@@ -70,16 +71,16 @@ function flatten(d) {
 function inkOf(item, stroke, sharp) {
   const dot = dotSize(item)
   // clear：挖空时再往外多让 clear 的间隙（角标四周的留白）
-  const h = (dot ? dotWidth(item, stroke) : widthOf(item, stroke)) / 2 + (item.clear ?? 0)
-  // 角标四周的缝按真实距离外扩（圆角连接）：尖角模式下斜接会在箭头尖、对勾拐角外拉出尖刺
-  const round = !sharp || item.round || item.clear != null
+  // exact：闭合区域原样使用，不外扩（形状已经按线宽算好，比如两端平行于外框的缝）
+  const h = item.exact ? 0 : (dot ? dotWidth(item, stroke) : widthOf(item, stroke)) / 2 + (item.clear ?? 0)
+  const round = !sharp || item.round
   const join = round ? JoinType.Round : JoinType.Miter
   const inflate = (paths, end) => Clipper.inflatePathsD(paths, h, join, end, MITER_LIMIT, PRECISION, ARC_TOLERANCE)
   const subs = flatten(item.d)
   if (item.fill) {
     // 实心块：先按 nonzero 合并成干净的区域（外轮廓正向、洞反向），再整体外扩半个线宽
     const area = boolean(ClipType.Union, subs.filter(s => s.pts.length > 2).map(s => s.pts), null)
-    return inflate(area, EndType.Polygon)
+    return h ? inflate(area, EndType.Polygon) : area
   }
   const closed = subs.filter(s => s.closed && s.pts.length > 2).map(s => s.pts)
   const open = subs.filter(s => !(s.closed && s.pts.length > 2)).map(s => s.pts)
@@ -93,10 +94,31 @@ function inkOf(item, stroke, sharp) {
 
 // 让位区朝外角方向拖到画布外（和一个伸向 [sx, sy] 象限的大矩形做闵可夫斯基和）：角标朝主体的一侧是一圈细缝，
 // 角标和外角之间的主体整片让掉——角标占满外角时（箭头、对勾），缝和外边之间不会剩下楔形的细条
+// 每条边扫过的区域是「边 ⊕ 矩形」，一个凸六边形（边的两个端点各加上矩形的四个角，取凸包）；全部并起来再并上墨迹本身。
+// 不用 Clipper 的 minkowskiSumD：它算的是轮廓 ⊕ 轮廓，几十个点的环要几十毫秒，结果中间还留着一个洞
 function swept(ink, [sx, sy]) {
-  const box = [[0, 0], [sx * 30, 0], [sx * 30, sy * 30], [0, sy * 30]].map(([x, y]) => ({ x, y }))
-  const parts = ink.flatMap(p => Clipper.minkowskiSumD(box, p, true))
+  const corners = [[0, 0], [sx * 30, 0], [sx * 30, sy * 30], [0, sy * 30]]
+  const parts = ink.flatMap(ring => ring.map((a, i) => {
+    const b = ring[(i + 1) % ring.length]
+    return hull([a, b].flatMap(p => corners.map(([dx, dy]) => ({ x: p.x + dx, y: p.y + dy }))))
+  }))
   return boolean(ClipType.Union, [...ink, ...parts], null)
+}
+
+// 凸包（Andrew 单调链），点数很少
+function hull(points) {
+  const pts = [...points].sort((a, b) => a.x - b.x || a.y - b.y)
+  const cross = (o, a, b) => (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x)
+  const half = (list) => {
+    const out = []
+    for (const p of list) {
+      while (out.length > 1 && cross(out.at(-2), out.at(-1), p) <= 0)
+        out.pop()
+      out.push(p)
+    }
+    return out.slice(0, -1)
+  }
+  return [...half(pts), ...half(pts.reverse())]
 }
 
 // ---------- 折线 → 直线 + 圆弧 ----------

@@ -40,5 +40,12 @@ export function rounded(points, radius, closed = true) {
   return `M${pt(cs[0].end)}${cs.slice(1).map(arc).join('')}${arc(cs[0])}Z`
 }
 
+// 直线段 a→b，起点往外伸 e0、终点往外伸 e1（实心版里把挖空线穿出外轮廓，切得干净）
+export function through([ax, ay], [bx, by], e0, e1 = e0) {
+  const l = Math.hypot(bx - ax, by - ay)
+  const [ux, uy] = [(bx - ax) / l, (by - ay) / l]
+  return `M${fmt(ax - ux * e0)} ${fmt(ay - uy * e0)}L${fmt(bx + ux * e1)} ${fmt(by + uy * e1)}`
+}
+
 // 圆
 export const circle = (cx, cy, r) => `M${fmt(cx - r)} ${fmt(cy)}a${fmt(r)} ${fmt(r)} 0 1 0 ${fmt(r * 2)} 0a${fmt(r)} ${fmt(r)} 0 1 0 ${fmt(-r * 2)} 0`

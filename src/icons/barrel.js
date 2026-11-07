@@ -10,8 +10,8 @@ const hoop = y => `M${at(y)} ${y}H${f(24 - at(y))}`
 
 export default () => [body, hoop(8.5), hoop(15.5)]
 
-// 实心：桶身一块，挖掉铁箍；铁箍两端各缩一个线宽，桶身不被切成三截
-export const fill = ({ stroke }) => [
+// 实心：桶身一块，两道铁箍整条挖穿，桶身分成三截
+export const fill = () => [
   solid(body),
-  knock([8.5, 15.5].map(y => `M${f(at(y) + stroke)} ${y}H${f(24 - at(y) - stroke)}`)),
+  knock([8.5, 15.5].map(y => `M0 ${y}H24`)),
 ]

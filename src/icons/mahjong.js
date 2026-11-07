@@ -10,8 +10,8 @@ export default ({ radius }) => [
   dot(12, 10.5),
 ]
 
-// 实心：牌一块，挖掉牌厚线（两端各缩一个线宽，不把牌切开）、筒子的圆圈和圆心
+// 实心：牌一块，牌厚线挖穿两侧，底下的牌厚成了单独的一条；再挖掉筒子的圆圈和圆心
 export const fill = ({ radius, stroke }) => [
   solid(rounded([[6.5, 2.5], [17.5, 2.5], [17.5, 21.5], [6.5, 21.5]], Math.min(radius, 2))),
-  knock([`M${6.5 + stroke} 18.5H${17.5 - stroke}`, circle(12, 10.5, 3.75), dot(12, 10.5)]),
+  knock([`M${6.5 - stroke} 18.5H${17.5 + stroke}`, circle(12, 10.5, 3.75), dot(12, 10.5)]),
 ]

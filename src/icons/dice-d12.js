@@ -1,4 +1,4 @@
-import { crisp, rounded } from '../geometry'
+import { crisp, rounded, through } from '../geometry'
 import { knock, solid } from '../solid'
 
 // 十二面骰（d12）：正十边形外轮廓 + 中间尖朝上的正五边形正面 + 正面五个顶点各连到同方向的外顶点
@@ -13,15 +13,8 @@ export default ({ radius }) => [
   ...face.map((p, i) => `M${p.join(' ')}L${outer[i * 2].join(' ')}`),
 ]
 
-// 线段 a→b，两端各缩 s0 / s1（碰到外轮廓的那头缩一个线宽，挖空时不把骰子切开）
-const cut = ([ax, ay], [bx, by], s0, s1) => {
-  const l = Math.hypot(bx - ax, by - ay)
-  const [ux, uy] = [(bx - ax) / l, (by - ay) / l]
-  return `M${ax + ux * s0} ${ay + uy * s0}L${bx - ux * s1} ${by - uy * s1}`
-}
-
-// 实心：十边形一块，挖掉正五边形正面和五条棱（外顶点那头缩一个线宽）
+// 实心：十边形一块，挖掉正五边形正面的边和五条棱；棱穿出外顶点，骰子分成正面和四周的五块
 export const fill = ({ radius, stroke }) => [
   solid(rounded(outer, crisp(radius))),
-  knock([rounded(face, crisp(radius)), ...face.map((p, i) => cut(p, outer[i * 2], 0, stroke))]),
+  knock([rounded(face, crisp(radius)), ...face.map((p, i) => through(p, outer[i * 2], 0, 2 * stroke))]),
 ]

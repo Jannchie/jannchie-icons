@@ -10,9 +10,9 @@ export default ({ radius }) => [
   'M8.5 17.5H15.5',
 ]
 
-// 实心：包身一块，前袋轮廓挖空（两条竖边在底边前缩一个线宽，包底不被切开）；袋盖线不挖，免得前袋碎成「A」字；提手照旧是线
-export const fill = ({ radius, stroke }) => [
+// 实心：包身一块，前袋轮廓挖空，两条竖边一直挖穿包底，前袋成为单独的一片；袋盖线不挖，免得前袋碎成「A」字；提手照旧是线
+export const fill = ({ radius }) => [
   solid(rounded([[5.5, 6.5], [18.5, 6.5], [18.5, 21.5], [5.5, 21.5]], Math.min(radius, 3))),
-  knock(rounded([[8.5, 21.5 - stroke], [8.5, 14.5], [15.5, 14.5], [15.5, 21.5 - stroke]], Math.min(radius, 1), false)),
+  knock(rounded([[8.5, 24], [8.5, 14.5], [15.5, 14.5], [15.5, 24]], Math.min(radius, 1), false)),
   'M9.5 6.5V5A2.5 2.5 0 0 1 14.5 5V6.5',
 ]

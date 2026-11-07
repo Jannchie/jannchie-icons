@@ -20,8 +20,8 @@ export const RIGHT_FOLDS = ['M15.75 9.5A2.5 2.5 0 0 0 14.25 12', 'M16.5 14.5A2.2
 
 export default () => [outline(), MIDLINE, ...LEFT_FOLDS, ...RIGHT_FOLDS]
 
-// 实心：脑叶轮廓一块，挖掉中间脑沟和两侧的细节（褶皱或电路走线）；脑沟上下各缩一个线宽，左右两半不被切开
+// 实心：脑叶轮廓一块，中间脑沟整条挖穿，分成左右两个半球；两侧的细节（褶皱或电路走线）挖空
 // 机械脑、半机械脑也用它，只换细节
-export const brainFill = (details, stroke) => [solid(outline()), knock([`M12 ${5 + stroke}V${19 - stroke}`, ...details])]
+export const brainFill = details => [solid(outline()), knock(['M12 0V24', ...details])]
 
-export const fill = ({ stroke }) => brainFill([...LEFT_FOLDS, ...RIGHT_FOLDS], stroke)
+export const fill = () => brainFill([...LEFT_FOLDS, ...RIGHT_FOLDS])

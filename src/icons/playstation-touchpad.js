@@ -9,8 +9,8 @@ export default ({ radius }) => [
   'M11.5 16V18.5',
 ]
 
-// 实心：触控板一块，挖掉分区虚线；首尾两段从板边往里缩一个线宽，不把板子切开
+// 实心：触控板一块，挖掉分区虚线；虚线在实心版里只会在板上留下几道细桥，改成一整条挖穿的缝，板子分成左右两块
 export const fill = ({ radius, stroke }) => [
   solid(rounded([[2.5, 5.5], [21.5, 5.5], [20, 18.5], [4, 18.5]], Math.min(radius, 2.5))),
-  knock([`M11.5 ${5.5 + stroke}V8`, 'M11.5 11V13', `M11.5 16V${18.5 - stroke}`]),
+  knock(`M11.5 ${5.5 - stroke}V${18.5 + stroke}`),
 ]

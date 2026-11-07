@@ -1,5 +1,5 @@
 import { rounded } from '../geometry'
-import { knock, solid } from '../solid'
+import { knock, spans, tile } from '../solid'
 
 // 衣柜（双开门，正面）：柜体（4.5–18.5 × 2.5–19.5）+ 正中门缝（11.5）+ 两扇门的竖把手（8.5 / 14.5，离门缝各 3）+ 两条短腿落到 21.5
 export default ({ radius }) => [
@@ -11,10 +11,13 @@ export default ({ radius }) => [
   'M16.5 19.5V21.5',
 ]
 
-// 实心：柜体一块，门缝挖开分出两扇门，把手挖空；腿照旧是线
-export const fill = ({ radius }) => [
-  solid(rounded([[4.5, 2.5], [18.5, 2.5], [18.5, 19.5], [4.5, 19.5]], Math.min(radius, 1.5))),
-  knock(['M11.5 2.5V19.5', 'M8.5 9.5V12.5', 'M14.5 9.5V12.5']),
-  'M6.5 19.5V21.5',
-  'M16.5 19.5V21.5',
-]
+// 实心：两扇门各画一块（见 solid.js 的 tile），门缝处留 GAP 的缝，每扇门四个角都收圆；把手挖空，腿照旧是线
+export const fill = ({ radius, stroke }) => {
+  const [y0, y1] = [2.5 - stroke / 2, 19.5 + stroke / 2]
+  return [
+    ...spans(4.5, 18.5, [11.5], stroke).map(([x0, x1]) => tile([x0, y0, x1, y1], Math.min(radius, 1.5))),
+    knock(['M8.5 9.5V12.5', 'M14.5 9.5V12.5']),
+    'M6.5 19.5V21.5',
+    'M16.5 19.5V21.5',
+  ]
+}

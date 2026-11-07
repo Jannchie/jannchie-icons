@@ -2,7 +2,7 @@
 import { blocked, GAP, place } from './clearance'
 import { cornerCenter } from './corner'
 import { dot } from './scene'
-import { clear, knock, solid } from './solid'
+import { clear, cutout, knock, solid } from './solid'
 import { accent } from './tone'
 
 // 墨迹（含半个线宽）左右收在 3–21、以画布中线对称；线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽
@@ -72,12 +72,15 @@ export function symbolFill(name, paths, stroke) {
     // 圆面填实，指针挖空
     case 'clock':
       return [solid(body), knock(rest)]
-    // 圆面填实，斜线挖空、两端各收一个线宽，圆面不被切成两半
+    // 圆面填实，斜线挖穿、圆面分成两半（斜线停在圆面里会留下两道窄桥）：挖一条方头的长条，宽一个线宽，
+    // 两端刚好穿出圆面外缘 0.25——用线帽挖会伸出去，碰到旁边列表的行。斜线端点落在圆环中心线上（见 symbols.js 的 drawBan）
     case 'ban': {
       const [x0, y0, x1, y1] = (rest[0].d ?? rest[0]).match(/-?[\d.]+/g).map(Number)
-      const s = stroke / Math.SQRT2
-      const d = `M${x0 + s} ${y0 + s}L${x1 - s} ${y1 - s}`
-      return [solid(body), knock(typeof rest[0] === 'string' ? d : { ...rest[0], d })]
+      const [cx, cy] = [(x0 + x1) / 2, (y0 + y1) / 2]
+      const r = Math.hypot(x1 - x0, y1 - y0) / 2
+      const [a, h] = [(r + stroke / 2 + 0.25) / Math.SQRT2, stroke / 2 / Math.SQRT2]
+      const pt = (u, v) => `${cx + u * a + v * h} ${cy + u * a - v * h}`
+      return [solid(body), cutout(`M${pt(-1, -1)}L${pt(1, -1)}L${pt(1, 1)}L${pt(-1, 1)}Z`)]
     }
     // 符头填实，符干是线
     case 'music':

@@ -1,5 +1,5 @@
-import { GAP, place } from '../clearance'
-import { clear } from '../solid'
+import { place } from '../clearance'
+import { badgeFill } from '../solid'
 import { arrowDown, cornerScale, outlines } from '../symbols'
 import { info } from '../tone'
 import base, { fill as databaseFill } from './database'
@@ -18,8 +18,8 @@ export default (opts) => {
   ]
 }
 
-// 实心：圆柱的实心版在箭头四周让出缝（和角标的间隙一样），再把箭头画回去
+// 实心：和角标系列一样（见 solid.js 的 badgeFill）：圆柱在箭头四周让出缝、朝右下外角让开，再把箭头画回去
 export const fill = (opts) => {
   const arrow = info(arrowDown(at, k, opts.radius))
-  return [...databaseFill(opts), clear(arrow, GAP), ...arrow]
+  return badgeFill({ body: databaseFill(opts), lines: [] }, arrow, 'bottom')
 }

@@ -15,15 +15,17 @@ export default ({ radius }) => [
   { d: circle(17.5, 17.5, 2.25), cut: true, occlude: true },
 ]
 
-// 实心：方厢和驾驶室合成一块车身，十字挖空，两者之间挖一道竖缝（上端缩一个线宽，不切到警灯）；
-// 车轮四周让出缝，车轮是实心圆
-export const fill = ({ radius, stroke }) => {
+// 实心：驾驶室连警灯一块在后，方厢是完整的一块方形在前（和货车一样）；驾驶室和警灯沿方厢让出 GAP 的缝，
+// 不用在两者之间挖一道停在半路的竖缝（警灯靠方厢的一侧跟着让掉一点）；方厢上的十字挖空；车轮四周让出缝，车轮是实心圆
+export const fill = ({ radius }) => {
+  const box = rounded([[2.5, 17.5], [2.5, 5.5], [14.5, 5.5], [14.5, 17.5]], Math.min(radius, 1.5))
   const wheels = [circle(7, 17.5, 2.25), circle(17.5, 17.5, 2.25)]
   return [
-    solid(rounded([[2.5, 17.5], [2.5, 5.5], [14.5, 5.5], [14.5, 17.5]], Math.min(radius, 1.5))),
     solid(rounded([[14.5, 9.5], [18.5, 9.5], [21.5, 13.5], [21.5, 17.5], [14.5, 17.5]], Math.min(radius, 1.5))),
     solid(rounded([[15.5, 9.5], [15.5, 7.5], [17.5, 7.5], [17.5, 9.5]], Math.min(radius, 0.5))),
-    knock(['M8.5 8V13M6 10.5H11', `M14.5 ${9.5 + stroke}V17.5`]),
+    clear(box, GAP),
+    solid(box),
+    knock('M8.5 8V13M6 10.5H11'),
     clear(wheels, GAP),
     solid(wheels),
   ]

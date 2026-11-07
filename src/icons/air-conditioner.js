@@ -10,9 +10,9 @@ export default ({ radius }) => [
   wind(7.5), wind(12), wind(16.5),
 ]
 
-// 实心：机身一块，出风口横线挖空（两端各缩一个线宽，机身不被切成两半），风照旧是线
-export const fill = ({ radius, stroke }) => [
+// 实心：机身一块，出风口横线整条挖穿，机身分成上面的面板和下面的出风口两片；风照旧是线
+export const fill = ({ radius }) => [
   solid(rounded([[2.5, 4.5], [21.5, 4.5], [21.5, 13.5], [2.5, 13.5]], Math.min(radius, 2))),
-  knock(`M${2.5 + stroke} 10.5H${21.5 - stroke}`),
+  knock('M0 10.5H24'),
   wind(7.5), wind(12), wind(16.5),
 ]

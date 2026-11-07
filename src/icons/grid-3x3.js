@@ -1,5 +1,5 @@
 import { rounded } from '../geometry'
-import { knock, solid } from '../solid'
+import { spans, tile } from '../solid'
 
 // 九宫格：外框 + 两横两竖；外框 3–21（边长 18、每格 6），居中
 export default ({ radius }) => [
@@ -10,11 +10,10 @@ export default ({ radius }) => [
   'M3 15H21',
 ]
 
-// 实心：外框一块，挖掉两横两竖；四条线两头各缩一个线宽，九格靠外框连成一块
+// 实心：九个独立的方块（见 solid.js 的 tile），块和块之间留 GAP 的缝；外缘和描边版的墨迹一致。
+// 格子只有 6 见方，圆角最多 0.5（和 tetromino 一样，按外框的 2.5 会圆成一团）
 export const fill = ({ radius, stroke }) => {
-  const [a, b] = [3 + stroke, 21 - stroke]
-  return [
-    solid(rounded([[3, 3], [21, 3], [21, 21], [3, 21]], Math.min(radius, 2.5))),
-    knock([`M9 ${a}V${b}`, `M15 ${a}V${b}`, `M${a} 9H${b}`, `M${a} 15H${b}`]),
-  ]
+  const cells = spans(3, 21, [9, 15], stroke)
+  const k = Math.min(radius, 0.5)
+  return cells.flatMap(([y0, y1]) => cells.map(([x0, x1]) => tile([x0, y0, x1, y1], k)))
 }

@@ -1,4 +1,4 @@
-import { knock, solid } from '../solid'
+import { stacked } from '../solid'
 
 // 数据库：圆柱（顶面椭圆 + 中间一道 + 侧面和底）
 export default ({ radius }) => [
@@ -7,8 +7,6 @@ export default ({ radius }) => [
   'M4.5 12A7.5 2.75 0 0 0 19.5 12',
 ]
 
-// 实心：圆柱一块，挖掉顶面椭圆的前沿和中间一道，切成上下叠放的三层；两道弧的两端水平伸出侧边一个线宽，切得干净
-export const fill = ({ stroke }) => [
-  solid('M4.5 6A7.5 2.75 0 0 1 19.5 6V18A7.5 2.75 0 0 1 4.5 18Z'),
-  knock([6, 12].map(y => `M${4.5 - stroke} ${y}H4.5A7.5 2.75 0 0 0 19.5 ${y}H${19.5 + stroke}`)),
-]
+// 实心：上下叠放的三块——底层、中层（下沿是中间那道弧）、完整的顶面椭圆；每块在下面一块上让出 GAP 的缝（见 solid.js 的 stacked）
+const layer = (y0, y1) => `M4.5 ${y0}V${y1}A7.5 2.75 0 0 0 19.5 ${y1}V${y0}A7.5 2.75 0 0 0 4.5 ${y0}Z`
+export const fill = () => stacked(layer(12, 18), layer(6, 12), 'M4.5 6A7.5 2.75 0 0 1 19.5 6A7.5 2.75 0 0 1 4.5 6Z')

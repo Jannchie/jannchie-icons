@@ -8,8 +8,8 @@ export default ({ radius }) => [
   'M12.5 6.5V17.5',
 ]
 
-// 实心：镜头填实，正中的环挖成一道槽；槽两端各离外缘一个线宽，镜筒不被切开
-export const fill = ({ radius, stroke }) => [
+// 实心：镜头填实，正中的环整条挖穿，镜头分成后段、前段两片
+export const fill = ({ radius }) => [
   solid(lens([[6.5, 9.5], [8.5, 9.5], [8.5, 6.5], [16.5, 6.5]], 1, radius)),
-  knock(`M12.5 ${6.5 + stroke}V${17.5 - stroke}`),
+  knock('M12.5 0V24'),
 ]

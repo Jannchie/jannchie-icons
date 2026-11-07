@@ -11,14 +11,14 @@ export default ({ radius }) => [
   'M18 12H21',
 ]
 
-// 实心：画布一块，挖掉对象方块的框（方块本身留实心）和四道刻度；刻度在外框那头缩一个线宽，外框不被挖出缺口
-export const fill = ({ radius, stroke }) => [
+// 实心：画布一块，挖掉对象方块的框（方块本身留实心）和四道刻度；刻度从方块一直挖穿外框，画布分成四个 L 形的角，正中是方块
+export const fill = ({ radius }) => [
   solid(rounded([[3, 3], [21, 3], [21, 21], [3, 21]], Math.min(radius, 2.5))),
   knock([
     rounded([[8, 8], [16, 8], [16, 16], [8, 16]], Math.min(radius, 1.5)),
-    `M12 ${3 + stroke}V6`,
-    `M12 18V${21 - stroke}`,
-    `M${3 + stroke} 12H6`,
-    `M18 12H${21 - stroke}`,
+    'M12 0V8',
+    'M12 16V24',
+    'M0 12H8',
+    'M16 12H24',
   ]),
 ]
