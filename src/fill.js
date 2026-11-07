@@ -92,12 +92,12 @@ function inkOf(item, stroke, sharp) {
   return item.sweep ? swept(ink, item.sweep) : ink
 }
 
-// 让位区朝外角方向拖到画布外（和一个伸向 [sx, sy] 象限的大矩形做闵可夫斯基和）：角标朝主体的一侧是一圈细缝，
+// 让位区朝外角方向拖到画布外（和一个伸向外角那个象限的大矩形做闵可夫斯基和）：角标朝主体的一侧是一圈细缝，
 // 角标和外角之间的主体整片让掉——角标占满外角时（箭头、对勾），缝和外边之间不会剩下楔形的细条
 // 每条边扫过的区域是「边 ⊕ 矩形」，一个凸六边形（边的两个端点各加上矩形的四个角，取凸包）；全部并起来再并上墨迹本身。
 // 不用 Clipper 的 minkowskiSumD：它算的是轮廓 ⊕ 轮廓，几十个点的环要几十毫秒，结果中间还留着一个洞
-function swept(ink, [sx, sy]) {
-  const corners = [[0, 0], [sx * 30, 0], [sx * 30, sy * 30], [0, sy * 30]]
+// sweep 是这个矩形的四个角（相对墨迹的平移量），见 solid.js 的 SWEEP
+function swept(ink, corners) {
   const parts = ink.flatMap(ring => ring.map((a, i) => {
     const b = ring[(i + 1) % ring.length]
     return hull([a, b].flatMap(p => corners.map(([dx, dy]) => ({ x: p.x + dx, y: p.y + dy }))))

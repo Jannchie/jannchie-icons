@@ -14,7 +14,7 @@ export const hole = mark({ knock: true, fill: true })
 // 挖掉一块精确的区域：闭合区域原样挖掉，不外扩（缝的两端要平行于外框、形状自己算好时用）
 export const cutout = mark({ knock: true, fill: true, exact: true })
 // 给角标让位：挖掉这些路径的墨迹再外扩 gap，闭合的部分（圆圈、云朵）连内部一起挖。挖完再把角标本身画回去
-// sweep：[sx, sy] 时让位区再朝这个外角方向拖到画布外（见 fill.js 的 swept）
+// sweep：让位区再朝外角方向拖到画布外，值是一个大矩形的四个角（见下面的 SWEEP、fill.js 的 swept）
 export const clear = (paths, gap, sweep) => mark({ knock: true, clear: gap, sweep })(paths)
 // 叠放的几块（从下往上）：每块先在下面的块上让出 GAP 的缝，再把自己画上去——每块的轮廓完整，缝和交界线平行
 // 圆柱的顶面、叠起来的几层用它：顶面是完整的椭圆，下面一层的上沿顺着椭圆让开，而不是挖一道两头带线帽的弧
@@ -39,7 +39,8 @@ export function spans(from, to, cuts, stroke) {
 export const plainFill = ({ body, lines }) => [...body, ...lines]
 // 角标：主体在角标四周让出 GAP 的缝（和描边版断线的间隙一样），再把角标画回去，看起来是角标外面一圈细描边
 // corner（'bottom' 右下、'top' 右上）：角标压在主体的外角上时，角标和外角之间的主体整片让掉，不剩细条；不传就只留一圈缝
-const SWEEP = { bottom: [1, 1], top: [1, -1] }
+const quadrant = (sx, sy) => [[0, 0], [sx * 30, 0], [sx * 30, sy * 30], [0, sy * 30]]
+const SWEEP = { bottom: quadrant(1, 1), top: quadrant(1, -1) }
 // 角标四周的缝按真实距离外扩（圆角连接）：尖角模式下斜接会在箭头尖、对勾拐角外拉出尖刺
 export const badgeFill = ({ body, lines }, badge, corner) => [...body, mark({ round: true })(clear(badge, GAP, SWEEP[corner])), ...lines, ...badge]
 // 居中符号：从主体里挖掉

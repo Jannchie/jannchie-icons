@@ -10,9 +10,9 @@ export default ({ radius }) => [
   base(radius),
 ]
 
-// 实心：城垛、塔身、底座填实，部件之间挖缝
+// 实心：城垛、塔身、底座各一块，接缝挖穿（见 chess.js 的 pieceFill）
 // 城垛缺口只有 2 宽，填实后常规字重只剩 0.5 的缝：在缺口正中再挖一道线宽宽的槽，槽底停在缺口底边的中线上
-export const fill = ({ radius, stroke }) => pieceFill(radius, [
+export const fill = ({ radius, stroke }) => pieceFill(radius, stroke, [
   rounded([[7.5, 8.5], [7.5, 3.5], [9.5, 3.5], [9.5, 5.5], [11.5, 5.5], [11.5, 3.5], [12.5, 3.5], [12.5, 5.5], [14.5, 5.5], [14.5, 3.5], [16.5, 3.5], [16.5, 8.5]], crisp(radius)),
   'M8.5 8.5L9.5 17.5H14.5L15.5 8.5Z',
-], ['M7.5 8.5H16.5', `M10.5 2V${5.5 - stroke / 2}`, `M13.5 2V${5.5 - stroke / 2}`])
+], [8.5], [`M10.5 2V${5.5 - stroke / 2}`, `M13.5 2V${5.5 - stroke / 2}`])

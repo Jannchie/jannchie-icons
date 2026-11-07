@@ -11,11 +11,11 @@ export default ({ radius }) => [
   base(radius),
 ]
 
-// 实心：王冠、身子、底座填实，部件之间挖缝，顶上一点照旧
-export const fill = ({ radius }) => [
-  ...pieceFill(radius, [
+// 实心：王冠、身子、底座各一块，接缝挖穿（见 chess.js 的 pieceFill），顶上一点照旧
+export const fill = ({ radius, stroke }) => [
+  ...pieceFill(radius, stroke, [
     rounded([[6.5, 7.5], [9.5, 11], [12, 6.5], [14.5, 11], [17.5, 7.5], [16, 14.5], [8, 14.5]], crisp(radius)),
     'M8.5 14.5L8 17.5H16L15.5 14.5Z',
-  ], ['M8 14.5H16']),
+  ], [14.5]),
   dot(12, 4.25),
 ]
