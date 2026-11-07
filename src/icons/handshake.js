@@ -1,4 +1,5 @@
 import { crisp, rounded } from '../geometry'
+import { stacked } from '../solid'
 
 // 握手：左右两只袖口 + 从右边伸过来压在上面的手 + 左手从下面托着、手指弯上来扣住
 // - 袖口：竖线 3.5 / 20.5（5.5–14.5），上下各带一小截往外的横边
@@ -9,13 +10,27 @@ import { crisp, rounded } from '../geometry'
 const back = [[20.5, 7], [16.5, 5.5], [13.5, 5.5], [8.5, 10]]
 // 手背斜线（13.5, 5.5）→（8.5, 10）上 y = 7.5 的点：左手顶边接在这里
 const meet = 13.5 - 5 * (7.5 - 5.5) / 4.5
+const thumb = 'A1.77 1.77 0 0 0 11 12.5L13 10.5'
+const cuffs = ['M2.5 5.5H3.5V14.5H2.5', 'M21.5 5.5H20.5V14.5']
+const palm = radius => rounded([[13, 10.5], [17, 14.5], [21.5, 14.5]], crisp(radius), false)
 
 export default ({ radius }) => [
-  'M2.5 5.5H3.5V14.5H2.5',
-  'M21.5 5.5H20.5V14.5',
-  `${rounded(back, Math.min(radius, 2), false)}A1.77 1.77 0 0 0 11 12.5L13 10.5`,
-  rounded([[13, 10.5], [17, 14.5], [21.5, 14.5]], crisp(radius), false),
+  ...cuffs,
+  `${rounded(back, Math.min(radius, 2), false)}${thumb}`,
+  palm(radius),
   `M3.5 7.5H${+meet.toFixed(3)}`,
   'M3.5 14L8 18.5A1.77 1.77 0 0 0 10.5 16',
   'M11.5 18L13 19.5A1.77 1.77 0 0 0 15.5 17',
+]
+
+// 实心：右手（手背、拇指、掌心围成的一块，接到右袖口）完整地压在前面；左手在后面，补全被右手挡住的部分：
+// 顶边 → 沿右手的手背和拇指下去 → 从拇指尖顺 45° 斜到第二根手指的指尖（这条边和右手掌心平行，中间留出描边版那道空隙）→
+// 两根手指的指尖 → 底边回到左袖口；左手沿右手让出 GAP 的缝。袖口、掌心那条线照旧是线
+export const fill = ({ radius }) => [
+  ...stacked(
+    `M3.5 7.5H${+meet.toFixed(3)}L8.5 10${thumb.replace(/L13 10\.5$/, '')}L15.5 17A1.77 1.77 0 0 1 13 19.5L11.5 18L10.5 16A1.77 1.77 0 0 1 8 18.5L3.5 14Z`,
+    `${rounded(back, Math.min(radius, 2), false)}${thumb}L17 14.5H20.5Z`,
+  ),
+  ...cuffs,
+  palm(radius),
 ]

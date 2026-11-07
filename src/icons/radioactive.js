@@ -1,4 +1,5 @@
 import { dot } from '../scene'
+import { solid } from '../solid'
 
 // 辐射标志：中心一点 + 三片 60° 的扇形叶片（内半径 3.5、外半径 9），叶片之间也相隔 60°
 // 圆心 y 取 12.5：左右两片叶片的水平边落在 .5 上，图形上下也更居中（3.5–20.3）
@@ -9,4 +10,8 @@ const blade = (mid) => {
   const p = (r, d) => polar(r, d).join(' ')
   return `M${p(3.5, a)}L${p(9, a)}A9 9 0 0 1 ${p(9, b)}L${p(3.5, b)}A3.5 3.5 0 0 0 ${p(3.5, a)}Z`
 }
-export default () => [blade(-90), blade(30), blade(150), dot(12, cy, 2.5)]
+const blades = [blade(-90), blade(30), blade(150)]
+export default () => [...blades, dot(12, cy, 2.5)]
+
+// 实心：三片叶片填实，中心的点照旧
+export const fill = () => [solid(blades), dot(12, cy, 2.5)]

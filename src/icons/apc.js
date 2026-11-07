@@ -1,12 +1,22 @@
 import { circle, rounded } from '../geometry'
+import { stacked } from '../solid'
 
 // 装甲运兵车：轮式，三个车轮（半径 2，底边贴着 20.5，圆心 5 / 12 / 19，彼此隔 3——粗字重下也还空 1）；
 // 高箱形车体（2.5–21.5 × 9.5–16.5），车头一道斜面；车顶一挺短机枪：竖着的枪架垂直顶到朝前的枪管下面（枪管 y 6.5，离车顶 3）。
 // 没有炮塔、没有大炮，和坦克一眼分开
 const WHEEL = 2
+const wheels = [5, 12, 19].map(x => circle(x, 20.5 - WHEEL, WHEEL))
+const hull = radius => rounded([[2.5, 9.5], [15.5, 9.5], [21.5, 13.5], [21.5, 16.5], [2.5, 16.5]], Math.min(radius, 1))
+const gun = ['M8.5 9.5V6.5', 'M6.5 6.5H13']
+
 export default ({ radius }) => [
-  ...[5, 12, 19].map(x => circle(x, 20.5 - WHEEL, WHEEL)),
-  rounded([[2.5, 9.5], [15.5, 9.5], [21.5, 13.5], [21.5, 16.5], [2.5, 16.5]], Math.min(radius, 1)),
-  'M8.5 9.5V6.5',
-  'M6.5 6.5H13',
+  ...wheels,
+  hull(radius),
+  ...gun,
+]
+
+// 实心：车体一块在后，三个车轮是完整的实心圆在前，车体沿车轮让出 GAP 的缝（同 truck）；机枪照旧是线
+export const fill = ({ radius }) => [
+  ...stacked(hull(radius), wheels),
+  ...gun,
 ]

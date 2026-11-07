@@ -1,4 +1,5 @@
-import { rounded } from '../geometry'
+import { crisp, rounded } from '../geometry'
+import { stacked } from '../solid'
 
 // 多个对话：两个气泡前后叠放，尾巴画法和 chat 一样（底边开口，从开口一侧 45° 斜下到尾尖，开口另一侧不画竖边）
 // 墨迹框左右 2–22、上下 3–21（和 chat 同一个外框）；朝外的四条边（后气泡的左边、顶边，前气泡的右边、尾尖）外缘固定、
@@ -7,12 +8,26 @@ import { rounded } from '../geometry'
 // 底边和斜尾连成一笔（不开口），后气泡露出来的部分本来就少，开口的话左下只剩一截短横和一道斜线
 // 前面的气泡是 chat 气泡的左右镜像，尾巴朝右下，底边到尾尖落差 3。
 // 尾巴开口宽 3：线头到斜尾的距离 3/√2 ≈ 2.1，粗字重（线宽 2）下也不会被端点吸附拉到斜尾上
-export default ({ radius, stroke }) => {
+function frame(stroke) {
   const h = stroke / 2
   const [l, t, r, tip] = [2 + h, 3 + h, 22 - h, 21 - h]
-  const b = tip - 3
+  return { l, t, r, tip, b: tip - 3 }
+}
+
+export default ({ radius, stroke }) => {
+  const { l, t, r, tip, b } = frame(stroke)
   return [
     rounded([[14.5, 6.5], [14.5, t], [l, t], [l, 11.5], [7.5, 11.5], [4.5, 14.5]], Math.min(radius, 2), false),
     rounded([[19, b], [r, b], [r, 8.5], [9.5, 8.5], [9.5, b], [16, b], [19, tip]], Math.min(radius, 2), false),
   ]
+}
+
+// 实心：两个气泡各自封口成完整的一块（尾巴封口的画法同 chat.js 的 fillParts：尾尖和尾巴竖边的上端用 crisp 小圆角），
+// 后面的气泡补全被挡住的部分，沿前面的气泡让出 GAP 的缝
+export const fill = ({ radius, stroke }) => {
+  const { l, t, r, tip, b } = frame(stroke)
+  const k = Math.min(radius, 2)
+  const back = rounded([[4.5, 11.5, crisp(radius)], [l, 11.5], [l, t], [14.5, t], [14.5, 11.5], [7.5, 11.5], [4.5, 14.5, crisp(radius)]], k)
+  const front = rounded([[19, b, crisp(radius)], [r, b], [r, 8.5], [9.5, 8.5], [9.5, b], [16, b], [19, tip, crisp(radius)]], k)
+  return stacked(back, front)
 }
