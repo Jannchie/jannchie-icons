@@ -1,6 +1,6 @@
 // 把角标符号贴到某个角：按符号实际画出来的墨迹定位，而不是 symbols.js 里近似的外形框
 // （对勾又宽又矮、锁比外形框大，按外形框定位会让角标离边忽远忽近）
-import { blocked, GAP, place } from './clearance'
+import { blocked, place } from './clearance'
 import { samples, segments } from './clip'
 import * as symbols from './symbols'
 import { cornerScale, outlines } from './symbols'
@@ -150,30 +150,3 @@ export const asBadge = (paths, name) => paths.map((p) => {
 // 角标本身是刀，底图只在贴着角标墨迹的地方断开
 export const overlayTopRight = (name, draw, tone, radius) =>
   asBadge(tone(draw([18, 6], cornerScale[name], radius)), name).map(p => ({ ...p, cut: true }))
-
-// 实心版的角标缺口：主体在角上按符号的范围（中心线外扩 GAP，hole 再外扩半个线宽，正好是符号墨迹外 GAP）挖掉一块，
-// 一直挖到画布外，角标落在缺口里；只在符号周围留一圈缝的话，压在实心主体上的符号会变成一团描边字（见 solid.js 的 badgeFill）
-// corner：'top' 右上，'bottom' 右下；内侧的拐角按 radius 收圆
-export function notchOf(shape, corner, radius) {
-  let [x0, y0, x1, y1] = [Infinity, Infinity, -Infinity, -Infinity]
-  if (shape.pts?.length) {
-    for (const [x, y] of shape.pts)
-      [x0, y0, x1, y1] = [Math.min(x0, x), Math.min(y0, y), Math.max(x1, x), Math.max(y1, y)]
-  }
-  else if (shape.circle) {
-    const [cx, cy] = shape.c
-    ;[x0, y0, x1, y1] = [cx - shape.circle, cy - shape.circle, cx + shape.circle, cy + shape.circle]
-  }
-  else {
-    ;[x0, y0, x1, y1] = shape.box
-  }
-  const x = x0 - GAP
-  const q = Math.min(radius, 2)
-  // 尖角（q = 0）不画零半径的圆弧
-  if (corner === 'top') {
-    const y = y1 + GAP
-    return `M${x} -4V${y - q}${q ? `A${q} ${q} 0 0 0 ${x + q} ${y}` : ''}H28V-4Z`
-  }
-  const y = y0 - GAP
-  return `M${x} 28V${y + q}${q ? `A${q} ${q} 0 0 1 ${x + q} ${y}` : ''}H28V28Z`
-}

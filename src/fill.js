@@ -71,7 +71,8 @@ function inkOf(item, stroke, sharp) {
   const dot = dotSize(item)
   // clear：挖空时再往外多让 clear 的间隙（角标四周的留白）
   const h = (dot ? dotWidth(item, stroke) : widthOf(item, stroke)) / 2 + (item.clear ?? 0)
-  const round = !sharp || item.round
+  // 角标四周的缝按真实距离外扩（圆角连接）：尖角模式下斜接会在箭头尖、对勾拐角外拉出尖刺
+  const round = !sharp || item.round || item.clear != null
   const join = round ? JoinType.Round : JoinType.Miter
   const inflate = (paths, end) => Clipper.inflatePathsD(paths, h, join, end, MITER_LIMIT, PRECISION, ARC_TOLERANCE)
   const subs = flatten(item.d)
@@ -82,11 +83,20 @@ function inkOf(item, stroke, sharp) {
   }
   const closed = subs.filter(s => s.closed && s.pts.length > 2).map(s => s.pts)
   const open = subs.filter(s => !(s.closed && s.pts.length > 2)).map(s => s.pts)
-  return [
+  const ink = [
     // clear 的闭合子路径连同内部一起让开：钟面、云朵这类角标里面不留主体的颜色
     ...(closed.length ? item.clear != null ? inflate(boolean(ClipType.Union, closed, null), EndType.Polygon) : inflate(closed, EndType.Joined) : []),
     ...(open.length ? inflate(open, round ? EndType.Round : EndType.Square) : []),
   ]
+  return item.sweep ? swept(ink, item.sweep) : ink
+}
+
+// 让位区朝外角方向拖到画布外（和一个伸向 [sx, sy] 象限的大矩形做闵可夫斯基和）：角标朝主体的一侧是一圈细缝，
+// 角标和外角之间的主体整片让掉——角标占满外角时（箭头、对勾），缝和外边之间不会剩下楔形的细条
+function swept(ink, [sx, sy]) {
+  const box = [[0, 0], [sx * 30, 0], [sx * 30, sy * 30], [0, sy * 30]].map(([x, y]) => ({ x, y }))
+  const parts = ink.flatMap(p => Clipper.minkowskiSumD(box, p, true))
+  return boolean(ClipType.Union, [...ink, ...parts], null)
 }
 
 // ---------- 折线 → 直线 + 圆弧 ----------

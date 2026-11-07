@@ -3,7 +3,7 @@
 // 线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽。线宽 1 时主体四边都落在 .5 上
 // 尾巴：主体底边往下 4、45° 斜下，尾尖在 x 6，斜边在底边上的起点（尾巴根部）x 10，给右下角标留出底边（尾尖、底边都随线宽各收半个线宽，落差不变）
 import { blocked } from './clearance'
-import { asBadge, fitBadge, notchOf, roomBelow, roomOnBottom, roomOnRight } from './corner'
+import { asBadge, fitBadge, roomBelow, roomOnBottom, roomOnRight } from './corner'
 import { crisp, rounded } from './geometry'
 import { badgeFill, solid } from './solid'
 
@@ -39,9 +39,9 @@ export function withBadge(name, draw, tone, radius, stroke, { fill = false } = {
   // 斜边直接从断口起（断口越过尾巴根部时，斜边也从断口的 x 处起，截掉被让开的那一小截）
   const end = bottom ? bottom[0] : r
   const tail = end >= root + 1 ? [[end, b], [root, b], tip] : [[Math.min(end, root), b + root - Math.min(end, root)], tip]
-  // 实心版：同样的角标位置，主体在角上挖出缺口，角标落在缺口里
+  // 实心版：同样的角标位置，主体在角标四周让出一圈缝，角标画回去
   if (fill)
-    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), notchOf(shape, 'bottom', radius))
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), 'bottom')
   return [
     rounded([[tip[0], b], [l, b], [l, t], [r, t], [r, right ? right[0] : b]], radius, false),
     rounded(tail, radius, false),
@@ -60,9 +60,9 @@ export function withBadgeTop(name, draw, tone, radius, stroke, { fill = false } 
   }, GROW)
   const right = blocked(shape, 'y', r, stroke)
   const top = blocked(shape, 'x', t, stroke)
-  // 实心版：同样的角标位置，主体在角上挖出缺口，角标落在缺口里
+  // 实心版：同样的角标位置，主体在角标四周让出一圈缝，角标画回去
   if (fill)
-    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), notchOf(shape, 'top', radius))
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), 'top')
   return [
     rounded([[tip[0], b], [l, b], [l, t], [top ? top[0] : r, t]], radius, false),
     rounded([[r, right ? right[1] : t], [r, b], [root, b], tip], radius, false),

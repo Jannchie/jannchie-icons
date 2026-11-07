@@ -4,7 +4,7 @@
 // 折角：翻折线（竖线 x FOLD_X、横线 y FOLD_Y）是固定的中心线，不随线宽动；纸张的斜边从 (FOLD_X, 顶边) 连到 (右边, FOLD_Y)，
 // 两端各随线宽收半个线宽，所以始终是 45°（线宽 1 时折角 5）
 import { blocked } from './clearance'
-import { asBadge, fitBadge, notchOf, roomOnBottom, roomOnRight } from './corner'
+import { asBadge, fitBadge, roomOnBottom, roomOnRight } from './corner'
 import { crisp, rounded } from './geometry'
 import { badgeFill, knock, solid } from './solid'
 
@@ -50,9 +50,9 @@ export function withBadge(name, draw, tone, radius, stroke, { fill = false } = {
   const right = blocked(shape, 'y', r, stroke)
   const bottom = blocked(shape, 'x', b, stroke)
   const outline = [[bottom ? bottom[0] : r, b], [l, b], [l, t], ...corner(stroke, radius), [r, right ? right[0] : b]]
-  // 实心版：同样的角标位置，主体在角上挖出缺口，角标落在缺口里
+  // 实心版：同样的角标位置，主体在角标四周让出一圈缝，角标画回去
   if (fill)
-    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), notchOf(shape, 'bottom', radius))
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), 'bottom')
   return [rounded(outline, radius, false), flap(stroke), ...asBadge(tone(draw(at, k, radius)), name)]
 }
 

@@ -4,7 +4,7 @@
 // 立杆是一条居中的竖线，放在 x 12：居中优先，线宽 1 时它落在整数上、1 倍屏略虚，可以接受；
 // 底座墨迹 8–16，以立杆为中心；立杆露出来的长度是 4 − 线宽（常规 2.5）
 import { blocked, rectAroundTop } from './clearance'
-import { asBadge, fitBadge, notchOf, roomBelow, roomOnRight } from './corner'
+import { asBadge, fitBadge, roomBelow, roomOnRight } from './corner'
 import { rounded } from './geometry'
 import { badgeFill, solid } from './solid'
 
@@ -45,9 +45,9 @@ export function withBadge(name, draw, tone, radius, stroke, { fill = false } = {
   }, GROW, 0.6)
   const right = blocked(shape, 'y', r, stroke)
   const bottom = blocked(shape, 'x', b, stroke)
-  // 实心版：同样的角标位置，主体在角上挖出缺口，角标落在缺口里
+  // 实心版：同样的角标位置，主体在角标四周让出一圈缝，角标画回去
   if (fill)
-    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), notchOf(shape, 'bottom', radius))
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), 'bottom')
   return [
     rounded([[bottom ? bottom[0] : r, b], [l, b], [l, t], [r, t], [r, right ? right[0] : b]], Math.min(radius, 2.5), false),
     ...standOf(f),
@@ -63,9 +63,9 @@ export function withBadgeTop(name, draw, tone, radius, stroke, { fill = false } 
     const c = blocked(s, 'x', f.t, stroke)
     return (!c || c[0] >= 12) && roomBelow(stroke, f.r, f.b)(s)
   }, GROW)
-  // 实心版：同样的角标位置，主体在角上挖出缺口，角标落在缺口里
+  // 实心版：同样的角标位置，主体在角标四周让出一圈缝，角标画回去
   if (fill)
-    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), notchOf(shape, 'top', radius))
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), 'top')
   return [
     rounded(rectAroundTop(shape, stroke, [f.l, f.t, f.r, f.b]), Math.min(radius, 2.5), false),
     ...standOf(f),

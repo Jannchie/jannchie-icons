@@ -6,7 +6,7 @@
 // 右下角标：针体右下是一段收向针尖的曲线，没有横平竖直的边可以按区间断开，和盾牌系列一样
 // 用一个隐藏的遮挡框：角标外形外扩一圈，框里的针线删掉、框边附近的线断开（clip 按 GAP + 线宽留缝），断口比只让符号本身去切宽得多
 import { GAP } from './clearance'
-import { asBadge, fitBadge, notchOf } from './corner'
+import { asBadge, fitBadge } from './corner'
 import { circle } from './geometry'
 import { badgeFill, hole, solid } from './solid'
 
@@ -40,9 +40,9 @@ const clearOfDot = stroke => (shape) => {
 }
 export function withBadge(name, draw, tone, radius, stroke, { fill = false } = {}) {
   const { k, at, shape } = fitBadge(name, draw, radius, stroke, { right: 22, bottom: 22 }, clearOfDot(stroke), GROW)
-  // 实心版：同样的角标位置，小针填实、中心挖洞，角上挖出缺口放角标
+  // 实心版：同样的角标位置，小针填实、中心挖洞，角标四周让出一圈缝
   if (fill)
-    return badgeFill(plainFillParts(stroke), asBadge(tone(draw(at, k, radius)), name), notchOf(shape, 'bottom', radius))
+    return badgeFill(plainFillParts(stroke), asBadge(tone(draw(at, k, radius)), name), 'bottom')
   // 遮挡框取符号实际墨迹（中心线）的外接框：按 outlines 的近似外形会比墨迹大（对勾、云），线断得太早
   const xs = shape.pts.map(q => q[0])
   const ys = shape.pts.map(q => q[1])

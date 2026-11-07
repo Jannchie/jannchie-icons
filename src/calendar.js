@@ -2,8 +2,8 @@
 // 墨迹框左右 3–21（方形主体收到 3）、上下 2–22（挂环顶在 2、外框底在 22），以画布中线对称；
 // 线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽
 // 外框墨迹 3–21 × 4–22；表头线在外框顶边下 5（线宽 1 时落在 9.5 上）；挂环 x 7.5 / 16.5，从 2 往下穿过顶边，停在离表头线 2.5 处
-import { rectAround } from './clearance'
-import { asBadge, fitBadge, notchOf, roomOnBottom, roomOnRight } from './corner'
+import { blocked, rectAround } from './clearance'
+import { asBadge, fitBadge, roomOnBottom, roomOnRight } from './corner'
 import { rounded } from './geometry'
 import { badgeFill, knock, solid } from './solid'
 
@@ -43,9 +43,9 @@ export function withBadge(name, draw, tone, radius, stroke, { fill = false } = {
   const turn = end[1] < head + 1.5
   if (turn)
     end[1] = head
-  // 实心版：同样的角标位置，主体在角上挖出缺口，角标落在缺口里
+  // 实心版：同样的角标位置，主体在角标四周让出一圈缝，角标画回去
   if (fill)
-    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), notchOf(shape, 'bottom', radius))
+    return badgeFill(fillParts(radius, stroke, shape), asBadge(tone(draw(at, k, radius)), name), 'bottom')
   return [
     ...(turn ? [`${rounded(outline, Math.min(radius, R), false)}H${l}`] : [rounded(outline, Math.min(radius, R), false), `M${l} ${head}H${r}`]),
     ...RINGS.map(x => ring(x, stroke)),
@@ -55,10 +55,13 @@ export function withBadge(name, draw, tone, radius, stroke, { fill = false } = {
 
 // 实心版（见 solid.js 的 plainFill / badgeFill / centerFill）：外框一块，挖掉表头线；表头线两端各缩一个线宽，
 // 左右两边留一道线宽的墙，表头和格子区连成一块。挂环照旧是线
-export function fillParts(radius, stroke) {
+// 传了角标 shape 时，高的角标（加号、插头）会顶到表头线：挖空线在角标留缝之前一个线宽停下，不和角标四周的缝连成一片
+export function fillParts(radius, stroke, shape) {
   const { l, t, r, b, head } = frame(stroke)
+  const hit = shape && blocked(shape, 'x', head, stroke)
+  const end = Math.min(r - stroke, hit ? hit[0] - stroke : Infinity)
   return {
-    body: [solid(rounded([[l, t], [r, t], [r, b], [l, b]], Math.min(radius, R))), knock(`M${l + stroke} ${head}H${r - stroke}`)],
+    body: [solid(rounded([[l, t], [r, t], [r, b], [l, b]], Math.min(radius, R))), knock(`M${l + stroke} ${head}H${end}`)],
     lines: RINGS.map(x => ring(x, stroke)),
   }
 }

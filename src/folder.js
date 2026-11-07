@@ -2,7 +2,7 @@
 // 墨迹框左右 2–22、上下 3–21，以画布中线对称；线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽
 // 标签页右端在 x 9，45° 斜边往下 3 接到本体顶边（线宽 1 时本体顶边落在 6.5 上，横线清晰）
 import { blocked } from './clearance'
-import { asBadge, fitBadge, notchOf, roomOnRight } from './corner'
+import { asBadge, fitBadge, roomOnRight } from './corner'
 import { rounded } from './geometry'
 import { badgeFill, solid } from './solid'
 import { inset } from './inset'
@@ -37,9 +37,9 @@ export function withBadge(name, draw, tone, radius, stroke, { fill = false } = {
   const right = blocked(shape, 'y', r, stroke)
   const bottom = blocked(shape, 'x', b, stroke)
   const outline = [[bottom ? bottom[0] : r, b], [l, b], [l, t], [tabEnd, t], [tabSlope, body], [r, body], [r, right ? right[0] : b]]
-  // 实心版：同样的角标位置，主体在角上挖出缺口，角标落在缺口里
+  // 实心版：同样的角标位置，主体在角标四周让出一圈缝，角标画回去
   if (fill)
-    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), notchOf(shape, 'bottom', radius))
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), 'bottom')
   return [rounded(outline, radius, false), ...asBadge(tone(draw(at, k, radius)), name)]
 }
 
@@ -60,9 +60,9 @@ export function withBadgeTop(name, draw, tone, radius, stroke, { fill = false } 
   // 大符号的断口会一直延伸到标签页斜边下端附近：剩下的顶边不到 1.5 就不画，轮廓停在斜边下端
   const topEnd = top ? top[0] : r
   const outline = [[r, right ? right[1] : body], [r, b], [l, b], [l, t], [tabEnd, t], [tabSlope, body], ...(topEnd - tabSlope >= 1.5 ? [[topEnd, body]] : [])]
-  // 实心版：同样的角标位置，主体在角上挖出缺口，角标落在缺口里
+  // 实心版：同样的角标位置，主体在角标四周让出一圈缝，角标画回去
   if (fill)
-    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), notchOf(shape, 'top', radius))
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), 'top')
   return [rounded(outline, radius, false), ...asBadge(tone(draw(at, k, radius)), name)]
 }
 

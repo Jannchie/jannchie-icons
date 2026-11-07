@@ -3,7 +3,7 @@
 // 线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽；线宽 1 时四边中心线 2.5 / 21.5 / 3.5 / 20.5，都落在 .5 上
 // 不取更扁的 20 × 16：右下角标（约 8.5 见方）贴到外框角上之后，顶会戳到 V 形封口，右边也只剩很短一截
 import { blocked, GAP } from './clearance'
-import { asBadge, fitBadge, notchOf, roomOnRight } from './corner'
+import { asBadge, fitBadge, roomOnRight } from './corner'
 import { rounded } from './geometry'
 import { badgeFill, knock, solid } from './solid'
 
@@ -54,9 +54,9 @@ export function withBadge(name, draw, tone, radius, stroke, { fill = false } = {
   const right = blocked(shape, 'y', r, stroke)
   const bottom = blocked(shape, 'x', b, stroke)
   const outline = [[bottom ? bottom[0] : r, b], [l, b], [l, t], [r, t], [r, right ? right[0] : b]]
-  // 实心版：同样的角标位置，主体在角上挖出缺口，角标落在缺口里
+  // 实心版：同样的角标位置，主体在角标四周让出一圈缝，角标画回去
   if (fill)
-    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), notchOf(shape, 'bottom', radius))
+    return badgeFill(fillParts(radius, stroke), asBadge(tone(draw(at, k, radius)), name), 'bottom')
   return [rounded(outline, radius, false), flap(stroke, radius), ...asBadge(tone(draw(at, k, radius)), name)]
 }
 
