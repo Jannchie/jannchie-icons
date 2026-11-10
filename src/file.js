@@ -1,20 +1,22 @@
 // 文件类图标共用：纸张 + 右上 45° 折角
-// 墨迹框左右 4–20、上下 2–22：竖向贴到 2，横向 16 宽、以画布中线对称；线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽
-// 线宽 1 时纸张四边的中心线是 4.5 / 19.5 / 2.5 / 21.5，都落在 .5 上
+// 墨迹框左右 4.5–19.5、上下 3–21，以画布中线对称；线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽
+// 宽 15、高 18 都是 3 的倍数：16px 下（1 单位 = 2/3 像素）四条外缘能同时落在像素边界上，24px 下整体平移半格后左右也同相位
+// （原来 4–20 × 2–22，16px 下右边和底边总是发灰）。左右外缘是 .5，细字重下网格审计会提示 x 5 / x 19，是有意的取舍
 // 折角：翻折线（竖线 x FOLD_X、横线 y FOLD_Y）是固定的中心线，不随线宽动；纸张的斜边从 (FOLD_X, 顶边) 连到 (右边, FOLD_Y)，
-// 两端各随线宽收半个线宽，所以始终是 45°（线宽 1 时折角 5）
+// 两端各随线宽收半个线宽，所以始终是 45°（常规线宽下折角 4.5）。
+// 翻折线的中心线取在 .75 上（14.25 / 8.25）：常规线宽 1.5 在 16px 下是 1 像素，中心线在 .75 + 1.5n 上才正好占满一列像素
 import { fillDraw, fillSymbol, ledgeAbove } from './badge-room'
 import { blocked } from './clearance'
 import { asBadge, fitBadge, roomOnBottom, roomOnRight } from './corner'
 import { crisp, rounded } from './geometry'
 import { badgeFill, knock, solid } from './solid'
 
-const FOLD_X = 14.5
-const FOLD_Y = 7.5
+const FOLD_X = 14.25
+const FOLD_Y = 6.75
 
 export function frame(stroke) {
   const h = stroke / 2
-  return { h, l: 4 + h, t: 2 + h, r: 20 - h, b: 22 - h }
+  return { h, l: 4.5 + h, t: 1.5 + h, r: 19.5 - h, b: 22.5 - h }
 }
 
 // 折角两处转角固定小圆角
@@ -35,10 +37,9 @@ export function flap(stroke) {
   return `M${FOLD_X} ${t}V${FOLD_Y}H${r}`
 }
 
-// 居中符号的中心：折角以下纸张部分（7.5–22）的中点偏上一点，和整张纸的中点 12 之间取 13.5，
-// 上下看起来都不挤（和文件夹的 center 同高）
+// 居中符号的中心：折角以下纸张部分（翻折线墨迹下缘 9 到底边内缘 19.5）的中点 14.25
 export const center = [12, 13.5]
-// 纸张内部约 13 宽，符号放大到 1.3 倍
+// 纸张内部 12 宽、折角以下 10.5 高，符号放大到 1.2 倍（约 8.4 见方），四周各留 1 以上
 export const centerScale = 1.3
 
 // 角标：符号墨迹的右缘贴到纸张外缘 20、下缘贴到 22；右边和底边在离符号 GAP 处断开，轮廓从底边的断口出发绕一圈到右边的断口

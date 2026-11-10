@@ -1,5 +1,7 @@
 // 文件夹类图标共用：45° 斜边的标签页 + 本体
-// 墨迹框左右 2–22、上下 3–21，以画布中线对称；线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽
+// 墨迹框左右 1.5–22.5、上下 3–21，以画布中线对称；线宽变粗时外缘不动、往里长（见 docs/design.md），h 是半个线宽
+// 宽 21、高 18 都是 3 的倍数：16px 下（1 单位 = 2/3 像素）四条外缘能同时落在像素边界上（原来宽 20，16px 下总有一边发灰）。
+// 文件夹是横长的宽主体，左右按 design.md 的例外放到离边 1.5
 // 标签页右端在 x 9，45° 斜边往下 3 接到本体顶边（线宽 1 时本体顶边落在 6.5 上，横线清晰）
 import { fillDraw, fillSymbol, ledgeAbove } from './badge-room'
 import { blocked } from './clearance'
@@ -11,7 +13,7 @@ import { plus } from './symbols'
 
 function frame(stroke) {
   const h = stroke / 2
-  const [l, t, r, b] = [2 + h, 3 + h, 22 - h, 21 - h]
+  const [l, t, r, b] = [1.5 + h, 3 + h, 22.5 - h, 21 - h]
   const tabEnd = 9
   const body = t + 3
   return { h, l, t, r, b, tabEnd, tabSlope: tabEnd + 3, body }

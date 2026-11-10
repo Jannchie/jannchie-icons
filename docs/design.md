@@ -15,6 +15,7 @@ How icons are drawn on the 24 × 24 canvas. Naming rules are in [naming.md](nami
   - sign sets drawn at one shared glyph size (letters, kana, hexagrams, notation);
   - members of a family that stay the same size as the rest of the family;
   - long thin rows such as list lines, which may stop at 3.
+  - wide bodies (the folder) may go out to 1.5 on the left and right, so that their width is a multiple of 3 (see Pixel alignment): a 21-wide body at 1.5–22.5 keeps both sides sharp at 16 px, a 20-wide one at 2–22 cannot.
 
 ## Stroke weights grow inward
 
@@ -34,7 +35,9 @@ How icons are drawn on the 24 × 24 canvas. Naming rules are in [naming.md](nami
 ## Pixel alignment
 
 - Hinting shifts the whole icon by less than half a device pixel so that one edge of each horizontal and vertical stroke lands on the pixel grid. Stroke widths are not rounded; they only have a 0.5 px floor.
-- Shapes whose outer edges sit on whole units stay sharp on both sides once hinted, because the shift needed for the left edge also fits the right edge.
+- At 24 px, shapes whose outer edges sit on whole units stay sharp on both sides once hinted, because the shift needed for the left edge also fits the right edge.
+- At 16 px one unit is 2/3 of a pixel, so the shift can only put both sides of a frame on the pixel grid when the distance between its outer edges is a multiple of 1.5. A 2–22 frame (20 wide, 13.33 px) always has one blurred side. Make the outer size of frames and bodies a multiple of 3 (15, 18, 21): such sizes are sharp at 16, 24 and 32 px. Examples: the file paper is 4.5–19.5 × 3–21, the folder 1.5–22.5 × 3–21, the AI task icons mostly 3–21.
+- At 16 px the regular stroke (1.5) is exactly one pixel. An inner horizontal or vertical line fills one pixel column when its centerline is 1.5 · n + 0.75 away from the frame's outer edge (the file fold lines at 14.25 / 8.25).
 - Evenly spaced rows (lists, alignment icons) share one pixel phase. Space them 6 units apart so they hit whole pixels at 16, 20 and 24 px.
 
 ## Gaps
