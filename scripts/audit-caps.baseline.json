@@ -12,9 +12,6 @@
     "regular (3.51, 11.58)",
     "regular (3.51, 12.42)"
   ],
-  "any-to-any": [
-    "bold (10.11, 13.92)"
-  ],
   "aperture": [
     "bold (3.06, 11)"
   ],
@@ -38,10 +35,6 @@
   ],
   "astro-saturn": [
     "bold (9.75, 13.09)"
-  ],
-  "audio-text-to-text": [
-    "bold (10.36, 13.48)",
-    "bold (10.43, 13.68)"
   ],
   "axe": [
     "bold (5.94, 7.04)",
@@ -251,10 +244,6 @@
     "regular (4.65, 5.45)",
     "regular (4.65, 6.55)"
   ],
-  "depth-estimation": [
-    "regular (15.15, 12.87)",
-    "regular (20.85, 12.87)"
-  ],
   "dress": [
     "bold (15.5, 5.5)",
     "bold (8.5, 5.5)",
@@ -390,23 +379,6 @@
   "home-off": [
     "light (17.5, 20.33)"
   ],
-  "image-text-to-image": [
-    "bold (10.18, 13.69)"
-  ],
-  "image-text-to-text": [
-    "bold (10.14, 13.61)"
-  ],
-  "image-text-to-video": [
-    "bold (10.18, 13.69)"
-  ],
-  "keypoint-detection": [
-    "bold (16.56, 14.67)",
-    "bold (19.45, 14.67)",
-    "regular (15.67, 10.16)",
-    "regular (16.42, 14.88)",
-    "regular (19.58, 14.88)",
-    "regular (20.33, 10.16)"
-  ],
   "languages": [
     "bold (10.18, 7.27)",
     "bold (4.82, 7.27)",
@@ -461,10 +433,6 @@
     "bold (11.5, 16.25)",
     "bold (11.5, 17)",
     "bold (11.5, 9.43)"
-  ],
-  "mask-generation": [
-    "bold (17.53, 13.13)",
-    "regular (17.52, 13.24)"
   ],
   "mcp": [
     "bold (15.85, 7.25)"
@@ -720,9 +688,6 @@
   "search-off": [
     "regular (4.01, 10.06)"
   ],
-  "sentence-similarity": [
-    "bold (10.18, 13.69)"
-  ],
   "shoe-formal": [
     "bold (21.44, 18.18)",
     "regular (21.48, 17.93)"
@@ -808,10 +773,6 @@
     "bold (3.5, 20.5)",
     "bold (3.69, 20.16)"
   ],
-  "token-classification": [
-    "bold (10.1, 9.95)",
-    "bold (10.43, 10.28)"
-  ],
   "transistor": [
     "bold (3.01, 12)",
     "light (14.4, 20.54)",
@@ -820,6 +781,12 @@
     "light (3.01, 12.33)",
     "regular (3.02, 11.43)",
     "regular (3.02, 12.57)"
+  ],
+  "translation": [
+    "bold (10.18, 7.27)",
+    "bold (4.82, 7.27)",
+    "bold (5.05, 7)",
+    "bold (9.95, 7)"
   ],
   "tree": [
     "bold (12, 13.5)",
@@ -836,9 +803,6 @@
     "bold (8.58, 11.27)",
     "regular (8.51, 12.24)",
     "regular (8.54, 11.5)"
-  ],
-  "unconditional-image-generation": [
-    "bold (10.11, 13.92)"
   ],
   "usagi": [
     "bold (11.63, 18.12)",
@@ -857,9 +821,6 @@
     "bold (15, 10)",
     "bold (15.13, 9.93)",
     "regular (15.61, 9.65)"
-  ],
-  "video-text-to-text": [
-    "bold (10.14, 13.61)"
   ],
   "webcam-off": [
     "bold (5, 9.5)",

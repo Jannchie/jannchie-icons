@@ -68,6 +68,9 @@
   "antenna": [
     "x 12"
   ],
+  "any-to-any": [
+    "x 12"
+  ],
   "api": [
     "y 12"
   ],
@@ -161,41 +164,8 @@
   "astro-venus": [
     "x 12"
   ],
-  "audio-classification": [
-    "x 3",
-    "x 5",
-    "x 7",
-    "x 9"
-  ],
-  "audio-text-to-text": [
-    "x 3",
-    "x 5",
-    "x 7",
-    "x 9",
-    "y 12",
-    "y 14",
-    "y 15",
-    "y 17",
-    "y 20",
-    "y 9"
-  ],
-  "audio-to-audio": [
-    "x 15",
-    "x 17",
-    "x 19",
-    "x 21",
-    "x 3",
-    "x 5",
-    "x 7",
-    "x 9"
-  ],
   "automatic-speech-recognition": [
-    "x 5",
-    "x 6",
-    "x 7",
-    "y 12",
-    "y 15",
-    "y 9"
+    "x 12"
   ],
   "ban-list": [
     "y 15",
@@ -554,9 +524,8 @@
     "y 12"
   ],
   "document-question-answering": [
-    "y 12",
-    "y 15",
-    "y 9"
+    "x 19",
+    "x 5"
   ],
   "domino": [
     "y 12",
@@ -567,6 +536,9 @@
     "x 12",
     "x 20",
     "x 4"
+  ],
+  "dress-form": [
+    "x 12"
   ],
   "drum": [
     "x 12",
@@ -600,18 +572,660 @@
   "family-tree": [
     "x 12"
   ],
-  "feature-extraction": [
-    "y 12",
-    "y 15",
-    "y 9"
+  "file": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-arrow-down": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-arrow-down-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-arrow-left": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-arrow-left-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-arrow-right": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-arrow-right-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-arrow-up": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-arrow-up-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-assets": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-assets-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-ban": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-ban-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-bookmark": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-bookmark-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-check": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-check-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-circle": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-circle-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-clock": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-clock-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-cloud": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-cloud-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-code": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-code-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-gauge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-gauge-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-heart": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-heart-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-image": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-image-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-lock": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-lock-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-minus": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-minus-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-music": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-music-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-off": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-plug": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-plug-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-plus": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
   ],
   "file-plus-badge": [
+    "x 14.25",
     "x 15",
-    "y 17"
+    "x 19",
+    "x 5",
+    "y 17",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-puzzle": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-puzzle-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-search-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-shield": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-shield-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-sparkle": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-sparkle-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-star": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-star-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-text": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 11.25",
+    "y 14.25",
+    "y 17.25",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-type-aep": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-ai": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-arw": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-cr3": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-csv": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-dng": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-doc": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-docx": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-gif": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-html": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-indd": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-jpg": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-md": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-mp3": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-mp4": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-nef": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-pdf": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-png": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-pptx": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-psd": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-raf": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-sgf": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-svg": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-txt": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-xd": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-xls": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-xlsx": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-type-zip": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 6.75"
+  ],
+  "file-video": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-video-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-x": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
+  ],
+  "file-x-badge": [
+    "x 14.25",
+    "x 19",
+    "x 5",
+    "y 2",
+    "y 22",
+    "y 6.75"
   ],
   "fill-mask": [
     "y 12",
     "y 15",
+    "y 18",
+    "y 6",
     "y 9"
   ],
   "flashlight": [
@@ -633,19 +1247,343 @@
     "x 12",
     "y 12"
   ],
+  "folder": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-arrow-down": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-arrow-down-badge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-arrow-down-badge-top": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-arrow-left": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-arrow-left-badge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-arrow-left-badge-top": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-arrow-right": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-arrow-right-badge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-arrow-right-badge-top": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-arrow-up": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-arrow-up-badge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-arrow-up-badge-top": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-assets": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-assets-badge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-assets-badge-top": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-ban": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-ban-badge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-ban-badge-top": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-bookmark": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-bookmark-badge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-bookmark-badge-top": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-check": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-check-badge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-check-badge-top": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-circle": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-circle-badge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-circle-badge-top": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-clock": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-clock-badge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-clock-badge-top": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-cloud": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-cloud-badge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-cloud-badge-top": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-code": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-code-badge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-code-badge-top": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-gauge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-gauge-badge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-gauge-badge-top": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-heart": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-heart-badge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-heart-badge-top": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-image": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-image-badge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-image-badge-top": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-lock": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-lock-badge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-lock-badge-top": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-minus": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-minus-badge": [
+    "x 2",
+    "x 22"
+  ],
   "folder-minus-badge-top": [
+    "x 2",
+    "x 22",
     "y 6"
   ],
+  "folder-music": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-music-badge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-music-badge-top": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-off": [
+    "x 2",
+    "x 22"
+  ],
   "folder-open": [
+    "x 19",
+    "x 2",
     "y 10.75"
+  ],
+  "folder-plug": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-plug-badge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-plug-badge-top": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-plus": [
+    "x 2",
+    "x 22"
   ],
   "folder-plus-badge": [
     "x 17",
+    "x 2",
+    "x 22",
     "y 17"
   ],
   "folder-plus-badge-top": [
     "x 18",
+    "x 2",
+    "x 22",
     "y 6"
+  ],
+  "folder-puzzle": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-puzzle-badge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-puzzle-badge-top": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-search-badge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-search-badge-top": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-shield": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-shield-badge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-shield-badge-top": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-sparkle": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-sparkle-badge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-sparkle-badge-top": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-star": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-star-badge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-star-badge-top": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-video": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-video-badge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-video-badge-top": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-x": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-x-badge": [
+    "x 2",
+    "x 22"
+  ],
+  "folder-x-badge-top": [
+    "x 2",
+    "x 22"
   ],
   "gamepad": [
     "y 10.25",
@@ -822,33 +1760,8 @@
     "y 18",
     "y 3"
   ],
-  "image-text-to-image": [
-    "y 14",
-    "y 17",
-    "y 20"
-  ],
-  "image-text-to-text": [
-    "y 12",
-    "y 14",
-    "y 15",
-    "y 17",
-    "y 20",
-    "y 9"
-  ],
-  "image-text-to-video": [
-    "y 14",
-    "y 17",
-    "y 20"
-  ],
-  "image-to-3d": [
-    "x 15",
-    "x 18",
-    "x 21"
-  ],
-  "image-to-text": [
-    "y 12",
-    "y 15",
-    "y 9"
+  "image-to-image": [
+    "x 12"
   ],
   "import": [
     "y 12",
@@ -903,7 +1816,7 @@
     "y 12"
   ],
   "keypoint-detection": [
-    "x 18"
+    "x 12"
   ],
   "laundry-dry-drip": [
     "x 12",
@@ -1200,6 +2113,9 @@
     "y 11",
     "y 19"
   ],
+  "lock-heart": [
+    "x 12"
+  ],
   "lock-list": [
     "x 12",
     "x 16",
@@ -1357,6 +2273,9 @@
     "y 15",
     "y 18",
     "y 21"
+  ],
+  "mirror": [
+    "x 12"
   ],
   "monitor": [
     "x 12"
@@ -1905,14 +2824,6 @@
     "y 18",
     "y 21"
   ],
-  "question-answering": [
-    "y 10",
-    "y 12",
-    "y 15",
-    "y 4",
-    "y 7",
-    "y 9"
-  ],
   "rate-x0-5": [
     "x 12.88",
     "x 16.88",
@@ -1962,11 +2873,6 @@
     "x 12.38",
     "x 16.38",
     "y 12"
-  ],
-  "reinforcement-learning": [
-    "x 12",
-    "x 15",
-    "x 9"
   ],
   "religion-catholicism": [
     "x 12"
@@ -2040,14 +2946,6 @@
   ],
   "send-up": [
     "x 12"
-  ],
-  "sentence-similarity": [
-    "y 10",
-    "y 14",
-    "y 17",
-    "y 20",
-    "y 4",
-    "y 7"
   ],
   "separator-horizontal": [
     "y 12"
@@ -2145,8 +3043,7 @@
   ],
   "summarization": [
     "y 12",
-    "y 15",
-    "y 9"
+    "y 6"
   ],
   "sun": [
     "x 12",
@@ -2157,11 +3054,6 @@
   ],
   "sunset": [
     "x 12"
-  ],
-  "table-question-answering": [
-    "y 12",
-    "y 15",
-    "y 9"
   ],
   "tag-2": [
     "y 12"
@@ -2287,51 +3179,15 @@
     "x 19",
     "x 5"
   ],
-  "text-classification": [
-    "y 12",
-    "y 15",
-    "y 9"
-  ],
   "text-generation": [
-    "y 12",
-    "y 15",
-    "y 9"
+    "y 11",
+    "y 17",
+    "y 5"
   ],
   "text-ranking": [
     "y 12",
-    "y 15",
-    "y 9"
-  ],
-  "text-to-3d": [
-    "x 15",
-    "x 18",
-    "x 21",
-    "y 12",
-    "y 15",
-    "y 9"
-  ],
-  "text-to-audio": [
-    "y 12",
-    "y 15",
-    "y 9"
-  ],
-  "text-to-image": [
-    "y 12",
-    "y 15",
-    "y 9"
-  ],
-  "text-to-speech": [
-    "x 17",
-    "x 18",
-    "x 19",
-    "y 12",
-    "y 15",
-    "y 9"
-  ],
-  "text-to-video": [
-    "y 12",
-    "y 15",
-    "y 9"
+    "y 18",
+    "y 6"
   ],
   "thermometer": [
     "x 10",
@@ -2343,14 +3199,13 @@
     "y 19",
     "y 5"
   ],
+  "token-classification": [
+    "y 12",
+    "y 18",
+    "y 6"
+  ],
   "transistor": [
     "y 12"
-  ],
-  "translation": [
-    "y 12",
-    "y 13.15",
-    "y 15",
-    "y 9"
   ],
   "trash": [
     "x 10",
@@ -2710,30 +3565,6 @@
     "x 21",
     "x 3"
   ],
-  "video-text-to-text": [
-    "y 12",
-    "y 14",
-    "y 15",
-    "y 17",
-    "y 20",
-    "y 9"
-  ],
-  "visual-document-retrieval": [
-    "y 12",
-    "y 15",
-    "y 9"
-  ],
-  "visual-question-answering": [
-    "y 12",
-    "y 15",
-    "y 9"
-  ],
-  "voice-activity-detection": [
-    "x 3",
-    "x 5",
-    "x 7",
-    "x 9"
-  ],
   "wallet": [
     "y 10",
     "y 14",
@@ -2768,11 +3599,6 @@
     "x 12",
     "x 16",
     "x 8"
-  ],
-  "zero-shot-classification": [
-    "y 10",
-    "y 4",
-    "y 7"
   ],
   "zodiac-aries": [
     "x 12"
