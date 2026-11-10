@@ -159,6 +159,7 @@ capacitor: circuit, electronics, component, 电容
 car: vehicle, automobile, drive, transport, 汽车, 車
 chair: seat, dining chair, furniture, stool, 椅子, 餐椅, いす
 chess-clock: game clock, byo-yomi, timer, time control, go, chess, 棋钟, 读秒, 对局计时, 対局時計
+circles-interlocked: interlocking rings, linked, chain link, union, connection, together, 连环, 相连, 连接, 連結
 cloud-co2: carbon, carbon dioxide, emission, footprint, greenhouse gas, climate, pollution, 碳排放, 二氧化碳, 温室气体, 炭素排出
 cooking-pot: pot, saucepan, stew, soup, cookware, kitchen, 锅, 汤锅, 鍋
 crystal-ball: fortune, magic, prediction, oracle, fantasy, 水晶球, 占卜, 水晶玉
@@ -166,11 +167,13 @@ curtain: drapes, window, blinds, interior, 窗帘, カーテン
 desk: table, workspace, study, office, drawer, furniture, 书桌, 机
 elder: senior, old, elderly, grandparent, cane, 老人, 祖辈, お年寄り
 elevator: lift, floor, up, down, building, accessibility, 电梯, エレベーター
+embrace: hug, cuddle, hold, affection, comfort, friendship, 拥抱, 安慰, 抱擁, ハグ
 escalator: moving stairs, mall, station, floor, 自动扶梯, エスカレーター
 escalator-down: moving stairs, descend, going down, downstairs, 下行扶梯, 下りエスカレーター
 escalator-up: moving stairs, ascend, going up, upstairs, 上行扶梯, 上りエスカレーター
 family-tree: genealogy, ancestry, pedigree, parents, children, 族谱, 家谱, 家系図
 file-type-sgf: sgf, smart game format, go, baduk, weiqi, game record, kifu, 棋谱, 围棋, 棋譜
+touch-ripple: touch, tap, press, ripple, haptic, feedback, gesture, 触摸, 点击, 轻触, 涟漪, タップ
 floor-plan: layout, blueprint, rooms, apartment, architecture, 户型图, 平面图, 間取り
 floor-plan-sparkle: generate layout, random floor plan, ai, auto, 生成户型, 間取り生成
 footprint: foot, step, walk, trace, track, barefoot, 脚印, 足迹, 足跡
@@ -178,6 +181,7 @@ go-stones: go, baduk, weiqi, stone, black, white, board game, katago, 围棋, �
 hallway: corridor, passage, perspective, interior, 走廊, 廊下
 hanging-sign: signboard, tavern, inn, shop sign, store, 招牌, 挂牌, 酒馆, 看板
 lamp-floor: floor lamp, standing lamp, light, shade, 落地灯, フロアランプ
+mirror: looking glass, reflection, vanity, appearance, dressing, 镜子, 外貌, 鏡
 lantern: lamp, light, camping, tavern, fantasy, 提灯, 灯笼, ランタン
 leaves: leaf, eco, energy saver, power saving, green, nature, plant, 节能, 树叶, 葉っぱ, 省エネ
 lute: bard, music, instrument, medieval, tavern, 鲁特琴, 吟游诗人, リュート
@@ -311,6 +315,7 @@ arrow-down-to-line: scroll to bottom, end, last, bottom, 到底部
 download: save, get, import, arrow down, 下载, ダウンロード
 dpad: d-pad, directional pad, controller, gamepad, cross key, 十字键
 dress: clothing, fashion, skirt, apparel, 连衣裙, ワンピース
+dress-form: mannequin, dummy, tailor, sewing, fashion, torso, 人台, 裁缝, 服装, トルソー
 drill: power tool, tool, construction, diy, 电钻, ドリル
 droplet: water, drop, liquid, rain, humidity, 水滴
 drum: music, instrument, percussion, beat, 鼓, ドラム
@@ -412,6 +417,7 @@ globe: world, earth, internet, international, language, web, 地球, 世界
 globe-search: web search, internet, browse, explore, 网络搜索
 go-board: go, baduk, weiqi, board game, 围棋, 囲碁
 goggles: safety glasses, eye protection, ski, swim, 护目镜, ゴーグル
+sleep-mask: eye mask, sleep, rest, travel, nap, 眼罩, 睡眠, 旅行, アイマスク
 golang: go, go language, programming, gopher
 golf: sport, flag, hole, course, 高尔夫, ゴルフ
 gpu: graphics card, video card, hardware, 显卡, グラボ
@@ -442,6 +448,10 @@ headphones: music, audio, listen, headset, 耳机, ヘッドホン
 hearing: ear, listen, audio, hearing aid, deaf, 听力, 耳
 heart: love, like, favorite, favourite, wishlist, valentine, 爱心, 喜欢, 收藏, ハート, いいね
 heart-crack: heartbreak, broken heart, sad, breakup, 心碎, 失恋
+heart-sparkle: crush, love, new, favorite, sparkle, 心动, 喜欢, 新, ときめき
+heart-pause: pause, wait, hold, break, calm, 暂停, 等待, 一時停止
+heart-dashed: empty, placeholder, locked, not yet, unlock, 空状态, 未解锁, 未開放
+lock-heart: heart lock, padlock, love lock, keepsake, devotion, 爱心锁, 同心锁, 南京錠
 heart-organ: cardiac, anatomy, cardiology, medical, organ, 心脏, 心臓
 heart-pulse: heartbeat, health, cardio, pulse, medical, 心跳
 heart-off: unlike, unfavorite, dislike, 取消收藏
@@ -456,6 +466,7 @@ hologram: projection, 3d, sci-fi, ar, 全息
 home: house, homepage, main, start, dashboard, 首页, 主页, ホーム
 horse: animal, equestrian, riding, pony, 马, 馬
 hospital: medical, clinic, health, building, emergency, 医院, 病院
+hot-spring: onsen, hot spring, spa, bath, steam, ryokan, 温泉, ♨
 hotel: building, lodging, inn, travel, accommodation, 酒店, ホテル
 hourglass: timer, time, wait, loading, sand, 沙漏, 砂時計
 html: html5, web, markup, code, tag
@@ -509,6 +520,12 @@ lighthouse: beacon, coast, sea, navigation, maritime, 灯塔
 line-height: leading, line spacing, typography, text, 行高
 line-segment: line, segment, geometry, draw, vector, 线段
 link: chain, url, hyperlink, connect, attach, 链接, リンク
+lips: lips, mouth, kiss, makeup, lipstick, 嘴唇, 口红, 唇, キス
+lips-whisper: whisper, secret, murmur, speak softly, low voice, quiet, 低语, 耳语, 悄悄话, 小声, 囁き
+figure-female: woman, female, person, silhouette, user, 女性, 人物, 女の人
+peach: fruit, food, peach, summer, 桃子, 水果, 桃
+mood-blush: shy, embarrassed, bashful, flushed, emotion, face, 害羞, 脸红, 照れ
+mood-silence: quiet, hush, shh, silent, zip, zipper mouth, secret, mute, emotion, face, 安静, 嘘, 闭嘴, 保密, 噤声, 静かに, 内緒
 list: bullets, items, menu, todo, unordered, 列表, リスト
 list-ordered: numbered list, ordered, ol, numbers, 有序列表
 live-photo: motion photo, camera, photography, 实况照片
@@ -670,6 +687,7 @@ reset: restore, undo, refresh, revert, 重置
 resistor: circuit, electronics, component, ohm, 电阻
 restroom: toilet, wc, bathroom, lavatory, men, women, 洗手间, 厕所, トイレ
 rewind: back, media, player, 快退, 巻き戻し
+ribbon-bow: bowknot, bow, ribbon, gift, decoration, hair bow, 蝴蝶结, 丝带, 礼物, リボン
 rice: bowl, food, asian, meal, 米饭, ご飯
 rings: wedding, marriage, engagement, couple, spouse, 婚戒, 结婚, 結婚指輪
 robot: bot, ai, android, automation, machine, 机器人, ロボット
@@ -678,6 +696,14 @@ rotate: rotation, turn, clockwise, spin, 旋转, 回転
 rotate-ccw: counterclockwise, rotate left, undo, 逆时针
 route: path, journey, directions, navigation, map, 路线, ルート
 router: wifi, network, modem, internet, 路由器, ルーター
+remote-control: remote, controller, tv, wireless, signal, 遥控器, 遥控, リモコン
+cuffs: handcuffs, police, arrest, prisoner, jail, law, crime, detective, restraint, 手铐, 警察, 逮捕, 手錠
+rope-knot: rope, knot, tie, sailing, nautical, cord, 绳结, 绳子, 打结, 結び目, ロープ
+collar-bell: pet collar, cat bell, jingle bell, collar, bell, pet, cat, kitten, 项圈, 铃铛, 猫铃, 首輪, 鈴
+perfume: fragrance, scent, cologne, spray, atomizer, aroma, 香水, 香气, パフューム
+pearl: shell, clam, oyster, scallop, gem, jewel, 珍珠, 贝壳, 真珠
+devil-tail: halloween, imp, mischief, devil, demon, tail, arrow, prank, costume, 万圣节, 小恶魔, 恶魔, 恶作剧, 尾巴, 箭头, 小悪魔, しっぽ
+devil-tail-spade: halloween, imp, mischief, devil, demon, tail, spade, prank, costume, 万圣节, 小恶魔, 恶魔, 恶作剧, 尾巴, 黑桃, 小悪魔, しっぽ, スペード
 rss: feed, subscribe, news, blog, 订阅
 ruby: programming, gem, rails, code
 rugby: american football, ball, sport, football, 橄榄球, ラグビー
@@ -756,6 +782,7 @@ soccer: football, ball, sport, 足球, サッカー
 sock: socks, clothing, 袜子, 靴下
 soda: drink, cup, straw, soft drink, cola, 饮料, ジュース
 sofa: couch, furniture, living room, 沙发, ソファ
+rug: carpet, mat, floor, living room, fringe, tassel, 地毯, ラグ
 sofa-sparkle: auto furnish, arrange furniture, interior ai, smart layout, 一键布置, 自动摆放, 家具配置
 sort-ascending: a-z, ascending order, sort, 升序
 sort-descending: z-a, descending order, sort, 降序
@@ -929,6 +956,7 @@ warehouse: storage, inventory, logistics, building, 仓库, 倉庫
 washbasin: sink, lavatory, basin, faucet, bathroom, 洗面台, 洗手池
 washing-machine: laundry, washer, appliance, 洗衣机, 洗濯機
 watermelon: fruit, summer, food, 西瓜, スイカ
+wave-crest: wave, surf, ocean, sea, breaker, tide, 浪花, 海浪, 冲浪, 波
 wave-sine: sine wave, oscillation, signal, frequency, 正弦波
 waves: water, sea, ocean, wave, 波浪, 波
 webcam: camera, video call, web camera, 摄像头, ウェブカメラ

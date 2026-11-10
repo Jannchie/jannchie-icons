@@ -35,7 +35,7 @@ const any = (...rules) => name => rules.some(rule => rule(name))
 const EXTRA = {
   basic: ['circle', 'square', 'triangle', 'checkbox', 'radio', 'radio-checked', 'dashed-circle', 'arrows-left-right', 'hexagon', 'pentagon', 'rectangle-horizontal', 'rectangle-vertical'],
   action: ['clock-edit', 'share-arrow', 'import', 'export', 'archive', 'reset', 'replace', 'recycle', 'arrow-up-to-line', 'arrow-down-to-line', 'upgrade', 'inbox', 'clock-refresh', 'task', 'broom', 'dustpan', 'printer', 'qr-code', 'reply', 'reply-all', 'forward'],
-  status: ['heart', 'heart-pulse', 'heart-crack', 'heart-organ', 'thumbs-up', 'thumbs-down', 'tags', 'octagon-x', 'bell-ring', 'star-half', 'badge-check', 'eye-closed'],
+  status: ['heart', 'heart-pulse', 'heart-crack', 'heart-sparkle', 'heart-pause', 'heart-dashed', 'lock-heart', 'heart-organ', 'embrace', 'thumbs-up', 'thumbs-down', 'tags', 'octagon-x', 'bell-ring', 'star-half', 'badge-check', 'eye-closed'],
   editor: ['arrange-bring-to-front', 'arrange-send-to-back', 'arrange-bring-forward', 'arrange-send-backward', 'corner-radius', 'line-height', 'letter-spacing', 'fold-vertical', 'group', 'ungroup', 'distribute-horizontal', 'distribute-vertical', 'fit-to-screen', 'typography', 'compare'],
   screen: ['window-minimize', 'window-maximize', 'window-restore', 'window-close', 'presentation', 'timeline', 'tree-view'],
   dev: ['json', 'html', 'code-block', 'bug', 'regex', 'workflow'],
@@ -47,13 +47,13 @@ const EXTRA = {
   weather: ['moon-star'],
   meeting: ['webcam', 'webcam-off', 'cctv', 'chats', 'collaborate', 'mic-handheld', 'mic-vintage', 'mic-studio', 'megaphone', 'handshake', 'thought-bubble'],
   search: ['map-search', 'globe-search'],
-  object: ['stopwatch', 'toolbox', 'tools', 'graduation-cap', 'glasses', 'glasses-square', 'sunglasses', 'vr-headset', 'goggles', 'ghost', 'gift', 'package', 'receipt', 'map', 'rocket', 'ruler', 'books', 'diamond', 'notebook-pen', 'scale-balance', 'language-hiragana', 'calculator', 'backpack', 'library', 'region', 'hologram', 'sticky-note', 'newspaper', 'watch', 'candle', 'rings',
+  object: ['stopwatch', 'toolbox', 'tools', 'graduation-cap', 'glasses', 'glasses-square', 'sunglasses', 'vr-headset', 'goggles', 'sleep-mask', 'ghost', 'gift', 'package', 'receipt', 'map', 'rocket', 'ruler', 'books', 'diamond', 'notebook-pen', 'scale-balance', 'language-hiragana', 'calculator', 'backpack', 'library', 'region', 'hologram', 'sticky-note', 'newspaper', 'watch', 'candle', 'rings', 'remote-control', 'cuffs', 'rope-knot', 'perfume', 'pearl', 'devil-tail', 'devil-tail-spade',
     // 酒馆、奇幻题材（角色扮演聊天、跑团）：卷轴、羽毛笔、宝箱、药水、水晶球、提灯、巫师帽、挂牌、戏剧面具、木桶
     'scroll', 'quill', 'treasure-chest', 'potion', 'crystal-ball', 'lantern', 'wizard-hat', 'hanging-sign', 'theater-masks', 'barrel'],
   // 制图：地形编辑（抬升、压低、抹平）、沙盘、陆块，和山、波浪放在一起
   // 人物关系：老人（祖辈）、家族树、兄弟姐妹
-  user: ['elder', 'family-tree', 'siblings'],
-  nature: ['terrain-raise', 'terrain-lower', 'terrain-smooth', 'diorama', 'continent', 'campfire'],
+  user: ['elder', 'family-tree', 'siblings', 'figure-female'],
+  nature: ['terrain-raise', 'terrain-lower', 'terrain-smooth', 'diorama', 'continent', 'campfire', 'hot-spring'],
   instrument: ['lute'],
   tabletop: ['go-stones', 'chess-clock'],
 }
@@ -64,7 +64,7 @@ const ENLISTED = ['private', 'corporal', 'sergeant', 'staff-sergeant', 'master-s
 const OFFICER = ['second-lieutenant', 'first-lieutenant', 'captain', 'major', 'lieutenant-colonel', 'colonel', 'major-general', 'lieutenant-general', 'general']
 // 家居：家具 → 卫浴 → 厨房 → 家电 → 装饰小物 → 室内装修（榻榻米、墙纸、边饰、窗帘）
 const HOUSEHOLD = [
-  'sofa', 'sofa-sparkle', 'armchair', 'chair', 'desk', 'bed', 'wardrobe', 'lamp-desk', 'lamp-floor', 'door',
+  'sofa', 'sofa-sparkle', 'rug', 'armchair', 'chair', 'desk', 'bed', 'wardrobe', 'mirror', 'lamp-desk', 'lamp-floor', 'door',
   'bathtub', 'shower', 'toilet', 'washbasin', 'pump-bottle',
   'stove', 'cooking-pot', 'refrigerator', 'washing-machine', 'microwave', 'air-conditioner', 'air-conditioner-outdoor',
   'potted-plant', 'vase', 'picture-frame', 'teddy-bear',
@@ -287,7 +287,7 @@ export const CATEGORIES = [
     section: name => name.startsWith('manga-shout') ? { order: 1, key: 'manga-shout' } : { order: 0, key: 'manga-bubble' },
     rank: name => Object.keys(MANGA).indexOf(name.replace(/^manga-(?:bubble|shout)-?/, '') || 'empty'),
   },
-  { id: 'symbol', match: oneOf('pentagram', 'hexagram', 'asterisk', 'yin-yang', 'bagua', 'peace') },
+  { id: 'symbol', match: oneOf('pentagram', 'hexagram', 'asterisk', 'yin-yang', 'bagua', 'peace', 'circles-interlocked') },
   // 传统的导航、计时器具：舵、罗经玫瑰、司南、日晷
   { id: 'antique', match: oneOf('helm', 'compass-rose', 'sinan', 'sundial'), rank: name => ['helm', 'compass-rose', 'sinan', 'sundial'].indexOf(name) },
   {
@@ -348,10 +348,10 @@ export const CATEGORIES = [
   // OKTA 的键是 '0'…'8' 和 'obscured'：整数键在对象里自动排前面
   { id: 'okta', match: prefixed('okta-'), rank: name => Object.keys(OKTA).indexOf(name.slice(5)) },
   { id: 'shopping', match: any(prefixed('cart'), oneOf('shopping-bag', 'basket', 'ticket', 'discount', 'barcode')) },
-  { id: 'food', match: oneOf('meat', 'steak', 'bacon', 'fish', 'egg', 'egg-fried', 'milk', 'wine', 'beer', 'cocktail', 'sake', 'coffee', 'apple', 'carrot', 'bread', 'cheese', 'rice', 'utensils', 'cake', 'cookie', 'cupcake', 'donut', 'ice-cream', 'candy', 'lollipop', 'pizza', 'burger', 'cherry', 'grapes', 'banana', 'lemon', 'watermelon', 'strawberry', 'popcorn', 'onigiri', 'soda', 'teapot') },
-  { id: 'nature', match: oneOf('tree', 'tree-pine', 'tree-palm', 'sprout', 'leaf', 'leaves', 'flower', 'tulip', 'clover', 'cactus', 'mushroom', 'feather', 'mountain', 'waves', 'flame') },
-  // 动物：正面头像（猫、狗、猪、牛）、侧面剪影（马、鸟、龟，朝左，和兔子、蜗牛同向）、俯视（蜜蜂、蝴蝶）、爪印
-  { id: 'animal', match: oneOf('paw', 'cat', 'dog', 'pig', 'cow', 'horse', 'bird', 'turtle', 'bee', 'butterfly', 'butterfly-small', 'butterfly-swallowtail') },
+  { id: 'food', match: oneOf('meat', 'steak', 'bacon', 'fish', 'egg', 'egg-fried', 'milk', 'wine', 'beer', 'cocktail', 'sake', 'coffee', 'apple', 'peach', 'carrot', 'bread', 'cheese', 'rice', 'utensils', 'cake', 'cookie', 'cupcake', 'donut', 'ice-cream', 'candy', 'lollipop', 'pizza', 'burger', 'cherry', 'grapes', 'banana', 'lemon', 'watermelon', 'strawberry', 'popcorn', 'onigiri', 'soda', 'teapot') },
+  { id: 'nature', match: oneOf('tree', 'tree-pine', 'tree-palm', 'sprout', 'leaf', 'leaves', 'flower', 'tulip', 'clover', 'cactus', 'mushroom', 'feather', 'mountain', 'waves', 'wave-crest', 'flame') },
+  // 动物：正面头像（猫、狗、猪、牛）、侧面剪影（马、鸟、龟，朝左，和兔子、蜗牛同向）、俯视（蜜蜂、蝴蝶）、爪印，宠物项圈（collar-bell）也放这里
+  { id: 'animal', match: oneOf('paw', 'cat', 'dog', 'pig', 'cow', 'horse', 'bird', 'turtle', 'bee', 'butterfly', 'butterfly-small', 'butterfly-swallowtail', 'collar-bell') },
   // 民用交通：车（侧视、车头朝右）、飞机、船，以及加油、充电、停车、路锥、红绿灯这些路上的设施
   { id: 'transport', match: oneOf('car', 'taxi', 'bus', 'truck', 'bike', 'motorcycle', 'scooter', 'plane', 'plane-takeoff', 'plane-landing', 'ship', 'sailboat', 'fuel', 'ev-charger', 'parking', 'traffic-light', 'traffic-cone') },
   { id: 'hardware', match: oneOf('usb', 'usb-c', 'usb-a', 'usb-drive', 'hdmi', 'ethernet', 'sd-card', 'cpu', 'gpu', 'memory', 'hard-drive', 'ssd', 'fan', 'mouse') },
@@ -366,7 +366,7 @@ export const CATEGORIES = [
   },
   { id: 'instrument', match: oneOf('guitar', 'violin', 'piano', 'drum', 'trumpet', 'saxophone', 'flute', 'harmonica', 'metronome') },
   { id: 'weapon', match: oneOf('sword', 'swords', 'dagger', 'bow', 'axe', 'spear', 'hammer', 'bomb', 'pistol') },
-  { id: 'clothing', match: any(prefixed('shoe'), oneOf('t-shirt', 'dress', 'pants', 'cap', 'hat', 'sock', 'hanger')) },
+  { id: 'clothing', match: any(prefixed('shoe'), oneOf('t-shirt', 'dress', 'pants', 'cap', 'hat', 'sock', 'hanger', 'dress-form', 'ribbon-bow')) },
   {
     id: 'controller',
     match: prefixed('xbox-', 'playstation-', 'dpad', 'controller-'),
@@ -385,10 +385,10 @@ export const CATEGORIES = [
   { id: 'tool', match: oneOf(...TOOLS), rank: name => TOOLS.indexOf(name) },
   {
     id: 'object',
-    match: oneOf('key', 'palette', 'pin', 'pin-diagonal', 'hourglass', 'alarm-clock', 'timer', 'flag', 'flag-plain', 'flag-pennant', 'flag-wave', 'flag-checkered', 'flag-banner', 'target', 'compass', 'keyboard', 'globe', 'languages', 'languages-sparkle', 'lightbulb', 'tada', 'zap', 'rabbit', 'snail', 'magnet', 'footprint'),
+    match: oneOf('key', 'palette', 'pin', 'pin-diagonal', 'hourglass', 'alarm-clock', 'timer', 'flag', 'flag-plain', 'flag-pennant', 'flag-wave', 'flag-checkered', 'flag-banner', 'target', 'compass', 'keyboard', 'globe', 'languages', 'languages-sparkle', 'lightbulb', 'tada', 'zap', 'rabbit', 'snail', 'magnet', 'footprint', 'lips', 'lips-whisper'),
   },
   // 电源与开关：oneOf 会先去掉名字末尾的 -off，所以 toggle-off、label-off 分别按 toggle、label 匹配（power-state-off 直接列出）
-  { id: 'ui', match: any(prefixed('cursor', 'battery'), oneOf('hand-grab', 'settings', 'theme', 'wifi', 'signal', 'bluetooth', 'power', 'power-state-on', 'power-state-off', 'power-toggle', 'toggle', 'toggle-on', 'label', 'label-on')) },
+  { id: 'ui', match: any(prefixed('cursor', 'battery'), oneOf('hand-grab', 'touch-ripple', 'settings', 'theme', 'wifi', 'signal', 'bluetooth', 'power', 'power-state-on', 'power-state-off', 'power-toggle', 'toggle', 'toggle-on', 'label', 'label-on')) },
   { id: 'other', match: () => true },
 ]
 
