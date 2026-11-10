@@ -1,7 +1,18 @@
-import { pipeline, pipelineFill } from '../modality'
+import { dot } from '../scene'
 
-// Hugging Face 任务：摘要（doc › text）
-export default ({ radius }) => pipeline(['doc'], 'text', radius)
-
-// 实心：同样的构图，闭合的符号填实（见 modality.js 的 MF）
-export const fill = ({ radius, stroke }) => pipelineFill(['doc'], 'text', radius, stroke)
+// Hugging Face 任务：摘要。两行文字，第三行是一个省略号：后面的长文被略掉了，只留要点
+// 没有用「上下箭头把文字压扁」（和库里的 fold-vertical 一样）或「逐行变短」（和 sort、filter 一样）
+// 三行的中心线在 6 / 12 / 18：行距 6（16px 下 4 像素，同一个像素相位）、以画布中线对称；
+// 三行等距又对称时中心线只能在整数上，细字重下 grid 审计会提示（接受）
+// 省略号：三个直径 2 的点，圆心 4.5 / 9 / 13.5（间距 4.5 = 16px 下 3 像素）
+// 纯线条图标，实心版和描边版相同，不单独导出 fill
+export default ({ stroke }) => {
+  const h = stroke / 2
+  return [
+    `M${3 + h} 6H${21 - h}`,
+    `M${3 + h} 12H${21 - h}`,
+    dot(4.5, 18, 2),
+    dot(9, 18, 2),
+    dot(13.5, 18, 2),
+  ]
+}

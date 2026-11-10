@@ -1,7 +1,17 @@
-import { pipeline, pipelineFill } from '../modality'
+import { rounded } from '../geometry'
 
-// Hugging Face 任务：词元分类（tokens › tag）
-export default ({ radius }) => pipeline(['tokens'], 'tag', radius)
-
-// 实心：同样的构图，闭合的符号填实（见 modality.js 的 MF）
-export const fill = ({ radius, stroke }) => pipelineFill(['tokens'], 'tag', radius, stroke)
+// Hugging Face 任务：词元分类（命名实体识别）。三行文字，中间一行开头的一个词是实心的粗块：被标出来的那个实体
+// 和 fill-mask 成对：那边是空心的框（缺的词），这边是实心的块（标出的词）
+// 三行的中心线在 6 / 12 / 18：行距 6（16px 下 4 像素，三行同一个像素相位）、以画布中线对称；
+// 三行等距又对称时中心线只能在整数上，细字重下 grid 审计会提示（接受）
+// 词块的中心线 左缘–11.25 × 9–15（墨迹 3–12 × 8.25–15.75，离上下两行各 1.5）；这一行剩下的字从墨迹 13.5 起，离词块 1.5
+// 词块在描边版里已经是实心的，实心版和描边版相同，不单独导出 fill
+export default ({ radius, stroke }) => {
+  const h = stroke / 2
+  return [
+    `M${3 + h} 6H${21 - h}`,
+    { d: rounded([[3 + h, 9], [11.25, 9], [11.25, 15], [3 + h, 15]], Math.min(radius, 1.5)), fill: true },
+    `M14.25 12H${21 - h}`,
+    `M${3 + h} 18H14.25`,
+  ]
+}

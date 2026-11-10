@@ -22,7 +22,7 @@ import { SENSORS } from './sensor'
 import { ECHELON, FRAMES, UNIT } from './unit'
 import { TALLY } from './tally'
 import { OKTA } from './okta'
-import { AI_TASKS } from './modality'
+import { AI_TASKS } from './ai'
 import { ratingName, SYSTEMS } from './rating'
 
 const family = prefix => name => name === prefix || name.startsWith(`${prefix}-`)

@@ -1,4 +1,21 @@
-import { pipeline } from '../modality'
+// Hugging Face 任务：音频到音频（降噪、分离、变声）。一段波形从左到右换了样子：左边三根高低不齐的竖条（原始、嘈杂的声音），
+// 右边接一段平滑的正弦波（处理后的干净声音）。没有箭头，是同一段声音的前后两种形态
+// 第一版是「尖齿折线 → 正弦」一条线，16px 下前后都糊成波浪、看不出区别；竖条和曲线的质感差得远，小尺寸下也分得开
+// 竖条按墨迹的左缘定（3 / 6 / 9，线宽变粗时往右长），上下墨迹 8.25–15.75 / 4.5–19.5 / 6.75–17.25，间隔 1.5；
+// 正弦从墨迹 12 起到 21 止（离最后一根竖条 1.5），一个整周期，振幅 4.5
+const f = n => +n.toFixed(3)
+const A = 4.5
 
-// Hugging Face 任务：音频到音频（audio › audio）
-export default ({ radius }) => pipeline(['audio'], 'audio', radius)
+// 纯线条图标，实心版和描边版相同，不单独导出 fill
+export default ({ stroke }) => {
+  const h = stroke / 2
+  const bars = [[3, 8.25, 15.75], [6, 4.5, 19.5], [9, 6.75, 17.25]].map(([x, t, b]) => `M${x + h} ${t + h}V${b - h}`)
+  const [x0, x1] = [12 + h, 21 - h]
+  const L = (x1 - x0) / 2 // 半个周期
+  // 三次曲线近似半个正弦：控制点横向 4L/3π、纵向 4A/3
+  const [cx, cy] = [4 * L / (3 * Math.PI), 4 * A / 3]
+  return [
+    ...bars,
+    `M${x0} 12C${f(x0 + cx)} ${f(12 - cy)} ${f(x0 + L - cx)} ${f(12 - cy)} ${f(x0 + L)} 12C${f(x0 + L + cx)} ${f(12 + cy)} ${f(x1 - cx)} ${f(12 + cy)} ${x1} 12`,
+  ]
+}

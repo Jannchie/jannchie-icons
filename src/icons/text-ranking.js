@@ -1,4 +1,15 @@
-import { pipeline } from '../modality'
-
-// Hugging Face 任务：文本排序（text › rank）
-export default ({ radius }) => pipeline(['text'], 'rank', radius)
+// Hugging Face 任务：文本排序（重排序）。左边一个通栏高的「1」，右边三行由长到短的文字：排好了序，第一名在最上面
+// 库里的 list-ordered 是三个小数字 1 2 3 + 三行等长的线；这里只有一个大 1，三行按得分递减
+// 三行的中心线在 6 / 12 / 18：行距 6（16px 下 4 像素，同一个像素相位）、以画布中线对称；
+// 三行等距又对称时中心线只能在整数上，细字重下 grid 审计会提示（接受）
+// 「1」：竖笔的左缘在 5（线宽变粗时往右长），上下和三行的墨迹齐平；左上一道斜的起笔
+// 纯线条图标，实心版和描边版相同，不单独导出 fill
+export default ({ stroke }) => {
+  const h = stroke / 2
+  return [
+    `M3.25 8.25L${5 + h} 6V18`,
+    `M9.75 6H${21 - h}`,
+    'M9.75 12H17.25',
+    'M9.75 18H14.25',
+  ]
+}

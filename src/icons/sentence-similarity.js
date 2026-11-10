@@ -1,4 +1,12 @@
-import { pipeline } from '../modality'
+// Hugging Face 任务：句子相似度。上下两行等长的文字（两句话），中间夹着一个约等号 ≈：这两句话意思相近
+// 库里的 approx 只有 ≈，没有上下两行
+// 两行字的外缘在 3 / 21（3 的整数倍：细字重和 16px 下都清晰），线宽变粗时往里长；
+// 两道波浪线的中线在 9.25 / 14.75，起伏 ±1.1（墨迹约 7.4–11.1 / 12.9–16.6），彼此空 1.75，离上下两行 3 左右；
+// 波浪线比文字短一截（4.5–19.5），和 approx 同一个造型
+const wave = y => `M4.5 ${y}C7 ${y - 1.5} 9.5 ${y - 1.5} 12 ${y}C14.5 ${y + 1.5} 17 ${y + 1.5} 19.5 ${y}`
 
-// Hugging Face 任务：句子相似度（text + text › score）
-export default ({ radius }) => pipeline(['text', 'text'], 'score', radius)
+// 纯线条图标，实心版和描边版相同，不单独导出 fill
+export default ({ stroke }) => {
+  const h = stroke / 2
+  return [`M${3 + h} ${3 + h}H${21 - h}`, wave(9.25), wave(14.75), `M${3 + h} ${21 - h}H${21 - h}`]
+}

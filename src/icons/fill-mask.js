@@ -1,7 +1,18 @@
-import { pipeline, pipelineFill } from '../modality'
+import { rounded } from '../geometry'
 
-// Hugging Face 任务：完形填空（text › blank）
-export default ({ radius }) => pipeline(['text'], 'blank', radius)
-
-// 实心：同样的构图，闭合的符号填实（见 modality.js 的 MF）
-export const fill = ({ radius, stroke }) => pipelineFill(['text'], 'blank', radius, stroke)
+// Hugging Face 任务：完形填空（掩码语言模型）。三行文字，中间一行正中的词被挖掉了，留下一个空心的框（[MASK]）
+// 和 token-classification 成对：那边是一个实心的词块（被标出来的词），这边是空心的框（缺的词）
+// 三行的中心线在 6 / 12 / 18：行距 6（16px 下 4 像素，三行同一个像素相位，见 docs/design.md）、以画布中线对称；
+// 三行等距又对称时中心线只能在整数上，细字重下 grid 审计会提示（接受）
+// 框的中心线 7.5–16.5 × 9–15（和三行同相位），墨迹离上下两行各 1.5；框左右各剩一小段字（墨迹 3–5.25 / 18.75–21），离框 1.5
+// 纯线条图标（框保持空心），实心版和描边版相同，不单独导出 fill
+export default ({ radius, stroke }) => {
+  const h = stroke / 2
+  return [
+    `M${3 + h} 6H${21 - h}`,
+    `M${3 + h} 12H4.5`,
+    rounded([[7.5, 9], [16.5, 9], [16.5, 15], [7.5, 15]], Math.min(radius, 1.5)),
+    `M19.5 12H${21 - h}`,
+    `M${3 + h} 18H14.25`,
+  ]
+}

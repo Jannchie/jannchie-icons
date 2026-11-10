@@ -1,15 +1,25 @@
 import { crisp, rounded } from '../geometry'
-import { M, MF } from '../modality'
 
-// Hugging Face 任务：强化学习。上方智能体（立方体）与下方环境（地球线）之间一对循环箭头：动作往下、反馈往上
-const loop = radius => [
-  'M3.5 20.5H20.5',
-  'M6.5 10.5V17',
-  rounded([[4.5, 15], [6.5, 17], [8.5, 15]], crisp(radius), false),
-  'M17.5 17V10.5',
-  rounded([[15.5, 12.5], [17.5, 10.5], [19.5, 12.5]], crisp(radius), false),
-]
-export default ({ radius }) => [...M.cube([12, 6], 1, radius), ...loop(radius)]
+// Hugging Face 任务：强化学习。两段首尾相追的弧形箭头围成一个环（智能体和环境之间一轮一轮的交互），环的中心一颗实心五角星（奖励）
+// 库里的 refresh 是一段弧 + 一个箭头，repeat 是方的；这里是两段弧、中间有星
+// 环：圆心 (12, 12)、半径 7.75，上下两段各 140°，两段之间各空 40° 放箭头；箭头两翼长 3，和前进方向各成 40°
+// 五角星：外径 4、内径 1.9（比标准的胖，角更钝），连描边离环的内缘 2 以上
+const R = 7.75
+const rad = a => a * Math.PI / 180
+const f = n => +n.toFixed(3)
+const at = (a, r = R) => [f(12 + r * Math.cos(rad(a))), f(12 + r * Math.sin(rad(a)))]
+// 从 a0 顺时针画到 a1 的一段弧，末端带箭头
+const arc = (a0, a1, radius) => {
+  const [s, e] = [at(a0), at(a1)]
+  // 末端的前进方向是切线方向 a1 + 90°；两翼从箭头尖往回、各偏 40°
+  const wing = d => [f(e[0] + 3 * Math.cos(rad(a1 + 90 + 180 + d))), f(e[1] + 3 * Math.sin(rad(a1 + 90 + 180 + d)))]
+  return [`M${s[0]} ${s[1]}A${R} ${R} 0 0 1 ${e[0]} ${e[1]}`, rounded([wing(40), e, wing(-40)], crisp(radius), false)]
+}
+const star = {
+  d: `M${Array.from({ length: 10 }, (_, i) => at(-90 + i * 36, i % 2 ? 1.9 : 4).join(' ')).join('L')}Z`,
+  fill: true,
+  round: true,
+}
 
-// 实心：立方体用 MF.cube（三个面），地面线和循环箭头照旧
-export const fill = ({ radius }) => [...MF.cube([12, 6], 1, radius), ...loop(radius)]
+// 星在描边版里已经是实心的，实心版和描边版相同，不单独导出 fill
+export default ({ radius }) => [...arc(200, 340, radius), ...arc(20, 160, radius), star]

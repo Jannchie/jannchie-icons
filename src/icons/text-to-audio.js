@@ -1,7 +1,13 @@
-import { pipeline, pipelineFill } from '../modality'
+import { star4 } from '../ai'
 
-// Hugging Face 任务：文本到音频（text › music）
-export default ({ radius }) => pipeline(['text'], 'music', radius)
+// Hugging Face 任务：文本到音频（音效、音乐生成）。一段波形竖条，最右边本该是竖条的位置换成一颗实心四角星：凭一句话生成的声音
+// audio-to-audio 的右半是一段正弦波；text-to-speech 是气泡 + 声波弧
+// 竖条按墨迹的左缘定（3 / 6 / 9，线宽变粗时往右长），上下墨迹 9–15 / 4.5–19.5 / 7.5–16.5；
+// 星：中心 (16.75, 12)，尖到中心 4（连描边 12–21.5），左尖离最后一根竖条 1.5，粗字重下还剩 0.75
+const star = star4(16.75, 12, 4)
 
-// 实心：同样的构图，闭合的符号填实（见 modality.js 的 MF）
-export const fill = ({ radius, stroke }) => pipelineFill(['text'], 'music', radius, stroke)
+// 星在描边版里已经是实心的，实心版和描边版相同，不单独导出 fill
+export default ({ stroke }) => {
+  const h = stroke / 2
+  return [...[[3, 9, 15], [6, 4.5, 19.5], [9, 7.5, 16.5]].map(([x, t, b]) => `M${x + h} ${t + h}V${b - h}`), star]
+}

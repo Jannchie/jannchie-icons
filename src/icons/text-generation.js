@@ -1,7 +1,14 @@
-import { pipeline, pipelineFill } from '../modality'
-
-// Hugging Face 任务：文本生成（any › text）
-export default ({ radius }) => pipeline(['any'], 'text', radius)
-
-// 实心：同样的构图，闭合的符号填实（见 modality.js 的 MF）
-export const fill = ({ radius, stroke }) => pipelineFill(['any'], 'text', radius, stroke)
+// Hugging Face 任务：文本生成（LLM）。三行文字，最后一行只写了一小段，后面立着一根高出一截的光标：正在往下写
+// 库里的 text 是字母 T，cursor-text 只有一根工字光标
+// 三行的中心线在 5 / 11 / 17：行距 6（16px 下 4 像素，三行同一个像素相位，见 docs/design.md）；
+// 行在整数上、不在 .5 上（细字重下 grid 审计会提示）：三行加一根往下伸的光标要以画布中线对称，只能这么放
+// 光标：x 13.5，中心线 14.5–19（墨迹到 19.75），离上一行 2、离左边的半行字 2.25。整体墨迹框 3–21 × 4.25–19.75
+export default ({ stroke }) => {
+  const h = stroke / 2
+  return [
+    `M${3 + h} 5H${21 - h}`,
+    `M${3 + h} 11H${21 - h}`,
+    `M${3 + h} 17H9.75`,
+    'M13.5 14.5V19',
+  ]
+}
