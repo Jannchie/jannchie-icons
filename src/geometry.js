@@ -40,6 +40,12 @@ export function rounded(points, radius, closed = true) {
   return `M${pt(cs[0].end)}${cs.slice(1).map(arc).join('')}${arc(cs[0])}Z`
 }
 
+// 外缘固定在 [x0, y0, x1, y1] 的圆角矩形框：中心线往里收半个线宽，线宽变粗只往里长
+export function frame(stroke, radius, [x0, y0, x1, y1]) {
+  const h = stroke / 2
+  return rounded([[x0 + h, y0 + h], [x1 - h, y0 + h], [x1 - h, y1 - h], [x0 + h, y1 - h]], radius)
+}
+
 // 直线段 a→b，起点往外伸 e0、终点往外伸 e1（实心版里把挖空线穿出外轮廓，切得干净）
 export function through([ax, ay], [bx, by], e0, e1 = e0) {
   const l = Math.hypot(bx - ax, by - ay)
@@ -47,5 +53,27 @@ export function through([ax, ay], [bx, by], e0, e1 = e0) {
   return `M${fmt(ax - ux * e0)} ${fmt(ay - uy * e0)}L${fmt(bx + ux * e1)} ${fmt(by + uy * e1)}`
 }
 
+// 径向线段：从圆心 c 沿 deg 方向（度；0° 朝右，y 轴朝下所以正角度是顺时针），从半径 from 画到 to
+export function ray([cx, cy], deg, from, to) {
+  const [c, s] = [Math.cos(deg * Math.PI / 180), Math.sin(deg * Math.PI / 180)]
+  return `M${fmt(cx + from * c)} ${fmt(cy + from * s)}L${fmt(cx + to * c)} ${fmt(cy + to * s)}`
+}
+
 // 圆
 export const circle = (cx, cy, r) => `M${fmt(cx - r)} ${fmt(cy)}a${fmt(r)} ${fmt(r)} 0 1 0 ${fmt(r * 2)} 0a${fmt(r)} ${fmt(r)} 0 1 0 ${fmt(-r * 2)} 0`
+
+// 椭圆（闭合，从左端起笔）
+export const oval = (cx, cy, rx, ry) => `M${fmt(cx - rx)} ${fmt(cy)}A${fmt(rx)} ${fmt(ry)} 0 1 0 ${fmt(cx + rx)} ${fmt(cy)}A${fmt(rx)} ${fmt(ry)} 0 1 0 ${fmt(cx - rx)} ${fmt(cy)}Z`
+
+// 两个圆（圆心 c0 半径 r0、圆心 c1 半径 r1）的两个交点，不取整：从 c0 朝 c1 看，第一个在右手边（y 轴朝下），第二个在左手边
+// 两个圆连成一条轮廓（熊的脑袋和耳朵、葫芦的两个肚子）时，轮廓在这两点上换弧
+export function meet([x0, y0], r0, [x1, y1], r1) {
+  const d = Math.hypot(x1 - x0, y1 - y0)
+  const [ux, uy] = [(x1 - x0) / d, (y1 - y0) / d]
+  const along = (r0 * r0 - r1 * r1 + d * d) / (2 * d)
+  const off = Math.sqrt(r0 * r0 - along * along)
+  return [
+    [x0 + along * ux - off * uy, y0 + along * uy + off * ux],
+    [x0 + along * ux + off * uy, y0 + along * uy - off * ux],
+  ]
+}

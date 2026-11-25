@@ -4,7 +4,7 @@
 // 外缘尽量取 3 的整数倍：既是整数（细字重下中心线落在 .5 上），又是 1.5 的整数倍（16px 下两条边都落在像素边界上），
 // 线宽变粗时往里长
 import { GAP } from './clearance'
-import { crisp, rounded, through } from './geometry'
+import { crisp, frame as inset, rounded, through } from './geometry'
 import { dot } from './scene'
 import { clear, knock, solid } from './solid'
 import { shrink } from './tag'
@@ -38,10 +38,7 @@ export const star4 = (cx, cy, R, C = 0) => ({
 
 // ---------- 相框（图片） ----------
 // 相框：外缘 [x0, y0, x1, y1]，线宽往里长
-export const frame = (stroke, radius, [x0, y0, x1, y1] = [3, 3, 21, 21]) => {
-  const h = stroke / 2
-  return rounded([[x0 + h, y0 + h], [x1 - h, y0 + h], [x1 - h, y1 - h], [x0 + h, y1 - h]], radius)
-}
+export const frame = (stroke, radius, box = [3, 3, 21, 21]) => inset(stroke, radius, box)
 // 3–21 相框里的山脊：两条 45° 斜线，山顶 (8.25, 12.75)，两端落在相框左边、底边的中心线上
 export const ridge = (stroke) => {
   const [a, b] = [3 + stroke / 2, 21 - stroke / 2]
