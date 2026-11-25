@@ -11,6 +11,10 @@
     "bold @(13.5, 12)",
     "regular @(13.5, 12)"
   ],
+  "abacus": [
+    "bold @(12, 12)",
+    "bold @(12, 9.5)"
+  ],
   "airplay": [
     "bold @(12, 11)"
   ],
@@ -64,6 +68,10 @@
     "bold @(14.8, 18)",
     "bold @(14.8, 21)"
   ],
+  "astronaut": [
+    "bold @(12, 10.8)",
+    "bold @(12, 11)"
+  ],
   "audio-classification": [
     "bold @(11.9, 12)",
     "bold @(17.8, 11.8)",
@@ -115,6 +123,9 @@
     "regular @(5.4, 20.3)",
     "regular @(6.8, 18.9)"
   ],
+  "balloon": [
+    "bold @(12, 9.3)"
+  ],
   "ban-list": [
     "bold @(14.8, 15)",
     "bold @(14.8, 18)",
@@ -148,6 +159,9 @@
   "battery-warning": [
     "bold @(11, 10.6)",
     "bold @(11, 12)"
+  ],
+  "bear": [
+    "regular @(12, 17.3)"
   ],
   "bee": [
     "bold @(12, 13.5)",
@@ -216,6 +230,9 @@
     "bold @(14.8, 18)",
     "bold @(14.8, 21)"
   ],
+  "boombox": [
+    "bold @(12, 14)"
+  ],
   "bowling": [
     "bold @(7, 13.8)",
     "bold @(9.3, 12.6)"
@@ -277,6 +294,9 @@
   ],
   "broom": [
     "bold @(7.8, 7.8)"
+  ],
+  "bubble-tea": [
+    "bold @(12, 14)"
   ],
   "bug": [
     "bold @(12, 14.3)",
@@ -535,6 +555,9 @@
     "regular @(12, 7.8)",
     "regular @(12, 9.3)"
   ],
+  "christmas-tree": [
+    "regular @(12, 12.7)"
+  ],
   "church": [
     "bold @(12, 13.1)",
     "bold @(17.5, 16)",
@@ -624,6 +647,9 @@
   "darts": [
     "regular @(11, 14.5)",
     "regular @(9.5, 10.8)"
+  ],
+  "deer": [
+    "regular @(12, 14)"
   ],
   "depth-estimation": [
     "bold @(18, 14.3)",
@@ -936,6 +962,9 @@
   "hospital": [
     "bold @(12, 17.5)"
   ],
+  "hot-dog": [
+    "bold @(12, 12)"
+  ],
   "hotel": [
     "bold @(12, 12)",
     "bold @(12, 13.5)",
@@ -944,6 +973,9 @@
   "html": [
     "bold @(12, 12)",
     "bold @(12, 8.5)"
+  ],
+  "igloo": [
+    "bold @(12, 12.5)"
   ],
   "image-classification": [
     "bold @(11.1, 12)",
@@ -1031,6 +1063,9 @@
   ],
   "keypoint-detection": [
     "regular @(6, 12)"
+  ],
+  "kite": [
+    "bold @(12.1, 10.3)"
   ],
   "laundry-bleach-non-chlorine": [
     "bold @(12, 11.8)"
@@ -1166,6 +1201,9 @@
     "bold @(12, 12)"
   ],
   "mark-zhun-circle": [
+    "bold @(12, 12)"
+  ],
+  "markdown": [
     "bold @(12, 12)"
   ],
   "mask-generation": [
@@ -1320,11 +1358,19 @@
     "bold @(12, 7)",
     "regular @(12, 12)"
   ],
+  "panda": [
+    "bold @(15.2, 12.3)",
+    "bold @(8.8, 12.3)"
+  ],
   "pants": [
     "regular @(12, 12)"
   ],
   "pen": [
     "bold @(16.6, 10.1)"
+  ],
+  "penguin": [
+    "regular @(10, 6.3)",
+    "regular @(14, 6.3)"
   ],
   "pizza": [
     "bold @(12, 12.6)",
@@ -1362,6 +1408,9 @@
   ],
   "post-office": [
     "bold @(12, 11)"
+  ],
+  "power-bank": [
+    "bold @(12, 12)"
   ],
   "price-coins-bitcoin-1": [
     "bold @(20, 10.5)",
@@ -1554,6 +1603,14 @@
     "bold @(11, 18.5)",
     "bold @(12, 12.5)",
     "bold @(12, 16.5)"
+  ],
+  "prism": [
+    "bold @(11, 11.7)",
+    "regular @(11, 11.7)",
+    "regular @(18.9, 13)"
+  ],
+  "projector": [
+    "bold @(12, 12.5)"
   ],
   "puzzle-list": [
     "bold @(14.8, 15)",
@@ -1818,6 +1875,10 @@
     "bold @(14.8, 18)",
     "bold @(14.8, 21)"
   ],
+  "spider": [
+    "bold @(12, 8.5)",
+    "regular @(12, 8.5)"
+  ],
   "ssd": [
     "bold @(15.5, 12)",
     "bold @(9.5, 12)"
@@ -1860,6 +1921,9 @@
   ],
   "surf": [
     "bold @(12, 17.2)"
+  ],
+  "sushi": [
+    "bold @(12, 16)"
   ],
   "swords": [
     "regular @(15.9, 15.9)",

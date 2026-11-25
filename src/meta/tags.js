@@ -701,6 +701,144 @@ cuffs: handcuffs, police, arrest, prisoner, jail, law, crime, detective, restrai
 rope-knot: rope, knot, tie, sailing, nautical, cord, 绳结, 绳子, 打结, 結び目, ロープ
 collar-bell: pet collar, cat bell, jingle bell, collar, bell, pet, cat, kitten, 项圈, 铃铛, 猫铃, 首輪, 鈴
 perfume: fragrance, scent, cologne, spray, atomizer, aroma, 香水, 香气, パフューム
+anchor: nautical, ship, boat, harbor, port, marine, sea, 锚, 船锚, 港口, 錨, いかり
+train: railway, rail, bullet train, shinkansen, high-speed rail, metro, subway, transit, 列车, 火车, 高铁, 地铁, 電車, 新幹線
+luggage: suitcase, baggage, travel, trip, trolley, carry-on, 行李箱, 拉杆箱, 旅行, スーツケース, 荷物
+passport: travel, visa, id, identity, border, immigration, document, 护照, 签证, 出入境, パスポート
+gavel: judge, law, legal, court, auction, verdict, justice, moderation, 法槌, 法律, 法院, 拍卖, 裁判, 小槌
+safe: vault, strongbox, security, deposit, valuables, bank, 保险箱, 保险柜, 金库, 金庫
+siren: alarm, alert, emergency, police, beacon, warning light, 警灯, 警报, 紧急, サイレン, 警報
+lifebuoy: life ring, life preserver, rescue, help, support, lifesaver, 救生圈, 救援, 帮助, 浮き輪, 救命浮輪
+fire-extinguisher: fire safety, emergency, extinguish, safety equipment, 灭火器, 消防, 消火器
+incognito: private, anonymous, spy, detective, privacy, hidden, stealth, 无痕, 隐身, 匿名, 隐私, シークレット
+walk: walking, pedestrian, hike, stroll, steps, exercise, 步行, 走路, 行人, 散步, 歩く, 徒歩
+balloon: party, birthday, celebration, festival, helium, 气球, 生日, 庆祝, 風船
+bucket: pail, water, cleaning, mop, container, 水桶, 桶, バケツ
+ladder: climb, steps, construction, reach, rungs, 梯子, 爬梯, はしご
+knife: chef knife, kitchen knife, blade, cut, cooking, cutlery, 厨刀, 菜刀, 刀, 包丁, ナイフ
+frying-pan: pan, skillet, cook, fry, cookware, kitchen, 平底锅, 煎锅, 炒锅, フライパン
+chef-hat: cook, chef, cooking, recipe, kitchen, restaurant, toque, 厨师帽, 厨师, 烹饪, 菜谱, コック帽, 料理
+ramen: noodles, noodle soup, bowl, chopsticks, japanese food, hot food, 拉面, 面条, 汤面, ラーメン, 麺
+sushi: nigiri, shrimp, japanese food, seafood, rice, 寿司, 握寿司, すし
+dumpling: jiaozi, gyoza, potsticker, chinese food, 饺子, 煎饺, 餃子
+dango: mochi, skewer, japanese sweets, wagashi, hanami, dessert, 团子, 三色团子, 和果子, 団子, だんご
+folding-fan: hand fan, sensu, paper fan, traditional, summer, 折扇, 扇子, せんす
+paper-lantern: chinese lantern, red lantern, chochin, festival, new year, lunar new year, 灯笼, 红灯笼, 春节, 提灯, ちょうちん
+red-envelope: hongbao, red packet, lucky money, gift money, lunar new year, bonus, 红包, 压岁钱, 利是, お年玉, ご祝儀
+shuriken: ninja star, throwing star, ninja, weapon, 手里剑, 忍者, 飞镖, 手裏剣
+gourd: calabash, bottle gourd, hulu, lucky charm, 葫芦, 瓢箪, ひょうたん
+abacus: suanpan, soroban, counting, calculate, arithmetic, math, 算盘, 珠算, そろばん
+bamboo: plant, zen, nature, panda food, 竹子, 竹, たけ
+fox: animal, wildlife, kitsune, 狐狸, 狐, きつね
+bear: animal, wildlife, teddy, grizzly, 熊, くま
+panda: animal, bear, bamboo, china, 熊猫, 大熊猫, パンダ
+frog: animal, amphibian, toad, 青蛙, 蛙, カエル
+owl: animal, bird, night, wisdom, 猫头鹰, フクロウ
+tie: necktie, formal, business, suit, office, dress code, 领带, 正装, ネクタイ
+handbag: purse, bag, fashion, tote, accessory, 手提包, 包包, 女包, ハンドバッグ
+lipstick: makeup, cosmetics, beauty, lips, rouge, 口红, 唇膏, 化妆, 口紅, リップ
+fries: french fries, chips, fast food, potato, snack, 薯条, 快餐, フライドポテト
+hot-dog: sausage, frankfurter, fast food, bun, mustard, 热狗, 香肠, ホットドッグ
+croissant: bread, pastry, bakery, breakfast, french, 可颂, 牛角包, 面包, クロワッサン
+corn: maize, vegetable, cob, sweetcorn, crop, 玉米, とうもろこし
+chili: pepper, hot, spicy, chilli, spice, 辣椒, 辣, 唐辛子
+tomato: vegetable, fruit, salad, ketchup, 番茄, 西红柿, トマト
+pineapple: fruit, tropical, ananas, 菠萝, 凤梨, パイナップル
+bubble-tea: boba, milk tea, pearl tea, tapioca, drink, 珍珠奶茶, 奶茶, タピオカ
+toothbrush: brush teeth, dental, hygiene, bathroom, oral care, 牙刷, 刷牙, 歯ブラシ
+faucet: tap, water, sink, plumbing, valve, 水龙头, 自来水, 蛇口
+toilet-paper: tissue, roll, bathroom, restroom, paper roll, 卷纸, 卫生纸, トイレットペーパー
+vacuum: vacuum cleaner, hoover, cleaning, housework, 吸尘器, 打扫, 掃除機
+watering-can: garden, gardening, plants, water, irrigate, 洒水壶, 浇花, 园艺, じょうろ
+fireplace: hearth, fire, chimney, cozy, winter, living room, 壁炉, 暖炉
+bookshelf: bookcase, shelf, library, books, furniture, 书架, 书柜, 本棚
+pliers: tool, grip, wire, needle-nose, repair, 钳子, 尖嘴钳, ペンチ
+nut: hex nut, bolt, hardware, fastener, mechanical, 螺母, 六角螺母, ナット
+pickaxe: pick, mining, mine, dig, miner, 镐, 十字镐, 采矿, 挖矿, つるはし
+tape-measure: measuring tape, measure, length, ruler, 卷尺, 测量, メジャー, 巻尺
+paint-roller: paint, painting, decorate, wall, renovation, 油漆滚筒, 刷墙, 装修, ペンキローラー
+hard-hat: helmet, safety helmet, construction, worker, safety, 安全帽, 施工, 工地, ヘルメット
+markdown: md, markup, document, formatting, readme, マークダウン
+sim-card: sim, mobile, cellular, carrier, phone card, esim, 手机卡, 电话卡, SIMカード
+socket: outlet, power outlet, wall socket, electricity, plug, 插座, 电源, コンセント
+lasso: selection, select, freeform, lasso tool, 套索, 选区, 自由选择, 投げなわ
+gradient: fade, halftone, blend, color transition, dither, 渐变, 半色调, グラデーション
+sticker: label, decal, emoji, smiley, peel, 贴纸, 表情, ステッカー, シール
+lungs: breath, breathing, respiratory, organ, pulmonary, 肺, 呼吸, 肺部
+crutch: crutches, injury, walking aid, disability, mobility, 拐杖, 腋杖, 松葉杖
+face-mask: surgical mask, medical mask, protection, covid, hygiene, 口罩, 医用口罩, マスク
+penguin: animal, bird, antarctic, linux, 企鹅, ペンギン
+duck: animal, bird, rubber duck, duckling, 鸭子, 小黄鸭, アヒル
+whale: animal, ocean, sea, marine, 鲸鱼, 鲸, クジラ
+octopus: animal, sea, tentacle, seafood, 章鱼, 八爪鱼, タコ
+snake: animal, reptile, serpent, python, 蛇, ヘビ
+deer: animal, stag, reindeer, antler, wildlife, 鹿, 驯鹿, シカ
+hand-wave: hello, hi, bye, goodbye, greeting, waving, 挥手, 打招呼, 你好, 再见, 手を振る
+hand-point-up: finger, index finger, pointer, one, tap, attention, 手指, 指, 食指, 指差し
+hand-peace: victory, v sign, two, scissors, yeah, 比耶, 剪刀手, 胜利, ピース
+fist: punch, power, strength, solidarity, rock, 拳头, 握拳, 加油, こぶし, グー
+hot-air-balloon: balloon, flight, travel, sky, adventure, 热气球, 飞行, 気球
+cable-car: gondola, ropeway, aerial tram, ski lift, mountain, 缆车, 索道, ロープウェイ
+bridge: suspension bridge, crossing, river, connect, infrastructure, 桥, 大桥, 悬索桥, 橋
+road: highway, street, route, lane, drive, way, 公路, 道路, 马路
+steering-wheel: drive, driving, car, wheel, control, 方向盘, 驾驶, ハンドル
+skateboard: skate, skating, board, street sport, 滑板, スケートボード
+ufo: alien, flying saucer, spaceship, extraterrestrial, sci-fi, 飞碟, 外星人, 不明飞行物
+tractor: farm, agriculture, farming, vehicle, harvest, 拖拉机, 农业, 农场, トラクター
+ferris-wheel: amusement park, theme park, fair, carnival, attraction, 摩天轮, 游乐园, 観覧車
+fountain: water, park, plaza, garden, spray, 喷泉, 广场, 噴水
+pyramid: egypt, ancient, monument, landmark, triangle, 3d, 金字塔, 埃及, ピラミッド
+igloo: snow house, ice, arctic, eskimo, winter, 冰屋, 雪屋, かまくら, イグルー
+mailbox: postbox, letterbox, mail, post, letter, inbox, 信箱, 邮箱, 郵便受け, ポスト
+bench: seat, park, rest, sit, outdoor furniture, 长椅, 公园, ベンチ
+circus-tent: circus, big top, carnival, show, festival, amusement, 马戏团, 大篷, 游乐, サーカス
+volcano: eruption, lava, mountain, disaster, magma, 火山, 喷发, 噴火
+island: palm, beach, tropical, vacation, desert island, sea, 小岛, 海岛, 度假, 島
+comet: meteor, shooting star, asteroid, space, falling star, 彗星, 流星, 陨石, 流れ星
+seashell: shell, scallop, beach, sea, ocean, clam, 贝壳, 扇贝, 海边, 貝殻
+maple-leaf: maple, autumn, fall, canada, leaf, foliage, 枫叶, 秋天, 红叶, もみじ, 紅葉
+acorn: nut, oak, seed, autumn, squirrel, 橡果, 橡子, 坚果, どんぐり
+pumpkin: halloween, squash, autumn, vegetable, harvest, 南瓜, 万圣节, かぼちゃ
+whistle: referee, coach, sport, alert, blow, foul, 哨子, 口哨, 裁判, ホイッスル, 笛
+boxing-glove: boxing, fight, punch, combat, martial arts, 拳击手套, 拳击, 格斗, ボクシング
+ice-skate: skating, skate, ice rink, winter sport, figure skating, 冰鞋, 滑冰, 溜冰, スケート靴
+kettlebell: weight, gym, fitness, workout, strength, 壶铃, 健身, ケトルベル
+kite: fly, wind, toy, outdoor, festival, 风筝, 放风筝, 凧
+fishing-rod: fishing, angling, hook, rod, catch, 钓鱼竿, 钓鱼, 鱼竿, 釣り竿
+protractor: angle, measure, geometry, math, degrees, drafting, 量角器, 角度, 分度器
+set-square: triangle ruler, drafting, geometry, right angle, math, 三角尺, 三角板, 三角定規
+certificate: diploma, award, license, credential, achievement, degree, 证书, 奖状, 资格, 賞状, 証明書
+stapler: staple, office, stationery, paper, bind, 订书机, 文具, ホッチキス
+snowman: winter, snow, christmas, cold, frosty, 雪人, 冬天, 雪だるま
+christmas-tree: xmas, holiday, pine, decoration, december, 圣诞树, 圣诞节, クリスマスツリー
+firework: fireworks, celebration, new year, festival, sparkler, explosion, 烟花, 焰火, 庆祝, 花火
+party-hat: party, birthday, celebration, cone hat, festive, 派对帽, 生日, 聚会, パーティー
+candy-cane: christmas, candy, sweet, xmas, peppermint, 拐杖糖, 圣诞, 糖果, キャンディケイン
+jacket: coat, outerwear, clothing, blazer, zip, 夹克, 外套, ジャケット
+hoodie: sweatshirt, hooded, clothing, casual, pullover, 卫衣, 连帽衫, パーカー
+skirt: clothing, fashion, a-line, pleated, apparel, 裙子, 半身裙, スカート
+shorts: clothing, summer, pants, trunks, apparel, 短裤, ショートパンツ
+necklace: jewelry, pendant, chain, accessory, gem, 项链, 吊坠, 首饰, ネックレス
+desktop-tower: pc, computer, desktop, tower, case, workstation, 台式机, 主机, 机箱, デスクトップ
+projector: presentation, beamer, cinema, slides, screen, 投影仪, 放映, プロジェクター
+cassette: tape, audio tape, mixtape, retro, music, 磁带, 卡带, 录音带, カセット
+boombox: radio, stereo, ghetto blaster, tape player, retro, music, 收录机, 手提音响, 收音机, ラジカセ
+power-bank: portable charger, battery pack, charging, usb, 充电宝, 移动电源, モバイルバッテリー
+pear: fruit, 梨, 梨子, なし
+avocado: fruit, guacamole, healthy, 牛油果, 鳄梨, アボカド
+orange: citrus, fruit, slice, lemon, lime, juice, 橙子, 柑橘, 橘子, オレンジ
+chocolate: chocolate bar, candy, sweet, dessert, cocoa, 巧克力, チョコレート
+pretzel: bread, snack, bakery, german, salty, 椒盐卷饼, 碱水结, プレッツェル
+elephant: animal, wildlife, trunk, zoo, 大象, 象, ゾウ
+sheep: animal, lamb, wool, farm, 绵羊, 羊, ヒツジ
+chicken: animal, hen, rooster, poultry, bird, farm, 鸡, 母鸡, ニワトリ
+crab: animal, seafood, crustacean, sea, cancer, 螃蟹, 蟹, カニ
+spider: animal, insect, arachnid, bug, web, halloween, 蜘蛛, クモ
+bat: animal, vampire, halloween, night, wings, 蝙蝠, コウモリ
+prism: refraction, dispersion, light, spectrum, optics, rainbow, physics, 棱镜, 色散, 折射, プリズム
+galaxy: space, universe, cosmos, spiral, milky way, astronomy, 星系, 银河, 宇宙, 銀河
+astronaut: space, cosmonaut, helmet, spaceman, nasa, 宇航员, 航天员, 太空, 宇宙飛行士
+planet: saturn, ring, space, astronomy, orbit, world, 行星, 土星, 星球, 惑星
 pearl: shell, clam, oyster, scallop, gem, jewel, 珍珠, 贝壳, 真珠
 devil-tail: halloween, imp, mischief, devil, demon, tail, arrow, prank, costume, 万圣节, 小恶魔, 恶魔, 恶作剧, 尾巴, 箭头, 小悪魔, しっぽ
 devil-tail-spade: halloween, imp, mischief, devil, demon, tail, spade, prank, costume, 万圣节, 小恶魔, 恶魔, 恶作剧, 尾巴, 黑桃, 小悪魔, しっぽ, スペード

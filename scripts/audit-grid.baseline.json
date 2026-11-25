@@ -2,6 +2,9 @@
   "accessibility": [
     "x 12"
   ],
+  "acorn": [
+    "x 12"
+  ],
   "alarm-clock": [
     "x 12"
   ],
@@ -64,6 +67,9 @@
     "y 19",
     "y 5",
     "y 8"
+  ],
+  "anchor": [
+    "x 12"
   ],
   "antenna": [
     "x 12"
@@ -252,6 +258,9 @@
     "x 7",
     "y 5"
   ],
+  "bookshelf": [
+    "y 12"
+  ],
   "bow": [
     "y 12"
   ],
@@ -279,6 +288,9 @@
     "x 5",
     "x 8"
   ],
+  "bridge": [
+    "x 12"
+  ],
   "briefcase-plus-badge": [
     "x 17",
     "y 17"
@@ -289,6 +301,9 @@
     "x 7"
   ],
   "butterfly-small": [
+    "x 12"
+  ],
+  "cable-car": [
     "x 12"
   ],
   "cake": [
@@ -375,6 +390,14 @@
     "y 3",
     "y 9"
   ],
+  "chocolate": [
+    "x 12",
+    "x 19",
+    "x 5"
+  ],
+  "christmas-tree": [
+    "x 12"
+  ],
   "church": [
     "x 11",
     "x 12",
@@ -388,6 +411,9 @@
     "y 15",
     "y 18",
     "y 21"
+  ],
+  "circus-tent": [
+    "x 12"
   ],
   "clock": [
     "x 12"
@@ -1228,6 +1254,16 @@
     "y 6",
     "y 9"
   ],
+  "firework": [
+    "x 12"
+  ],
+  "fist": [
+    "x 12",
+    "x 15",
+    "x 18",
+    "x 6",
+    "x 9"
+  ],
   "flashlight": [
     "y 10",
     "y 12",
@@ -1585,6 +1621,9 @@
     "x 2",
     "x 22"
   ],
+  "fountain": [
+    "x 12"
+  ],
   "gamepad": [
     "y 10.25",
     "y 15.25",
@@ -1644,6 +1683,9 @@
   "golang": [
     "y 12"
   ],
+  "gourd": [
+    "x 12"
+  ],
   "grapes": [
     "x 12"
   ],
@@ -1693,6 +1735,9 @@
   "hanamaru-stem": [
     "x 12"
   ],
+  "handbag": [
+    "x 12"
+  ],
   "hanger": [
     "x 12",
     "y 18.75"
@@ -1739,6 +1784,9 @@
     "y 17",
     "y 7"
   ],
+  "igloo": [
+    "x 12"
+  ],
   "image-edit": [
     "x 18",
     "x 3",
@@ -1775,6 +1823,9 @@
     "y 9"
   ],
   "info": [
+    "x 12"
+  ],
+  "jacket": [
     "x 12"
   ],
   "japanese-castle": [
@@ -2143,6 +2194,16 @@
     "y 20",
     "y 4"
   ],
+  "luggage": [
+    "x 19",
+    "x 5"
+  ],
+  "lungs": [
+    "x 12"
+  ],
+  "mailbox": [
+    "x 12"
+  ],
   "manga-shout-exclaim": [
     "x 12"
   ],
@@ -2152,6 +2213,9 @@
   "map-pin-plus": [
     "x 17",
     "y 17"
+  ],
+  "maple-leaf": [
+    "x 12"
   ],
   "mark-yi-yue": [
     "x 11",
@@ -2700,11 +2764,18 @@
   "pants": [
     "x 12"
   ],
+  "paper-lantern": [
+    "x 12"
+  ],
   "paperclip": [
     "x 10",
     "x 14",
     "x 16",
     "x 8"
+  ],
+  "passport": [
+    "x 19",
+    "x 5"
   ],
   "peace": [
     "x 12"
@@ -2742,6 +2813,9 @@
     "x 10",
     "x 12",
     "x 14"
+  ],
+  "pineapple": [
+    "x 12"
   ],
   "playstation-create": [
     "x 12"
@@ -2814,6 +2888,12 @@
     "y 15",
     "y 3"
   ],
+  "protractor": [
+    "x 12"
+  ],
+  "pumpkin": [
+    "x 12"
+  ],
   "puzzle-cube": [
     "x 12",
     "x 20",
@@ -2874,6 +2954,10 @@
     "x 16.38",
     "y 12"
   ],
+  "red-envelope": [
+    "x 19",
+    "x 5"
+  ],
   "religion-catholicism": [
     "x 12"
   ],
@@ -2887,6 +2971,9 @@
   ],
   "resistor": [
     "y 12"
+  ],
+  "road": [
+    "x 12"
   ],
   "robot": [
     "x 12"
@@ -2941,6 +3028,9 @@
     "y 18",
     "y 21"
   ],
+  "seashell": [
+    "x 12"
+  ],
   "send-right": [
     "y 12"
   ],
@@ -2963,8 +3053,16 @@
     "x 17",
     "y 17"
   ],
+  "shorts": [
+    "x 12"
+  ],
   "shutter-speed": [
     "x 12"
+  ],
+  "sim-card": [
+    "x 12",
+    "x 19",
+    "x 5"
   ],
   "sinan": [
     "x 12",
@@ -2972,6 +3070,9 @@
     "x 3",
     "y 21",
     "y 3"
+  ],
+  "siren": [
+    "x 12"
   ],
   "skyscraper": [
     "x 12",
@@ -3024,6 +3125,10 @@
     "y 15",
     "y 18",
     "y 21"
+  ],
+  "steering-wheel": [
+    "x 12",
+    "y 12"
   ],
   "stem-jia": [
     "x 12",
@@ -3204,6 +3309,9 @@
     "y 18",
     "y 6"
   ],
+  "tomato": [
+    "x 12"
+  ],
   "transistor": [
     "y 12"
   ],
@@ -3276,6 +3384,9 @@
     "x 12",
     "x 17",
     "x 7"
+  ],
+  "ufo": [
+    "x 12"
   ],
   "umbrella": [
     "x 12"
@@ -3564,6 +3675,9 @@
     "x 15",
     "x 21",
     "x 3"
+  ],
+  "volcano": [
+    "x 12"
   ],
   "wallet": [
     "y 10",

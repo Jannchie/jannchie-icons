@@ -107,6 +107,10 @@
     "bold (9.32, 4.24)",
     "regular (9.5, 4.06)"
   ],
+  "bridge": [
+    "bold (16.5, 6.5)",
+    "bold (7.5, 6.5)"
+  ],
   "briefcase-search-badge": [
     "bold (17.48, 17.48)",
     "light (17.98, 17.98)",
@@ -133,6 +137,10 @@
   "candy": [
     "bold (9.41, 8.95)"
   ],
+  "candy-cane": [
+    "bold (16.6, 4.9)",
+    "bold (7.4, 4.9)"
+  ],
   "cap": [
     "bold (14.5, 15.5)"
   ],
@@ -147,6 +155,11 @@
   ],
   "chat-search-badge-top": [
     "bold (18.64, 7.64)"
+  ],
+  "chicken": [
+    "bold (5.81, 12.95)",
+    "bold (7.3, 5.78)",
+    "regular (5.75, 12.73)"
   ],
   "chinese-zodiac-dragon": [
     "bold (14.62, 7.06)",
@@ -244,6 +257,10 @@
     "regular (4.65, 5.45)",
     "regular (4.65, 6.55)"
   ],
+  "deer": [
+    "bold (16.29, 4.42)",
+    "bold (7.71, 4.42)"
+  ],
   "dress": [
     "bold (15.5, 5.5)",
     "bold (8.5, 5.5)",
@@ -325,6 +342,12 @@
     "light (12.13, 8.19)",
     "regular (11.8, 8.28)",
     "regular (12.2, 8.28)"
+  ],
+  "hand-peace": [
+    "bold (13.65, 11.28)",
+    "bold (14.03, 10.81)",
+    "light (13.74, 11.19)",
+    "regular (13.87, 10.99)"
   ],
   "hazard-biohazard": [
     "light (11.37, 14.67)",
@@ -410,6 +433,10 @@
   ],
   "list-search": [
     "bold (16.48, 16.48)"
+  ],
+  "mailbox": [
+    "bold (8.16, 4.56)",
+    "regular (7.93, 4.52)"
   ],
   "map-pin-search": [
     "light (17.98, 17.98)",
@@ -536,9 +563,16 @@
     "regular (3.02, 11.46)",
     "regular (3.02, 12.55)"
   ],
+  "pear": [
+    "bold (12.23, 4.82)"
+  ],
   "ping-pong": [
     "bold (5.82, 8.75)",
     "regular (5.79, 9)"
+  ],
+  "planet": [
+    "bold (6.08, 11)",
+    "regular (6.05, 11.25)"
   ],
   "playstation-create": [
     "bold (11.3, 11.22)"
@@ -737,6 +771,12 @@
     "bold (18, 8.5)",
     "bold (6, 8.5)",
     "bold (6.01, 8.6)"
+  ],
+  "spider": [
+    "bold (10.25, 7.53)",
+    "bold (8.64, 13.01)",
+    "light (8.52, 14.36)",
+    "regular (8.54, 14.56)"
   ],
   "stadium": [
     "bold (3.5, 10)",
