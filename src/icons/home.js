@@ -1,6 +1,6 @@
 import { rounded } from '../geometry'
-import { GROUND, groundLine, opening } from '../scene'
-import { hole, solid } from '../solid'
+import { doorway, GROUND, groundLine, opening } from '../scene'
+import { solid } from '../solid'
 
 // 45° 尖顶，屋顶两侧比墙多伸出 2.5 形成屋檐；墙从屋面上取交点
 const apex = [12, 4]
@@ -23,6 +23,6 @@ export default ({ radius }) => [
 export const fill = ({ radius, stroke }) => [
   solid(rounded([[wallL, roofY(wallL)], apex, [wallR, roofY(wallR)], [wallR, GROUND], [wallL, GROUND]], radius)),
   rounded([[apex[0] - eave, roofY(apex[0] - eave)], apex, [apex[0] + eave, roofY(apex[0] + eave)]], radius, false),
-  hole(rounded(opening(12, 5 - stroke, 6.5 - stroke / 2), Math.max(0, radius - stroke / 2), false)),
+  doorway(12, 5, 6.5, radius, stroke),
   groundLine,
 ]

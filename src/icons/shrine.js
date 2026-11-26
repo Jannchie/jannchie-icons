@@ -1,6 +1,6 @@
 import { rounded } from '../geometry'
-import { GROUND, groundLine, opening } from '../scene'
-import { hole, knock, solid } from '../solid'
+import { doorway, GROUND, groundLine, opening } from '../scene'
+import { knock, solid } from '../solid'
 
 // 神社：缓坡屋顶，两道屋面越过屋脊交叉成千木；墙上一道长押，门居中
 const apex = [12, 6]
@@ -28,6 +28,6 @@ export const fill = ({ radius, stroke }) => [
   solid(`M${wallL} ${roofY(wallL)}L${apex[0]} ${apex[1]}L${wallR} ${roofY(wallR)}V${GROUND}H${wallL}Z`),
   ...roof,
   knock(`M${wallL - 2} 12.5H${wallR + 2}`),
-  hole(rounded(opening(12, 5 - stroke, 5.5 - stroke / 2), Math.max(0, radius - stroke / 2), false)),
+  doorway(12, 5, 5.5, radius, stroke),
   groundLine,
 ]

@@ -1,6 +1,6 @@
 import { crisp, rounded } from '../geometry'
-import { GROUND, groundLine, opening } from '../scene'
-import { hole, solid } from '../solid'
+import { doorway, GROUND, groundLine, opening } from '../scene'
+import { solid } from '../solid'
 
 // 工厂：两段 30° 锯齿屋顶，门居中；锯齿的角不随全局圆角
 // 左右墙和中间那道竖边都要落在 .5 上：宽 14、中线 12.5
@@ -27,6 +27,6 @@ export default ({ radius }) => [
 // 实心：厂房一块（底下两个角贴着地平线，不收圆角），门挖空（洞外扩半个线宽后是门框的中心线）；地平线最后画
 export const fill = ({ radius, stroke }) => [
   solid(rounded(body(radius), radius)),
-  hole(rounded(opening(mid, 4 - stroke, 5.5 - stroke / 2), Math.max(0, radius - stroke / 2), false)),
+  doorway(mid, 4, 5.5, radius, stroke),
   groundLine,
 ]

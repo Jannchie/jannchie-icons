@@ -1,4 +1,4 @@
-import { meet, oval } from '../geometry'
+import { earedHead, oval } from '../geometry'
 import { eye } from '../scene'
 import { knock, solid } from '../solid'
 
@@ -6,12 +6,7 @@ import { knock, solid } from '../solid'
 // 两只眼睛 + 一颗实心的椭圆鼻头 + 鼻头下隔开一段的一弯笑嘴（不画吻部的圈和人中：挤在一起粗字重下糊成一团，实心版像两颗门牙）
 const [hx, hy, R] = [12, 13, 7.75]
 const [ex, ey, r] = [6, 6.5, 3]
-const f = v => +v.toFixed(3)
-// 左耳的圆和脑袋的圆的两个交点：a 在头顶一侧，b 在脸侧
-const [a, b] = meet([hx, hy], R, [ex, ey], r)
-const P = ([x, y]) => `${f(x)} ${f(y)}`
-const M = ([x, y]) => `${f(24 - x)} ${f(y)}`
-const head = `M${P(b)}A${r} ${r} 0 1 1 ${P(a)}A${R} ${R} 0 0 1 ${M(a)}A${r} ${r} 0 1 1 ${M(b)}A${R} ${R} 0 1 1 ${P(b)}Z`
+const head = earedHead([hx, hy], R, [ex, ey], r)
 const features = [
   eye(9, 11.5),
   eye(15, 11.5),

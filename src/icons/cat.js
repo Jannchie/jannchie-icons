@@ -1,13 +1,9 @@
-import { eye, softEar } from '../scene'
+import { catHead, eye } from '../scene'
 import { knock, solid } from '../solid'
 
 // 猫：正面头像，圆润可爱。宽脸是一个扁椭圆（圆心 (12, 14)、半径 8 × 6.5），两只耳朵从椭圆上长出来：耳朵是软曲线（softEar），两边微鼓、耳尖圆润，
 // 耳朵之间是一段平缓的头顶弧；大眼睛（实心点，直径 2.5，在 12.5 上）、小三角鼻头（15.25–16.25）、鼻头下 ω 形小嘴——眼睛比鼻头高，粗字重下也不粘
-const [cx, cy, rx, ry] = [12, 14, 8, 6.5]
-const rad = d => d * Math.PI / 180
-const Q = (d, k = 1) => [cx + rx * k * Math.cos(rad(d)), cy + ry * k * Math.sin(rad(d))]
-const P = (d, k = 1) => Q(d, k).map(v => +v.toFixed(3)).join(' ')
-const face = `M${P(-160)}${softEar(Q(-160), Q(-132, 1.85), Q(-100), 1.12)}A${rx} ${ry} 0 0 1 ${P(-80)}${softEar(Q(-80), Q(-48, 1.85), Q(-20), 1.12)}A${rx} ${ry} 0 1 1 ${P(-160)}Z`
+const face = catHead([12, 14], 8, 6.5)
 const features = [
   eye(8.75, 12.5, 2.5),
   eye(15.25, 12.5, 2.5),

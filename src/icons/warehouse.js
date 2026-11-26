@@ -1,6 +1,6 @@
 import { rounded } from '../geometry'
-import { GROUND, groundLine, opening } from '../scene'
-import { hole, solid } from '../solid'
+import { doorway, GROUND, groundLine, opening } from '../scene'
+import { solid } from '../solid'
 
 // 仓库：拱形屋顶的大棚，宽卷帘门上两道横缝
 const shed = `M3.5 ${GROUND}V11.5A8.5 6 0 0 1 20.5 11.5V${GROUND}`
@@ -17,7 +17,7 @@ export default ({ radius }) => [
 // 地平线最后画，门洞不切断它
 export const fill = ({ radius, stroke }) => [
   solid(`${shed}Z`),
-  hole(rounded(opening(12, 9 - stroke, 8.5 - stroke / 2), Math.max(0, radius - stroke / 2), false)),
+  doorway(12, 9, 8.5, radius, stroke),
   slats,
   groundLine,
 ]

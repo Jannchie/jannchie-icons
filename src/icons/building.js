@@ -1,6 +1,6 @@
 import { rounded } from '../geometry'
-import { dot, GROUND, groundLine, opening } from '../scene'
-import { hole, knock, solid } from '../solid'
+import { doorway, dot, GROUND, groundLine, opening } from '../scene'
+import { knock, solid } from '../solid'
 
 // 办公楼：窄高平顶，两列窗点
 const body = [[6.5, GROUND, 0], [6.5, 4.5], [17.5, 4.5], [17.5, GROUND, 0]]
@@ -17,6 +17,6 @@ export default ({ radius }) => [
 export const fill = ({ radius, stroke }) => [
   solid(rounded(body, radius)),
   knock(windows.map(w => ({ ...w, round: true, eye: true }))),
-  hole(rounded(opening(12, 3 - stroke, 3.5 - stroke / 2), Math.max(0, radius - stroke / 2), false)),
+  doorway(12, 3, 3.5, radius, stroke),
   groundLine,
 ]

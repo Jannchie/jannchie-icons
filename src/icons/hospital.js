@@ -1,6 +1,6 @@
 import { rounded } from '../geometry'
-import { GROUND, groundLine, opening } from '../scene'
-import { hole, knock, solid } from '../solid'
+import { doorway, GROUND, groundLine, opening } from '../scene'
+import { knock, solid } from '../solid'
 
 // 医院：平顶，正中十字
 const cross = [12, 10.5]
@@ -21,6 +21,6 @@ export default ({ radius }) => [
 export const fill = ({ radius, stroke }) => [
   solid(rounded(body, radius)),
   knock(plus),
-  hole(rounded(opening(12, 4 - stroke, 5.5 - stroke / 2), Math.max(0, radius - stroke / 2), false)),
+  doorway(12, 4, 5.5, radius, stroke),
   groundLine,
 ]

@@ -1,7 +1,7 @@
 import { GAP } from '../clearance'
 import { crisp, rounded } from '../geometry'
-import { GROUND, groundLine, opening } from '../scene'
-import { clear, hole, solid } from '../solid'
+import { doorway, GROUND, groundLine, opening } from '../scene'
+import { clear, solid } from '../solid'
 
 // 风车：向上收分的塔身，塔顶上方四片叶片交叉成 X；下面两片挡在塔前，把塔顶两角切开；塔身的斜角不随全局圆角
 const hub = [12, 8]
@@ -24,7 +24,7 @@ export default ({ radius }) => [
 // 地平线最后画，门洞不切断它
 export const fill = ({ radius, stroke }) => [
   solid(rounded(tower(radius), radius)),
-  hole(rounded(opening(12, 3 - stroke, 4.5 - stroke / 2), Math.max(0, radius - stroke / 2), false)),
+  doorway(12, 3, 4.5, radius, stroke),
   clear(blades, GAP),
   ...blades,
   groundLine,

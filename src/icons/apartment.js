@@ -1,6 +1,6 @@
 import { rounded } from '../geometry'
-import { dot, GROUND, groundLine, opening } from '../scene'
-import { hole, knock, solid } from '../solid'
+import { doorway, dot, GROUND, groundLine, opening } from '../scene'
+import { knock, solid } from '../solid'
 
 // 公寓楼：宽矮的平顶楼，檐口出挑，三层窗点每层四扇，门居中（门上方那层只留两侧的窗）
 const columns = [7, 10, 14, 17]
@@ -22,6 +22,6 @@ export const fill = ({ radius, stroke }) => [
   solid(`M4.5 5.5H19.5V${GROUND}H4.5Z`),
   eave,
   knock(windows.map(w => ({ ...w, round: true, eye: true }))),
-  hole(rounded(opening(12, 3 - stroke, 4.5 - stroke / 2), Math.max(0, radius - stroke / 2), false)),
+  doorway(12, 3, 4.5, radius, stroke),
   groundLine,
 ]

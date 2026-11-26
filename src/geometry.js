@@ -77,3 +77,16 @@ export function meet([x0, y0], r0, [x1, y1], r1) {
     [x0 + along * ux + off * uy, y0 + along * uy - off * ux],
   ]
 }
+
+// 坐标取三位小数（数字，不是字符串；和上面的 fmt 不同，fmt 用 Math.round，个别 .xxx5 的值舍入不一样）
+export const num = v => +v.toFixed(3)
+
+// 圆脑袋 + 左右对称的两只圆耳朵连成的一条闭合轮廓（bear、koala、tiger、monkey）：脑袋圆心 h、半径 R，左耳圆心 e、半径 r，右耳是左耳对 x = 12 的镜像
+// 从左耳的脸侧交点起笔，绕过左耳 → 头顶 → 右耳 → 下面一大段脑袋回到起点；large 是最后这段脑袋弧的大弧标志
+// （耳朵在头顶两角时下面这段超过半圆，取 1；耳朵长在脑袋两侧时不到半圆，取 0）
+export function earedHead([hx, hy], R, [ex, ey], r, large = 1) {
+  const [a, b] = meet([hx, hy], R, [ex, ey], r)
+  const P = ([x, y]) => `${num(x)} ${num(y)}`
+  const M = ([x, y]) => `${num(24 - x)} ${num(y)}`
+  return `M${P(b)}A${r} ${r} 0 1 1 ${P(a)}A${R} ${R} 0 0 1 ${M(a)}A${r} ${r} 0 1 1 ${M(b)}A${R} ${R} 0 ${large} 1 ${P(b)}Z`
+}
