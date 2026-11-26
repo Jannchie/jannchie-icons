@@ -702,7 +702,7 @@ rope-knot: rope, knot, tie, sailing, nautical, cord, 绳结, 绳子, 打结, 結
 collar-bell: pet collar, cat bell, jingle bell, collar, bell, pet, cat, kitten, 项圈, 铃铛, 猫铃, 首輪, 鈴
 perfume: fragrance, scent, cologne, spray, atomizer, aroma, 香水, 香气, パフューム
 anchor: nautical, ship, boat, harbor, port, marine, sea, 锚, 船锚, 港口, 錨, いかり
-train: railway, rail, bullet train, shinkansen, high-speed rail, metro, subway, transit, 列车, 火车, 高铁, 地铁, 電車, 新幹線
+train: railway, rail, bullet train, shinkansen, high-speed rail, transit, 列车, 火车, 高铁, 電車, 新幹線
 luggage: suitcase, baggage, travel, trip, trolley, carry-on, 行李箱, 拉杆箱, 旅行, スーツケース, 荷物
 passport: travel, visa, id, identity, border, immigration, document, 护照, 签证, 出入境, パスポート
 gavel: judge, law, legal, court, auction, verdict, justice, moderation, 法槌, 法律, 法院, 拍卖, 裁判, 小槌
@@ -839,6 +839,115 @@ prism: refraction, dispersion, light, spectrum, optics, rainbow, physics, 棱镜
 galaxy: space, universe, cosmos, spiral, milky way, astronomy, 星系, 银河, 宇宙, 銀河
 astronaut: space, cosmonaut, helmet, spaceman, nasa, 宇航员, 航天员, 太空, 宇宙飛行士
 planet: saturn, ring, space, astronomy, orbit, world, 行星, 土星, 星球, 惑星
+police-car: police, cop, patrol, emergency, siren, vehicle, 警车, 巡逻车, パトカー
+van: minivan, minibus, delivery, vehicle, transport, 面包车, 厢式车, バン
+fire-truck: fire engine, firefighter, ladder, emergency, rescue, vehicle, 消防车, 云梯车, 消防車
+subway: metro, underground, tube, train, transit, 地铁, 地下铁, 地下鉄, メトロ
+tram: streetcar, trolley, light rail, pantograph, transit, 有轨电车, 电车, 路面電車
+excavator: digger, backhoe, construction, machinery, 挖掘机, 挖土机, ショベルカー
+forklift: lift truck, warehouse, pallet, logistics, 叉车, 铲车, フォークリフト
+crane: tower crane, construction, lifting, building site, 塔吊, 起重机, クレーン
+parachute: skydiving, airdrop, drop, landing, 降落伞, 空投, パラシュート
+boolean-union: boolean, union, unite, merge, combine, path operation, shape, vector, 合并, 联集, 布尔运算, 合体, ブーリアン
+boolean-subtract: boolean, subtract, minus front, path operation, shape, vector, 减去顶层, 布尔运算, 前面で型抜き, ブーリアン
+boolean-intersect: boolean, intersect, overlap, path operation, shape, vector, 相交, 交集, 布尔运算, 交差, ブーリアン
+boolean-exclude: boolean, exclude, xor, difference, path operation, shape, vector, 排除重叠, 布尔运算, 中マド, ブーリアン
+diff: code diff, changes, added, removed, patch, version control, 差异, 代码对比, 差分
+blur: soften, gaussian, defocus, photo editing, effect, 模糊, 虚化, ぼかし
+bezier: bezier curve, anchor, handle, control point, vector, path, node, 贝塞尔曲线, 锚点, ベジェ曲線
+gif: animated, animation, sticker, image, format, 动图, 动画, ジフ, アニメーション
+css: stylesheet, style, web, frontend, language, 样式表, 层叠样式, スタイルシート
+sql: database, query, select, language, 数据库, 查询语言, データベース, クエリ
+yaml: yml, config, configuration, data, format, language, 配置文件, 設定ファイル
+kettle: teakettle, boil, water, kitchen, stovetop, whistle, 水壶, 烧水壶, ケトル, やかん
+iron: clothes iron, ironing, steam, laundry, press, wrinkle, 熨斗, 熨烫, アイロン
+pillow: cushion, sleep, bed, bedroom, rest, 枕头, 靠垫, 枕, クッション
+drawer: chest of drawers, dresser, cabinet, storage, furniture, bedroom, 抽屉, 斗柜, 五斗柜, 引き出し, タンス
+hair-dryer: blow dryer, hairdryer, salon, bathroom, styling, 吹风机, ドライヤー
+toaster: toast, bread, breakfast, kitchen, appliance, 烤面包机, 多士炉, トースター
+blender: mixer, smoothie, juice, kitchen, appliance, 搅拌机, 料理机, ミキサー
+rice-cooker: rice, steamer, kitchen, appliance, cooking, 电饭煲, 电饭锅, 炊飯器
+towel: bath, bathroom, dry, hygiene, hotel, 毛巾, 浴巾, タオル
+soap: bar soap, wash, bubbles, hygiene, clean, bathroom, 肥皂, 香皂, 石鹸, せっけん
+comb: hair, grooming, hairdresser, barber, styling, 梳子, くし
+hand-point-right: finger, index finger, pointer, next, this way, 手指, 指向右, 指差し
+hand-point-left: finger, index finger, pointer, back, previous, 手指, 指向左, 指差し
+hand-point-down: finger, index finger, pointer, below, 手指, 指向下, 指差し
+hand-ok: okay, fine, perfect, good, agree, 好的, 没问题, オーケー, 大丈夫
+clap: applause, bravo, congratulations, cheer, 鼓掌, 拍手, 喝彩, 喝采
+pray: please, thank you, thanks, namaste, gratitude, hope, 祈祷, 拜托, 谢谢, 合十, 祈り, お願い, ありがとう
+lion: animal, wildlife, king, mane, safari, 狮子, 獅子, ライオン
+tiger: animal, wildlife, stripes, big cat, 老虎, 虎, トラ
+koala: animal, australia, marsupial, eucalyptus, 考拉, 树袋熊, コアラ
+monkey: animal, ape, primate, zoo, 猴子, 猴, サル
+wolf: animal, wildlife, howl, pack, 狼, オオカミ
+giraffe: animal, safari, africa, long neck, 长颈鹿, 麒麟, キリン
+dolphin: animal, ocean, sea, marine, 海豚, イルカ
+shark: animal, ocean, sea, predator, 鲨鱼, 鲨, サメ
+jellyfish: animal, ocean, sea, medusa, 水母, クラゲ
+ladybug: animal, insect, beetle, ladybird, 瓢虫, 七星瓢虫, テントウムシ
+parrot: animal, bird, macaw, tropical, 鹦鹉, オウム
+swan: animal, bird, lake, elegant, 天鹅, 白鳥, ハクチョウ
+dragon: animal, fantasy, myth, monster, 龙, 龍, ドラゴン
+unicorn: animal, fantasy, myth, horn, 独角兽, ユニコーン
+iv-drip: iv, infusion, intravenous, saline, hospital, 输液, 点滴, 吊瓶, 輸液
+stomach: digestion, digestive, organ, gut, belly, 胃, 消化, 器官, 消化器
+kidney: renal, organ, urology, nephrology, 肾, 肾脏, 器官, 腎臓
+liver: hepatic, organ, hepatology, 肝, 肝脏, 器官, 肝臓
+nose: smell, scent, sniff, face, otolaryngology, 鼻子, 嗅觉, 鼻, 嗅覚
+x-ray: xray, radiology, scan, ribs, skeleton, film, X光, 放射, 胸片, レントゲン, X線
+blood-drop: donation, donor, transfusion, plasma, 血滴, 献血, 血液
+scarf: muffler, winter, neck, wrap, knit, 围巾, 围脖, マフラー, スカーフ
+gloves: glove, mitten, winter, hand, wear, 手套, 手袋, グローブ
+coat: overcoat, peacoat, trench coat, outerwear, winter, 大衣, 外套, 风衣, コート
+vest: waistcoat, gilet, sleeveless, formal, 马甲, 背心, ベスト
+business-suit: suit, tuxedo, formal, blazer, tie, office, 西装, 正装, スーツ
+belt: buckle, waist, strap, leather, accessory, 皮带, 腰带, ベルト
+earrings: earring, jewelry, accessory, pendant, 耳环, 耳坠, イヤリング, ピアス
+harp: music, instrument, strings, 竖琴, ハープ
+cello: music, instrument, strings, 大提琴, チェロ
+ukulele: music, instrument, strings, hawaii, 尤克里里, 夏威夷小吉他, ウクレレ
+clarinet: music, instrument, woodwind, 单簧管, 黑管, クラリネット
+accordion: music, instrument, squeezebox, 手风琴, アコーディオン
+xylophone: glockenspiel, music, instrument, percussion, 木琴, 铁琴, シロフォン
+hockey: ice hockey, hockey stick, puck, sport, winter, 冰球, 曲棍球杆, アイスホッケー
+yoga: meditation, lotus, pose, fitness, 瑜伽, 冥想, 打坐, ヨガ, 瞑想
+climbing: rock climbing, bouldering, wall, sport, 攀岩, 攀登, クライミング, ボルダリング
+archery: target, arrow, bullseye, sport, 射箭, 箭靶, アーチェリー
+snowboard: snowboarding, snow, winter, sport, 单板滑雪, 滑雪板, スノーボード
+jersey: sports shirt, uniform, team, number, 球衣, ユニフォーム
+taco: mexican food, tortilla, street food, 塔可, 墨西哥卷饼, タコス
+sandwich: lunch, toast, club sandwich, bread, 三明治, 三文治, サンドイッチ
+noodles: noodle bowl, chopsticks, pasta, asian food, 面条, 面, 麺, ヌードル
+salad: greens, lettuce, healthy, vegetables, bowl, 沙拉, 色拉, サラダ
+pancake: hotcake, breakfast, stack, butter, syrup, 松饼, 煎饼, ホットケーキ, パンケーキ
+broccoli: vegetable, floret, greens, 西兰花, 西蓝花, 花椰菜, ブロッコリー
+eggplant: aubergine, brinjal, vegetable, 茄子, なす, ナス
+garlic: bulb, clove, spice, seasoning, vegetable, 大蒜, 蒜头, にんにく, ニンニク
+mango: fruit, tropical, 芒果, マンゴー
+coconut: tropical, fruit, palm, coconut water, 椰子, 椰青, ココナッツ
+hotpot: hot pot, shabu shabu, chinese food, steamboat, soup, 火锅, 鸳鸯锅, 涮锅, 火鍋
+baozi: steamed bun, bao, dim sum, chinese food, 包子, 肉包, 中華まん, 肉まん
+mooncake: mid-autumn festival, pastry, chinese festival, 月饼, 中秋, 月餅
+zongzi: rice dumpling, dragon boat festival, bamboo leaf, chinese food, 粽子, 端午, ちまき
+tanghulu: candied hawthorn, candied fruit, skewer, chinese snack, street food, 糖葫芦, 冰糖葫芦, サンザシ飴
+taiyaki: fish-shaped cake, japanese sweets, red bean, wagashi, 鲷鱼烧, 鯛焼き, たい焼き
+chopsticks: utensils, asian, eating, 筷子, 箸, はし
+daruma: daruma doll, wish, good luck, japan, new year, 达摩, 不倒翁, だるま, 達磨
+wind-chime: furin, summer, breeze, glass bell, japan, 风铃, 風鈴, ふうりん
+maneki-neko: beckoning cat, lucky cat, fortune, shop, japan, 招财猫, 招き猫, まねきねこ
+koinobori: carp streamer, children's day, kodomo no hi, wind sock, japan, 鲤鱼旗, 鯉のぼり, こいのぼり
+kimono: yukata, robe, traditional, japan, 和服, 着物, きもの
+katana: samurai sword, blade, japanese sword, weapon, 武士刀, 日本刀, 刀, かたな
+firecracker: firecrackers, spring festival, lunar new year, celebration, 鞭炮, 爆竹, ばくちく
+chinese-knot: pan chang knot, lucky knot, tassel, spring festival, decoration, 中国结, 盘长结, 中国結び
+origami: paper crane, orizuru, folding, craft, japan, 折纸, 纸鹤, 折り紙, 折り鶴
+museum: gallery, exhibition, art, culture, 博物馆, 美术馆, 博物館, 美術館
+cinema: movie theater, film, theater, entertainment, 电影院, 映画館, えいがかん
+restaurant: dining, food, eat, fork and knife, 餐厅, 饭店, レストラン, 食堂
+cafe: coffee shop, coffee, tea, 咖啡馆, 咖啡店, カフェ, 喫茶店
+gym: fitness, workout, sports center, dumbbell, 健身房, 体育馆, ジム
+playground: park, slide, swing, kids, children, 游乐场, 儿童乐园, 公園, 遊び場
 pearl: shell, clam, oyster, scallop, gem, jewel, 珍珠, 贝壳, 真珠
 devil-tail: halloween, imp, mischief, devil, demon, tail, arrow, prank, costume, 万圣节, 小恶魔, 恶魔, 恶作剧, 尾巴, 箭头, 小悪魔, しっぽ
 devil-tail-spade: halloween, imp, mischief, devil, demon, tail, spade, prank, costume, 万圣节, 小恶魔, 恶魔, 恶作剧, 尾巴, 黑桃, 小悪魔, しっぽ, スペード
@@ -946,7 +1055,7 @@ stop: media, square, halt, end, 停止
 stop-circle: stop, media, halt, end, stop generation, 停止, 停止生成
 stopwatch: timer, time, chronometer, lap, 秒表, ストップウォッチ
 store: shop, market, retail, storefront, 商店, 店
-stove: range, oven, cooker, kitchen, cooktop, 灶台, 炉灶, コンロ
+stove: range, oven, cooker, kitchen, cooktop, bake, 灶台, 炉灶, 烤箱, コンロ, オーブン
 strawberry: fruit, berry, food, 草莓, いちご
 strikethrough: strike, cross out, text, format, 删除线
 stroller: baby carriage, pram, pushchair, buggy, baby, 婴儿车, ベビーカー

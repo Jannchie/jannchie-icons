@@ -1,28 +1,10 @@
-import { GAP } from '../clearance'
-import { circle, rounded } from '../geometry'
-import { clear, hole, solid } from '../solid'
-import { shrink } from '../tag'
+import { carBody, carOutline, carWheels, SEDAN, SEDAN_LINES, sedanWindows, WHEELS } from '../car'
+import { solid } from '../solid'
 
-// 汽车（侧视、车头朝右）：车身是闭合轮廓——车尾 2.5、车头 21.5，腰线 11.5，车顶 6.5（8.5–15，前后挡风斜下到腰线），底边 14.5
+// 汽车（侧视、车头朝右）：车尾 2.5、车头 21.5，腰线 10.5，车顶 6.5（8.5–15，前后挡风斜下到腰线），底边 15.5
 // 腰线横贯车窗下沿：两端顺着车身轮廓的水平段延续（不是斜接），中间一根竖柱把车窗分成前后两扇
-// 两个车轮（半径 2.25）挂在车身底边下面、和底边相切（圆顶正好是 14.5）；整辆车 4.5–19 上下居中
-export default ({ radius }) => [
-  rounded([[2.5, 14.5], [2.5, 10.5], [6, 10.5], [8.5, 6.5], [15, 6.5], [18, 10.5], [21.5, 10.5], [21.5, 14.5]], Math.min(radius, 1.5)),
-  'M6 10.5H18',
-  'M12.5 6.5V10.5',
-  circle(7, 16.75, 2.25),
-  circle(17, 16.75, 2.25),
-]
+// 两个车轮（半径 2.25）嵌在车身里，底边在车轮处断开、线头落在车轮的圆上（几何见 car.js，taxi / police-car / van 共用）
+export default ({ radius }) => [...carOutline(SEDAN, radius), ...SEDAN_LINES, ...WHEELS]
 
-// 实心：车身一块，前后两扇车窗挖空（窗洞是车窗中心线往里收一个线宽再外扩半个线宽，和描边版窗框的内缘一样大；
-// 粗字重下 4 高的车窗收不了一个线宽，最多收 1.6）；车轮四周让出缝，车轮是实心圆
-export const fill = ({ radius, stroke }) => {
-  const k = Math.min(stroke, 1.6)
-  const wheels = [circle(7, 16.75, 2.25), circle(17, 16.75, 2.25)]
-  return [
-    solid(rounded([[2.5, 14.5], [2.5, 10.5], [6, 10.5], [8.5, 6.5], [15, 6.5], [18, 10.5], [21.5, 10.5], [21.5, 14.5]], Math.min(radius, 1.5))),
-    hole([rounded(shrink([[6, 10.5], [8.5, 6.5], [12.5, 6.5], [12.5, 10.5]], k), 0), rounded(shrink([[12.5, 6.5], [15, 6.5], [18, 10.5], [12.5, 10.5]], k), 0)]),
-    clear(wheels, GAP),
-    solid(wheels),
-  ]
-}
+// 实心：车身一块，前后两扇车窗挖空；车轮四周让出缝，车轮是实心圆
+export const fill = ({ radius, stroke }) => [solid(carBody(SEDAN, radius)), sedanWindows(stroke), ...carWheels]

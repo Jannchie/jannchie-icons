@@ -161,6 +161,9 @@
     "bold (7.3, 5.78)",
     "regular (5.75, 12.73)"
   ],
+  "chinese-knot": [
+    "regular (17.5, 10.91)"
+  ],
   "chinese-zodiac-dragon": [
     "bold (14.62, 7.06)",
     "bold (9.38, 7.06)"
@@ -185,6 +188,9 @@
   "chinese-zodiac-snake": [
     "bold (11.27, 13.27)",
     "bold (11.73, 13.27)"
+  ],
+  "clap": [
+    "bold (6.99, 7.5)"
   ],
   "clock-off": [
     "regular (3.96, 12.4)"
@@ -513,6 +519,10 @@
     "regular (12.48, 16.58)",
     "regular (12.5, 16.04)"
   ],
+  "noodles": [
+    "bold (8.68, 8.89)",
+    "bold (9.44, 8.74)"
+  ],
   "notation-alto-clef": [
     "bold (13.31, 19.45)",
     "bold (13.31, 4.55)",
@@ -562,6 +572,9 @@
   "okta-7": [
     "regular (3.02, 11.46)",
     "regular (3.02, 12.55)"
+  ],
+  "parrot": [
+    "bold (7.41, 9.68)"
   ],
   "pear": [
     "bold (12.23, 4.82)"
@@ -762,6 +775,10 @@
   "snail": [
     "bold (4.14, 12.32)",
     "bold (4.51, 13.2)"
+  ],
+  "soap": [
+    "bold (14.5, 9.86)",
+    "regular (14.5, 9.86)"
   ],
   "soccer": [
     "regular (11.5, 3.01)"
