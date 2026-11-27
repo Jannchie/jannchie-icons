@@ -134,7 +134,11 @@ watchEffect(() => {
 const query = ref('')
 const searchInput = ref(null)
 // 搜索关键词（meta/tags.js：同义词、用途、中日文叫法、改名前的旧名）也参与匹配：love → heart、设置 → settings、volume-mute → volume-x
-const categorized = computed(() => categorize(icons, query.value, searchTitle, searchGroupTitle, tagsOf))
+// 命中的图标名；没有搜索词时为 null（全部显示）
+const hits = computed(() => query.value.trim()
+  ? new Set(categorize(icons, query.value, searchTitle, searchGroupTitle, tagsOf).flatMap(c => c.groups.flatMap(g => g.icons.map(i => i.name))))
+  : null)
+const shown = name => !hits.value || hits.value.has(name)
 // 每个图标的最后修改时间：开发时改动、新增图标由 vite.config.js 的插件通过 HMR 事件推过来，只更新那一条
 const iconTimes = shallowReactive({ ...initialTimes })
 if (import.meta.hot) {
@@ -145,15 +149,23 @@ if (import.meta.hot) {
       iconTimes[name] = t
   })
 }
-// 「最近修改」：搜索结果（或全部图标）平铺成一节，最后修改的排最前；没有时间的（刚新建、时间表还没刷新）当作最新
-const sections = computed(() => {
+// 网格结构（分类 → 小节 → 图标）始终是完整的一份，搜索只切换格子、小节、分类的显隐（hidden），格子本身不卸载：
+// 每按一次键都卸载、重新挂载上千个格子（各自的 LazyIcon、可见性观察、像素对齐）是搜索卡顿的主要来源
+// 「最近修改」：全部图标平铺成一节，最后修改的排最前；没有时间的（刚新建、时间表还没刷新）当作最新
+const layout = computed(() => {
   if (sortBy.value !== 'recent')
-    return categorized.value
+    return allCategories()
   const time = name => iconTimes[name] ?? Date.now()
-  const all = [...new Set(categorized.value.flatMap(c => c.groups.flatMap(g => g.icons)))].sort((a, b) => time(b.name) - time(a.name))
-  return all.length ? [{ id: 'recent', count: all.length, groups: [{ key: '', icons: all }] }] : []
+  const all = [...new Set(allCategories().flatMap(c => c.groups.flatMap(g => g.icons)))].sort((a, b) => time(b.name) - time(a.name))
+  return [{ id: 'recent', groups: [{ key: '', icons: all }] }]
 })
-const matched = computed(() => sections.value.reduce((n, c) => n + c.count, 0))
+// 每个分类、小节在当前搜索下的命中数；last：最后一个有命中的小节（它的网格要盖住分类底边线）
+const sections = computed(() => layout.value.map((c) => {
+  const groups = c.groups.map(g => ({ key: g.key, icons: g.icons, count: hits.value ? g.icons.reduce((n, i) => n + hits.value.has(i.name), 0) : g.icons.length }))
+  return { id: c.id, groups, count: groups.reduce((n, g) => n + g.count, 0), last: groups.findLastIndex(g => g.count) }
+}))
+const visibleSections = computed(() => sections.value.filter(c => c.count))
+const matched = computed(() => visibleSections.value.reduce((n, c) => n + c.count, 0))
 // 清空搜索（Esc、清除按钮、删光文字）时如果选中了图标：保留选中，并把它在完整列表里的格子滚到视口中间，
 // 不用在两千多个图标里重新找一遍
 function clearSearch() {
@@ -170,7 +182,7 @@ watch(query, (q, old) => {
 const catFilter = ref('')
 // 侧栏筛选命中的分类只跟 catFilter 有关：拆成单独的 computed，顶部搜索每按一次键不用再跑一遍完整的分类
 const keptCategories = computed(() => catFilter.value.trim() ? new Set(categorize(icons, catFilter.value, searchTitle, searchGroupTitle, tagsOf).map(c => c.id)) : null)
-const sideSections = computed(() => keptCategories.value ? sections.value.filter(c => keptCategories.value.has(c.id)) : sections.value)
+const sideSections = computed(() => keptCategories.value ? visibleSections.value.filter(c => keptCategories.value.has(c.id)) : visibleSections.value)
 const searchPaths = finalize(searchIcon(), 1.5)
 // 按名字取图标的 Icon 组件（页头标志、详情的多尺寸预览、示例页）用同一套设置
 provide('iconStyle', computed(() => ({ corner: corner.value, weight: weight.value, hinting: hinting.value, variant: variant.value })))
@@ -249,7 +261,7 @@ const selectedMeta = computed(() => selected.value && metaOf(selected.value))
 // 详情栏显示的关键词：旧名也是关键词（搜旧名能找到新图标），但不在界面上列出来
 const shownTags = computed(() => selectedMeta.value ? selectedMeta.value.tags.filter(t => !selectedMeta.value.oldNames.includes(t)) : [])
 
-const selectedCategory = computed(() => selected.value && sections.value.find(c => c.groups.some(g => g.icons.some(i => i.name === selected.value)))?.id)
+const selectedCategory = computed(() => selected.value && layout.value.find(c => c.groups.some(g => g.icons.some(i => i.name === selected.value)))?.id)
 
 // 导出的 SVG：按当前圆角、字重、配色生成（见 export.js）
 const toSvg = (icon, size = 24) => svgString(icon.paths, { stroke: weight.value.stroke, sharp: !!corner.value.sharp, colors: exportColors.value, size })
@@ -306,7 +318,7 @@ function updateActive() {
     else
       break
   }
-  active.value = current || sections.value[0]?.id || ''
+  active.value = current || visibleSections.value[0]?.id || ''
 }
 function onScroll() {
   if (!ticking) {
@@ -316,11 +328,11 @@ function onScroll() {
 }
 // 分类变了（比如搜索）就重新取一次区块列表
 function collectSections() {
-  sectionEls = [...document.querySelectorAll('main section[id]')]
+  sectionEls = [...document.querySelectorAll('main section[id]:not([hidden])')]
   updateActive()
 }
 // 当前显示的分类（顺序）：分类列表变了才需要重新收集区块、重新量列数
-const sectionKey = computed(() => sections.value.map(c => c.id).join())
+const sectionKey = computed(() => visibleSections.value.map(c => c.id).join())
 watch(sectionKey, () => nextTick(collectSections))
 
 // 网格列数：auto-fill 排出来的实际列数，用来在每组最后一行补空格子，让没填满的行也画出完整的格线
@@ -330,7 +342,7 @@ const mainEl = ref(null)
 let gridObserver
 function measureCols() {
   resnapAll()
-  const grid = mainEl.value?.querySelector('.grid')
+  const grid = mainEl.value?.querySelector('section:not([hidden]) .grid:not([hidden])')
   if (grid)
     cols.value = getComputedStyle(grid).gridTemplateColumns.split(' ').length || 1
 }
@@ -498,21 +510,24 @@ onUnmounted(() => {
       <main ref="mainEl" :style="{ '--size': `${size}px` }">
         <!-- 窄屏没有侧栏：分类改成可横向滚动的标签 -->
         <nav class="pills">
-          <a v-for="c in sections" :key="c.id" :href="`#${c.id}`" :class="{ active: active === c.id }">
+          <a v-for="c in visibleSections" :key="c.id" :href="`#${c.id}`" :class="{ active: active === c.id }">
             <Icon v-if="categoryIcon(c.id)" :name="categoryIcon(c.id)" :size="14" class="cat-icon" />{{ t(`cat.${c.id}`) }}<small class="num">{{ c.count }}</small>
           </a>
         </nav>
 
-        <section v-for="c in sections" :id="c.id" :key="c.id" class="category">
+        <section v-for="c in sections" :id="c.id" :key="c.id" class="category" :hidden="!c.count">
           <h2 class="category-head">{{ t(`cat.${c.id}`) }}<small class="num">{{ c.count }}</small></h2>
-          <template v-for="g in c.groups" :key="g.key">
-            <p v-if="g.key" class="group label">{{ t(`group.${g.key}`) }} · {{ g.icons.length }}</p>
-            <div class="grid">
+          <template v-for="(g, gi) in c.groups" :key="g.key">
+            <p v-if="g.key" class="group label" :hidden="!g.count">{{ t(`group.${g.key}`) }} · {{ g.count }}</p>
+            <div class="grid" :class="{ last: gi === c.last }" :hidden="!g.count">
+              <!-- v-memo：搜索、选中变化时只有显隐、选中状态变了的格子重新比对，其余几千个直接跳过 -->
               <button
                 v-for="icon in g.icons"
                 :key="icon.name"
+                v-memo="[shown(icon.name), selected === icon.name, variant, corner, weight, hintPx(size), lang]"
                 class="cell"
                 :class="{ 'selected': selected === icon.name, 'no-fill': variant === 'fill' && !hasFill(icon) }"
+                :hidden="!shown(icon.name)"
                 :data-name="icon.name"
                 :title="variant === 'fill' && !hasFill(icon) ? `${icon.name} · ${t('ui.noFill')}` : icon.name"
                 @click="selected = selected === icon.name ? null : icon.name"
@@ -520,11 +535,11 @@ onUnmounted(() => {
                 <LazyIcon :icon="icon" :corner="corner" :weight="weight" :px="hintPx(size)" :variant="variant" />
                 <span class="name">{{ icon.name }}</span>
               </button>
-              <div v-for="i in fillers(g.icons.length)" :key="`fill-${i}`" class="cell filler" aria-hidden="true" />
+              <div v-for="i in fillers(g.count)" :key="`fill-${i}`" class="cell filler" aria-hidden="true" />
             </div>
           </template>
         </section>
-        <p v-if="!sections.length" class="empty">{{ t('ui.empty', { q: query }) }}</p>
+        <p v-if="!visibleSections.length" class="empty">{{ t('ui.empty', { q: query }) }}</p>
       </main>
 
       <!-- 详情：常驻的第三列。打开、切换只换列里的内容，网格既不重排也不会被挡住；没选中时显示空状态 -->
@@ -811,7 +826,9 @@ main { min-width: 0; padding-bottom: 80px; }
   display: grid; grid-template-columns: repeat(auto-fill, minmax(max(92px, calc(var(--size) * 2.25)), 1fr));
   margin-right: -1px; border-top: 1px solid var(--line);
 }
-.category .grid:last-child { margin-bottom: -1px; }
+.category .grid.last { margin-bottom: -1px; }
+/* 搜索时隐藏的格子、小节、分类：.cell、.grid 自己的 display 会盖过 hidden 属性的默认样式 */
+main [hidden] { display: none; }
 .cell {
   position: relative; aspect-ratio: 1; display: grid; place-items: center; padding: 0; border: 0;
   border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
