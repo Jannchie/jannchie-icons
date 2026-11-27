@@ -375,6 +375,12 @@
   "cello": [
     "x 12"
   ],
+  "champagne": [
+    "x 12"
+  ],
+  "chandelier": [
+    "x 12"
+  ],
   "chart-donut": [
     "x 12"
   ],
@@ -471,6 +477,9 @@
     "y 21"
   ],
   "clock-off": [
+    "x 12"
+  ],
+  "clothespin": [
     "x 12"
   ],
   "cloud-download": [
@@ -622,6 +631,9 @@
     "x 12",
     "x 20",
     "x 4"
+  ],
+  "dragonfly": [
+    "x 12"
   ],
   "drawer": [
     "y 11",
@@ -1319,6 +1331,9 @@
     "y 6",
     "y 9"
   ],
+  "fire-hydrant": [
+    "x 12"
+  ],
   "firework": [
     "x 12"
   ],
@@ -1757,6 +1772,9 @@
   "grapes": [
     "x 12"
   ],
+  "gravestone": [
+    "x 12"
+  ],
   "greek-capital-phi": [
     "x 12"
   ],
@@ -1830,6 +1848,15 @@
     "x 12",
     "x 17",
     "x 7"
+  ],
+  "honeycomb": [
+    "x 12",
+    "x 15",
+    "x 18",
+    "x 21",
+    "x 3",
+    "x 6",
+    "x 9"
   ],
   "horse": [
     "x 10",
@@ -2891,6 +2918,9 @@
     "x 12",
     "x 14"
   ],
+  "pine-cone": [
+    "x 12"
+  ],
   "pineapple": [
     "x 12"
   ],
@@ -3071,6 +3101,9 @@
     "x 15",
     "x 18"
   ],
+  "rose": [
+    "x 12"
+  ],
   "rune-algiz": [
     "x 12"
   ],
@@ -3166,6 +3199,9 @@
   "snowflake": [
     "x 12"
   ],
+  "solar-panel": [
+    "x 12"
+  ],
   "sparkle-list": [
     "y 15",
     "y 18",
@@ -3219,6 +3255,9 @@
     "x 10",
     "x 12",
     "x 14"
+  ],
+  "street-lamp": [
+    "x 12"
   ],
   "strikethrough": [
     "y 12"
@@ -3765,6 +3804,10 @@
   "volcano": [
     "x 12"
   ],
+  "waffle": [
+    "x 12",
+    "y 12"
+  ],
   "wallet": [
     "y 10",
     "y 14",
@@ -3783,6 +3826,9 @@
     "x 12"
   ],
   "wind-chime": [
+    "x 12"
+  ],
+  "wind-turbine": [
     "x 12"
   ],
   "wine": [

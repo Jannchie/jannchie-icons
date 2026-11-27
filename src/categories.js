@@ -75,13 +75,13 @@ const ENLISTED = ['private', 'corporal', 'sergeant', 'staff-sergeant', 'master-s
 const OFFICER = ['second-lieutenant', 'first-lieutenant', 'captain', 'major', 'lieutenant-colonel', 'colonel', 'major-general', 'lieutenant-general', 'general']
 // 家居：家具 → 卫浴 → 厨房 → 家电 → 装饰小物 → 室内装修（榻榻米、墙纸、边饰、窗帘）
 const HOUSEHOLD = [
-  'sofa', 'sofa-sparkle', 'rug', 'armchair', 'chair', 'desk', 'bed', 'pillow', 'wardrobe', 'drawer', 'bookshelf', 'mirror', 'lamp-desk', 'lamp-floor', 'door', 'fireplace',
-  'bathtub', 'shower', 'toilet', 'toilet-paper', 'washbasin', 'faucet', 'toothbrush', 'pump-bottle', 'soap', 'towel', 'comb', 'hair-dryer',
-  'stove', 'cooking-pot', 'frying-pan', 'knife', 'kettle', 'rice-cooker', 'toaster', 'blender', 'refrigerator', 'washing-machine', 'iron', 'vacuum', 'microwave', 'air-conditioner', 'air-conditioner-outdoor',
+  'sofa', 'sofa-sparkle', 'rug', 'armchair', 'chair', 'stool', 'desk', 'bed', 'pillow', 'wardrobe', 'drawer', 'bookshelf', 'mirror', 'lamp-desk', 'lamp-floor', 'chandelier', 'door', 'fireplace',
+  'bathtub', 'shower', 'toilet', 'toilet-paper', 'plunger', 'washbasin', 'faucet', 'toothbrush', 'pump-bottle', 'spray-bottle', 'soap', 'towel', 'comb', 'hair-dryer',
+  'stove', 'cooking-pot', 'frying-pan', 'knife', 'whisk', 'rolling-pin', 'spatula', 'ladle', 'kettle', 'rice-cooker', 'toaster', 'blender', 'refrigerator', 'washing-machine', 'clothespin', 'iron', 'sewing-machine', 'vacuum', 'microwave', 'oven', 'air-conditioner', 'air-conditioner-outdoor', 'radiator',
   'potted-plant', 'watering-can', 'vase', 'picture-frame', 'teddy-bear',
   'tatami', 'wallpaper', 'wall-trim', 'curtain',
 ]
-const TOOLS = ['wrench', 'screwdriver', 'pliers', 'nut', 'drill', 'saw', 'shovel', 'pickaxe', 'tape-measure', 'paint-roller', 'hard-hat', 'paint-bucket', 'bucket', 'ladder', 'flashlight']
+const TOOLS = ['wrench', 'screwdriver', 'pliers', 'nut', 'drill', 'saw', 'shovel', 'pickaxe', 'rake', 'wheelbarrow', 'anvil', 'screw', 'spring', 'chain', 'tape-measure', 'paint-roller', 'hard-hat', 'paint-bucket', 'bucket', 'ladder', 'flashlight']
 const LANGUAGES = ['python', 'javascript', 'typescript', 'java', 'csharp', 'cpp', 'c', 'golang', 'rust', 'php', 'kotlin', 'swift', 'ruby', 'lua', 'haskell']
 const USER_BASE = ['user', 'users', 'user-circle', 'id-card']
 const USER_STATUS = ['user-plus', 'user-minus', 'user-check', 'user-x', 'user-search', 'user-cog']
@@ -245,6 +245,8 @@ export const CATEGORIES = [
       'hospital', 'school', 'bank', 'hotel', 'police-station', 'fire-station', 'post-office', 'train-station',
       'torii', 'shrine', 'temple', 'pagoda', 'japanese-castle',
       'castle', 'church', 'mosque', 'lighthouse', 'stadium', 'windmill', 'tent', 'circus-tent', 'igloo', 'pyramid', 'ferris-wheel', 'fountain', 'bridge', 'bench', 'mailbox', 'museum', 'cinema', 'restaurant', 'cafe', 'gym',
+      // 户外设施：栅栏、路灯、消防栓、墓碑，风机、光伏板、输电塔
+      'fence', 'street-lamp', 'fire-hydrant', 'gravestone', 'wind-turbine', 'solar-panel', 'transmission-tower',
       // 建筑构件：户型图、墙体（完整 / 半墙 / 压低 / 透明）、窗、阳台、走廊、管道
       'floor-plan', 'floor-plan-sparkle', 'wall', 'wall-half', 'wall-lowered', 'walls-lowered', 'wall-transparent', 'window-pane', 'balcony', 'hallway', 'pipe',
     ),
@@ -360,11 +362,11 @@ export const CATEGORIES = [
   // OKTA 的键是 '0'…'8' 和 'obscured'：整数键在对象里自动排前面
   { id: 'okta', match: prefixed('okta-'), rank: name => Object.keys(OKTA).indexOf(name.slice(5)) },
   { id: 'shopping', match: any(prefixed('cart'), oneOf('shopping-bag', 'basket', 'ticket', 'discount', 'barcode')) },
-  { id: 'food', match: oneOf('meat', 'steak', 'bacon', 'fish', 'egg', 'egg-fried', 'milk', 'wine', 'beer', 'cocktail', 'sake', 'coffee', 'apple', 'peach', 'carrot', 'bread', 'cheese', 'rice', 'utensils', 'cake', 'cookie', 'cupcake', 'donut', 'ice-cream', 'candy', 'lollipop', 'pizza', 'burger', 'cherry', 'grapes', 'banana', 'lemon', 'watermelon', 'strawberry', 'popcorn', 'onigiri', 'sushi', 'ramen', 'dumpling', 'dango', 'soda', 'teapot', 'chef-hat', 'fries', 'hot-dog', 'croissant', 'corn', 'chili', 'tomato', 'pumpkin', 'pineapple', 'bubble-tea', 'pear', 'avocado', 'orange', 'chocolate', 'pretzel', 'mango', 'coconut', 'broccoli', 'eggplant', 'garlic', 'taco', 'sandwich', 'salad', 'pancake', 'noodles', 'hotpot', 'baozi', 'zongzi', 'mooncake', 'tanghulu', 'taiyaki', 'chopsticks') },
-  { id: 'nature', match: oneOf('tree', 'tree-pine', 'tree-palm', 'sprout', 'leaf', 'leaves', 'flower', 'tulip', 'clover', 'cactus', 'mushroom', 'bamboo', 'maple-leaf', 'acorn', 'seashell', 'feather', 'mountain', 'volcano', 'island', 'comet', 'waves', 'wave-crest', 'flame') },
+  { id: 'food', match: oneOf('meat', 'steak', 'bacon', 'fish', 'egg', 'egg-fried', 'milk', 'wine', 'beer', 'cocktail', 'sake', 'coffee', 'apple', 'peach', 'carrot', 'bread', 'cheese', 'rice', 'utensils', 'cake', 'cookie', 'cupcake', 'donut', 'ice-cream', 'candy', 'lollipop', 'pizza', 'burger', 'cherry', 'grapes', 'banana', 'lemon', 'watermelon', 'strawberry', 'popcorn', 'onigiri', 'sushi', 'ramen', 'dumpling', 'dango', 'soda', 'teapot', 'chef-hat', 'fries', 'hot-dog', 'croissant', 'corn', 'chili', 'tomato', 'pumpkin', 'pineapple', 'bubble-tea', 'pear', 'avocado', 'orange', 'chocolate', 'pretzel', 'mango', 'coconut', 'broccoli', 'eggplant', 'garlic', 'taco', 'sandwich', 'salad', 'pancake', 'noodles', 'hotpot', 'baozi', 'zongzi', 'mooncake', 'tanghulu', 'taiyaki', 'chopsticks', 'kiwi', 'onion', 'potato', 'bell-pepper', 'peanut', 'waffle', 'sausage', 'pudding', 'teacup', 'champagne') },
+  { id: 'nature', match: oneOf('tree', 'tree-pine', 'tree-palm', 'sprout', 'leaf', 'leaves', 'flower', 'tulip', 'rose', 'sunflower', 'lotus', 'wheat', 'pine-cone', 'honeycomb', 'clover', 'cactus', 'mushroom', 'bamboo', 'maple-leaf', 'acorn', 'seashell', 'feather', 'mountain', 'volcano', 'island', 'comet', 'waves', 'wave-crest', 'flame') },
   // 动物：正面头像（猫、狗、猪、牛、狐狸、熊、熊猫、青蛙、猫头鹰、鹿、大象、绵羊）、整只的（企鹅、鸭、鸡、鲸、章鱼、螃蟹、蛇、蝙蝠）、
   // 侧面剪影（马、鸟、龟，朝左，和兔子、蜗牛同向）、俯视（蜜蜂、蝴蝶、蜘蛛）、爪印，宠物项圈（collar-bell）也放这里
-  { id: 'animal', match: oneOf('paw', 'cat', 'dog', 'pig', 'cow', 'fox', 'bear', 'panda', 'frog', 'owl', 'deer', 'elephant', 'sheep', 'lion', 'tiger', 'koala', 'monkey', 'wolf', 'giraffe', 'unicorn', 'dragon', 'penguin', 'parrot', 'swan', 'dolphin', 'shark', 'jellyfish', 'ladybug', 'duck', 'chicken', 'whale', 'octopus', 'crab', 'snake', 'spider', 'bat', 'horse', 'bird', 'turtle', 'bee', 'butterfly', 'butterfly-small', 'butterfly-swallowtail', 'collar-bell') },
+  { id: 'animal', match: oneOf('paw', 'cat', 'dog', 'pig', 'cow', 'fox', 'bear', 'panda', 'frog', 'owl', 'deer', 'elephant', 'sheep', 'lion', 'tiger', 'koala', 'monkey', 'wolf', 'giraffe', 'camel', 'kangaroo', 'squirrel', 'hedgehog', 'crocodile', 'unicorn', 'dragon', 'penguin', 'parrot', 'swan', 'flamingo', 'dolphin', 'shark', 'jellyfish', 'seahorse', 'starfish', 'shrimp', 'ladybug', 'dragonfly', 'duck', 'chicken', 'whale', 'octopus', 'crab', 'snake', 'spider', 'bat', 'horse', 'bird', 'turtle', 'bee', 'butterfly', 'butterfly-small', 'butterfly-swallowtail', 'collar-bell') },
   // 民用交通：车（侧视、车头朝右）、飞机、船，以及加油、充电、停车、路锥、红绿灯这些路上的设施，船锚、行李箱、护照这些出行的东西
   { id: 'transport', match: oneOf('car', 'taxi', 'bus', 'train', 'truck', 'bike', 'motorcycle', 'scooter', 'plane', 'plane-takeoff', 'plane-landing', 'ship', 'sailboat', 'tractor', 'van', 'police-car', 'fire-truck', 'subway', 'tram', 'excavator', 'forklift', 'crane', 'parachute', 'cable-car', 'hot-air-balloon', 'skateboard', 'road', 'steering-wheel', 'anchor', 'luggage', 'passport', 'fuel', 'ev-charger', 'parking', 'traffic-light', 'traffic-cone') },
   { id: 'hardware', match: oneOf('usb', 'usb-c', 'usb-a', 'usb-drive', 'hdmi', 'ethernet', 'sd-card', 'cpu', 'gpu', 'memory', 'hard-drive', 'ssd', 'fan', 'mouse', 'sim-card', 'socket', 'desktop-tower', 'power-bank') },
@@ -377,9 +379,9 @@ export const CATEGORIES = [
     },
     rank: name => Object.keys(NOTATION).indexOf(name.slice(9)),
   },
-  { id: 'instrument', match: oneOf('guitar', 'violin', 'piano', 'drum', 'trumpet', 'saxophone', 'flute', 'clarinet', 'harmonica', 'accordion', 'cello', 'ukulele', 'harp', 'xylophone', 'metronome') },
+  { id: 'instrument', match: oneOf('guitar', 'violin', 'piano', 'drum', 'trumpet', 'saxophone', 'flute', 'clarinet', 'harmonica', 'accordion', 'cello', 'ukulele', 'harp', 'xylophone', 'maracas', 'tambourine', 'gong', 'metronome') },
   { id: 'weapon', match: oneOf('sword', 'swords', 'dagger', 'bow', 'axe', 'spear', 'hammer', 'bomb', 'pistol', 'shuriken', 'katana') },
-  { id: 'clothing', match: any(prefixed('shoe'), oneOf('t-shirt', 'dress', 'pants', 'cap', 'hat', 'sock', 'hanger', 'dress-form', 'ribbon-bow', 'tie', 'handbag', 'jacket', 'hoodie', 'coat', 'vest', 'business-suit', 'skirt', 'shorts', 'kimono', 'scarf', 'gloves', 'belt', 'necklace', 'earrings')) },
+  { id: 'clothing', match: any(prefixed('shoe'), oneOf('t-shirt', 'dress', 'pants', 'cap', 'hat', 'sock', 'hanger', 'dress-form', 'ribbon-bow', 'tie', 'handbag', 'jacket', 'hoodie', 'coat', 'vest', 'business-suit', 'skirt', 'shorts', 'kimono', 'scarf', 'gloves', 'belt', 'necklace', 'earrings', 'yarn', 'safety-pin')) },
   {
     id: 'controller',
     match: prefixed('xbox-', 'playstation-', 'dpad', 'controller-'),
@@ -387,7 +389,7 @@ export const CATEGORIES = [
   },
   { id: 'tabletop', match: any(prefixed('chess', 'suit-', 'xiangqi-', 'shogi-', 'game-card-'), oneOf('sudoku', 'tic-tac-toe', 'crossword', 'minesweeper', 'tetromino', 'puzzle-cube', 'four-in-a-row', 'bingo', 'darts', 'billiards'), oneOf('go-board', 'playing-card', 'playing-cards', 'poker-chip', 'domino', 'mahjong')) },
   { id: 'award', match: oneOf('trophy', 'medal', 'medal-1', 'medal-2', 'medal-3', 'award', 'crown', 'podium') },
-  { id: 'sport', match: oneOf('basketball', 'soccer', 'volleyball', 'rugby', 'baseball', 'tennis', 'golf', 'ping-pong', 'badminton', 'bowling', 'dumbbell', 'kettlebell', 'boxing-glove', 'whistle', 'ice-skate', 'hockey', 'snowboard', 'archery', 'climbing', 'yoga', 'jersey', 'fishing-rod', 'kite', 'run', 'walk', 'swim', 'ski', 'surf') },
+  { id: 'sport', match: oneOf('basketball', 'soccer', 'volleyball', 'rugby', 'american-football', 'baseball', 'tennis', 'golf', 'ping-pong', 'badminton', 'bowling', 'dumbbell', 'kettlebell', 'boxing-glove', 'whistle', 'ice-skate', 'roller-skate', 'hockey', 'snowboard', 'archery', 'climbing', 'yoga', 'jersey', 'fishing-rod', 'kite', 'run', 'walk', 'swim', 'ski', 'surf') },
   { id: 'medical', match: oneOf('pill', 'syringe', 'ambulance', 'stethoscope', 'bandage', 'first-aid', 'tooth', 'bone', 'virus', 'lungs', 'stomach', 'kidney', 'liver', 'nose', 'iv-drip', 'blood-drop', 'crutch', 'face-mask') },
   // 表情：mood-* 一组（圆脸 + 眼睛 + 嘴，见 mood-empty）
   { id: 'mood', match: prefixed('mood-') },
@@ -398,7 +400,7 @@ export const CATEGORIES = [
   { id: 'tool', match: oneOf(...TOOLS), rank: name => TOOLS.indexOf(name) },
   {
     id: 'object',
-    match: oneOf('key', 'palette', 'pin', 'pin-diagonal', 'hourglass', 'alarm-clock', 'timer', 'flag', 'flag-plain', 'flag-pennant', 'flag-wave', 'flag-checkered', 'flag-banner', 'target', 'compass', 'keyboard', 'globe', 'languages', 'languages-sparkle', 'lightbulb', 'tada', 'zap', 'rabbit', 'snail', 'magnet', 'footprint', 'lips', 'lips-whisper'),
+    match: oneOf('key', 'palette', 'pin', 'pin-diagonal', 'hourglass', 'alarm-clock', 'timer', 'flag', 'flag-plain', 'flag-pennant', 'flag-wave', 'flag-checkered', 'flag-banner', 'target', 'compass', 'keyboard', 'globe', 'languages', 'languages-sparkle', 'lightbulb', 'tada', 'zap', 'rabbit', 'snail', 'magnet', 'horseshoe', 'footprint', 'lips', 'lips-whisper'),
   },
   // 电源与开关：oneOf 会先去掉名字末尾的 -off，所以 toggle-off、label-off 分别按 toggle、label 匹配（power-state-off 直接列出）
   { id: 'ui', match: any(prefixed('cursor', 'battery'), oneOf('hand-grab', 'touch-ripple', 'settings', 'theme', 'wifi', 'signal', 'bluetooth', 'power', 'power-state-on', 'power-state-off', 'power-toggle', 'toggle', 'toggle-on', 'label', 'label-on')) },

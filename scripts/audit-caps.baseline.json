@@ -579,6 +579,12 @@
   "pear": [
     "bold (12.23, 4.82)"
   ],
+  "pine-cone": [
+    "bold (16.17, 16.98)",
+    "bold (7.83, 16.99)",
+    "regular (16.33, 16.82)",
+    "regular (7.67, 16.82)"
+  ],
   "ping-pong": [
     "bold (5.82, 8.75)",
     "regular (5.79, 9)"
@@ -716,10 +722,19 @@
     "bold (16.5, 18.5)",
     "bold (16.5, 5.5)"
   ],
+  "rose": [
+    "bold (13.09, 12.96)"
+  ],
   "rune-raidho": [
     "bold (8.13, 11.64)",
     "light (7.81, 11.82)",
     "regular (7.97, 11.73)"
+  ],
+  "safety-pin": [
+    "light (4.24, 17.6)",
+    "light (6.49, 19.43)",
+    "regular (4.32, 17.46)",
+    "regular (6.61, 19.31)"
   ],
   "scale-balance": [
     "bold (17.9, 6.73)",
@@ -731,6 +746,9 @@
     "regular (11.27, 7.73)",
     "regular (11.5, 7.5)",
     "regular (11.5, 7.96)"
+  ],
+  "seahorse": [
+    "bold (16.5, 14.04)"
   ],
   "search-off": [
     "regular (4.01, 10.06)"

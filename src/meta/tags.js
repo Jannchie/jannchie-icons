@@ -948,12 +948,71 @@ restaurant: dining, food, eat, fork and knife, 餐厅, 饭店, レストラン, 
 cafe: coffee shop, coffee, tea, 咖啡馆, 咖啡店, カフェ, 喫茶店
 gym: fitness, workout, sports center, dumbbell, 健身房, 体育馆, ジム
 playground: park, slide, swing, kids, children, 游乐场, 儿童乐园, 公園, 遊び場
+camel: animal, desert, hump, bactrian, dromedary, 骆驼, 沙漠, ラクダ
+kangaroo: animal, australia, marsupial, joey, hop, 袋鼠, 澳大利亚, カンガルー
+hedgehog: animal, spikes, spiny, porcupine, 刺猬, ハリネズミ
+squirrel: animal, tail, rodent, nut, chipmunk, 松鼠, リス
+flamingo: bird, animal, pink, tropical, one leg, 火烈鸟, 红鹳, フラミンゴ
+crocodile: animal, alligator, reptile, teeth, 鳄鱼, ワニ
+dragonfly: insect, bug, wings, pond, summer, 蜻蜓, トンボ
+shrimp: prawn, seafood, shellfish, sushi, tempura, 虾, 海鲜, エビ, 海老
+starfish: sea star, ocean, beach, marine, 海星, ヒトデ
+seahorse: animal, sea, ocean, marine, fish, 海马, タツノオトシゴ
+rose: flower, love, romance, valentine, thorn, 玫瑰, 蔷薇, 爱情, バラ, 薔薇
+sunflower: flower, plant, summer, seed, sun, 向日葵, 葵花, ひまわり
+lotus: flower, water lily, yoga, meditation, zen, spa, 莲花, 荷花, 瑜伽, 蓮, ハス
+wheat: grain, cereal, gluten, harvest, farm, bread, 小麦, 麦穗, 谷物, 麦
+pine-cone: pinecone, conifer, fir, forest, autumn, christmas, 松果, 松塔, 松ぼっくり
+honeycomb: honey, bee, hive, beehive, hexagon, cells, 蜂巢, 蜂窝, 蜂蜜, ハニカム, 蜂の巣
+kiwi: kiwifruit, fruit, slice, green, 猕猴桃, 奇异果, キウイ
+onion: vegetable, bulb, layers, cooking, ingredient, 洋葱, 葱头, 玉ねぎ, タマネギ
+potato: vegetable, spud, tuber, starch, fries, 土豆, 马铃薯, 洋芋, じゃがいも, ポテト
+bell-pepper: capsicum, sweet pepper, paprika, vegetable, 甜椒, 青椒, 彩椒, 灯笼椒, ピーマン, パプリカ
+peanut: nut, groundnut, shell, snack, allergy, 花生, 落花生, ピーナッツ
+waffle: breakfast, dessert, grid, belgian, syrup, 华夫饼, 松饼, ワッフル
+sausage: meat, wurst, bratwurst, grill, bbq, 香肠, 腊肠, 烤肠, ソーセージ
+pudding: flan, custard, caramel, dessert, purin, 布丁, 焦糖布丁, プリン
+teacup: tea, cup, saucer, tea bag, drink, afternoon tea, 茶杯, 茶, 红茶, 下午茶, ティーカップ, 紅茶
+champagne: cheers, toast, celebrate, party, flute, sparkling wine, new year, 香槟, 干杯, 庆祝, シャンパン, 乾杯
+whisk: beat, mix, egg beater, baking, kitchen, cooking, 打蛋器, 搅拌, 烘焙, 泡立て器
+rolling-pin: dough, baking, pastry, kitchen, flatten, 擀面杖, 烘焙, 麺棒
+spatula: turner, flipper, slotted, kitchen, cooking, fry, 锅铲, 铲子, 煎铲, フライ返し, ヘラ
+ladle: soup, scoop, serve, kitchen, cooking, 汤勺, 勺子, 长柄勺, お玉, レードル
+rake: garden, leaves, gardening, farm, tool, 耙子, 钉耙, 熊手
+wheelbarrow: garden, cart, construction, barrow, 手推车, 独轮车, 手押し車
+anvil: blacksmith, forge, smith, craft, metal, 铁砧, 锻造, 金床
+screw: bolt, fastener, hardware, thread, diy, 螺丝, 螺钉, ねじ
+spring: coil, elastic, bounce, suspension, physics, 弹簧, ばね
+chain: links, shackle, bond, metal, connect, 锁链, 链条, 鎖, チェーン
+plunger: toilet, unclog, drain, plumbing, bathroom, 马桶搋子, 皮搋子, 通马桶, ラバーカップ
+spray-bottle: sprayer, cleaner, cleaning, mist, disinfect, trigger, 喷雾瓶, 喷壶, スプレー
+wind-turbine: wind power, renewable, energy, generator, green, 风力发电, 风机, 風力発電
+solar-panel: solar, photovoltaic, renewable, energy, sun power, 太阳能板, 光伏, ソーラーパネル
+transmission-tower: pylon, power line, electricity, high voltage, grid, 输电塔, 高压线, 电塔, 送電鉄塔
+fence: picket, garden, yard, barrier, boundary, 栅栏, 篱笆, 柵, フェンス
+street-lamp: streetlight, lamppost, lantern, light, city, 路灯, 街灯, 街灯柱
+fire-hydrant: fire, water, emergency, firefighter, street, 消防栓, 消火栓
+gravestone: tombstone, grave, headstone, rip, death, cemetery, 墓碑, 墓, 墓石
+stool: bar stool, seat, chair, furniture, 凳子, 吧台凳, スツール
+chandelier: light, lamp, ceiling, luxury, candle, crystal, 吊灯, 枝形吊灯, シャンデリア
+radiator: heater, heating, warm, central heating, 暖气片, 暖气, ラジエーター, 暖房
+oven: bake, baking, roast, kitchen, appliance, cook, 烤箱, オーブン
+sewing-machine: sew, stitch, tailor, needle, craft, fabric, 缝纫机, ミシン
+yarn: wool, knitting, thread, ball, crochet, craft, 毛线, 毛线球, 毛糸
+safety-pin: pin, fasten, diaper, sewing, clasp, 别针, 安全别针, 安全ピン
+clothespin: clothes peg, peg, laundry, clip, hang, dry, 晾衣夹, 衣夹, 洗濯ばさみ
+american-football: nfl, football, gridiron, ball, sport, touchdown, 美式橄榄球, 美式足球, アメフト
+roller-skate: skating, quad skate, rollerblade, wheels, sport, 轮滑鞋, 旱冰鞋, ローラースケート
+horseshoe: luck, lucky, horse, fortune, charm, 马蹄铁, 幸运, 蹄鉄
+maracas: shaker, music, instrument, percussion, latin, rattle, 沙锤, 沙槌, マラカス
+tambourine: music, instrument, percussion, jingle, shake, 铃鼓, 手鼓, タンバリン
+gong: music, instrument, percussion, chinese, strike, announce, 锣, 铜锣, 銅鑼, ゴング
 pearl: shell, clam, oyster, scallop, gem, jewel, 珍珠, 贝壳, 真珠
 devil-tail: halloween, imp, mischief, devil, demon, tail, arrow, prank, costume, 万圣节, 小恶魔, 恶魔, 恶作剧, 尾巴, 箭头, 小悪魔, しっぽ
 devil-tail-spade: halloween, imp, mischief, devil, demon, tail, spade, prank, costume, 万圣节, 小恶魔, 恶魔, 恶作剧, 尾巴, 黑桃, 小悪魔, しっぽ, スペード
 rss: feed, subscribe, news, blog, 订阅
 ruby: programming, gem, rails, code
-rugby: american football, ball, sport, football, 橄榄球, ラグビー
+rugby: rugby union, oval ball, ball, sport, football, 橄榄球, 英式橄榄球, ラグビー
 ruler: measure, length, scale, 尺子, 定規
 run: running, jog, exercise, sport, fitness, 跑步, ランニング
 rust: programming, crab, ferris, code

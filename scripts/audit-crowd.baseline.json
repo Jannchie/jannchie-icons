@@ -168,6 +168,10 @@
     "regular @(12, 13.5)",
     "regular @(12, 6)"
   ],
+  "bell-pepper": [
+    "bold @(14.2, 14)",
+    "bold @(9.8, 14)"
+  ],
   "belt": [
     "bold @(17.5, 12)"
   ],
@@ -1445,6 +1449,9 @@
     "bold @(20.5, 9.5)",
     "regular @(6, 12)"
   ],
+  "onion": [
+    "bold @(12, 15)"
+  ],
   "pagoda": [
     "bold @(12, 12)",
     "bold @(12, 20.5)",
@@ -1989,6 +1996,10 @@
     "bold @(12, 8.5)",
     "regular @(12, 8.5)"
   ],
+  "squirrel": [
+    "bold @(8, 14.1)",
+    "regular @(8, 14.1)"
+  ],
   "ssd": [
     "bold @(15.5, 12)",
     "bold @(9.5, 12)"
@@ -2066,6 +2077,12 @@
   "tag-k": [
     "bold @(11.5, 12)",
     "regular @(11.5, 12)"
+  ],
+  "tambourine": [
+    "bold @(12, 13.3)"
+  ],
+  "teacup": [
+    "bold @(10.5, 11)"
   ],
   "text-classification": [
     "bold @(11.9, 12)",
@@ -2281,12 +2298,26 @@
     "bold @(12.9, 8.6)",
     "bold @(13.5, 8)"
   ],
+  "wheat": [
+    "bold @(11.1, 10.4)",
+    "bold @(13.6, 12.9)",
+    "bold @(14.4, 7.1)",
+    "bold @(16.9, 9.6)",
+    "regular @(11.1, 10.4)",
+    "regular @(13.6, 12.9)",
+    "regular @(14.4, 7.1)",
+    "regular @(16.9, 9.6)"
+  ],
   "wheelchair": [
     "regular @(9.5, 4.5)"
   ],
   "wind-chime": [
     "bold @(12, 8)",
     "regular @(12, 8)"
+  ],
+  "wind-turbine": [
+    "bold @(12, 15.8)",
+    "regular @(16.2, 10.6)"
   ],
   "windmill": [
     "bold @(12, 18)"
