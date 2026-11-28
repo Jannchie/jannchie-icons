@@ -4,20 +4,31 @@
 //   ./fill、./fill/all、./fill/icons/*（带实心版路径数据的图标）、./runtime（框架组件包共用的纯函数）
 // - packages/iconify-json：@jannchie/iconify-json，Iconify 格式，每种「圆角 × 字重」一个集合（5 × 3 = 15 个）
 // 用法：pnpm build:packages
-import { mkdirSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
-// 这几个模块没有依赖，直接导入；类型声明里的字重、圆角、角色联合类型从它们生成，不手抄
+// 要用 node --import ./scripts/node-ext.mjs 运行（见 package.json），src/ 的模块直接 import
+import { mkdirSync, rmSync, writeFileSync } from 'node:fs'
 // 改名留下的兼容别名（旧名 → 现名），见 src/aliases.js、docs/naming.md
 import { ALIASES, exportName, resolveName, validateAliases } from '../src/aliases.js'
+import { categorize } from '../src/categories.js'
+import { iconifyBody, mergedPaths } from '../src/export.js'
+// 实心变体（fill）在构建时算好（fill.js 依赖 Clipper2，不进发布包），见 render.js 的 solidPaths
+import { solidify } from '../src/fill.js'
+import { t } from '../src/i18n.js'
+import { compareNames } from '../src/icon-list.js'
+// 标签、加入版本、第三方标记、旧名
+import { metaOf } from '../src/meta/meta.js'
+// 类型声明里的字重、圆角、角色联合类型从这几个模块生成，不手抄
 import { CORNERS, WEIGHTS } from '../src/options.js'
+import { pathsOf, setSolidify, solidKey, svgAttrs, VARIANTS } from '../src/render.js'
 import { ROLES } from '../src/tone.js'
-import { createSsrServer, load } from './audit-baseline.mjs'
+import { loadIcons } from './icons.mjs'
 import { buildLib, copyLegal, readPackage } from './packages.mjs'
 
-// 排序都按 UTF-16 码点（和 Array#sort 的默认顺序一致），不随系统语言变
-const byKey = (a, b) => (a < b ? -1 : a > b ? 1 : 0)
-const byFirst = ([a], [b]) => byKey(a, b)
+// 排序都按 UTF-16 码点（src/icon-list.js 的 compareNames），不随系统语言变
+const byFirst = ([a], [b]) => compareNames(a, b)
 
-const names = readdirSync('src/icons').filter(f => f.endsWith('.js')).map(f => f.slice(0, -3)).sort(byKey)
+setSolidify(solidify)
+const { icons, byName } = await loadIcons()
+const names = icons.map(i => i.name)
 // 别名：[旧名, 现名]，按旧名排序；规则见 validateAliases（现名存在、旧名没有文件、不链式、导出名不撞）
 const aliasErrors = validateAliases(names)
 if (aliasErrors.length)
@@ -27,18 +38,6 @@ const deprecatedDoc = (old, name, indent = '') => `${indent}/** @deprecated Rena
 const { version } = readPackage('packages/core')
 const json = v => JSON.stringify(v)
 
-// 预计算、Iconify、元数据都要跑 src/ 里的引擎（import.meta.glob、无扩展名导入），借 vite 的 SSR 加载
-const server = await createSsrServer()
-const { icons, byName } = await load(server, '/src/iconset.js')
-const { pathsOf, setSolidify, solidKey, svgAttrs, VARIANTS } = await load(server, '/src/render.js')
-// 实心变体（fill）在构建时算好（fill.js 依赖 Clipper2，不进发布包），见 render.js 的 solidPaths
-const { solidify } = await load(server, '/src/fill.js')
-setSolidify(solidify)
-const { iconifyBody, mergedPaths } = await load(server, '/src/export.js')
-const { categorize } = await load(server, '/src/categories.js')
-const { t } = await load(server, '/src/i18n.js')
-// 标签、加入版本、第三方标记、旧名
-const { metaOf } = await load(server, '/src/meta/meta.js')
 
 // 分类：图标名 → 分类 id；分类标题用英文
 const categories = categorize(icons)
@@ -462,7 +461,7 @@ for (const variant of VARIANTS) for (const corner of CORNERS) {
     const setIcons = {}
     const parentOf = new Map()
     for (const [body, group] of groups) {
-      const [parent] = group.sort((a, b) => hyphens(a) - hyphens(b) || byKey(a, b))
+      const [parent] = group.sort((a, b) => hyphens(a) - hyphens(b) || compareNames(a, b))
       setIcons[parent] = { body }
       for (const n of group)
         parentOf.set(n, parent)
@@ -566,7 +565,6 @@ export declare const metadata: IconifyMetaData
 `
 writeFileSync(`${OUT}/index.d.ts`, ICONIFY_DTS)
 writeFileSync(`${OUT}/index.d.cts`, ICONIFY_DTS)
-await server.close()
 
 copyLegal('packages/core', OUT)
 

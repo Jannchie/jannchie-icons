@@ -2,12 +2,12 @@
 // 每个图标给出两档下最小的空隙和挤在一起的对数，按最小空隙从小到大排
 // 用法：pnpm audit:crowd [名字前缀...] [--json] [--baseline [文件]] [--update-baseline [文件]] [--max <n>]
 // 门禁：--baseline 和 scripts/audit-crowd.baseline.json 里的已知问题比，有新问题就以非零码退出（见 audit-baseline.mjs）
-import { gate, load, setup } from './audit-baseline.mjs'
+import { WEIGHTS } from '../src/options.js'
+import { crowdedPairs, finalize } from '../src/svg.js'
+import { gate, setup } from './audit-baseline.mjs'
 
-const { opts, quiet, server, names, icons } = await setup('crowd')
+const { opts, quiet, names, icons } = await setup('crowd')
 const { json } = opts
-const { finalize, crowdedPairs } = await load(server, '/src/svg.js')
-const { WEIGHTS } = await load(server, '/src/options.js')
 
 const report = []
 // 门禁用：{ 图标名: ['bold @(12, 8.5)', …] }
@@ -37,5 +37,4 @@ else {
     console.log(`${r.name.padEnd(36)} ${r.min.toFixed(2).padStart(5)}  ${r.weights.join(' | ')}`)
   console.log(`\n${report.length} / ${names.length} icons have strokes closer than 0.5 apart at regular or bold`)
 }
-await server.close()
 process.exitCode = gate('crowd', issues, names, opts)

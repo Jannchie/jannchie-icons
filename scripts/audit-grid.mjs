@@ -2,12 +2,12 @@
 // 列出不在 .5 上的横竖线（缩小的符号 detail、内部细线 thin、点、实心形状不算），按发虚长度占比从高到低排
 // 用法：pnpm audit:grid [名字前缀...] [--json] [--baseline [文件]] [--update-baseline [文件]] [--max <n>]
 // 门禁：--baseline 和 scripts/audit-grid.baseline.json 里的已知问题比，有新问题就以非零码退出（见 audit-baseline.mjs）
-import { gate, load, setup } from './audit-baseline.mjs'
+import { axisLines } from '../src/path-data.js'
+import { finalize } from '../src/svg.js'
+import { gate, setup } from './audit-baseline.mjs'
 
-const { opts, quiet, server, names, icons } = await setup('grid')
+const { opts, quiet, names, icons } = await setup('grid')
 const { json } = opts
-const { finalize } = await load(server, '/src/svg.js')
-const { axisLines } = await load(server, '/src/path-data.js')
 
 const STROKE = 1
 const onGrid = v => Math.abs(((v % 1) + 1) % 1 - 0.5) < 0.01
@@ -42,5 +42,4 @@ else {
     console.log(`${r.name.padEnd(36)} ${(r.share * 100).toFixed(0).padStart(3)}%  ${r.lines.join(', ')}`)
   console.log(`\n${report.length} / ${names.length} icons have axis-aligned strokes off the .5 grid`)
 }
-await server.close()
 process.exitCode = gate('grid', issues, names, opts)

@@ -4,8 +4,8 @@
 // - --update-baseline [文件]：把当前结果写成基线（带名字前缀时只替换这些图标的条目）
 // - --max <n>：有问题的图标超过 n 个就以 1 退出
 // 都不给时只打印报告、以 0 退出（原来的用法）
-import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { createServer } from 'vite'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
+import { iconNames, loadIcons } from './icons.mjs'
 
 // 解析命令行：名字前缀、--json，以及门禁参数
 export function parseArgs(argv, audit) {
@@ -84,54 +84,22 @@ export function gate(audit, issues, names, opts) {
     console.error(`\n[audit:${audit}] ${fresh.length} icons have issues not in the baseline (${opts.baseline}):`)
     for (const line of fresh)
       console.error(`  ${line}`)
-    console.error(`\nFix the geometry, or if the issue is accepted, run: node scripts/audit-${audit}.mjs --update-baseline`)
+    console.error(`\nFix the geometry, or if the issue is accepted, run: pnpm audit:${audit} --update-baseline`)
     failed = true
   }
   else {
     console.log(`\n[audit:${audit}] no new issues (${known} known in baseline)`)
   }
   if (fixed)
-    console.log(`[audit:${audit}] ${fixed} baseline issues are gone; shrink the baseline with: node scripts/audit-${audit}.mjs --update-baseline`)
+    console.log(`[audit:${audit}] ${fixed} baseline issues are gone; shrink the baseline with: pnpm audit:${audit} --update-baseline`)
   return failed ? 1 : 0
 }
 
-// vite SSR 加载模块：机器负载高时偶尔会「transport invoke timed out」，重试几次再放弃
-export async function load(server, id, tries = 3) {
-  for (let i = 1; ; i++) {
-    try {
-      return await server.ssrLoadModule(id)
-    }
-    catch (e) {
-      if (i >= tries || !/timed out/i.test(String(e?.message ?? e)))
-        throw e
-      console.error(`[audit] loading ${id} timed out, retrying (${i}/${tries - 1})`)
-    }
-  }
-}
-
-// 只在 SSR 里加载 src 的 vite 服务器（审计、品牌素材、构建包的脚本共用）：
-// 不做依赖预构建，几个脚本并行跑时也不会抢着改写 node_modules/.vite
-export const createSsrServer = () => createServer({ server: { middlewareMode: true, ws: false }, appType: 'custom', logLevel: 'error', optimizeDeps: { noDiscovery: true, include: [] } })
-
-// 审计脚本的启动样板：解析命令行、起服务器、加载图标，按名字前缀筛选
-// 不带前缀时一次加载全部图标（src/iconset.js）；带前缀时只加载匹配的几个模块，不用等全部图标转换完
-// 返回 { opts, quiet（门禁模式只打印汇总和新问题，不列完整报告）, server, names, icons（{ name, draw, animation }，和 names 同序）}
+// 审计脚本的启动样板：解析命令行、加载图标（按名字前缀筛选，见 scripts/icons.mjs）
+// 返回 { opts, quiet（门禁模式只打印汇总和新问题，不列完整报告）, names, icons（和 names 同序）}
 export async function setup(audit) {
   const opts = parseArgs(process.argv.slice(2), audit)
-  const server = await createSsrServer()
-  const names = readdirSync('src/icons').filter(f => f.endsWith('.js')).map(f => f.slice(0, -3))
-    .filter(n => !opts.prefixes.length || opts.prefixes.some(p => n.startsWith(p))).sort()
-  let icons
-  if (opts.prefixes.length) {
-    icons = []
-    for (const name of names) {
-      const mod = await load(server, `/src/icons/${name}.js`)
-      icons.push({ name, draw: mod.default, animation: mod.animation })
-    }
-  }
-  else {
-    const { byName } = await load(server, '/src/iconset.js')
-    icons = names.map(n => byName.get(n))
-  }
-  return { opts, quiet: !!opts.baseline && !opts.json, server, names, icons }
+  const names = iconNames(opts.prefixes)
+  const { icons } = await loadIcons(names)
+  return { opts, quiet: !!opts.baseline && !opts.json, names, icons }
 }

@@ -5,26 +5,24 @@
 // 左边标志 + 线条字母标题，右边一面图标格子墙；文字也用库里的线条字母画成路径，不依赖字体
 // PNG / ICO 用 ImageMagick（magick）从 SVG 转出。用法：pnpm brand（图标增减后重新跑一次，数量会跟着更新）
 import { execFileSync } from 'node:child_process'
-import { mkdirSync, mkdtempSync, readdirSync, rmSync, writeFileSync } from 'node:fs'
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { createSsrServer, load as loadWith } from './audit-baseline.mjs'
+import { lineAt, textWidth } from '../src/letters.js'
+import { CORNERS, WEIGHTS } from '../src/options.js'
+import { pathAttrs } from '../src/render.js'
+import { finalize } from '../src/svg.js'
+import { loadIcons } from './icons.mjs'
 
-const server = await createSsrServer()
-const load = path => loadWith(server, path)
-const { finalize } = await load('/src/svg.js')
-const { pathAttrs } = await load('/src/render.js')
-const { lineAt, textWidth } = await load('/src/letters.js')
-const { CORNERS, WEIGHTS } = await load('/src/options.js')
-
-const names = readdirSync('src/icons').filter(f => f.endsWith('.js')).map(f => f.slice(0, -3))
+const { icons, byName } = await loadIcons()
+const names = icons.map(i => i.name)
 const RADIUS = 2
 // 标志：库里的十面骰
 const MARK = 'dice-d10'
 const attrs = obj => Object.entries(obj).filter(([, v]) => v !== undefined).map(([k, v]) => `${k}="${v}"`).join(' ')
 // 24 网格的图标放到 (x, y)、边长 size 的方块里
-async function icon(name, x, y, size, stroke) {
-  const draw = (await load(`/src/icons/${name}.js`)).default
+function icon(name, x, y, size, stroke) {
+  const { draw } = byName.get(name)
   const body = finalize(draw({ radius: RADIUS, stroke, weight: 'bold' }), stroke).map(p => `<path ${attrs(pathAttrs(p))}/>`).join('')
   return `<svg x="${x}" y="${y}" width="${size}" height="${size}" viewBox="0 0 24 24">${body}</svg>`
 }
@@ -49,7 +47,7 @@ const DARK = { bg: '#0e0e11', line: '#1d1d22', ink: '#f2f2f4', dim: '#9a9ba4', i
 const css = c => `.bg { fill: ${c.bg}; } .line { stroke: ${c.line}; } .ink { stroke: ${c.ink}; color: ${c.ink}; } .dim { stroke: ${c.dim}; } .dim-fill { fill: ${c.dim}; } .icons { color: ${c.icons}; }`
 
 // 横幅：W × H 画布，左栏 split 宽放标题，右栏是 cell 边长的图标格子；theme 为 'auto' 时颜色跟随系统
-async function banner({ W, H, split, cell, theme, rounded = 12 }) {
+function banner({ W, H, split, cell, theme, rounded = 12 }) {
   const STROKE = 1.5
   const cols = Math.floor((W - split) / cell)
   const rows = Math.floor(H / cell)
@@ -63,7 +61,7 @@ async function banner({ W, H, split, cell, theme, rounded = 12 }) {
       const name = PICKS[(r * cols + c) % PICKS.length]
       // 越往左越淡，和标题区过渡得柔和一些
       const fade = Math.min(1, 0.35 + c / (cols - 1) * 0.65)
-      cells.push(`<g opacity="${fade.toFixed(2)}">${await icon(name, gridX + c * cell + pad, gridY + r * cell + pad, iconSize, STROKE)}</g>`)
+      cells.push(`<g opacity="${fade.toFixed(2)}">${icon(name, gridX + c * cell + pad, gridY + r * cell + pad, iconSize, STROKE)}</g>`)
     }
   }
   const gridLines = [
@@ -76,7 +74,7 @@ async function banner({ W, H, split, cell, theme, rounded = 12 }) {
   const top = H / 2 - 88
   // 档位数直接取 options.js，增减档位后重新跑一次就跟着变
   const stats = [`${names.length} ICONS`, '24 GRID', `${CORNERS.length} RADII`, `${WEIGHTS.length} WEIGHTS`]
-  const mark = await icon(MARK, left, top, 48, STROKE)
+  const mark = icon(MARK, left, top, 48, STROKE)
   const title = text('JANNCHIE ICONS', left, top + 76, 6.5, 10)
   const sub = text('LINE ICON LIBRARY', left, top + 142, 2.5, 5.5)
   let x = left
@@ -111,9 +109,9 @@ ${rounded ? `<rect class="line" x=".5" y=".5" width="${W - 1}" height="${H - 1}"
 
 // 网站图标：深色圆角底 + 白色标志，浅色、深色标签栏上都看得清；小尺寸用最粗的线宽
 // full：铺满不留圆角（apple-touch-icon 由系统自己裁圆角；manifest 图标留出安全区）
-async function appIcon({ full = false } = {}) {
+function appIcon({ full = false } = {}) {
   const inset = full ? 7 : 5
-  const mark = await icon(MARK, inset, inset, 32 - inset * 2, 2)
+  const mark = icon(MARK, inset, inset, 32 - inset * 2, 2)
   return `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke-linecap="round" stroke-linejoin="round">
 <rect width="32" height="32" rx="${full ? 0 : 7}" fill="#0e0e11"/>
 <g stroke="#f2f2f4" stroke-width="2">${mark}</g>
@@ -130,20 +128,19 @@ const png = (svg, out, w, h = w) => {
 
 mkdirSync('.github', { recursive: true })
 mkdirSync('public', { recursive: true })
-writeFileSync('.github/banner.svg', await banner({ W: 1280, H: 320, split: 560, cell: 64, theme: 'auto' }))
-png(await banner({ W: 1200, H: 630, split: 560, cell: 64, theme: 'dark', rounded: 0 }), 'public/og.png', 1200, 630)
+writeFileSync('.github/banner.svg', banner({ W: 1280, H: 320, split: 560, cell: 64, theme: 'auto' }))
+png(banner({ W: 1200, H: 630, split: 560, cell: 64, theme: 'dark', rounded: 0 }), 'public/og.png', 1200, 630)
 
-const favicon = await appIcon()
+const favicon = appIcon()
 writeFileSync('public/favicon.svg', favicon)
 const sizes = [16, 32, 48]
 for (const s of sizes)
   png(favicon, join(tmp, `favicon-${s}.png`), s)
 execFileSync('magick', [...sizes.map(s => join(tmp, `favicon-${s}.png`)), 'public/favicon.ico'])
-const full = await appIcon({ full: true })
+const full = appIcon({ full: true })
 png(full, 'public/apple-touch-icon.png', 180)
 png(full, 'public/icon-192.png', 192)
 png(full, 'public/icon-512.png', 512)
 rmSync(tmp, { recursive: true, force: true })
 
 console.log(`brand assets for ${names.length} icons: .github/banner.svg, public/og.png, favicon.svg/.ico, apple-touch-icon.png, icon-192/512.png`)
-await server.close()

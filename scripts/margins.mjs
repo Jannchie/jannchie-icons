@@ -1,21 +1,18 @@
 // 留白统计：每个图标在常规字重、圆角 2 下的墨迹（含半个线宽）离画布四边的距离，见 docs/design.md
 // 用法：pnpm margins [名字前缀...]；不带参数时统计全部，并列出离边最近的图标
-import { readdirSync } from 'node:fs'
-import { pathToFileURL } from 'node:url'
 import { samples, segments } from '../src/clip.js'
 import { finalize } from '../src/svg.js'
+import { iconNames, loadIcons } from './icons.mjs'
 
 const prefixes = process.argv.slice(2)
-const dir = new URL('../src/icons/', import.meta.url)
-const names = readdirSync(dir).filter(f => f.endsWith('.js')).map(f => f.slice(0, -3)).filter(n => !prefixes.length || prefixes.some(p => n.startsWith(p))).sort()
-const mods = await Promise.all(names.map(n => import(pathToFileURL(new URL(`${n}.js`, dir).pathname.slice(1)))))
+const { icons } = await loadIcons(iconNames(prefixes))
 const stroke = 1.5
 const rows = []
-names.forEach((name, i) => {
-  if (mods[i].animation)
-    return
+for (const { name, draw, animation } of icons) {
+  if (animation)
+    continue
   let [x0, y0, x1, y1] = [Infinity, Infinity, -Infinity, -Infinity]
-  for (const p of finalize(mods[i].default({ radius: 2, stroke, weight: 'regular' }), stroke)) {
+  for (const p of finalize(draw({ radius: 2, stroke, weight: 'regular' }), stroke)) {
     const h = (p.width ?? stroke) / 2
     for (const s of segments(p.d)) {
       for (const g of s.segs) {
@@ -26,7 +23,7 @@ names.forEach((name, i) => {
   }
   if (x0 < Infinity)
     rows.push({ name, l: x0, t: y0, r: 24 - x1, b: 24 - y1 })
-})
+}
 const f = v => v.toFixed(2)
 const min = r => Math.min(r.l, r.t, r.r, r.b)
 if (prefixes.length) {

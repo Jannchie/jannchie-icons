@@ -1,15 +1,8 @@
-// 测试共用：按核心包的方式组装图标（{ name, draw, animation, fill }，见 scripts/build-packages.mjs），只用公开入口
+// 测试共用：图标集合和站点同一份（src/iconset.js，组装方式见 src/icon-list.js，和发布包的图标对象同形），只用公开入口渲染
 // 发布包里实心版是预先算好的 solid；这里带源码的 fill，渲染前要 setSolidify（见 tests/fill.test.js）
 import { readdirSync } from 'node:fs'
 
-const modules = import.meta.glob('../src/icons/*.js', { eager: true })
-
-export const icons = Object.entries(modules)
-  .map(([path, mod]) => {
-    const name = path.split('/').pop().slice(0, -3)
-    return { name, draw: mod.default, ...(mod.animation && { animation: mod.animation }), ...(mod.fill && { fill: mod.fill }) }
-  })
-  .sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0))
+export { icons } from '../src/iconset.js'
 
 // 磁盘上的文件名（含非 .js 文件，命名校验用）
 export const files = readdirSync(new URL('../src/icons/', import.meta.url))

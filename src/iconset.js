@@ -1,10 +1,6 @@
-// 全部图标：src/icons 下每个文件一个，按名字排序；预览页和示例页共用
-// 默认导出是静态造型 ({ radius, stroke, weight }) => 路径数组；动画图标另外导出 animation（见 render.js 的 animatedPaths）；
-// 有实心版的图标另外导出 fill（见 fill.js）
+// 全部图标（Vite 环境：预览站、vitest）：src/icons 下每个文件一个；组装和排序见 icon-list.js，Node 脚本用 scripts/icons.mjs
+import { iconsFrom } from './icon-list'
+
 const modules = import.meta.glob('./icons/*.js', { eager: true })
 
-export const icons = Object.entries(modules)
-  .map(([path, mod]) => ({ name: path.split('/').pop().slice(0, -3), draw: mod.default, animation: mod.animation, fill: mod.fill }))
-  .sort((a, b) => a.name.localeCompare(b.name))
-
-export const byName = new Map(icons.map(i => [i.name, i]))
+export const { icons, byName } = iconsFrom(Object.entries(modules).map(([path, mod]) => [path.split('/').pop().slice(0, -3), mod]))

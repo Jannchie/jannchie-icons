@@ -65,5 +65,5 @@ How icons are drawn on the 24 × 24 canvas. Naming rules are in [naming.md](nami
 
 ## Checking
 
-- `node --import <scratchpad>/ext-register.mjs <scratchpad>/margins2.mjs` (see the maintainers' notes) lists the ink margins of every icon.
+- `pnpm margins [name prefix...]` lists the ink margins of every icon (or of the named ones).
 - `pnpm audit:icons` runs the grid, cap and crowding audits against their baselines.
