@@ -1,4 +1,5 @@
 import { num, rounded } from './geometry'
+import { DOT } from './line-widths'
 import { hole } from './solid'
 
 // 建筑类图标共用的场景约定：都站在同一条地平线上
@@ -8,7 +9,6 @@ export const groundLine = `M2.5 ${GROUND}H21.5`
 
 // 点（窗户、列表圆点、散点等）：零长度路径，用独立的线宽画成实心点，不跟随全局线宽
 // 圆头时是圆点，尖角时是方点；size 是点的直径
-export const DOT = 2
 export const dot = (x, y, size = DOT) => ({ d: `M${x} ${y}h0`, dot: size })
 // 眼睛：尖角模式下也是圆点（round），粗字重下不再变大（eye：直径只跟到常规线宽 DOT_STROKE 为止，细字重照常缩小）
 // ——方眼和粗体下的大眼都让角色、动物显得呆

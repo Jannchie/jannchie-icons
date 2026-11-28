@@ -4,15 +4,15 @@ import { blocked, place } from './clearance'
 import { samples, segments } from './clip'
 import * as symbols from './symbols'
 import { cornerScale, outlines } from './symbols'
-import { DOT_STROKE } from './svg'
+import { dotWidth } from './line-widths'
 
 // 符号在 center、size 下的几何范围（中心线，不含线宽）：[x0, y0, x1, y1]
-// 传了 stroke 时，圆点按实际画出来的半径算：圆点直径 = dot × stroke / DOT_STROKE（见 svg.js），往往比线宽粗，
+// 传了 stroke 时，圆点按实际画出来的半径算：圆点直径见 line-widths.js 的 dotWidth，往往比线宽粗，
 // 把多出半个线宽的部分算进范围，调用方再加 h 就是真实墨迹（省略号的末点不会伸出贴边的位置）
 export function extentOf(draw, center, size, radius, stroke) {
   let [x0, y0, x1, y1] = [Infinity, Infinity, -Infinity, -Infinity]
   for (const p of draw(center, size, radius)) {
-    const pad = stroke != null && p.dot ? Math.max(0, p.dot * (p.eye ? Math.min(stroke, DOT_STROKE) : stroke) / DOT_STROKE / 2 - stroke / 2) : 0
+    const pad = stroke != null && p.dot ? Math.max(0, dotWidth(p, stroke) / 2 - stroke / 2) : 0
     for (const s of segments(typeof p === 'string' ? p : p.d)) {
       for (const g of s.segs) {
         for (const [x, y] of samples(g, 8))
@@ -138,7 +138,7 @@ export function centerBadge(name, draw, radius, stroke, center, limit, grow = 1)
   return fit
 }
 
-// 标记成角标：渲染时线宽比外框细（见 svg.js 的 DETAIL_RATIO）
+// 标记成角标：渲染时线宽比外框细（见 line-widths.js 的 DETAIL_RATIO）
 // 加号、减号、叉只有一两笔、没有内部细节，变细后 16px 下发虚、看不清，保持外框线宽（name 是 cornerScale 里的符号名）
 const FULL_WEIGHT = new Set(['plus', 'minus', 'cross'])
 export const asBadge = (paths, name) => paths.map((p) => {

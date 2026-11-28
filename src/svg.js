@@ -2,23 +2,7 @@
 import { GAP } from './clearance'
 import { clip, samples, segments } from './clip'
 import { absolute, minify, parse } from './path-data'
-import { DOT } from './scene'
-// 各类线条的实际线宽：thin（内部细线）是外框的 THIN 倍
-export const THIN = 0.7
-// detail（缩小放进外框里的符号：系列的居中符号、列表符号）和 badge（系列图标的角标）比外框细：
-// 外框线宽的 DETAIL_RATIO 倍，封顶 DETAIL_STROKE——外框和里面的符号一粗一细，符号细节在小尺寸下更清楚
-export const DETAIL_RATIO = 0.8
-export const DETAIL_STROKE = 1.25
-// relief 是拥挤检测（见 relieve）给出的退让线宽，只会让线变细
-export const widthOf = (item, stroke) => Math.min(item.thin ? stroke * THIN : item.badge || item.detail ? Math.min(stroke * DETAIL_RATIO, DETAIL_STROKE) : stroke, item.relief ?? Infinity)
-// 点：显式给了 dot 直径，或者是字符串写的零长度路径（M x y h0，按默认直径 DOT）
-export const dotSize = item => item.dot ?? (/^(?:M[^MLHVCSQTAZ]+h0)+$/i.test(item.d.replace(/\s+/g, '')) ? DOT : 0)
-// 点的直径是按线宽 DOT_STROKE 设计的，实际按字重等比缩放：点和线的粗细比例在任何字重下都一样
-// （默认 DOT 2 : 线宽 1.5，略大于线宽，补偿圆点看起来比同宽的线小）
-export const DOT_STROKE = 1.5
-// 眼睛（scene.js 的 eye）例外：粗字重下不再放大，直径停在常规线宽那一档
-export const dotWidth = (item, stroke) => dotSize(item) * (item.eye ? Math.min(stroke, DOT_STROKE) : stroke) / DOT_STROKE
-
+import { dotSize, dotWidth, MITER_LIMIT, widthOf } from './line-widths'
 // 端点吸附：开放线条的端点如果碰到了另一条线（两者中心线距离小于半线宽之和），说明它本来就是要接到那条线上的，
 // 把端点精确投影到那条线上最近的点。这样端点落在被圆角切掉的角部、或者稍微画过头时，线头都不会从另一条线外侧冒出来。
 // 距离几乎为 0 的（已经接好）不动；首尾重合的闭合环不动（只挪一头会撕开）；点不参与
@@ -305,8 +289,6 @@ const toneOf = item => item.tone ?? 'primary'
 // 对「接在别的线上」的线头（端点落在别的线的描边范围里），沿线往回缩 d（0 < d ≤ 半线宽），
 // 缩到方头整块都被别的线（描边带、斜接尖、实心形状、点）盖住为止；缩不到就缩满半线宽（方头的前沿正好回到原端点，和圆头一样）。
 // 只在尖角模式下做：圆头的几何一点不动。审计（scripts/audit-caps.mjs）用同一套覆盖判断找出还冒头的线头
-// 尖角的斜接上限：超过就退成斜切。render.js 的 stroke-miterlimit、fill.js 的外扩都用它
-export const MITER_LIMIT = 2
 // 形状：{ d, w（线宽）, dot（方点边长，0 表示不是点）, fill, round（尖角模式下也是圆头，线帽按半圆算、线头不缩）}
 function capRegions(shapes) {
   return shapes.flatMap((s, owner) => {

@@ -2,7 +2,8 @@
 // 按「图标名 + 圆角 + 字重 + 对齐用的显示像素数」缓存，切回之前的设置不用重算
 // 发布包也打这个模块：不要在顶层碰 DOM、全局对象（只给预览站用的东西放 site/preview.js）
 import { axisLines, minify } from './path-data'
-import { finalize, MITER_LIMIT } from './svg'
+import { MITER_LIMIT } from './line-widths'
+import { finalize } from './svg'
 import { affine, mapPath } from './transform'
 
 // 像素对齐：按图标实际显示的设备像素数 px，把图标整体对齐到像素网格。图形本身不变形，只做两件事：

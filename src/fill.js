@@ -14,7 +14,7 @@
 import { Clipper, ClipType, EndType, FillRule, JoinType } from '@countertype/clipper2-ts'
 import { samples, segments } from './clip'
 import { minify } from './path-data'
-import { dotSize, dotWidth, MITER_LIMIT, widthOf } from './svg'
+import { dotSize, dotWidth, MITER_LIMIT, widthOf } from './line-widths'
 
 // Clipper 的小数精度（位数）和圆角的弦高误差：误差 0.005 在 24 网格上放大到 512px 也只有 0.1px
 const PRECISION = 4
