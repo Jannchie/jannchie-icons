@@ -19,7 +19,7 @@ export interface IconDefaults {
   theme?: Theme
   /** Overrides for single roles or the main color (any CSS color, including var(--x)); merged role by role */
   colors?: IconColors
-  /** Snap strokes to the device pixel grid when size is in px. Defaults to true */
+  /** Snap strokes to the device pixel grid when size is in px. Off by default */
   hinting?: boolean
 }
 
