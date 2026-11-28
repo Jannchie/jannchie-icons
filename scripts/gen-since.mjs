@@ -7,30 +7,19 @@
 //
 // 发布点：git 里的 v* 标签；另外 0.1.0 发到了 npm 但没有打标签——
 // 它在 2026-10-07 02:41 UTC 发布，对应当时的最新提交 ec790d9（下一个提交 58b0ac4 晚了 20 分钟），这里写死。
-import { execFileSync } from 'node:child_process'
-import { readFileSync, writeFileSync } from 'node:fs'
+import { writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { ALIASES } from '../src/aliases.js'
+import { changedFiles, changedOutput, compareVersions, git, iconsAt } from './history.mjs'
 import { iconNames } from './icons.mjs'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
-const git = (...args) => execFileSync('git', args, { cwd: root, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, stdio: ['ignore', 'pipe', 'ignore'] })
 
 const UNTAGGED = [{ version: '0.1.0', ref: 'ec790d9591837bfecb362adb6cb22bcf2e6a8399' }]
 
-// 比较两个 x.y.z 版本字符串
-const compareVersions = (a, b) => {
-  const [x, y] = [a, b].map(v => v.split('.').map(Number))
-  return x[0] - y[0] || x[1] - y[1] || x[2] - y[2]
-}
 const tagged = git('tag', '--list', 'v*').split('\n').filter(t => /^v\d+\.\d+\.\d+$/.test(t)).map(t => ({ version: t.slice(1), ref: t }))
 const releases = [...UNTAGGED, ...tagged].sort((a, b) => compareVersions(a.version, b.version))
-
-const iconsAt = ref => git('ls-tree', '--name-only', ref, 'src/icons/')
-  .split('\n')
-  .filter(p => p.endsWith('.js'))
-  .map(p => p.slice('src/icons/'.length, -3))
 
 const first = {}
 for (const { version, ref } of releases) {
@@ -51,29 +40,15 @@ writeFileSync(join(root, 'src/meta/since.json'), `${JSON.stringify(since, null, 
 // - 两边都有输出快照（tests/__snapshots__/icons.json，v0.6.0 起）时比哈希：共用模块改动带来的变化也算上
 // - 另外图标文件本身改过也算（更早的版本没有快照，只能看文件）
 // 工作区相对最新发布点的变化记成 "next"；和加入版本相同（或更早）的不记
-const snapshotAt = (ref) => {
-  try {
-    return JSON.parse(ref ? git('show', `${ref}:tests/__snapshots__/icons.json`) : readFileSync(join(root, 'tests/__snapshots__/icons.json'), 'utf8'))
-  }
-  catch {
-    return null
-  }
-}
-const changedFiles = (from, to) => new Set(git('diff', '--name-only', from, ...(to ? [to] : []), '--', 'src/icons/')
-  .split(/\r?\n/).filter(p => p.endsWith('.js')).map(p => p.slice('src/icons/'.length, -3)))
 const steps = [...releases.map(r => ({ version: r.version, ref: r.ref })), { version: 'next', ref: null }]
 const last = {}
 for (let i = 1; i < steps.length; i++) {
   const [prev, cur] = [steps[i - 1], steps[i]]
   const before = new Set(iconsAt(prev.ref))
-  const [a, b] = [snapshotAt(prev.ref), snapshotAt(cur.ref)]
   const changed = changedFiles(prev.ref, cur.ref)
-  if (a && b) {
-    for (const name of Object.keys(b)) {
-      if (name in a && a[name] !== b[name])
-        changed.add(name)
-    }
-  }
+  const output = changedOutput(prev.ref, cur.ref)
+  if (output.exact)
+    output.names.forEach(name => changed.add(name))
   for (const name of changed) {
     if (before.has(name))
       last[name] = cur.version
