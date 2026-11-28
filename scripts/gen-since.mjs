@@ -8,10 +8,11 @@
 // 发布点：git 里的 v* 标签；另外 0.1.0 发到了 npm 但没有打标签——
 // 它在 2026-10-07 02:41 UTC 发布，对应当时的最新提交 ec790d9（下一个提交 58b0ac4 晚了 20 分钟），这里写死。
 import { execFileSync } from 'node:child_process'
-import { readdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { ALIASES } from '../src/aliases.js'
+import { iconNames } from './icons.mjs'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const git = (...args) => execFileSync('git', args, { cwd: root, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, stdio: ['ignore', 'pipe', 'ignore'] })
@@ -42,14 +43,9 @@ for (const [old, name] of Object.entries(ALIASES)) {
     first[name] = first[old]
 }
 // 只收当前还在的图标（发布过又删掉、改名的不留）
-const since = {}
-for (const file of readdirSync(join(root, 'src/icons'))) {
-  if (file.endsWith('.js'))
-    since[file.slice(0, -3)] = first[file.slice(0, -3)] ?? 'next'
-}
-
-const sorted = Object.fromEntries(Object.entries(since).sort(([a], [b]) => a.localeCompare(b)))
-writeFileSync(join(root, 'src/meta/since.json'), `${JSON.stringify(sorted, null, 2)}\n`)
+// iconNames 已按名字排好序
+const since = Object.fromEntries(iconNames().map(name => [name, first[name] ?? 'next']))
+writeFileSync(join(root, 'src/meta/since.json'), `${JSON.stringify(since, null, 2)}\n`)
 
 // 最近一次更新的版本（src/meta/updated.json）：相邻两个发布点之间，图标的输出变了就记成后一个版本
 // - 两边都有输出快照（tests/__snapshots__/icons.json，v0.6.0 起）时比哈希：共用模块改动带来的变化也算上
@@ -84,9 +80,9 @@ for (let i = 1; i < steps.length; i++) {
   }
 }
 const updated = {}
-for (const name of Object.keys(sorted)) {
+for (const name of Object.keys(since)) {
   const v = last[name]
-  if (v && sorted[name] !== 'next' && (v === 'next' || compareVersions(v, sorted[name]) > 0))
+  if (v && since[name] !== 'next' && (v === 'next' || compareVersions(v, since[name]) > 0))
     updated[name] = v
 }
 writeFileSync(join(root, 'src/meta/updated.json'), `${JSON.stringify(updated, null, 2)}\n`)
@@ -94,6 +90,6 @@ console.log(`src/meta/updated.json: ${Object.keys(updated).length} icons updated
 
 const counts = {}
 const order = [...releases.map(r => r.version), 'next']
-for (const v of Object.values(sorted))
+for (const v of Object.values(since))
   counts[v] = (counts[v] ?? 0) + 1
-console.log(`src/meta/since.json: ${Object.keys(sorted).length} icons`, Object.fromEntries(order.filter(v => counts[v]).map(v => [v, counts[v]])))
+console.log(`src/meta/since.json: ${Object.keys(since).length} icons`, Object.fromEntries(order.filter(v => counts[v]).map(v => [v, counts[v]])))
