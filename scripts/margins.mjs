@@ -2,7 +2,7 @@
 // 用法：pnpm margins [名字前缀...]；不带参数时统计全部，并列出离边最近的图标
 import { readdirSync } from 'node:fs'
 import { pathToFileURL } from 'node:url'
-import { segments, samples } from '../src/clip.js'
+import { samples, segments } from '../src/clip.js'
 import { finalize } from '../src/svg.js'
 
 const prefixes = process.argv.slice(2)

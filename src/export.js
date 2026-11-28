@@ -3,7 +3,7 @@
 // 属性的转义、序列化和根元素属性在 svg-root.js（./static 入口也用它，不带渲染引擎）
 import { resolveOptions } from './options'
 import { animateAttrs, pathAttrs, pathsOf, svgAttrs, VARIANTS } from './render'
-import { minify } from './svg'
+import { minify } from './path-data'
 import { a11yAttrs, attrString, compact, escapeXml, pathTag, rootAttrs } from './svg-root'
 import { ROLES } from './tone'
 

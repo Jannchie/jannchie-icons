@@ -1,7 +1,8 @@
 // 图标路径的懒计算 + 缓存：finalize（裁切、合并）开销不小，上千个图标不能一打开页面就全算
 // 按「图标名 + 圆角 + 字重 + 对齐用的显示像素数」缓存，切回之前的设置不用重算
 // 发布包也打这个模块：不要在顶层碰 DOM、全局对象（只给预览站用的东西放 site/preview.js）
-import { axisLines, finalize, minify } from './svg'
+import { axisLines, minify } from './path-data'
+import { finalize, MITER_LIMIT } from './svg'
 import { affine, mapPath } from './transform'
 
 // 像素对齐：按图标实际显示的设备像素数 px，把图标整体对齐到像素网格。图形本身不变形，只做两件事：
@@ -180,7 +181,7 @@ export const svgAttrs = (stroke, sharp, colors) => ({
   'stroke-width': stroke,
   'stroke-linecap': sharp ? 'square' : 'round',
   'stroke-linejoin': sharp ? 'miter' : 'round',
-  'stroke-miterlimit': sharp ? 2 : undefined,
+  'stroke-miterlimit': sharp ? MITER_LIMIT : undefined,
 })
 
 // 单条路径的 SVG 属性：点、细线、细节的线宽写在各自的路径上

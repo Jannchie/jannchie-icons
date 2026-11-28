@@ -1,5 +1,5 @@
 // 路径的整体变换（旋转、缩放、镜像、平移、仿射）：先解析成绝对坐标，再逐点变换后重新输出
-import { parse } from './svg'
+import { parse } from './path-data'
 
 const fmt = p => `${p[0]} ${p[1]}`
 

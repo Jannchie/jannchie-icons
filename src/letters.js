@@ -1,5 +1,5 @@
 // 线条字母：每个字母 3.5 宽 × 6 高，原点在左上；只用直线和（椭圆）弧，能跟随线宽
-import { axisLines, parse } from './svg'
+import { axisLines, parse } from './path-data'
 import { affine } from './transform'
 
 const W = 3.5

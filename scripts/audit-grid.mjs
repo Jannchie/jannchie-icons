@@ -6,7 +6,8 @@ import { gate, load, setup } from './audit-baseline.mjs'
 
 const { opts, quiet, server, names, icons } = await setup('grid')
 const { json } = opts
-const { axisLines, finalize } = await load(server, '/src/svg.js')
+const { finalize } = await load(server, '/src/svg.js')
+const { axisLines } = await load(server, '/src/path-data.js')
 
 const STROKE = 1
 const onGrid = v => Math.abs(((v % 1) + 1) % 1 - 0.5) < 0.01

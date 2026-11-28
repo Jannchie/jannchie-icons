@@ -13,7 +13,8 @@
 // 核心包不带这个依赖——所以 render.js 不直接导入这个模块，由预览站和构建脚本调用 setSolidify 注入
 import { Clipper, ClipType, EndType, FillRule, JoinType } from '@countertype/clipper2-ts'
 import { samples, segments } from './clip'
-import { dotSize, dotWidth, minify, widthOf } from './svg'
+import { minify } from './path-data'
+import { dotSize, dotWidth, MITER_LIMIT, widthOf } from './svg'
 
 // Clipper 的小数精度（位数）和圆角的弦高误差：误差 0.005 在 24 网格上放大到 512px 也只有 0.1px
 const PRECISION = 4
@@ -22,8 +23,6 @@ const ARC_TOLERANCE = 0.005
 const SAGITTA = 0.002
 const MIN_STEP_LENGTH = 0.05
 const MAX_STEP_LENGTH = 0.4
-// 尖角模式的斜接上限：和描边版的 stroke-miterlimit 一致
-const MITER_LIMIT = 2
 
 // 布尔运算一律走 booleanOpD：Clipper.unionD(subject, fillRule) 这个重载不收精度参数，会悄悄退回两位小数
 const boolean = (type, subject, clip) => Clipper.booleanOpD(type, subject, clip, FillRule.NonZero, PRECISION)

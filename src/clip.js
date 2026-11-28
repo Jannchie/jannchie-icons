@@ -1,6 +1,6 @@
 // 几何断线：把路径里离「刀」（cut 路径）太近的部分真正删掉，剩下的段落保持原来的直线 / 圆弧 / 贝塞尔
 // 断口是正常的线端（圆头），不再用遮罩挖；遮挡刀（occlude）还会把落在它闭合区域内部的线整段删掉
-import { parse } from './svg'
+import { parse } from './path-data'
 
 const lerp = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]
 const fmt = p => `${p[0]} ${p[1]}`
