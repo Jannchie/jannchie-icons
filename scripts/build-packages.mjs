@@ -17,7 +17,7 @@ import { compareNames } from '../src/icon-list.js'
 // 标签、加入版本、第三方标记、旧名
 import { metaOf } from '../src/meta/meta.js'
 // 类型声明里的字重、圆角、角色联合类型从这几个模块生成，不手抄
-import { CORNERS, WEIGHTS } from '../src/options.js'
+import { CORNERS, DEFAULT_CORNER, DEFAULT_WEIGHT, WEIGHTS } from '../src/options.js'
 import { pathsOf, setSolidify, solidKey, svgAttrs, VARIANTS } from '../src/render.js'
 import { ROLES } from '../src/tone.js'
 import { loadIcons } from './icons.mjs'
@@ -112,8 +112,6 @@ writeFileSync(`${GEN}/runtime.js`, `export * from '../../../src/runtime.js'\n`)
 
 // 轻量入口 ./static：默认样式（圆角 2、regular、单色）的路径在构建时算好，运行时只拼字符串，不带渲染引擎
 // toSvg / toPaths 的实现在 src/svg-root.js（和核心包的 toSvg 共用转义、序列化），这里只生成默认样式的根属性
-const DEFAULT_CORNER = CORNERS.find(c => !c.sharp && c.radius === 2)
-const DEFAULT_WEIGHT = WEIGHTS.find(w => w.id === 'regular')
 for (const name of names) {
   const paths = mergedPaths(pathsOf(byName.get(name), DEFAULT_CORNER, DEFAULT_WEIGHT))
   writeFileSync(`${GEN}/static/icons/${name}.js`, `export default { name: '${name}', paths: ${json(paths)} }\n`)
@@ -447,9 +445,9 @@ const filled = new Set(icons.filter(i => i.fill).map(i => i.name))
 const FILL_SAMPLES = ['folder', 'bell', 'heart']
 for (const variant of VARIANTS) for (const corner of CORNERS) {
   const fill = variant === 'fill'
-  const radiusPart = corner.sharp ? 'sharp' : corner.radius === 2 ? '' : `r${corner.radius}`
+  const radiusPart = corner === DEFAULT_CORNER ? '' : corner.sharp ? 'sharp' : `r${corner.radius}`
   for (const weight of WEIGHTS) {
-    const parts = [fill ? 'fill' : '', radiusPart, weight.id === 'regular' ? '' : weight.id].filter(Boolean)
+    const parts = [fill ? 'fill' : '', radiusPart, weight === DEFAULT_WEIGHT ? '' : weight.id].filter(Boolean)
     const prefix = ['jannchie', ...parts].join('-')
     // 外观完全相同（body 相同）的图标只存一份：连字符最少（更通用）的名字做主名，一样多时按字母序；
     // 其余写成指向它的别名，原来的名字都还能用

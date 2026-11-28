@@ -14,8 +14,12 @@ export const WEIGHTS = [
   { id: 'bold', stroke: 2 },
 ]
 
+// 默认档位：圆角 2、常规字重。核心包的参数默认值、./static 的预计算样式、Iconify 不带后缀的集合、预览站的初始设置都是它
+export const DEFAULT_CORNER = CORNERS[3]
+export const DEFAULT_WEIGHT = WEIGHTS[1]
+
 // 把用户写的参数换成档位：radius 是 'sharp' 或 0–3 的数字，weight 是档位名
-export function resolveOptions({ radius = 2, weight = 'regular' } = {}) {
+export function resolveOptions({ radius = DEFAULT_CORNER.radius, weight = DEFAULT_WEIGHT.id } = {}) {
   const corner = CORNERS.find(c => (radius === 'sharp' ? c.sharp : !c.sharp && c.radius === radius))
   const w = WEIGHTS.find(x => x.id === weight)
   if (!corner)

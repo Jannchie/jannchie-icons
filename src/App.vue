@@ -14,7 +14,7 @@ import { byName, icons } from './iconset'
 import LazyIcon from './LazyIcon.vue'
 import { svgString } from './export'
 import initialTimes from 'virtual:icon-times'
-import { CORNERS, WEIGHTS } from './options'
+import { CORNERS, DEFAULT_CORNER, DEFAULT_WEIGHT, WEIGHTS } from './options'
 import { hasFill, pathsOf, VARIANTS } from './render'
 import { devicePx } from './site/preview'
 import { ROLES } from './tone'
@@ -45,8 +45,8 @@ function load() {
 }
 const saved = load()
 
-const corner = shallowRef(corners.find(c => c.label === saved.corner) ?? corners[3])
-const weight = shallowRef(weights.find(w => w.id === saved.weight) ?? weights[1])
+const corner = shallowRef(corners.find(c => c.label === saved.corner) ?? DEFAULT_CORNER)
+const weight = shallowRef(weights.find(w => w.id === saved.weight) ?? DEFAULT_WEIGHT)
 // 样式：描边（默认）或实心（fill.js）；没有实心版的图标在实心模式下显示描边版、变淡
 const variant = ref(VARIANTS.includes(saved.variant) ? saved.variant : 'outline')
 const size = ref(Number.isFinite(saved.size) ? Math.min(SIZE.max, Math.max(SIZE.min, Math.round(saved.size / SIZE.step) * SIZE.step)) : 32)
