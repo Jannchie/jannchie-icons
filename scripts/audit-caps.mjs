@@ -1,6 +1,6 @@
 // 尖角线头审计：尖角模式（方头线帽 + 斜接转角）下，接在别的线上的线头，方头的角有没有从对面那条线外侧冒出来
 // 每个图标按 light / regular / bold 三档线宽各算一遍：修复前（不缩线头）和修复后（finalize 的 sharp）各有几处冒头
-// 用法：pnpm audit:caps [名字前缀...] [--json] [--baseline [文件]] [--update-baseline [文件]] [--max <n>]
+// 用法：pnpm audit:caps [名字前缀...] [--json] [--baseline[=文件]] [--update-baseline[=文件]] [--max <n>]
 // 门禁：--baseline 和 scripts/audit-caps.baseline.json 里的已知问题比，有新问题就以非零码退出（见 audit-baseline.mjs）
 import { WEIGHTS } from '../src/options.js'
 import { finalize, squareCapPokes } from '../src/svg.js'

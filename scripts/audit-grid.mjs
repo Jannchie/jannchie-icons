@@ -1,6 +1,6 @@
 // 像素网格审计：细字重（线宽 1）下，横竖线的中心应落在 .5 坐标上——1 倍屏 24px、48px 和所有 2 倍屏下才天生清晰
 // 列出不在 .5 上的横竖线（缩小的符号 detail、内部细线 thin、点、实心形状不算），按发虚长度占比从高到低排
-// 用法：pnpm audit:grid [名字前缀...] [--json] [--baseline [文件]] [--update-baseline [文件]] [--max <n>]
+// 用法：pnpm audit:grid [名字前缀...] [--json] [--baseline[=文件]] [--update-baseline[=文件]] [--max <n>]
 // 门禁：--baseline 和 scripts/audit-grid.baseline.json 里的已知问题比，有新问题就以非零码退出（见 audit-baseline.mjs）
 import { axisLines } from '../src/path-data.js'
 import { finalize } from '../src/svg.js'

@@ -135,12 +135,12 @@ describe('architecture', () => {
   })
 
   it('scripts load icons through scripts/icons.mjs and import src/ directly, not through Vite', () => {
-    const scripts = walk(join(ROOT, 'scripts'))
+    const scripts = [...walk(join(ROOT, 'scripts')), 'vite.config.js']
     const bad = []
     for (const f of scripts) {
       const src = readFileSync(join(ROOT, f), 'utf8')
-      // vite 只用来打包（packages.mjs 的 buildLib）
-      if (f !== 'scripts/packages.mjs' && importsOf(f).some(s => s === 'vite' || s.startsWith('vite/')))
+      // vite 只用来打包（packages.mjs 的 buildLib）和预览站本身
+      if (f !== 'scripts/packages.mjs' && f !== 'vite.config.js' && importsOf(f).some(s => s === 'vite' || s.startsWith('vite/')))
         bad.push(`${f} imports vite`)
       if (/ssrLoadModule/.test(src))
         bad.push(`${f} uses Vite SSR`)

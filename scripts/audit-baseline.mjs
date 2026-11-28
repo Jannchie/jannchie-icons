@@ -1,7 +1,8 @@
 // 审计门禁：三个审计脚本（audit-grid / audit-caps / audit-crowd）共用
 // 每个审计把结果整理成 { 图标名: [问题键…] }（问题键是能定位到具体一处的字符串，比如 'x 12.25'、'bold (3, 4)'），然后：
-// - --baseline [文件]：和基线（已知问题清单，默认 scripts/audit-<名>.baseline.json，提交进仓库）比，出现基线里没有的问题就以 1 退出
-// - --update-baseline [文件]：把当前结果写成基线（带名字前缀时只替换这些图标的条目）
+// - --baseline[=文件]：和基线（已知问题清单，默认 scripts/audit-<名>.baseline.json，提交进仓库）比，出现基线里没有的问题就以 1 退出
+// - --update-baseline[=文件]：把当前结果写成基线（带名字前缀时只替换这些图标的条目）
+//   文件只能用 = 指定：--update-baseline folder 里的 folder 是名字前缀，不会被当成文件名写出一个叫 folder 的基线
 // - --max <n>：有问题的图标超过 n 个就以 1 退出
 // 都不给时只打印报告、以 0 退出（原来的用法）
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
@@ -18,7 +19,7 @@ export function parseArgs(argv, audit) {
       opts.json = true
     }
     else if (/^--(?:update-)?baseline(?:=|$)/.test(a)) {
-      opts.baseline = a.includes('=') ? a.split('=')[1] : value() ?? defaultFile
+      opts.baseline = a.includes('=') ? a.slice(a.indexOf('=') + 1) : defaultFile
       opts.update ||= a.startsWith('--update-')
     }
     else if (a === '--max' || a.startsWith('--max=')) {

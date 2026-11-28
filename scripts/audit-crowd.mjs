@@ -1,6 +1,6 @@
 // 拥挤审计：常规（1.5）、粗（2）两档线宽下，互不相连的线之间可见空隙太小（< 0.5），加粗后会糊成一团
 // 每个图标给出两档下最小的空隙和挤在一起的对数，按最小空隙从小到大排
-// 用法：pnpm audit:crowd [名字前缀...] [--json] [--baseline [文件]] [--update-baseline [文件]] [--max <n>]
+// 用法：pnpm audit:crowd [名字前缀...] [--json] [--baseline[=文件]] [--update-baseline[=文件]] [--max <n>]
 // 门禁：--baseline 和 scripts/audit-crowd.baseline.json 里的已知问题比，有新问题就以非零码退出（见 audit-baseline.mjs）
 import { WEIGHTS } from '../src/options.js'
 import { crowdedPairs, finalize } from '../src/svg.js'

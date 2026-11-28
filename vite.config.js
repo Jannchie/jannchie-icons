@@ -1,8 +1,9 @@
 import { execFileSync } from 'node:child_process'
-import { readdirSync, statSync } from 'node:fs'
+import { statSync } from 'node:fs'
 import { resolve } from 'node:path'
 import vue from '@vitejs/plugin-vue'
 import { defineConfig, normalizePath } from 'vite'
+import { iconNames } from './scripts/icons.mjs'
 
 // 每个图标最后修改的时间（毫秒），给预览页「最近修改」排序用：virtual:icon-times → { 名字: 时间 }
 // 开发时读文件的修改时间；构建时文件都是刚检出的，改用 git 里每个文件最后一次提交的时间（CI 需要完整历史，见 deploy.yml 的 fetch-depth）
@@ -15,7 +16,7 @@ const RESOLVED = `${String.fromCharCode(0)}${ID}`
 const EVENT = 'icon-times'
 const iconName = file => (normalizePath(file).startsWith(`${ICONS}/`) && file.endsWith('.js') ? normalizePath(file).slice(ICONS.length + 1, -3) : null)
 function fileTimes() {
-  return Object.fromEntries(readdirSync(ICONS).filter(f => f.endsWith('.js')).map(f => [f.slice(0, -3), Math.round(statSync(resolve(ICONS, f)).mtimeMs)]))
+  return Object.fromEntries(iconNames().map(n => [n, Math.round(statSync(resolve(ICONS, `${n}.js`)).mtimeMs)]))
 }
 function gitTimes() {
   const times = fileTimes()

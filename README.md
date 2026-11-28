@@ -70,7 +70,7 @@ CI (`.github/workflows/ci.yml`) runs on every push and pull request: `pnpm build
 
 - `pnpm test` renders every icon (animated ones included) at all 15 corner × weight settings through the public `toSvg` / `toPaths` API and checks the SVG and path data; checks that file names are unique kebab-case (`[a-z0-9-]`) and that every icon lands in a category other than "Uncategorized" (`src/categories.js`); and compares a hash of each icon's default SVG (radius 2, regular) with `tests/__snapshots__/icons.json`.
 - When you change an icon or the engine on purpose, the snapshot test lists the icons whose output changed. Check them in the preview site, then run `pnpm test -u` to update the snapshot and commit it with your change.
-- `pnpm audit:icons` runs `audit:grid`, `audit:caps` and `audit:crowd` against the known issues recorded in `scripts/audit-{grid,caps,crowd}.baseline.json` and fails only on new ones. Fix the geometry; if an issue is accepted, record it with `pnpm audit:icons --update-baseline` (or one audit, e.g. `node scripts/audit-crowd.mjs --update-baseline`) and commit the baseline. Each audit also takes `--max <n>`.
+- `pnpm audit:icons` runs `audit:grid`, `audit:caps` and `audit:crowd` against the known issues recorded in `scripts/audit-{grid,caps,crowd}.baseline.json` and fails only on new ones. Fix the geometry; if an issue is accepted, record it with `pnpm audit:icons --update-baseline` (or one audit, e.g. `pnpm audit:crowd --update-baseline`; add name prefixes to update only those icons) and commit the baseline. Each audit also takes `--max <n>`.
 
 ### Releasing
 
