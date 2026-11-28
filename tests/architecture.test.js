@@ -153,11 +153,14 @@ describe('architecture', () => {
 
   it('every script that imports src/ through extensionless paths runs with node-ext', () => {
     const pkg = JSON.parse(readFileSync(join(ROOT, 'package.json'), 'utf8'))
-    // 自己或间接导入的模块里有省略后缀的相对导入（Vite 习惯），Node 原生解析不了，就要 node-ext
+    // 自己或间接导入的模块里有省略后缀的相对导入（Vite 习惯），Node 原生解析不了，就要 node-ext。
+    // scripts/icons.mjs 的 loadIcons 动态 import 图标模块（静态分析看不到），导入它就算需要
     const needsExt = (file, seen = new Set()) => {
       if (seen.has(file))
         return false
       seen.add(file)
+      if (file === 'scripts/icons.mjs')
+        return true
       return importsOf(file).some((s) => {
         if (!s.startsWith('.'))
           return false
@@ -167,10 +170,11 @@ describe('architecture', () => {
         return !target.endsWith('.json') && needsExt(target, seen)
       })
     }
-    const bad = Object.entries(pkg.scripts).flatMap(([name, cmd]) => {
-      const m = /^node (?<ext>--import \.\/scripts\/node-ext\.mjs )?(?<file>scripts\/\S+\.mjs)/.exec(cmd)
-      return m && !m.groups.ext && needsExt(m.groups.file) ? [`${name}: ${cmd}`] : []
-    })
+    // 命令里 && 连起来的每一段都看
+    const bad = Object.entries(pkg.scripts).flatMap(([name, cmd]) => cmd.split('&&').flatMap((part) => {
+      const m = /^\s*node (?<ext>--import \.\/scripts\/node-ext\.mjs )?(?<file>scripts\/\S+\.mjs)/.exec(part)
+      return m && !m.groups.ext && needsExt(m.groups.file) ? [`${name}: ${part.trim()}`] : []
+    }))
     expect(bad).toEqual([])
   })
 })

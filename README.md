@@ -51,6 +51,7 @@ pnpm brand            # regenerate the banner, OG image and favicons
 pnpm build:packages   # build packages/core and packages/iconify-json
 pnpm test             # render smoke test, output snapshot, naming and category checks
 pnpm audit:icons      # grid / square-cap / crowding audits against their baselines
+pnpm margins          # ink distance from each canvas edge, per icon
 ```
 
 Each icon is one file in `src/icons/` that returns a list of path strings for a given setting. The preview site picks up new files automatically, and `src/categories.js` assigns them to a category by name.
@@ -62,7 +63,7 @@ import { ring } from '../marks'
 export default () => [ring(), 'M12 8V16', 'M8 12H16']
 ```
 
-Shared shapes and helpers live in `src/geometry.js` (rounded polygons, circles) and `src/letters.js` (line lettering for badges and numerals). Pushes to `main` deploy the site to GitHub Pages.
+Shared shapes and helpers live in `src/geometry.js` (rounded polygons, circles) and `src/letters.js` (line lettering for badges and numerals). [docs/architecture.md](docs/architecture.md) maps the modules and the dependency rules that `tests/architecture.test.js` enforces. Pushes to `main` deploy the site to GitHub Pages.
 
 ### Checks
 

@@ -555,7 +555,7 @@ function fitSquareCaps(items, stroke) {
 // - round：尖角模式下也用圆头线帽和圆角转角（军衔里的小星这类，尖角斜接会被斜接上限切成圆点，干脆画成圆角）
 // - cut 是「刀」：其余路径在离它 gap（默认 GAP）+ 线宽以内的部分被真正裁掉；
 //   occlude 的刀还会把落在它闭合区域内部的线整段删掉（前后叠放、镜片内部之类）；hidden 的刀只裁不画
-// - detail 是缩小的符号（外框线宽的 DETAIL_RATIO 倍、封顶 DETAIL_STROKE），badge 是系列图标的角标（和 detail 一样细），thin 是内部细线（线宽取外框的 THIN 倍），dot 是点在线宽 DOT_STROKE 下的直径（随字重等比缩放）
+// - detail 是缩小的符号（外框线宽的 DETAIL_RATIO 倍、封顶 DETAIL_STROKE），badge 是系列图标的角标（和 detail 一样细），thin 是内部细线（线宽取外框的 THIN 倍），dot 是点在线宽 DOT_STROKE 下的直径（随字重等比缩放）；这几个常量和换算在 line-widths.js
 // 裁切后做端点吸附（见 snapEnds）和拥挤检测（见 relieve），再按（细节、实心、点、细线）分组合并、压缩；每组带上实际线宽 width（和外框相同时为 undefined）
 // 动画帧（animated）：不做拥挤检测（逐帧判断会让各帧的路径结构不一致），也不压缩——
 // 输出统一的绝对坐标写法，同一图标各帧的命令序列一致，SMIL 才能逐个数字插值

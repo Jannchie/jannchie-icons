@@ -14,8 +14,8 @@
 | 引擎 | `export.js`（toSvg / toPaths）、`render.js`（缓存、像素对齐、SVG 属性）、`svg.js`（finalize 收尾）、`fill.js`（实心版，Clipper2，只在构建和站点里用）、`svg-root.js`、`runtime.js` | 把绘制函数的结果变成 SVG | 几何层、约定 |
 | 图标 | `src/icons/*.js` | 一个文件一个图标：默认导出描边版，可选导出 `fill`、`animation` | 绘制层、几何层、约定、其他图标 |
 | 绘制 | 系列模块（`folder.js`、`file.js`、`chat.js` …）、共用造型（`symbols.js`、`scene.js`、`letters.js`、`marks.js` …）、标记（`solid.js`、`off.js`、`corner.js`、`badge-room.js`） | 被多个图标共用的造型和规则 | 几何层、约定、少数图标 |
-| 几何 | `geometry.js`、`transform.js`、`clip.js`、`path-data.js`（路径语法：解析、压缩、横竖线） | 和图标无关的路径运算 | 约定 |
-| 约定 / 数据 | `line-widths.js`（样式标记 → 线宽、点径、斜接上限）、`clearance.js`、`inset.js`、`options.js`、`tone.js`、`icon-list.js`、`aliases.js`、`meta/` | 无依赖的常量、数据和纯函数 | 无 |
+| 几何 | `geometry.js`、`transform.js`、`clip.js` | 和图标无关的路径运算 | 约定 |
+| 约定 / 数据 | `path-data.js`（路径语法：解析、压缩、横竖线）、`line-widths.js`（样式标记 → 线宽、点径、斜接上限）、`clearance.js`、`inset.js`、`options.js`、`tone.js`、`icon-list.js`、`aliases.js`、`meta/` | 常量、数据和纯函数 | 不依赖代码层（`meta/` 只读 `aliases.js` 和自己的数据） |
 
 几条硬约束（都在 `tests/architecture.test.js` 里）：
 
